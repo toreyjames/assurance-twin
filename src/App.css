@@ -657,6 +657,304 @@ body {
   color: #68d391;
 }
 
+/* Industrial Canonizer Styles */
+.canonizer-dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.canonizer-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 1.5rem;
+}
+
+.ingestion-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.data-volume {
+  background-color: rgba(134, 239, 172, 0.1);
+  padding: 1rem;
+  border-radius: 8px;
+  border-left: 4px solid #86efac;
+}
+
+.data-volume h5 {
+  color: #86efac;
+  margin-bottom: 0.75rem;
+}
+
+.plant-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.plant-item {
+  background-color: rgba(45, 55, 72, 0.5);
+  padding: 1rem;
+  border-radius: 8px;
+  border-left: 4px solid #4299e1;
+}
+
+.plant-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.device-count {
+  background-color: rgba(66, 153, 225, 0.2);
+  color: #63b3ed;
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.plant-details {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.85rem;
+  color: #a0aec0;
+}
+
+.correlation-breakdown {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.correlation-rate {
+  background-color: rgba(104, 211, 145, 0.1);
+  padding: 1rem;
+  border-radius: 8px;
+  border-left: 4px solid #68d391;
+}
+
+.correlation-rate h5 {
+  color: #68d391;
+  margin-bottom: 0.5rem;
+}
+
+.security-zones {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.zone-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  background-color: rgba(45, 55, 72, 0.3);
+  border-radius: 6px;
+  border-left: 3px solid #ed8936;
+}
+
+.zone-name {
+  font-weight: 500;
+  color: #cbd5e0;
+}
+
+.zone-count {
+  background-color: rgba(237, 137, 54, 0.2);
+  color: #ed8936;
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.canonizer-proof {
+  margin-top: 2rem;
+}
+
+.proof-sections {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 2rem;
+}
+
+.proof-section {
+  background-color: rgba(104, 211, 145, 0.1);
+  padding: 1.5rem;
+  border-radius: 8px;
+  border-left: 4px solid #68d391;
+}
+
+.proof-section h5 {
+  color: #68d391;
+  margin-bottom: 1rem;
+}
+
+.proof-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.proof-section li {
+  color: #cbd5e0;
+  margin-bottom: 0.75rem;
+  padding-left: 1.5rem;
+  position: relative;
+}
+
+.proof-section li::before {
+  content: '✅';
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+/* Query Interface Styles */
+.query-interface {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.query-section {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.query-input-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.query-examples h5 {
+  color: #86efac;
+  margin-bottom: 1rem;
+}
+
+.example-queries {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.example-query {
+  background-color: rgba(66, 153, 225, 0.1);
+  color: #63b3ed;
+  border: 1px solid rgba(66, 153, 225, 0.3);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.example-query:hover {
+  background-color: rgba(66, 153, 225, 0.2);
+  transform: translateY(-1px);
+}
+
+.query-input {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.query-text-input {
+  flex: 1;
+  padding: 1rem;
+  background-color: rgba(45, 55, 72, 0.5);
+  border: 2px solid rgba(66, 153, 225, 0.3);
+  border-radius: 8px;
+  color: #e2e8f0;
+  font-size: 1rem;
+  transition: border-color 0.2s ease;
+}
+
+.query-text-input:focus {
+  outline: none;
+  border-color: #4299e1;
+}
+
+.query-text-input::placeholder {
+  color: #a0aec0;
+}
+
+.query-button {
+  background: linear-gradient(135deg, #4299e1 0%, #63b3ed 100%);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.query-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(66, 153, 225, 0.3);
+}
+
+.query-results {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.results-summary {
+  color: #86efac;
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+}
+
+.results-section {
+  background-color: rgba(45, 55, 72, 0.3);
+  padding: 1.5rem;
+  border-radius: 8px;
+  border-left: 4px solid #4299e1;
+}
+
+.results-section h5 {
+  color: #63b3ed;
+  margin-bottom: 1rem;
+}
+
+.results-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.result-item {
+  background-color: rgba(45, 55, 72, 0.5);
+  padding: 1rem;
+  border-radius: 6px;
+  border-left: 3px solid #68d391;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.result-item strong {
+  color: #68d391;
+  font-size: 1rem;
+}
+
+.result-item span {
+  color: #cbd5e0;
+  font-size: 0.9rem;
+}
+
 /* Deloitte OT Assurance Twin Specific Styles */
 
 /* Canonical Graph Styles */
