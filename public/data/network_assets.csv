@@ -1,0 +1,11 @@
+asset_id,tag_id,mac,protocol,last_seen,unit,plant,ip_address,network_zone,security_status
+A3085,T2000,10.6.86.95,UDP,2025-09-23 14:30,U1,Plant1,10.1.1.100,Control_Network,Secure
+N4095,T2001,10.16.96.1,TCP,2025-09-23 14:25,U2,Plant2,10.2.1.101,Safety_Network,Secure
+A3087,T2002,10.8.88.97,TCP,2025-09-23 14:20,U3,Plant3,10.3.1.102,Process_Network,Alert
+A3093,T2007,10.14.94.1,ICMP,2025-09-23 13:55,U2,Plant2,10.2.1.103,Safety_Network,Secure
+A3055,T2005,10.16.56.6,ICMP,2025-09-23 14:05,U6,Plant3,10.3.1.104,Control_Network,Secure
+N4021,T2008,10.12.45.8,TCP,2025-09-23 13:50,U3,Plant3,10.3.1.105,Process_Network,Warning
+A3067,T2002,10.9.34.12,UDP,2025-09-23 14:20,U3,Plant3,10.3.1.106,Control_Network,Secure
+A3089,T2004,10.11.67.23,TCP,2025-09-23 14:15,U4,Plant1,10.1.1.107,Process_Network,Secure
+A3012,T2006,10.15.78.34,ICMP,2025-09-23 14:00,U1,Plant1,10.1.1.108,Network_Infra,Secure
+N4033,T2003,10.7.89.45,UDP,2025-09-23 14:15,U4,Plant1,10.1.1.109,Control_Network,Secure

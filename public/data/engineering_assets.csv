@@ -1,0 +1,11 @@
+tag_id,id,unit,plant,instrument,criticality,description,status,last_update
+T2000,L1000,U1,Plant1,PLC,Low,Crude Feed Control Loop,Active,2025-09-23 14:30:00
+T2001,L1001,U2,Plant2,SCADA,High,FCC Reactor Temperature Control,Active,2025-09-23 14:25:00
+T2002,L1002,U3,Plant3,HMI,Medium,Distillation Column Pressure,Active,2025-09-23 14:20:00
+T2003,L1003,U4,Plant1,RTU,Medium,Storage Tank Level Control,Active,2025-09-23 14:15:00
+T2004,L1004,U5,Plant2,Historian,Medium,Process Data Archive,Active,2025-09-23 14:10:00
+T2005,L1005,U6,Plant3,Drive,Low,Pump Motor Control,Active,2025-09-23 14:05:00
+T2006,L1006,U1,Plant1,Switch,Low,Network Infrastructure,Active,2025-09-23 14:00:00
+T2007,L1007,U2,Plant2,PLC,High,Safety Interlock System,Active,2025-09-23 13:55:00
+T2008,L1008,U3,Plant3,SCADA,Medium,Compressor Control,Active,2025-09-23 13:50:00
+T2009,L1009,U4,Plant1,HMI,Low,Operator Interface,Active,2025-09-23 13:45:00

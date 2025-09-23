@@ -1,0 +1,11 @@
+asset_id,tag_id,oem,model,serial,last_patch,maintenance_status,criticality_score,plant
+A3093,T2001,Schneider,Quantum,S467075,2025-08-15,Current,High,Plant2
+A3045,T2007,Emerson,Iconics,S892039,2025-07-20,Overdue,High,Plant2
+A3100,T2000,Schneider,DeltaV,S646034,2025-09-01,Current,Medium,Plant1
+A3082,T2008,Rockwell,A100,S706389,2025-06-30,Critical,Medium,Plant3
+A3001,T2003,Schneider,Iconics,S498818,2025-08-10,Current,Medium,Plant1
+A3055,T2005,Emerson,DeltaV,S723456,2025-09-05,Current,Low,Plant3
+A3067,T2002,Rockwell,ControlLogix,S834567,2025-07-25,Overdue,Medium,Plant3
+A3089,T2004,Schneider,Modicon,S945678,2025-08-20,Current,Medium,Plant1
+A3012,T2006,Cisco,Industrial,S056789,2025-09-10,Current,Low,Plant1
+A3034,T2009,Siemens,WinCC,S167890,2025-08-05,Current,Low,Plant1
