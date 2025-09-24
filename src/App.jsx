@@ -538,67 +538,64 @@ function App() {
             <div className="canonizer-stats-grid">
               <AssetCard title="📊 Data Ingestion Summary">
                 <div className="ingestion-stats">
-                  <MetricDisplay label="OT Network Devices" value={canonicalData.statistics.ot_network_devices.toLocaleString()} unit="devices" />
-                  <MetricDisplay label="CMMS Records" value={canonicalData.statistics.cmms_records.toLocaleString()} unit="records" />
-                  <MetricDisplay label="Historian Data Points" value={canonicalData.statistics.historian_points.toLocaleString()} unit="points" />
-                  <MetricDisplay label="Historian Tags" value={canonicalData.statistics.historian_tags.toLocaleString()} unit="tags" />
+                  <MetricDisplay label="Total Assets" value={canonicalData.statistics.total_assets.toLocaleString()} unit="assets" />
+                  <MetricDisplay label="Process Connections" value={canonicalData.statistics.process_connections.toLocaleString()} unit="connections" />
+                  <MetricDisplay label="Operational Records" value={canonicalData.statistics.operational_records.toLocaleString()} unit="records" />
+                  <MetricDisplay label="Critical Assets" value={canonicalData.statistics.critical_assets.toLocaleString()} unit="critical" />
                 </div>
                 <div className="data-volume">
-                  <h5>📈 Industrial Scale Achieved:</h5>
-                  <p><strong>Total Records Processed:</strong> {(canonicalData.statistics.ot_network_devices + canonicalData.statistics.cmms_records + canonicalData.statistics.historian_points).toLocaleString()}</p>
-                  <p><strong>Canonical Assets Created:</strong> {canonicalData.statistics.total_assets.toLocaleString()}</p>
+                  <h5>📈 AI World Model Built:</h5>
+                  <p><strong>Total Assets Processed:</strong> {canonicalData.statistics.total_assets.toLocaleString()}</p>
+                  <p><strong>Average Risk Score:</strong> {canonicalData.statistics.avg_risk_score.toFixed(1)}</p>
                 </div>
               </AssetCard>
 
-              <AssetCard title="🏭 Plant Topology Discovered">
+              <AssetCard title="🏭 Plant Units Discovered">
                 <div className="plant-breakdown">
-                  {Object.entries(canonicalData.statistics.plant_breakdown).map(([plant, count]) => (
-                    <div key={plant} className="plant-item">
+                  {Object.entries(canonicalData.statistics.unit_distribution).map(([unit, count]) => (
+                    <div key={unit} className="plant-item">
                       <div className="plant-header">
-                        <strong>{plant}</strong>
-                        <span className="device-count">{count} devices</span>
-                      </div>
-                      <div className="plant-details">
-                        <span>Device Types: {canonicalData.plantTopology[plant].device_types.size}</span>
-                        <span>Security Zones: {canonicalData.plantTopology[plant].security_zones.size}</span>
+                        <strong>{unit}</strong>
+                        <span className="device-count">{count} assets</span>
                       </div>
                     </div>
                   ))}
                 </div>
               </AssetCard>
 
-              <AssetCard title="🔗 Correlation Analysis">
+              <AssetCard title="🎯 AI Importance Analysis">
                 <div className="correlation-breakdown">
                   <MetricDisplay 
-                    label="Network Only" 
-                    value={canonicalData.statistics.correlation_breakdown.network_only} 
+                    label="Mission Critical" 
+                    value={canonicalData.statistics.importance_distribution.Mission_Critical || 0} 
                     unit="assets" 
-                    status="warning" 
+                    status="critical" 
                   />
                   <MetricDisplay 
-                    label="Network + CMMS" 
-                    value={canonicalData.statistics.correlation_breakdown.network_cmms} 
+                    label="High Importance" 
+                    value={canonicalData.statistics.importance_distribution.High || 0} 
+                    unit="assets" 
+                    status="warning"
+                  />
+                  <MetricDisplay 
+                    label="Medium Importance" 
+                    value={canonicalData.statistics.importance_distribution.Medium || 0} 
                     unit="assets" 
                   />
                   <MetricDisplay 
-                    label="Complete Correlation" 
-                    value={canonicalData.statistics.correlation_breakdown.complete} 
+                    label="Low Importance" 
+                    value={canonicalData.statistics.importance_distribution.Low || 0} 
                     unit="assets" 
-                    status="normal" 
                   />
-                </div>
-                <div className="correlation-rate">
-                  <h5>📈 Correlation Success Rate:</h5>
-                  <p><strong>{(((canonicalData.statistics.correlation_breakdown.network_cmms + canonicalData.statistics.correlation_breakdown.complete) / canonicalData.statistics.total_assets) * 100).toFixed(1)}%</strong> of assets have multi-source correlation</p>
                 </div>
               </AssetCard>
 
-              <AssetCard title="🛡️ Security Zone Distribution">
+              <AssetCard title="📊 Criticality Distribution">
                 <div className="security-zones">
-                  {Object.entries(canonicalData.statistics.security_zone_summary).map(([zone, count]) => (
-                    <div key={zone} className="zone-item">
-                      <span className="zone-name">{zone.replace(/_/g, ' ')}</span>
-                      <span className="zone-count">{count} devices</span>
+                  {Object.entries(canonicalData.statistics.criticality_distribution).map(([criticality, count]) => (
+                    <div key={criticality} className="zone-item">
+                      <span className="zone-name">{criticality}</span>
+                      <span className="zone-count">{count} assets</span>
                     </div>
                   ))}
                 </div>
@@ -611,10 +608,10 @@ function App() {
                   <div className="proof-section">
                     <h5>🔍 Data Processing Evidence:</h5>
                     <ul>
-                      <li>Successfully loaded and parsed {canonicalData.statistics.ot_network_devices.toLocaleString()} OT network devices from CSV</li>
-                      <li>Correlated {canonicalData.statistics.cmms_records.toLocaleString()} maintenance records across assets</li>
-                      <li>Processed {canonicalData.statistics.historian_points.toLocaleString()} historian time-series data points</li>
-                      <li>Built canonical asset model with {canonicalData.statistics.total_assets.toLocaleString()} unified asset records</li>
+                      <li>Successfully loaded {canonicalData.statistics.total_assets.toLocaleString()} assets from client CSV files</li>
+                      <li>Mapped {canonicalData.statistics.process_connections.toLocaleString()} process connections and dependencies</li>
+                      <li>Processed {canonicalData.statistics.operational_records.toLocaleString()} operational context records</li>
+                      <li>Built AI world model with {canonicalData.statistics.critical_assets.toLocaleString()} mission-critical assets identified</li>
                     </ul>
                   </div>
                   <div className="proof-section">
@@ -683,9 +680,9 @@ function App() {
                         <div className="results-list">
                           {queryResults.assets.slice(0, 10).map((asset, index) => (
                             <div key={index} className="result-item">
-                              <strong>{asset.canonical_name}</strong>
-                              <span>{asset.device_type} | {asset.manufacturer}</span>
-                              <span>Plant: {asset.plant_unit} | Criticality: {asset.criticality}</span>
+                              <strong>{asset.name}</strong>
+                              <span>{asset.type} | {asset.manufacturer}</span>
+                              <span>Unit: {asset.unit} | Criticality: {asset.criticality} | Risk: {asset.riskScore}</span>
                             </div>
                           ))}
                         </div>
