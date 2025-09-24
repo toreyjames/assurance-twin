@@ -1,0 +1,7 @@
+tag_id,plant,unit,uptime_pct_30d,alarm_count_30d,bad_quality_count_30d
+T2000,Plant1,U1,99.2,5,0
+T2001,Plant1,U1,98.7,8,1
+T2002,Plant1,U2,96.5,15,6
+T2003,Plant2,U3,99.0,3,0
+T2004,Plant2,U4,97.5,11,2
+T2005,Plant3,U5,99.5,1,0
