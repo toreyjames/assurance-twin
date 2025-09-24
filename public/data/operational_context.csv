@@ -1,0 +1,497 @@
+asset_id,normal_operating_range,alarm_thresholds,performance_indicators,maintenance_strategy,run_time_hours,last_major_service,next_service_due,operating_efficiency,degradation_rate
+A0001,"Flow: 1222 GPM, Pressure: 257 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,47240,2024-12-28,2025-10-20,87.7,Accelerated
+A0002,"Flow: 842 GPM, Pressure: 145 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,37715,2024-11-27,2025-10-01,93.7,Moderate
+A0003,"Flow: 1092 GPM, Pressure: 205 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,25129,2025-04-09,2025-11-28,92.8,Moderate
+A0004,"Flow: 687 GPM, Pressure: 206 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,22085,2025-07-13,2025-11-28,91.4,Normal
+A0005,"Flow: 1434 GPM, Pressure: 269 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,57513,2025-01-17,2025-10-11,90.1,Accelerated
+A0006,"Flow: 905 GPM, Pressure: 215 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,20318,2024-09-24,2026-02-27,88.4,Normal
+A0007,"Flow: 1023 GPM, Pressure: 244 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,44856,2025-07-27,2025-10-20,87.9,Accelerated
+A0008,"Flow: 650 GPM, Pressure: 271 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,34645,2024-11-22,2026-01-02,90.5,Moderate
+A0009,"Flow: 1227 GPM, Pressure: 261 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,59957,2024-10-27,2025-10-30,90.3,Accelerated
+A0010,"Flow: 880 GPM, Pressure: 150 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,31537,2024-10-03,2026-03-08,91.5,Moderate
+A0011,"Flow: 656 GPM, Pressure: 101 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,55317,2025-05-13,2026-03-04,86.0,Accelerated
+A0012,"Flow: 937 GPM, Pressure: 141 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,53296,2025-04-08,2026-01-21,90.7,Accelerated
+A0013,"Flow: 1279 GPM, Pressure: 192 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,43366,2025-02-08,2025-12-23,93.3,Accelerated
+A0014,"Flow: 1418 GPM, Pressure: 243 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,44877,2025-03-18,2025-11-26,93.6,Accelerated
+A0015,"Flow: 703 GPM, Pressure: 143 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,34552,2024-11-13,2025-10-31,87.2,Moderate
+A0016,"Suction: 96 PSI, Discharge: 291 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,33160,2024-09-29,2025-12-29,87.7,Moderate
+A0017,"Suction: 87 PSI, Discharge: 379 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,47845,2025-02-18,2025-12-07,88.0,Accelerated
+A0018,"Suction: 120 PSI, Discharge: 398 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,37492,2025-01-28,2025-12-25,91.5,Moderate
+A0019,"Suction: 56 PSI, Discharge: 390 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,35330,2025-04-26,2025-10-31,90.9,Moderate
+A0020,"Suction: 137 PSI, Discharge: 394 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,43227,2025-01-07,2025-10-12,93.6,Accelerated
+A0021,"Suction: 69 PSI, Discharge: 494 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,38097,2024-11-08,2026-03-18,94.4,Moderate
+A0022,"Suction: 91 PSI, Discharge: 339 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,21590,2025-03-03,2025-11-20,85.1,Normal
+A0023,"Suction: 148 PSI, Discharge: 353 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,53107,2025-09-02,2025-09-30,90.9,Accelerated
+A0024,"Suction: 123 PSI, Discharge: 463 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,45365,2025-06-30,2026-01-30,85.5,Accelerated
+A0025,"Suction: 74 PSI, Discharge: 249 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,10160,2025-08-14,2025-12-03,89.2,Normal
+A0026,"Suction: 97 PSI, Discharge: 310 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,48980,2025-07-15,2025-12-07,92.3,Accelerated
+A0027,"Suction: 96 PSI, Discharge: 485 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,22796,2024-10-27,2026-02-07,91.0,Normal
+A0028,"Suction: 104 PSI, Discharge: 252 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,14641,2024-12-19,2026-01-14,87.9,Normal
+A0029,"Suction: 102 PSI, Discharge: 232 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,22857,2025-07-28,2025-09-25,94.2,Normal
+A0030,"Approach Temp: 11°F, Fouling Factor: <0.002","Approach Temp >35°F (High), Pressure Drop >50 PSI (High)","Heat Transfer Coefficient, Pressure Drop, Fouling Rate",Time_Based,57286,2025-04-05,2025-11-07,85.8,Accelerated
+A0031,"Approach Temp: 29°F, Fouling Factor: <0.002","Approach Temp >35°F (High), Pressure Drop >50 PSI (High)","Heat Transfer Coefficient, Pressure Drop, Fouling Rate",Time_Based,53464,2025-01-02,2026-01-28,87.6,Accelerated
+A0032,"Approach Temp: 14°F, Fouling Factor: <0.002","Approach Temp >35°F (High), Pressure Drop >50 PSI (High)","Heat Transfer Coefficient, Pressure Drop, Fouling Rate",Time_Based,25776,2025-04-18,2025-11-04,90.6,Moderate
+A0033,"Approach Temp: 18°F, Fouling Factor: <0.002","Approach Temp >35°F (High), Pressure Drop >50 PSI (High)","Heat Transfer Coefficient, Pressure Drop, Fouling Rate",Time_Based,24778,2024-11-15,2026-01-20,88.1,Normal
+A0034,"Approach Temp: 14°F, Fouling Factor: <0.002","Approach Temp >35°F (High), Pressure Drop >50 PSI (High)","Heat Transfer Coefficient, Pressure Drop, Fouling Rate",Time_Based,37268,2024-12-11,2026-01-31,89.5,Moderate
+A0035,"Approach Temp: 10°F, Fouling Factor: <0.002","Approach Temp >35°F (High), Pressure Drop >50 PSI (High)","Heat Transfer Coefficient, Pressure Drop, Fouling Rate",Time_Based,27477,2025-04-06,2025-10-13,89.2,Moderate
+A0036,"Approach Temp: 13°F, Fouling Factor: <0.002","Approach Temp >35°F (High), Pressure Drop >50 PSI (High)","Heat Transfer Coefficient, Pressure Drop, Fouling Rate",Time_Based,32645,2024-09-27,2025-11-06,94.1,Moderate
+A0037,"Approach Temp: 23°F, Fouling Factor: <0.002","Approach Temp >35°F (High), Pressure Drop >50 PSI (High)","Heat Transfer Coefficient, Pressure Drop, Fouling Rate",Time_Based,57995,2024-11-30,2025-12-09,89.9,Accelerated
+A0038,"Approach Temp: 16°F, Fouling Factor: <0.002","Approach Temp >35°F (High), Pressure Drop >50 PSI (High)","Heat Transfer Coefficient, Pressure Drop, Fouling Rate",Time_Based,57580,2025-04-07,2026-02-03,90.1,Accelerated
+A0039,"Approach Temp: 28°F, Fouling Factor: <0.002","Approach Temp >35°F (High), Pressure Drop >50 PSI (High)","Heat Transfer Coefficient, Pressure Drop, Fouling Rate",Time_Based,11142,2025-02-23,2025-12-24,90.4,Normal
+A0040,"Approach Temp: 10°F, Fouling Factor: <0.002","Approach Temp >35°F (High), Pressure Drop >50 PSI (High)","Heat Transfer Coefficient, Pressure Drop, Fouling Rate",Time_Based,50457,2025-01-02,2025-11-24,89.0,Accelerated
+A0041,"Approach Temp: 20°F, Fouling Factor: <0.002","Approach Temp >35°F (High), Pressure Drop >50 PSI (High)","Heat Transfer Coefficient, Pressure Drop, Fouling Rate",Time_Based,18979,2024-11-24,2026-03-08,85.8,Normal
+A0042,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,10881,2024-11-22,2025-10-18,93.7,Normal
+A0043,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,34759,2025-02-10,2026-03-13,90.7,Moderate
+A0044,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,48908,2025-04-28,2026-02-12,91.0,Accelerated
+A0045,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,41901,2025-02-20,2026-02-28,93.9,Accelerated
+A0046,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,49327,2025-05-12,2025-10-13,93.5,Accelerated
+A0047,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,13617,2025-01-24,2025-11-29,90.3,Normal
+A0048,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,52631,2025-03-14,2026-02-08,88.7,Accelerated
+A0049,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,30888,2025-03-06,2025-12-05,95.0,Moderate
+A0050,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,27081,2025-05-26,2026-02-09,88.2,Moderate
+A0051,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,48586,2025-09-06,2026-03-02,90.3,Accelerated
+A0052,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,44797,2024-12-06,2026-02-19,92.2,Accelerated
+A0053,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,49429,2025-03-17,2026-01-16,90.3,Accelerated
+A0054,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,13802,2025-07-26,2025-12-14,89.4,Normal
+A0055,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,28249,2025-09-04,2025-12-15,89.5,Moderate
+A0056,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,29679,2025-05-29,2026-03-08,91.4,Moderate
+A0057,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,41729,2025-09-20,2025-12-02,91.1,Accelerated
+A0058,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,29947,2025-02-21,2026-01-29,88.0,Moderate
+A0059,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,53382,2024-11-24,2025-12-28,85.1,Accelerated
+A0060,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,54001,2025-03-28,2025-12-29,90.8,Accelerated
+A0061,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,29339,2025-01-09,2025-12-01,94.6,Moderate
+A0062,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,39598,2025-04-20,2026-01-09,92.6,Moderate
+A0063,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,40064,2025-03-04,2026-01-02,90.3,Accelerated
+A0064,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,44836,2025-08-26,2026-02-19,92.4,Accelerated
+A0065,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,44308,2025-09-06,2025-11-23,87.3,Accelerated
+A0066,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,24642,2025-06-24,2025-10-26,90.4,Normal
+A0067,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,29363,2024-12-20,2025-10-31,89.5,Moderate
+A0068,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,36747,2024-11-05,2026-01-18,88.8,Moderate
+A0069,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,21735,2025-07-25,2025-10-09,91.7,Normal
+A0070,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,28929,2024-12-04,2025-12-15,94.6,Moderate
+A0071,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,39541,2025-01-25,2025-12-29,88.2,Moderate
+A0072,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,28785,2025-04-15,2026-02-25,85.8,Moderate
+A0073,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,54874,2025-09-07,2026-03-03,87.4,Accelerated
+A0074,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,56561,2025-07-24,2026-02-02,92.6,Accelerated
+A0075,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,20693,2025-03-05,2026-01-16,87.1,Normal
+A0076,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,28201,2025-05-20,2025-11-10,92.2,Moderate
+A0077,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,39585,2025-09-10,2025-12-09,86.1,Moderate
+A0078,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,18843,2025-03-07,2025-10-13,95.0,Normal
+A0079,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,44178,2024-12-13,2025-10-10,86.2,Accelerated
+A0080,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,54205,2024-11-11,2026-01-29,87.4,Accelerated
+A0081,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,43233,2025-08-09,2025-12-01,90.1,Accelerated
+A0082,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,10550,2025-09-18,2026-01-14,93.3,Normal
+A0083,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,31903,2024-12-27,2025-10-26,86.1,Moderate
+A0084,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,48684,2025-07-18,2025-11-19,85.6,Accelerated
+A0085,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,51202,2025-02-09,2026-01-01,86.7,Accelerated
+A0086,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,59067,2025-08-23,2025-12-21,88.1,Accelerated
+A0087,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,47844,2025-05-02,2025-12-01,86.8,Accelerated
+A0088,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,50836,2025-06-11,2025-12-22,89.3,Accelerated
+A0089,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,29767,2025-05-01,2025-12-28,89.4,Moderate
+A0090,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,27111,2025-08-10,2025-11-20,93.5,Moderate
+A0091,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,48457,2025-09-07,2026-03-20,90.0,Accelerated
+A0092,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,38124,2025-04-03,2025-12-21,91.3,Moderate
+A0093,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,11235,2024-12-16,2025-12-27,85.4,Normal
+A0094,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,24850,2025-03-04,2025-12-15,87.9,Normal
+A0095,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,45571,2024-10-01,2025-11-14,88.9,Accelerated
+A0096,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,15286,2025-04-29,2025-11-21,85.5,Normal
+A0097,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,33612,2025-04-25,2026-01-15,94.8,Moderate
+A0098,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,37759,2025-04-10,2025-11-09,89.3,Moderate
+A0099,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,51981,2025-04-10,2025-12-07,93.5,Accelerated
+A0100,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,48791,2025-07-26,2025-10-08,87.4,Accelerated
+A0101,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,56748,2025-01-16,2025-09-28,91.6,Accelerated
+A0102,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,22046,2024-12-09,2025-12-29,86.6,Normal
+A0103,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,47117,2024-12-14,2026-01-30,88.6,Accelerated
+A0104,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,59281,2024-12-27,2025-09-25,85.1,Accelerated
+A0105,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,36919,2024-10-14,2026-01-28,92.3,Moderate
+A0106,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,59683,2025-08-15,2025-11-03,92.5,Accelerated
+A0107,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,21144,2025-05-22,2026-03-05,94.2,Normal
+A0108,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,34458,2024-12-26,2025-10-22,86.4,Moderate
+A0109,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,28349,2025-04-14,2025-12-03,86.6,Moderate
+A0110,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,17483,2025-03-15,2025-11-10,86.6,Normal
+A0111,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,57294,2024-11-20,2025-12-27,93.5,Accelerated
+A0112,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,52395,2024-12-11,2026-03-17,93.7,Accelerated
+A0113,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,43034,2025-07-30,2026-02-26,85.3,Accelerated
+A0114,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,57579,2025-02-13,2025-12-21,92.9,Accelerated
+A0115,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,27689,2025-06-19,2025-12-15,95.0,Moderate
+A0116,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,30997,2025-06-07,2025-12-09,94.4,Moderate
+A0117,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,38365,2025-07-17,2025-09-27,86.7,Moderate
+A0118,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,31821,2025-07-21,2025-11-24,86.2,Moderate
+A0119,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,21032,2024-09-29,2026-03-15,87.4,Normal
+A0120,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,53345,2024-12-25,2026-01-09,92.5,Accelerated
+A0121,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,13326,2025-09-06,2025-10-16,91.2,Normal
+A0122,"Flow: 1160 GPM, Pressure: 198 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,46347,2024-12-11,2025-11-05,92.8,Accelerated
+A0123,"Flow: 943 GPM, Pressure: 187 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,54991,2025-06-16,2026-03-21,93.4,Accelerated
+A0124,"Flow: 922 GPM, Pressure: 206 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,59548,2025-03-09,2026-03-04,85.6,Accelerated
+A0125,"Flow: 909 GPM, Pressure: 213 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,16326,2025-06-25,2025-11-25,85.9,Normal
+A0126,"Flow: 1077 GPM, Pressure: 196 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,43137,2025-04-20,2026-01-01,89.5,Accelerated
+A0127,"Flow: 1192 GPM, Pressure: 146 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,35134,2024-12-14,2026-01-25,93.8,Moderate
+A0128,"Flow: 1254 GPM, Pressure: 207 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,20277,2024-11-23,2025-12-08,92.8,Normal
+A0129,"Flow: 994 GPM, Pressure: 114 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,43849,2024-09-24,2026-01-21,86.4,Accelerated
+A0130,"Flow: 1113 GPM, Pressure: 102 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,26092,2025-03-24,2025-10-20,86.0,Moderate
+A0131,"Flow: 1481 GPM, Pressure: 144 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,19097,2025-07-02,2026-01-07,90.0,Normal
+A0132,"Flow: 962 GPM, Pressure: 120 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,16364,2025-01-11,2025-10-17,87.9,Normal
+A0133,"Flow: 1462 GPM, Pressure: 146 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,17196,2024-12-01,2026-03-14,88.4,Normal
+A0134,"Flow: 997 GPM, Pressure: 197 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,55469,2025-02-03,2026-03-05,87.9,Accelerated
+A0135,"Flow: 709 GPM, Pressure: 250 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,28610,2025-07-07,2026-02-03,86.2,Moderate
+A0136,"Suction: 50 PSI, Discharge: 395 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,21376,2025-08-31,2026-01-05,85.3,Normal
+A0137,"Suction: 98 PSI, Discharge: 419 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,24540,2025-07-31,2026-01-16,93.6,Normal
+A0138,"Suction: 62 PSI, Discharge: 380 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,54334,2025-06-13,2026-01-25,92.9,Accelerated
+A0139,"Suction: 56 PSI, Discharge: 477 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,18365,2025-05-20,2025-12-19,91.9,Normal
+A0140,"Suction: 77 PSI, Discharge: 432 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,47247,2025-03-22,2025-12-09,93.8,Accelerated
+A0141,"Suction: 107 PSI, Discharge: 474 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,36432,2025-01-13,2026-02-23,93.4,Moderate
+A0142,"Suction: 50 PSI, Discharge: 485 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,18286,2025-04-07,2026-02-13,90.3,Normal
+A0143,"Suction: 117 PSI, Discharge: 419 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,37233,2025-03-05,2026-02-08,86.9,Moderate
+A0144,"Suction: 77 PSI, Discharge: 222 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,53925,2025-04-30,2025-11-16,87.3,Accelerated
+A0145,"Suction: 131 PSI, Discharge: 376 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,40659,2025-02-21,2025-12-29,86.3,Accelerated
+A0146,"Suction: 123 PSI, Discharge: 474 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,20144,2025-05-14,2025-11-15,91.4,Normal
+A0147,"Approach Temp: 19°F, Fouling Factor: <0.002","Approach Temp >35°F (High), Pressure Drop >50 PSI (High)","Heat Transfer Coefficient, Pressure Drop, Fouling Rate",Time_Based,14883,2025-03-10,2025-12-08,90.4,Normal
+A0148,"Approach Temp: 21°F, Fouling Factor: <0.002","Approach Temp >35°F (High), Pressure Drop >50 PSI (High)","Heat Transfer Coefficient, Pressure Drop, Fouling Rate",Time_Based,42917,2025-01-07,2025-11-22,94.5,Accelerated
+A0149,"Approach Temp: 20°F, Fouling Factor: <0.002","Approach Temp >35°F (High), Pressure Drop >50 PSI (High)","Heat Transfer Coefficient, Pressure Drop, Fouling Rate",Time_Based,26400,2025-09-17,2025-12-31,90.5,Moderate
+A0150,"Approach Temp: 10°F, Fouling Factor: <0.002","Approach Temp >35°F (High), Pressure Drop >50 PSI (High)","Heat Transfer Coefficient, Pressure Drop, Fouling Rate",Time_Based,53386,2025-07-16,2025-12-16,86.4,Accelerated
+A0151,"Approach Temp: 24°F, Fouling Factor: <0.002","Approach Temp >35°F (High), Pressure Drop >50 PSI (High)","Heat Transfer Coefficient, Pressure Drop, Fouling Rate",Time_Based,51878,2025-02-20,2026-02-08,89.8,Accelerated
+A0152,"Approach Temp: 24°F, Fouling Factor: <0.002","Approach Temp >35°F (High), Pressure Drop >50 PSI (High)","Heat Transfer Coefficient, Pressure Drop, Fouling Rate",Time_Based,10104,2025-02-20,2025-11-01,93.1,Normal
+A0153,"Approach Temp: 27°F, Fouling Factor: <0.002","Approach Temp >35°F (High), Pressure Drop >50 PSI (High)","Heat Transfer Coefficient, Pressure Drop, Fouling Rate",Time_Based,49663,2024-10-26,2025-12-06,85.1,Accelerated
+A0154,"Approach Temp: 19°F, Fouling Factor: <0.002","Approach Temp >35°F (High), Pressure Drop >50 PSI (High)","Heat Transfer Coefficient, Pressure Drop, Fouling Rate",Time_Based,11113,2024-11-16,2025-11-04,94.9,Normal
+A0155,"Approach Temp: 17°F, Fouling Factor: <0.002","Approach Temp >35°F (High), Pressure Drop >50 PSI (High)","Heat Transfer Coefficient, Pressure Drop, Fouling Rate",Time_Based,18948,2025-09-09,2025-10-20,87.4,Normal
+A0156,"Approach Temp: 16°F, Fouling Factor: <0.002","Approach Temp >35°F (High), Pressure Drop >50 PSI (High)","Heat Transfer Coefficient, Pressure Drop, Fouling Rate",Time_Based,36389,2025-01-02,2025-09-25,87.3,Moderate
+A0157,"Approach Temp: 16°F, Fouling Factor: <0.002","Approach Temp >35°F (High), Pressure Drop >50 PSI (High)","Heat Transfer Coefficient, Pressure Drop, Fouling Rate",Time_Based,17928,2025-03-03,2025-11-04,88.9,Normal
+A0158,"Approach Temp: 12°F, Fouling Factor: <0.002","Approach Temp >35°F (High), Pressure Drop >50 PSI (High)","Heat Transfer Coefficient, Pressure Drop, Fouling Rate",Time_Based,19936,2025-02-01,2025-10-30,94.4,Normal
+A0159,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,22337,2025-01-09,2025-11-09,94.3,Normal
+A0160,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,36887,2025-06-13,2026-01-17,91.1,Moderate
+A0161,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,41561,2025-03-24,2026-01-15,87.9,Accelerated
+A0162,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,54333,2025-05-18,2026-03-10,93.7,Accelerated
+A0163,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,45951,2025-08-05,2026-02-23,93.2,Accelerated
+A0164,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,24615,2025-02-16,2025-10-23,90.8,Normal
+A0165,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,40529,2025-09-19,2025-11-25,91.5,Accelerated
+A0166,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,58689,2025-05-29,2026-01-20,93.0,Accelerated
+A0167,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,26941,2024-12-20,2025-09-27,87.0,Moderate
+A0168,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,20644,2025-04-22,2026-01-04,91.4,Normal
+A0169,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,43836,2025-03-31,2026-03-20,89.7,Accelerated
+A0170,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,14721,2025-04-23,2026-02-01,93.0,Normal
+A0171,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,38283,2025-03-16,2026-03-18,86.8,Moderate
+A0172,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,41627,2025-05-06,2025-11-02,86.8,Accelerated
+A0173,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,12862,2025-04-13,2025-11-15,87.1,Normal
+A0174,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,39891,2024-10-02,2026-03-02,88.7,Moderate
+A0175,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,54243,2025-08-25,2025-10-30,87.1,Accelerated
+A0176,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,53981,2024-11-28,2025-09-24,88.7,Accelerated
+A0177,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,44408,2025-06-01,2026-03-01,88.5,Accelerated
+A0178,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,13838,2025-09-19,2025-10-11,92.1,Normal
+A0179,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,48509,2025-05-08,2026-01-23,85.7,Accelerated
+A0180,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,22345,2025-01-20,2025-09-25,90.2,Normal
+A0181,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,36108,2025-01-08,2025-12-16,85.6,Moderate
+A0182,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,20729,2025-02-23,2026-02-23,89.7,Normal
+A0183,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,15304,2025-03-23,2026-02-10,91.5,Normal
+A0184,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,38774,2025-02-08,2025-11-17,92.7,Moderate
+A0185,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,20289,2025-04-05,2025-12-12,91.3,Normal
+A0186,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,17231,2024-11-02,2025-12-21,87.3,Normal
+A0187,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,35853,2025-07-13,2026-01-16,86.3,Moderate
+A0188,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,36973,2024-11-21,2026-01-30,92.2,Moderate
+A0189,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,40290,2025-08-16,2025-10-26,92.9,Accelerated
+A0190,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,27086,2025-06-05,2026-02-11,92.8,Moderate
+A0191,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,49705,2025-08-10,2025-11-05,86.8,Accelerated
+A0192,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,24146,2025-03-25,2025-11-04,87.1,Normal
+A0193,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,48603,2025-01-19,2025-11-17,91.5,Accelerated
+A0194,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,20720,2025-01-13,2026-01-24,85.6,Normal
+A0195,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,30221,2025-03-05,2025-12-30,85.5,Moderate
+A0196,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,11717,2024-12-17,2025-11-22,94.0,Normal
+A0197,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,59583,2025-09-07,2026-02-10,88.4,Accelerated
+A0198,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,40437,2024-12-18,2025-11-07,88.5,Accelerated
+A0199,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,20154,2025-06-08,2026-01-13,94.6,Normal
+A0200,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,34836,2025-07-27,2025-11-13,92.4,Moderate
+A0201,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,17827,2025-02-18,2025-10-09,93.0,Normal
+A0202,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,28967,2025-09-13,2025-12-30,92.6,Moderate
+A0203,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,21295,2025-02-05,2025-12-01,89.2,Normal
+A0204,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,42528,2025-07-21,2025-12-31,90.1,Accelerated
+A0205,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,25425,2025-04-03,2025-12-19,91.7,Moderate
+A0206,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,30993,2025-09-06,2026-02-10,94.4,Moderate
+A0207,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,16433,2025-02-02,2026-03-04,85.5,Normal
+A0208,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,57853,2025-05-18,2025-10-08,92.7,Accelerated
+A0209,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,34975,2025-06-03,2025-10-23,87.7,Moderate
+A0210,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,51802,2025-04-15,2025-11-03,91.4,Accelerated
+A0211,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,42047,2025-04-20,2025-11-15,94.2,Accelerated
+A0212,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,12296,2025-01-21,2026-03-11,85.3,Normal
+A0213,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,37122,2024-11-18,2025-12-16,85.2,Moderate
+A0214,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,53369,2025-04-20,2025-11-13,90.7,Accelerated
+A0215,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,54056,2025-04-30,2026-01-07,93.7,Accelerated
+A0216,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,53251,2024-12-25,2026-02-27,90.5,Accelerated
+A0217,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,51895,2025-05-02,2026-03-10,86.9,Accelerated
+A0218,"Flow: 503 GPM, Pressure: 175 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,41875,2024-11-16,2025-09-28,89.5,Accelerated
+A0219,"Flow: 1051 GPM, Pressure: 199 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,57673,2025-02-12,2025-10-19,86.5,Accelerated
+A0220,"Flow: 1458 GPM, Pressure: 158 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,43384,2024-10-11,2025-12-04,85.6,Accelerated
+A0221,"Flow: 671 GPM, Pressure: 113 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,21408,2025-03-26,2025-12-27,85.8,Normal
+A0222,"Flow: 904 GPM, Pressure: 240 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,16869,2025-06-05,2026-01-21,90.3,Normal
+A0223,"Flow: 678 GPM, Pressure: 119 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,36347,2024-10-10,2026-03-16,86.5,Moderate
+A0224,"Flow: 1452 GPM, Pressure: 243 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,21769,2024-11-09,2026-02-24,89.6,Normal
+A0225,"Flow: 915 GPM, Pressure: 211 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,44170,2025-02-24,2025-11-16,91.8,Accelerated
+A0226,"Flow: 556 GPM, Pressure: 170 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,10541,2025-06-27,2025-10-06,89.5,Normal
+A0227,"Flow: 1065 GPM, Pressure: 241 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,43350,2025-08-29,2025-12-21,88.9,Accelerated
+A0228,"Suction: 108 PSI, Discharge: 393 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,38230,2025-03-12,2025-11-23,94.2,Moderate
+A0229,"Suction: 142 PSI, Discharge: 246 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,56545,2025-08-18,2026-01-21,94.5,Accelerated
+A0230,"Suction: 131 PSI, Discharge: 273 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,20450,2024-09-24,2025-10-31,85.6,Normal
+A0231,"Suction: 117 PSI, Discharge: 292 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,30887,2024-09-29,2025-12-04,93.7,Moderate
+A0232,"Suction: 101 PSI, Discharge: 397 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,23308,2025-04-12,2026-03-02,89.9,Normal
+A0233,"Suction: 83 PSI, Discharge: 336 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,40893,2025-08-01,2025-10-22,87.6,Accelerated
+A0234,"Suction: 65 PSI, Discharge: 365 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,54972,2024-10-16,2025-11-12,93.3,Accelerated
+A0235,"Suction: 70 PSI, Discharge: 422 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,20803,2025-05-19,2025-12-03,87.8,Normal
+A0236,"Suction: 81 PSI, Discharge: 249 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,28814,2024-11-12,2025-11-30,91.9,Moderate
+A0237,"Approach Temp: 17°F, Fouling Factor: <0.002","Approach Temp >35°F (High), Pressure Drop >50 PSI (High)","Heat Transfer Coefficient, Pressure Drop, Fouling Rate",Time_Based,57916,2025-06-26,2026-03-18,86.8,Accelerated
+A0238,"Approach Temp: 29°F, Fouling Factor: <0.002","Approach Temp >35°F (High), Pressure Drop >50 PSI (High)","Heat Transfer Coefficient, Pressure Drop, Fouling Rate",Time_Based,12191,2024-12-04,2026-01-12,91.3,Normal
+A0239,"Approach Temp: 15°F, Fouling Factor: <0.002","Approach Temp >35°F (High), Pressure Drop >50 PSI (High)","Heat Transfer Coefficient, Pressure Drop, Fouling Rate",Time_Based,40444,2025-03-15,2025-12-23,86.4,Accelerated
+A0240,"Approach Temp: 20°F, Fouling Factor: <0.002","Approach Temp >35°F (High), Pressure Drop >50 PSI (High)","Heat Transfer Coefficient, Pressure Drop, Fouling Rate",Time_Based,23231,2025-05-25,2026-03-07,93.0,Normal
+A0241,"Approach Temp: 15°F, Fouling Factor: <0.002","Approach Temp >35°F (High), Pressure Drop >50 PSI (High)","Heat Transfer Coefficient, Pressure Drop, Fouling Rate",Time_Based,40284,2025-08-30,2025-09-27,93.0,Accelerated
+A0242,"Approach Temp: 13°F, Fouling Factor: <0.002","Approach Temp >35°F (High), Pressure Drop >50 PSI (High)","Heat Transfer Coefficient, Pressure Drop, Fouling Rate",Time_Based,22237,2024-10-10,2026-03-03,93.3,Normal
+A0243,"Approach Temp: 23°F, Fouling Factor: <0.002","Approach Temp >35°F (High), Pressure Drop >50 PSI (High)","Heat Transfer Coefficient, Pressure Drop, Fouling Rate",Time_Based,32439,2024-10-06,2026-01-30,88.3,Moderate
+A0244,"Approach Temp: 21°F, Fouling Factor: <0.002","Approach Temp >35°F (High), Pressure Drop >50 PSI (High)","Heat Transfer Coefficient, Pressure Drop, Fouling Rate",Time_Based,39394,2025-07-24,2026-02-18,85.8,Moderate
+A0245,"Approach Temp: 14°F, Fouling Factor: <0.002","Approach Temp >35°F (High), Pressure Drop >50 PSI (High)","Heat Transfer Coefficient, Pressure Drop, Fouling Rate",Time_Based,20107,2025-09-06,2026-02-23,90.1,Normal
+A0246,"Approach Temp: 26°F, Fouling Factor: <0.002","Approach Temp >35°F (High), Pressure Drop >50 PSI (High)","Heat Transfer Coefficient, Pressure Drop, Fouling Rate",Time_Based,29323,2025-03-21,2026-02-06,86.0,Moderate
+A0247,"Approach Temp: 10°F, Fouling Factor: <0.002","Approach Temp >35°F (High), Pressure Drop >50 PSI (High)","Heat Transfer Coefficient, Pressure Drop, Fouling Rate",Time_Based,59295,2025-04-14,2026-02-04,88.8,Accelerated
+A0248,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,14470,2025-03-28,2026-02-15,88.4,Normal
+A0249,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,11501,2025-05-21,2026-01-11,94.7,Normal
+A0250,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,46919,2024-12-18,2025-11-15,87.7,Accelerated
+A0251,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,15074,2025-03-10,2026-03-08,86.1,Normal
+A0252,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,54011,2025-07-29,2025-10-04,89.6,Accelerated
+A0253,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,34620,2025-01-22,2026-01-14,87.6,Moderate
+A0254,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,33465,2024-11-07,2025-12-08,89.7,Moderate
+A0255,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,16650,2025-01-05,2026-02-06,89.5,Normal
+A0256,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,56659,2025-06-29,2026-02-04,86.3,Accelerated
+A0257,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,35252,2025-03-12,2025-12-24,94.2,Moderate
+A0258,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,56620,2025-09-07,2026-01-26,87.9,Accelerated
+A0259,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,16156,2025-04-17,2025-11-07,90.4,Normal
+A0260,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,43753,2025-09-04,2026-01-15,86.7,Accelerated
+A0261,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,55723,2025-01-24,2026-01-30,87.0,Accelerated
+A0262,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,29253,2025-01-14,2026-03-13,85.1,Moderate
+A0263,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,56652,2025-03-22,2026-01-09,90.0,Accelerated
+A0264,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,42890,2025-07-10,2026-02-24,88.1,Accelerated
+A0265,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,52168,2025-02-06,2026-02-15,93.0,Accelerated
+A0266,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,52908,2025-09-15,2025-09-30,88.5,Accelerated
+A0267,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,44035,2025-08-27,2026-03-18,87.4,Accelerated
+A0268,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,15464,2025-06-01,2026-02-10,87.4,Normal
+A0269,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,17518,2025-02-13,2026-02-12,89.2,Normal
+A0270,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,40534,2025-02-04,2026-01-01,88.0,Accelerated
+A0271,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,13723,2025-04-30,2026-02-23,90.0,Normal
+A0272,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,24876,2025-07-14,2025-11-26,89.3,Normal
+A0273,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,31076,2025-04-02,2025-12-17,90.6,Moderate
+A0274,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,58134,2025-01-18,2025-12-19,86.5,Accelerated
+A0275,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,31859,2024-10-28,2025-12-31,91.2,Moderate
+A0276,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,32725,2025-04-08,2025-11-16,88.4,Moderate
+A0277,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,35679,2024-11-14,2026-01-26,89.8,Moderate
+A0278,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,11985,2024-10-26,2025-09-28,86.6,Normal
+A0279,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,42881,2025-08-19,2026-01-12,86.7,Accelerated
+A0280,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,18637,2025-09-13,2025-12-27,92.4,Normal
+A0281,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,31179,2025-01-22,2025-12-31,94.4,Moderate
+A0282,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,15520,2025-02-04,2026-02-08,90.0,Normal
+A0283,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,20172,2024-10-30,2025-12-25,93.9,Normal
+A0284,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,26201,2025-07-14,2025-12-21,90.3,Moderate
+A0285,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,30533,2025-07-21,2026-01-31,86.0,Moderate
+A0286,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,15541,2025-06-02,2025-11-06,86.2,Normal
+A0287,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,50175,2024-10-17,2025-11-11,85.9,Accelerated
+A0288,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,38075,2024-10-19,2025-10-07,89.2,Moderate
+A0289,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,24531,2025-08-09,2025-11-12,85.7,Normal
+A0290,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,14335,2025-04-15,2025-11-25,85.5,Normal
+A0291,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,16252,2024-10-13,2025-11-02,94.6,Normal
+A0292,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,59326,2025-03-14,2025-11-27,93.0,Accelerated
+A0293,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,49678,2025-05-06,2025-12-06,91.3,Accelerated
+A0294,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,47277,2024-10-14,2025-12-12,92.1,Accelerated
+A0295,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,23008,2025-07-14,2026-01-04,92.7,Normal
+A0296,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,27682,2025-08-08,2026-03-21,93.8,Moderate
+A0297,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,21996,2025-08-15,2025-12-13,89.1,Normal
+A0298,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,49397,2025-06-19,2026-02-11,88.8,Accelerated
+A0299,"Flow: 786 GPM, Pressure: 232 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,22675,2025-04-10,2025-12-30,86.1,Normal
+A0300,"Flow: 533 GPM, Pressure: 182 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,32819,2025-03-28,2026-01-09,92.9,Moderate
+A0301,"Flow: 1260 GPM, Pressure: 162 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,31560,2024-11-23,2026-01-23,87.0,Moderate
+A0302,"Flow: 1152 GPM, Pressure: 105 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,45852,2025-07-02,2026-02-26,87.0,Accelerated
+A0303,"Flow: 1426 GPM, Pressure: 151 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,13465,2025-09-18,2026-03-22,88.7,Normal
+A0304,"Flow: 1291 GPM, Pressure: 234 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,53279,2025-04-13,2025-12-04,86.4,Accelerated
+A0305,"Flow: 1332 GPM, Pressure: 225 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,54406,2025-04-10,2026-02-14,94.3,Accelerated
+A0306,"Suction: 57 PSI, Discharge: 327 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,30391,2025-07-12,2025-11-03,89.3,Moderate
+A0307,"Suction: 68 PSI, Discharge: 297 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,42091,2024-12-05,2025-12-30,87.2,Accelerated
+A0308,"Suction: 83 PSI, Discharge: 452 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,35108,2025-04-05,2025-10-05,85.0,Moderate
+A0309,"Suction: 103 PSI, Discharge: 488 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,21526,2025-08-18,2025-12-06,87.7,Normal
+A0310,"Suction: 106 PSI, Discharge: 451 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,46195,2025-01-03,2026-01-30,89.0,Accelerated
+A0311,"Suction: 75 PSI, Discharge: 464 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,45553,2025-06-12,2026-03-19,89.1,Accelerated
+A0312,"Suction: 58 PSI, Discharge: 440 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,50869,2025-03-05,2025-12-08,94.1,Accelerated
+A0313,"Suction: 61 PSI, Discharge: 410 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,30141,2024-10-23,2025-09-30,92.0,Moderate
+A0314,"Suction: 97 PSI, Discharge: 488 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,26060,2024-12-01,2025-11-30,91.9,Moderate
+A0315,"Approach Temp: 22°F, Fouling Factor: <0.002","Approach Temp >35°F (High), Pressure Drop >50 PSI (High)","Heat Transfer Coefficient, Pressure Drop, Fouling Rate",Time_Based,52124,2024-10-22,2025-12-17,92.3,Accelerated
+A0316,"Approach Temp: 23°F, Fouling Factor: <0.002","Approach Temp >35°F (High), Pressure Drop >50 PSI (High)","Heat Transfer Coefficient, Pressure Drop, Fouling Rate",Time_Based,32867,2025-07-15,2025-10-17,91.0,Moderate
+A0317,"Approach Temp: 14°F, Fouling Factor: <0.002","Approach Temp >35°F (High), Pressure Drop >50 PSI (High)","Heat Transfer Coefficient, Pressure Drop, Fouling Rate",Time_Based,58926,2024-10-08,2026-02-05,91.3,Accelerated
+A0318,"Approach Temp: 12°F, Fouling Factor: <0.002","Approach Temp >35°F (High), Pressure Drop >50 PSI (High)","Heat Transfer Coefficient, Pressure Drop, Fouling Rate",Time_Based,36210,2024-11-08,2025-10-21,93.6,Moderate
+A0319,"Approach Temp: 12°F, Fouling Factor: <0.002","Approach Temp >35°F (High), Pressure Drop >50 PSI (High)","Heat Transfer Coefficient, Pressure Drop, Fouling Rate",Time_Based,39107,2025-01-03,2025-12-22,94.0,Moderate
+A0320,"Approach Temp: 25°F, Fouling Factor: <0.002","Approach Temp >35°F (High), Pressure Drop >50 PSI (High)","Heat Transfer Coefficient, Pressure Drop, Fouling Rate",Time_Based,32724,2024-10-21,2025-11-25,88.7,Moderate
+A0321,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,34971,2024-10-07,2025-12-29,86.5,Moderate
+A0322,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,21357,2025-03-02,2026-03-13,85.3,Normal
+A0323,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,31953,2024-10-22,2026-03-22,94.1,Moderate
+A0324,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,38487,2025-04-04,2026-03-03,93.4,Moderate
+A0325,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,18781,2024-11-17,2025-10-11,93.2,Normal
+A0326,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,33077,2025-07-01,2026-02-21,86.4,Moderate
+A0327,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,20132,2025-02-12,2026-03-05,90.3,Normal
+A0328,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,58632,2025-05-03,2025-11-11,94.1,Accelerated
+A0329,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,27450,2025-03-13,2025-09-26,86.2,Moderate
+A0330,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,49117,2024-10-31,2025-12-21,92.5,Accelerated
+A0331,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,57687,2025-08-03,2026-01-28,88.5,Accelerated
+A0332,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,23471,2025-02-17,2026-01-22,92.6,Normal
+A0333,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,10778,2025-03-26,2025-12-24,90.9,Normal
+A0334,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,35690,2025-01-10,2025-12-18,94.5,Moderate
+A0335,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,47968,2025-06-19,2025-12-08,92.8,Accelerated
+A0336,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,36894,2025-01-24,2026-03-01,89.4,Moderate
+A0337,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,47023,2025-04-22,2026-01-19,86.1,Accelerated
+A0338,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,40808,2024-11-17,2025-11-05,86.8,Accelerated
+A0339,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,16513,2024-10-12,2026-03-20,92.1,Normal
+A0340,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,10381,2024-11-07,2026-01-03,91.6,Normal
+A0341,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,58584,2025-05-26,2025-09-26,94.2,Accelerated
+A0342,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,52030,2025-04-20,2026-01-10,91.2,Accelerated
+A0343,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,46837,2024-10-15,2025-10-15,87.5,Accelerated
+A0344,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,49363,2025-07-12,2025-12-11,85.3,Accelerated
+A0345,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,50297,2025-03-03,2026-01-08,90.6,Accelerated
+A0346,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,29982,2024-12-03,2025-11-26,90.8,Moderate
+A0347,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,59285,2025-02-15,2025-12-12,94.4,Accelerated
+A0348,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,31442,2024-12-15,2025-10-31,90.8,Moderate
+A0349,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,33371,2024-12-08,2026-01-10,87.9,Moderate
+A0350,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,15401,2024-12-03,2025-10-14,86.7,Normal
+A0351,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,54643,2025-02-21,2025-10-05,89.8,Accelerated
+A0352,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,55893,2024-11-12,2025-12-19,90.3,Accelerated
+A0353,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,20409,2025-08-24,2026-01-24,86.0,Normal
+A0354,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,26456,2025-08-30,2025-12-21,94.0,Moderate
+A0355,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,45096,2025-05-09,2026-01-22,94.8,Accelerated
+A0356,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,32341,2024-11-22,2025-10-17,88.1,Moderate
+A0357,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,22267,2025-05-25,2026-02-28,92.9,Normal
+A0358,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,38297,2025-01-18,2026-02-14,87.7,Moderate
+A0359,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,20432,2025-08-29,2026-02-07,90.8,Normal
+A0360,"Flow: 1075 GPM, Pressure: 193 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,24450,2025-06-21,2025-11-01,86.8,Normal
+A0361,"Flow: 1181 GPM, Pressure: 290 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,38239,2025-03-13,2025-09-25,89.4,Moderate
+A0362,"Flow: 1178 GPM, Pressure: 250 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,42035,2025-05-11,2026-02-28,85.3,Accelerated
+A0363,"Flow: 807 GPM, Pressure: 215 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,11672,2025-02-25,2025-12-30,86.7,Normal
+A0364,"Flow: 692 GPM, Pressure: 148 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,13897,2025-06-16,2025-12-01,86.1,Normal
+A0365,"Suction: 81 PSI, Discharge: 271 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,56164,2025-06-06,2026-01-22,86.8,Accelerated
+A0366,"Suction: 103 PSI, Discharge: 432 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,10558,2024-10-19,2025-10-03,85.9,Normal
+A0367,"Suction: 78 PSI, Discharge: 384 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,58041,2025-04-25,2026-02-09,91.7,Accelerated
+A0368,"Suction: 125 PSI, Discharge: 476 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,39386,2024-09-28,2026-03-20,85.9,Moderate
+A0369,"Suction: 113 PSI, Discharge: 227 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,14054,2025-08-21,2026-02-08,92.4,Normal
+A0370,"Suction: 102 PSI, Discharge: 437 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,23435,2025-02-11,2025-10-05,86.7,Normal
+A0371,"Approach Temp: 28°F, Fouling Factor: <0.002","Approach Temp >35°F (High), Pressure Drop >50 PSI (High)","Heat Transfer Coefficient, Pressure Drop, Fouling Rate",Time_Based,17955,2024-10-20,2025-10-21,89.2,Normal
+A0372,"Approach Temp: 12°F, Fouling Factor: <0.002","Approach Temp >35°F (High), Pressure Drop >50 PSI (High)","Heat Transfer Coefficient, Pressure Drop, Fouling Rate",Time_Based,24033,2024-10-11,2025-10-30,91.7,Normal
+A0373,"Approach Temp: 17°F, Fouling Factor: <0.002","Approach Temp >35°F (High), Pressure Drop >50 PSI (High)","Heat Transfer Coefficient, Pressure Drop, Fouling Rate",Time_Based,23349,2025-01-02,2026-02-18,92.0,Normal
+A0374,"Approach Temp: 27°F, Fouling Factor: <0.002","Approach Temp >35°F (High), Pressure Drop >50 PSI (High)","Heat Transfer Coefficient, Pressure Drop, Fouling Rate",Time_Based,49645,2025-06-02,2026-01-16,92.4,Accelerated
+A0375,"Approach Temp: 10°F, Fouling Factor: <0.002","Approach Temp >35°F (High), Pressure Drop >50 PSI (High)","Heat Transfer Coefficient, Pressure Drop, Fouling Rate",Time_Based,39772,2025-05-17,2025-12-05,92.1,Moderate
+A0376,"Approach Temp: 10°F, Fouling Factor: <0.002","Approach Temp >35°F (High), Pressure Drop >50 PSI (High)","Heat Transfer Coefficient, Pressure Drop, Fouling Rate",Time_Based,12350,2025-01-20,2025-12-16,94.1,Normal
+A0377,"Approach Temp: 25°F, Fouling Factor: <0.002","Approach Temp >35°F (High), Pressure Drop >50 PSI (High)","Heat Transfer Coefficient, Pressure Drop, Fouling Rate",Time_Based,47256,2024-12-27,2025-12-02,90.2,Accelerated
+A0378,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,40519,2025-01-09,2026-01-26,91.2,Accelerated
+A0379,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,36886,2025-07-06,2026-03-02,89.0,Moderate
+A0380,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,53139,2024-11-19,2026-01-06,88.4,Accelerated
+A0381,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,33304,2025-06-06,2026-02-14,88.1,Moderate
+A0382,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,49148,2025-08-09,2026-01-10,85.7,Accelerated
+A0383,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,39537,2025-09-16,2026-02-24,89.1,Moderate
+A0384,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,41564,2025-09-08,2025-10-04,91.1,Accelerated
+A0385,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,58882,2025-01-30,2026-02-03,94.4,Accelerated
+A0386,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,32777,2025-06-26,2025-09-30,94.0,Moderate
+A0387,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,55001,2025-03-16,2025-11-26,93.0,Accelerated
+A0388,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,51679,2024-10-21,2026-01-18,94.1,Accelerated
+A0389,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,46988,2025-08-07,2026-01-14,88.0,Accelerated
+A0390,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,14011,2025-06-01,2025-12-22,94.1,Normal
+A0391,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,44964,2025-03-30,2026-01-07,93.9,Accelerated
+A0392,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,38742,2025-08-21,2026-02-18,89.5,Moderate
+A0393,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,16028,2025-06-26,2025-12-13,91.4,Normal
+A0394,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,22777,2024-09-26,2025-09-25,89.4,Normal
+A0395,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,55164,2025-05-03,2025-12-18,85.0,Accelerated
+A0396,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,21564,2025-01-02,2026-01-03,88.0,Normal
+A0397,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,44001,2025-04-02,2026-01-18,93.1,Accelerated
+A0398,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,52502,2025-01-13,2026-02-09,87.8,Accelerated
+A0399,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,10834,2025-01-16,2025-10-22,90.0,Normal
+A0400,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,42849,2025-02-10,2026-02-27,90.5,Accelerated
+A0401,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,53879,2025-06-27,2025-10-12,91.3,Accelerated
+A0402,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,47569,2025-03-06,2026-02-15,91.5,Accelerated
+A0403,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,54258,2025-02-08,2025-11-05,93.6,Accelerated
+A0404,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,40989,2025-06-05,2025-10-04,90.2,Accelerated
+A0405,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,10720,2025-07-28,2026-01-14,90.0,Normal
+A0406,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,34977,2025-09-19,2025-11-30,91.9,Moderate
+A0407,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,16510,2025-06-28,2026-03-05,89.6,Normal
+A0408,"Flow: 1492 GPM, Pressure: 147 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,35483,2025-08-18,2025-12-06,90.7,Moderate
+A0409,"Flow: 1068 GPM, Pressure: 291 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,46509,2025-02-05,2025-11-18,90.0,Accelerated
+A0410,"Flow: 992 GPM, Pressure: 253 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,46833,2024-10-20,2025-12-20,85.4,Accelerated
+A0411,"Flow: 524 GPM, Pressure: 133 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,27853,2025-02-17,2025-12-18,85.2,Moderate
+A0412,"Flow: 588 GPM, Pressure: 296 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,46656,2025-06-14,2026-02-21,92.8,Accelerated
+A0413,"Flow: 1076 GPM, Pressure: 282 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,55797,2025-05-11,2025-11-19,94.5,Accelerated
+A0414,"Flow: 1173 GPM, Pressure: 102 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,20818,2025-03-13,2026-03-06,92.6,Normal
+A0415,"Flow: 929 GPM, Pressure: 211 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,56476,2025-01-30,2026-01-23,90.2,Accelerated
+A0416,"Flow: 503 GPM, Pressure: 258 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,22631,2025-05-22,2026-02-24,85.1,Normal
+A0417,"Flow: 545 GPM, Pressure: 177 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,39378,2025-06-13,2026-02-25,90.9,Moderate
+A0418,"Flow: 880 GPM, Pressure: 175 PSI","Flow <400 GPM (Low), Vibration >3.0 mm/s (High)","Flow Rate, Discharge Pressure, Vibration, Bearing Temperature",Condition_Based,15784,2025-01-28,2025-10-22,89.7,Normal
+A0419,"Suction: 125 PSI, Discharge: 423 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,47933,2025-09-17,2025-12-16,86.9,Accelerated
+A0420,"Suction: 51 PSI, Discharge: 312 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,25269,2024-12-24,2026-03-03,85.2,Moderate
+A0421,"Suction: 85 PSI, Discharge: 400 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,37583,2025-06-29,2025-12-27,88.5,Moderate
+A0422,"Suction: 148 PSI, Discharge: 493 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,58711,2024-12-21,2026-01-05,92.7,Accelerated
+A0423,"Suction: 50 PSI, Discharge: 240 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,23923,2025-06-26,2025-11-01,93.5,Normal
+A0424,"Suction: 96 PSI, Discharge: 285 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,24182,2025-03-23,2025-10-16,90.8,Normal
+A0425,"Suction: 68 PSI, Discharge: 246 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,57528,2025-01-03,2025-11-24,92.6,Accelerated
+A0426,"Suction: 113 PSI, Discharge: 457 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,28304,2025-09-20,2025-12-27,91.2,Moderate
+A0427,"Suction: 56 PSI, Discharge: 368 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,55719,2025-07-26,2026-02-10,90.7,Accelerated
+A0428,"Suction: 79 PSI, Discharge: 493 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,44729,2025-04-19,2025-11-13,85.9,Accelerated
+A0429,"Suction: 142 PSI, Discharge: 253 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,54242,2025-01-05,2025-10-30,87.0,Accelerated
+A0430,"Suction: 74 PSI, Discharge: 212 PSI","Discharge Pressure >450 PSI (High), Vibration >4.0 mm/s (Critical)","Compression Ratio, Vibration, Temperature, Power Consumption",Predictive,49406,2025-02-15,2025-10-19,86.4,Accelerated
+A0431,"Approach Temp: 29°F, Fouling Factor: <0.002","Approach Temp >35°F (High), Pressure Drop >50 PSI (High)","Heat Transfer Coefficient, Pressure Drop, Fouling Rate",Time_Based,18510,2025-08-16,2026-03-09,94.4,Normal
+A0432,"Approach Temp: 29°F, Fouling Factor: <0.002","Approach Temp >35°F (High), Pressure Drop >50 PSI (High)","Heat Transfer Coefficient, Pressure Drop, Fouling Rate",Time_Based,59720,2025-05-02,2026-02-27,90.4,Accelerated
+A0433,"Approach Temp: 24°F, Fouling Factor: <0.002","Approach Temp >35°F (High), Pressure Drop >50 PSI (High)","Heat Transfer Coefficient, Pressure Drop, Fouling Rate",Time_Based,52293,2025-05-22,2025-09-28,87.3,Accelerated
+A0434,"Approach Temp: 25°F, Fouling Factor: <0.002","Approach Temp >35°F (High), Pressure Drop >50 PSI (High)","Heat Transfer Coefficient, Pressure Drop, Fouling Rate",Time_Based,41895,2024-12-16,2026-03-04,92.9,Accelerated
+A0435,"Approach Temp: 13°F, Fouling Factor: <0.002","Approach Temp >35°F (High), Pressure Drop >50 PSI (High)","Heat Transfer Coefficient, Pressure Drop, Fouling Rate",Time_Based,37356,2024-10-21,2025-10-04,92.6,Moderate
+A0436,"Approach Temp: 22°F, Fouling Factor: <0.002","Approach Temp >35°F (High), Pressure Drop >50 PSI (High)","Heat Transfer Coefficient, Pressure Drop, Fouling Rate",Time_Based,37231,2024-12-22,2025-10-15,91.0,Moderate
+A0437,"Approach Temp: 13°F, Fouling Factor: <0.002","Approach Temp >35°F (High), Pressure Drop >50 PSI (High)","Heat Transfer Coefficient, Pressure Drop, Fouling Rate",Time_Based,57167,2025-01-27,2025-10-24,94.7,Accelerated
+A0438,"Approach Temp: 25°F, Fouling Factor: <0.002","Approach Temp >35°F (High), Pressure Drop >50 PSI (High)","Heat Transfer Coefficient, Pressure Drop, Fouling Rate",Time_Based,24110,2025-08-29,2025-12-11,94.4,Normal
+A0439,"Approach Temp: 27°F, Fouling Factor: <0.002","Approach Temp >35°F (High), Pressure Drop >50 PSI (High)","Heat Transfer Coefficient, Pressure Drop, Fouling Rate",Time_Based,17649,2025-04-14,2026-01-21,88.5,Normal
+A0440,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,34405,2024-12-31,2025-10-27,92.3,Moderate
+A0441,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,27648,2025-06-01,2026-03-12,89.3,Moderate
+A0442,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,37143,2025-03-26,2025-12-02,86.0,Moderate
+A0443,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,14421,2024-09-26,2025-11-21,93.3,Normal
+A0444,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,26898,2024-09-24,2026-01-20,86.0,Moderate
+A0445,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,55931,2025-05-13,2026-01-07,90.2,Accelerated
+A0446,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,52946,2025-01-23,2026-03-05,85.0,Accelerated
+A0447,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,44569,2025-09-21,2025-10-16,88.0,Accelerated
+A0448,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,37499,2024-09-26,2026-02-18,85.4,Moderate
+A0449,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,10049,2025-01-01,2025-12-27,93.3,Normal
+A0450,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,42231,2025-03-01,2026-01-03,94.6,Accelerated
+A0451,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,32827,2025-01-26,2026-02-21,85.4,Moderate
+A0452,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,46218,2025-06-08,2026-03-20,92.2,Accelerated
+A0453,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,56832,2025-07-23,2026-03-18,85.3,Accelerated
+A0454,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,50367,2025-03-25,2025-10-26,90.0,Accelerated
+A0455,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,45403,2025-02-21,2025-11-09,85.6,Accelerated
+A0456,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,52152,2025-06-16,2025-12-17,86.2,Accelerated
+A0457,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,23584,2025-06-12,2025-12-12,92.5,Normal
+A0458,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,30744,2025-05-02,2025-11-20,89.1,Moderate
+A0459,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,48226,2025-05-12,2025-12-13,88.6,Accelerated
+A0460,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,21864,2024-10-19,2025-10-07,91.3,Normal
+A0461,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,38970,2025-07-16,2026-03-07,90.3,Moderate
+A0462,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,45932,2025-07-17,2026-03-20,87.2,Accelerated
+A0463,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,49696,2025-06-01,2025-12-10,94.9,Accelerated
+A0464,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,50458,2025-02-02,2025-12-10,92.6,Accelerated
+A0465,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,24550,2025-07-17,2026-02-19,90.6,Normal
+A0466,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,48045,2025-02-11,2025-10-29,87.0,Accelerated
+A0467,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,22473,2025-05-17,2025-10-26,87.9,Normal
+A0468,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,31123,2025-08-19,2025-12-09,87.8,Moderate
+A0469,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,38165,2025-08-06,2026-03-07,88.2,Moderate
+A0470,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,13172,2025-09-12,2025-12-17,91.6,Normal
+A0471,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,50571,2024-11-19,2025-12-26,93.8,Accelerated
+A0472,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,20034,2025-04-07,2025-10-01,93.0,Normal
+A0473,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,26714,2025-02-19,2026-03-08,88.3,Moderate
+A0474,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,52681,2024-10-18,2026-01-05,90.1,Accelerated
+A0475,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,23648,2025-01-20,2025-10-11,94.7,Normal
+A0476,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,47910,2024-10-06,2025-11-25,92.0,Accelerated
+A0477,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,58518,2025-03-01,2026-01-21,94.0,Accelerated
+A0478,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,37589,2025-07-22,2026-01-03,86.0,Moderate
+A0479,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,35823,2024-11-29,2025-12-04,88.0,Moderate
+A0480,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,46914,2025-06-24,2026-01-09,89.4,Accelerated
+A0481,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,29580,2025-03-02,2025-12-02,88.3,Moderate
+A0482,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,10150,2024-12-13,2026-02-02,85.2,Normal
+A0483,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,45632,2024-12-05,2026-02-09,91.4,Accelerated
+A0484,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,47642,2025-07-01,2025-12-11,85.2,Accelerated
+A0485,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,21681,2024-10-09,2025-12-16,90.7,Normal
+A0486,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,21131,2025-04-28,2026-02-20,94.8,Normal
+A0487,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,54548,2025-06-27,2025-11-18,94.2,Accelerated
+A0488,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,59303,2025-07-06,2026-01-10,89.0,Accelerated
+A0489,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,31622,2025-04-30,2025-10-16,91.7,Moderate
+A0490,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,51057,2025-07-21,2025-11-29,91.7,Accelerated
+A0491,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,45178,2025-05-11,2026-02-19,91.4,Accelerated
+A0492,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,17299,2025-04-18,2025-11-18,86.6,Normal
+A0493,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,50848,2025-04-30,2025-11-02,86.6,Accelerated
+A0494,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,31874,2025-08-26,2026-03-22,89.8,Moderate
+A0495,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,59942,2025-02-03,2026-01-13,91.5,Accelerated
+A0496,"Operating within design parameters","Process specific alarms configured","Process Variables, Equipment Health",Risk_Based,51126,2025-01-08,2026-03-11,93.7,Accelerated
