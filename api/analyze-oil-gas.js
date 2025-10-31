@@ -90,18 +90,101 @@ function performOtDiscoveryAnalysis(engineering, discovered) {
   
   console.log(`Final coverage: ${coveragePercentage}% (${matchedAssets.length}/${engineeringAssets} matched)`)
   
+  // STEP 3: Security Management Analysis (CISO Metrics)
+  const discoveredData = matchedAssets.map(m => m.discovered)
+  
+  const securityManaged = discoveredData.filter(d => 
+    d.is_managed === 'true' || d.is_managed === true
+  ).length
+  
+  const securityPatched = discoveredData.filter(d => 
+    d.has_security_patches === 'true' || d.has_security_patches === true
+  ).length
+  
+  const withEncryption = discoveredData.filter(d => 
+    d.encryption_enabled === 'true' || d.encryption_enabled === true
+  ).length
+  
+  const withAuthentication = discoveredData.filter(d => 
+    d.authentication_required === 'true' || d.authentication_required === true
+  ).length
+  
+  const withAccessControl = discoveredData.filter(d => 
+    d.access_control && d.access_control !== 'None' && d.access_control !== ''
+  ).length
+  
+  const withVulnerabilities = discoveredData.filter(d => 
+    parseInt(d.vulnerabilities || 0) > 0 || parseInt(d.cve_count || 0) > 0
+  ).length
+  
+  const criticalWithVulnerabilities = discoveredData.filter(d => 
+    d.criticality === 'Critical' && (parseInt(d.vulnerabilities || 0) > 0 || parseInt(d.cve_count || 0) > 0)
+  ).length
+  
+  const totalVulnerabilities = discoveredData.reduce((sum, d) => 
+    sum + parseInt(d.vulnerabilities || 0), 0
+  )
+  
+  const totalCVEs = discoveredData.reduce((sum, d) => 
+    sum + parseInt(d.cve_count || 0), 0
+  )
+  
+  // Calculate percentages
+  const managedPercentage = discoveredData.length > 0 ? 
+    Math.round((securityManaged / discoveredData.length) * 100) : 0
+  
+  const patchedPercentage = discoveredData.length > 0 ? 
+    Math.round((securityPatched / discoveredData.length) * 100) : 0
+  
+  const encryptionPercentage = discoveredData.length > 0 ? 
+    Math.round((withEncryption / discoveredData.length) * 100) : 0
+  
+  const authenticationPercentage = discoveredData.length > 0 ? 
+    Math.round((withAuthentication / discoveredData.length) * 100) : 0
+  
+  const accessControlPercentage = discoveredData.length > 0 ? 
+    Math.round((withAccessControl / discoveredData.length) * 100) : 0
+
   return {
+    // Step 1: Asset Inventory
     engineeringAssets,
     discoveredAssets,
+    
+    // Step 2: Discovery Coverage
     matchedAssets: matchedAssets.length,
     coveragePercentage,
     blindSpots: blindSpots.length,
     orphanAssets: orphanAssets.length,
+    
+    // Step 3: Security Management
+    securityManaged,
+    managedPercentage,
+    securityPatched,
+    patchedPercentage,
+    
+    // Step 4: Security Controls
+    withEncryption,
+    encryptionPercentage,
+    withAuthentication,
+    authenticationPercentage,
+    withAccessControl,
+    accessControlPercentage,
+    
+    // Step 5: Vulnerability Posture
+    withVulnerabilities,
+    criticalWithVulnerabilities,
+    totalVulnerabilities,
+    totalCVEs,
+    vulnerabilityPercentage: discoveredData.length > 0 ? 
+      Math.round((withVulnerabilities / discoveredData.length) * 100) : 0,
+    
+    // Legacy compliance gaps (to be removed)
     complianceGaps: complianceGaps.length,
-    summary: `OT Discovery Tool found ${discoveredAssets} assets, ${matchedAssets.length} match engineering baseline`,
-    blindSpotDetails: blindSpots.slice(0, 10), // Top 10 blind spots
-    orphanDetails: orphanAssets.slice(0, 10), // Top 10 orphan assets
-    complianceGapDetails: complianceGaps.slice(0, 10) // Top 10 compliance gaps
+    
+    summary: `OT Discovery: ${discoveredAssets} assets found, ${matchedAssets.length} matched (${coveragePercentage}%), ${securityManaged} managed (${managedPercentage}%), ${securityPatched} patched (${patchedPercentage}%)`,
+    blindSpotDetails: blindSpots.slice(0, 10),
+    orphanDetails: orphanAssets.slice(0, 10),
+    complianceGapDetails: complianceGaps.slice(0, 10)
   }
 }
 
