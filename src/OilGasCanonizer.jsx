@@ -288,104 +288,148 @@ export default function OilGasCanonizer() {
                 {filteredKPIs.sis_assets}
               </div>
             </div>
-            <div className="kpi">
-              <div className="label">Network Coverage</div>
-              <div className="value">{filteredKPIs.network_coverage}%</div>
-            </div>
           </div>
 
-          {/* Blind Spot Analysis */}
-          <div className="card" style={{ marginTop: 20 }}>
-            <h4>🔍 Blind Spot Analysis</h4>
-            <div className="kpis">
-              <div className="kpi">
-                <div className="label">Engineering → No Network</div>
-                <div className="value" style={{ color: '#EF4444' }}>
-                  {filteredKPIs.engineering_without_network}
-                </div>
-              </div>
-              <div className="kpi">
-                <div className="label">Engineering → No CMMS</div>
-                <div className="value" style={{ color: '#F59E0B' }}>
-                  {filteredKPIs.engineering_without_cmms}
-                </div>
-              </div>
-              <div className="kpi">
-                <div className="label">Network Orphans</div>
-                <div className="value" style={{ color: '#3B82F6' }}>
-                  {filteredKPIs.network_orphans}
-                </div>
-              </div>
-              <div className="kpi">
-                <div className="label">Critical Blind Spots</div>
-                <div className="value" style={{ color: '#DC2626' }}>
-                  {filteredKPIs.critical_blind_spots}
-                </div>
-              </div>
-              <div className="kpi">
-                <div className="label">Blind Spot %</div>
-                <div className="value" style={{ color: '#EF4444' }}>
-                  {filteredKPIs.blind_spot_percentage}%
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* OT Discovery Tool Analysis */}
+          {/* OT Discovery & Security Analysis */}
           {result.otDiscoveryAnalysis && (
             <div className="card" style={{ marginTop: 20, backgroundColor: '#F0F9FF', borderColor: '#3B82F6' }}>
-              <h4>🔍 OT Discovery Tool Cross-Verification Analysis</h4>
+              <h4>🔍 OT Discovery & Security Management Analysis</h4>
               <p className="subtle" style={{ marginBottom: 15 }}>
-                Comparing engineering baseline against actual network discovery to identify gaps, 
-                orphan assets, and compliance issues for audit readiness.
+                Engineering baseline compared against actual network discovery to identify coverage gaps and security posture for CISO audit readiness.
               </p>
-              <div className="kpis">
-                <div className="kpi">
-                  <div className="label">Engineering Assets</div>
-                  <div className="value">{result.otDiscoveryAnalysis.engineeringAssets}</div>
-                </div>
-                <div className="kpi">
-                  <div className="label">Discovered Assets</div>
-                  <div className="value">{result.otDiscoveryAnalysis.discoveredAssets}</div>
-                </div>
-                <div className="kpi">
-                  <div className="label">Matched Assets</div>
-                  <div className="value" style={{ color: '#10B981' }}>
-                    {result.otDiscoveryAnalysis.matchedAssets}
+              
+              {/* Step 1: Asset Inventory & Discovery */}
+              <div style={{ marginBottom: 20 }}>
+                <h5 style={{ fontSize: '14px', color: '#1E40AF', marginBottom: 10 }}>
+                  📦 Step 1: Asset Inventory & Discovery Coverage
+                </h5>
+                <div className="kpis">
+                  <div className="kpi">
+                    <div className="label">Engineering Assets</div>
+                    <div className="value">{result.otDiscoveryAnalysis.engineeringAssets}</div>
+                    <small style={{ color: '#6B7280' }}>What we HAVE</small>
                   </div>
-                </div>
-                <div className="kpi">
-                  <div className="label">Coverage %</div>
-                  <div className="value" style={{ 
-                    color: result.otDiscoveryAnalysis.coveragePercentage >= 80 ? '#10B981' : 
-                           result.otDiscoveryAnalysis.coveragePercentage >= 60 ? '#F59E0B' : '#EF4444'
-                  }}>
-                    {result.otDiscoveryAnalysis.coveragePercentage}%
+                  <div className="kpi">
+                    <div className="label">Discovered Assets</div>
+                    <div className="value">{result.otDiscoveryAnalysis.discoveredAssets}</div>
+                    <small style={{ color: '#6B7280' }}>What we can SEE</small>
                   </div>
-                </div>
-                <div className="kpi">
-                  <div className="label">Blind Spots</div>
-                  <div className="value" style={{ color: '#EF4444' }}>
-                    {result.otDiscoveryAnalysis.blindSpots}
+                  <div className="kpi">
+                    <div className="label">Matched Assets</div>
+                    <div className="value" style={{ color: '#10B981' }}>
+                      {result.otDiscoveryAnalysis.matchedAssets}
+                    </div>
+                    <small style={{ color: '#6B7280' }}>Verified matches</small>
                   </div>
-                </div>
-                <div className="kpi">
-                  <div className="label">Orphan Assets</div>
-                  <div className="value" style={{ color: '#3B82F6' }}>
-                    {result.otDiscoveryAnalysis.orphanAssets}
+                  <div className="kpi">
+                    <div className="label">Discovery Coverage</div>
+                    <div className="value" style={{ 
+                      color: result.otDiscoveryAnalysis.coveragePercentage >= 80 ? '#10B981' : 
+                             result.otDiscoveryAnalysis.coveragePercentage >= 60 ? '#F59E0B' : '#EF4444'
+                    }}>
+                      {result.otDiscoveryAnalysis.coveragePercentage}%
+                    </div>
+                    <small style={{ color: '#6B7280' }}>
+                      {result.otDiscoveryAnalysis.coveragePercentage >= 80 ? 'Excellent' : 
+                       result.otDiscoveryAnalysis.coveragePercentage >= 60 ? 'Good' : 'Needs Attention'}
+                    </small>
                   </div>
-                </div>
-                <div className="kpi">
-                  <div className="label">Compliance Gaps</div>
-                  <div className="value" style={{ color: '#F59E0B' }}>
-                    {result.otDiscoveryAnalysis.complianceGaps}
+                  <div className="kpi">
+                    <div className="label">Blind Spots</div>
+                    <div className="value" style={{ color: '#EF4444' }}>
+                      {result.otDiscoveryAnalysis.blindSpots}
+                    </div>
+                    <small style={{ color: '#6B7280' }}>Not discovered</small>
                   </div>
                 </div>
               </div>
+
+              {/* Step 2: Security Management */}
+              {result.otDiscoveryAnalysis.managedPercentage !== undefined && (
+                <div style={{ marginBottom: 20 }}>
+                  <h5 style={{ fontSize: '14px', color: '#059669', marginBottom: 10 }}>
+                    🛡️ Step 2: Security Management Coverage
+                  </h5>
+                  <div className="kpis">
+                    <div className="kpi">
+                      <div className="label">Managed by Security Tools</div>
+                      <div className="value" style={{ 
+                        color: result.otDiscoveryAnalysis.managedPercentage >= 70 ? '#10B981' : 
+                               result.otDiscoveryAnalysis.managedPercentage >= 50 ? '#F59E0B' : '#EF4444'
+                      }}>
+                        {result.otDiscoveryAnalysis.managedPercentage}%
+                      </div>
+                      <small style={{ color: '#6B7280' }}>{result.otDiscoveryAnalysis.securityManaged} assets</small>
+                    </div>
+                    <div className="kpi">
+                      <div className="label">Current Security Patches</div>
+                      <div className="value" style={{ 
+                        color: result.otDiscoveryAnalysis.patchedPercentage >= 80 ? '#10B981' : 
+                               result.otDiscoveryAnalysis.patchedPercentage >= 60 ? '#F59E0B' : '#EF4444'
+                      }}>
+                        {result.otDiscoveryAnalysis.patchedPercentage}%
+                      </div>
+                      <small style={{ color: '#6B7280' }}>{result.otDiscoveryAnalysis.securityPatched} assets</small>
+                    </div>
+                    {result.otDiscoveryAnalysis.encryptionPercentage !== undefined && (
+                      <div className="kpi">
+                        <div className="label">Encryption Enabled</div>
+                        <div className="value" style={{ color: '#6B7280' }}>
+                          {result.otDiscoveryAnalysis.encryptionPercentage}%
+                        </div>
+                        <small style={{ color: '#6B7280' }}>{result.otDiscoveryAnalysis.withEncryption} assets</small>
+                      </div>
+                    )}
+                    {result.otDiscoveryAnalysis.authenticationPercentage !== undefined && (
+                      <div className="kpi">
+                        <div className="label">Authentication Required</div>
+                        <div className="value" style={{ color: '#6B7280' }}>
+                          {result.otDiscoveryAnalysis.authenticationPercentage}%
+                        </div>
+                        <small style={{ color: '#6B7280' }}>{result.otDiscoveryAnalysis.withAuthentication} assets</small>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Step 3: Vulnerability Posture */}
+              {result.otDiscoveryAnalysis.totalVulnerabilities !== undefined && result.otDiscoveryAnalysis.totalVulnerabilities > 0 && (
+                <div style={{ marginBottom: 20 }}>
+                  <h5 style={{ fontSize: '14px', color: '#DC2626', marginBottom: 10 }}>
+                    ⚠️ Step 3: Vulnerability Posture
+                  </h5>
+                  <div className="kpis">
+                    <div className="kpi">
+                      <div className="label">Total Vulnerabilities</div>
+                      <div className="value" style={{ color: '#EF4444' }}>
+                        {result.otDiscoveryAnalysis.totalVulnerabilities}
+                      </div>
+                      <small style={{ color: '#6B7280' }}>Known issues</small>
+                    </div>
+                    <div className="kpi">
+                      <div className="label">Total CVEs</div>
+                      <div className="value" style={{ color: '#EF4444' }}>
+                        {result.otDiscoveryAnalysis.totalCVEs}
+                      </div>
+                      <small style={{ color: '#6B7280' }}>Common vulnerabilities</small>
+                    </div>
+                    {result.otDiscoveryAnalysis.criticalWithVulnerabilities > 0 && (
+                      <div className="kpi">
+                        <div className="label">Critical Assets at Risk</div>
+                        <div className="value" style={{ color: '#DC2626', fontWeight: 'bold' }}>
+                          {result.otDiscoveryAnalysis.criticalWithVulnerabilities}
+                        </div>
+                        <small style={{ color: '#DC2626' }}>URGENT</small>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
               
-              <div style={{ marginTop: 20 }}>
-                <h5>Analysis Summary</h5>
-                <p style={{ fontSize: '14px', color: '#6B7280' }}>
+              <div style={{ marginTop: 20, padding: 15, backgroundColor: '#EFF6FF', borderRadius: 8, borderLeft: '4px solid #3B82F6' }}>
+                <strong style={{ color: '#1E40AF' }}>Analysis Summary:</strong>
+                <p style={{ fontSize: '14px', color: '#1E3A8A', marginTop: 8, marginBottom: 0 }}>
                   {result.otDiscoveryAnalysis.summary}
                 </p>
               </div>
