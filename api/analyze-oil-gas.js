@@ -617,6 +617,15 @@ export default async function handler(req, res) {
     let otDiscoveryAnalysis = null
     if (otDiscovery.length > 0 && eng.length > 0) {
       otDiscoveryAnalysis = performOtDiscoveryAnalysis(eng, otDiscovery)
+      
+      // OVERRIDE blind spot KPIs with OT Discovery data (more accurate)
+      console.log('Overriding blind spot KPIs with OT Discovery Analysis')
+      kpis.engineering_without_network = otDiscoveryAnalysis.blindSpots
+      kpis.network_orphans = otDiscoveryAnalysis.orphanAssets
+      kpis.critical_blind_spots = otDiscoveryAnalysis.blindSpots // TODO: filter for critical only
+      kpis.blind_spot_percentage = 100 - otDiscoveryAnalysis.coveragePercentage
+      
+      console.log(`Updated blind spot %: ${kpis.blind_spot_percentage}% (from ${otDiscoveryAnalysis.coveragePercentage}% coverage)`)
     }
 
     return res.status(200).json({
