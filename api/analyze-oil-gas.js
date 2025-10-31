@@ -95,6 +95,14 @@ function performOtDiscoveryAnalysis(engineering, discovered) {
   
   console.log(`Processing ${discoveredData.length} discovered assets for security metrics`)
   
+  // DEBUG: Check what fields we actually have
+  if (discoveredData.length > 0) {
+    const sampleAsset = discoveredData[0]
+    console.log('Sample discovered asset fields:', Object.keys(sampleAsset))
+    console.log('Sample is_managed value:', sampleAsset.is_managed, 'type:', typeof sampleAsset.is_managed)
+    console.log('Sample has_security_patches value:', sampleAsset.has_security_patches, 'type:', typeof sampleAsset.has_security_patches)
+  }
+  
   // Helper to parse boolean-ish values from CSV
   const isTruthy = (val) => {
     if (val === true || val === 'true' || val === 'True' || val === 'TRUE' || val === '1' || val === 1) {
@@ -103,7 +111,14 @@ function performOtDiscoveryAnalysis(engineering, discovered) {
     return false
   }
   
-  const securityManaged = discoveredData.filter(d => isTruthy(d.is_managed)).length
+  const securityManaged = discoveredData.filter(d => {
+    const result = isTruthy(d.is_managed)
+    if (discoveredData.indexOf(d) < 3) { // Log first 3
+      console.log(`Asset ${d.tag_id}: is_managed="${d.is_managed}" -> ${result}`)
+    }
+    return result
+  }).length
+  
   const securityPatched = discoveredData.filter(d => isTruthy(d.has_security_patches)).length
   const withEncryption = discoveredData.filter(d => isTruthy(d.encryption_enabled)).length
   const withAuthentication = discoveredData.filter(d => isTruthy(d.authentication_required)).length
@@ -111,7 +126,7 @@ function performOtDiscoveryAnalysis(engineering, discovered) {
     d.access_control && d.access_control !== 'None' && d.access_control !== 'none' && d.access_control !== ''
   ).length
   
-  console.log(`Security metrics: managed=${securityManaged}, patched=${securityPatched}, encrypted=${withEncryption}, auth=${withAuthentication}, access=${withAccessControl}`)
+  console.log(`Security metrics FINAL: managed=${securityManaged}/${discoveredData.length}, patched=${securityPatched}, encrypted=${withEncryption}, auth=${withAuthentication}, access=${withAccessControl}`)
   
   const withVulnerabilities = discoveredData.filter(d => 
     parseInt(d.vulnerabilities || 0) > 0 || parseInt(d.cve_count || 0) > 0
