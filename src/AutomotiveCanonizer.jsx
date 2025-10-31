@@ -411,7 +411,7 @@ export default function AutomotiveCanonizer() {
                     Verified against baseline
                   </div>
                 </div>
-                <div className="kpi" style={{ borderLeft: '4px solid '#EF4444' }}>
+                <div className="kpi" style={{ borderLeft: '4px solid #EF4444' }}>
                   <div className="label">Coverage %</div>
                   <div className="value" style={{ 
                     fontSize: '24px',
@@ -425,7 +425,7 @@ export default function AutomotiveCanonizer() {
                     Of {result.security.engineeringAssets} assets secured
                   </div>
                 </div>
-                <div className="kpi" style={{ borderLeft: '4px solid '#8B5CF6' }}>
+                <div className="kpi" style={{ borderLeft: '4px solid #8B5CF6' }}>
                   <div className="label">Blind Spots (Risk)</div>
                   <div className="value" style={{ fontSize: '18px', fontWeight: 'bold', color: '#8B5CF6' }}>
                     {result.security.blindSpots}
