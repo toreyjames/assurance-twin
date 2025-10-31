@@ -91,27 +91,27 @@ function performOtDiscoveryAnalysis(engineering, discovered) {
   console.log(`Final coverage: ${coveragePercentage}% (${matchedAssets.length}/${engineeringAssets} matched)`)
   
   // STEP 3: Security Management Analysis (CISO Metrics)
-  const discoveredData = matchedAssets.map(m => m.discovered)
+  const discoveredData = matchedAssets.map(m => m.discovered).filter(d => d) // Filter out nulls
   
-  const securityManaged = discoveredData.filter(d => 
-    d.is_managed === 'true' || d.is_managed === true
-  ).length
+  console.log(`Processing ${discoveredData.length} discovered assets for security metrics`)
   
-  const securityPatched = discoveredData.filter(d => 
-    d.has_security_patches === 'true' || d.has_security_patches === true
-  ).length
+  // Helper to parse boolean-ish values from CSV
+  const isTruthy = (val) => {
+    if (val === true || val === 'true' || val === 'True' || val === 'TRUE' || val === '1' || val === 1) {
+      return true
+    }
+    return false
+  }
   
-  const withEncryption = discoveredData.filter(d => 
-    d.encryption_enabled === 'true' || d.encryption_enabled === true
-  ).length
-  
-  const withAuthentication = discoveredData.filter(d => 
-    d.authentication_required === 'true' || d.authentication_required === true
-  ).length
-  
+  const securityManaged = discoveredData.filter(d => isTruthy(d.is_managed)).length
+  const securityPatched = discoveredData.filter(d => isTruthy(d.has_security_patches)).length
+  const withEncryption = discoveredData.filter(d => isTruthy(d.encryption_enabled)).length
+  const withAuthentication = discoveredData.filter(d => isTruthy(d.authentication_required)).length
   const withAccessControl = discoveredData.filter(d => 
-    d.access_control && d.access_control !== 'None' && d.access_control !== ''
+    d.access_control && d.access_control !== 'None' && d.access_control !== 'none' && d.access_control !== ''
   ).length
+  
+  console.log(`Security metrics: managed=${securityManaged}, patched=${securityPatched}, encrypted=${withEncryption}, auth=${withAuthentication}, access=${withAccessControl}`)
   
   const withVulnerabilities = discoveredData.filter(d => 
     parseInt(d.vulnerabilities || 0) > 0 || parseInt(d.cve_count || 0) > 0
