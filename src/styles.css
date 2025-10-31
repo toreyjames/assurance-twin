@@ -37,3 +37,108 @@ table{border-collapse:collapse;min-width:1000px;width:100%}th,td{padding:10px 12
 .metric{font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:8px;padding:6px 8px}.metric strong{color:var(--ink);margin-left:4px}
 .badges{display:flex;gap:8px;flex-wrap:wrap}.badge{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 10px;font-size:12px}
 .badge.on{border-color:#D9F2C1;background:#F3FAEC}
+
+/* Map View */
+.plant-map-container{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);overflow:auto}
+.plant-map{border:1px solid var(--line);border-radius:8px;overflow:auto;background:#fff}
+.plant-map svg{display:block;margin:0 auto}
+.map-legend .legend{margin:6px 0;gap:8px}
+.map-legend .legend span{font-size:11px;padding:4px 6px}
+
+/* Tab Navigation Styles */
+.tab-navigation {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid #E5E7EB;
+  margin-bottom: 0;
+}
+
+.tab-button {
+  padding: 12px 24px;
+  background: #F8FAFC;
+  border: none;
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+  font-weight: 500;
+  color: #6B7280;
+  transition: all 0.2s;
+}
+
+.tab-button:hover {
+  background: #F1F5F9;
+  color: #374151;
+}
+
+.tab-button.active {
+  background: white;
+  color: #1F2937;
+  border-bottom-color: #3B82F6;
+}
+
+/* Multi-Industry Selector Styles */
+.industry-selector {
+  margin: 20px 0;
+  padding: 20px;
+  background: #F8FAFC;
+  border-radius: 12px;
+}
+
+.industry-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.industry-card {
+  padding: 20px;
+  background: white;
+  border: 2px solid #E5E7EB;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.industry-card:hover {
+  border-color: #3B82F6;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+}
+
+.industry-card.selected {
+  border-color: #3B82F6;
+  background: #EFF6FF;
+}
+
+.industry-icon {
+  font-size: 48px;
+  margin-bottom: 12px;
+}
+
+.industry-name {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1F2937;
+  margin-bottom: 8px;
+}
+
+.industry-desc {
+  font-size: 14px;
+  color: #6B7280;
+  line-height: 1.4;
+  margin-bottom: 12px;
+}
+
+.industry-standards,
+.industry-governance {
+  font-size: 12px;
+  color: #4B5563;
+  margin-bottom: 4px;
+  text-align: left;
+}
+
+.industry-standards strong,
+.industry-governance strong {
+  color: #1F2937;
+}

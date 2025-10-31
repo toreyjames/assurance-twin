@@ -1,0 +1,4 @@
+﻿asset_id,ip,mac,proto,last_seen,unit,plant
+A3000,10.1.1.10,00:11:22:33:44:55,TCP,2025-08-30,U1,Plant1
+A3001,10.1.1.11,00:11:22:33:44:66,TCP,2025-08-29,U1,Plant1
+ORPH8000,10.5.5.50,aa:bb:cc:dd:ee:ff,UDP,2025-09-10,U2,Plant2

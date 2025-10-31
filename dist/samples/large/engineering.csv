@@ -1,121 +1,1201 @@
 tag_id,loop_id,unit,plant,instrument_type,criticality
-T2000,L1000,U1,Plant1,PLC,High
-T2001,L1001,U2,Plant2,SCADA,High
-T2002,L1002,U3,Plant3,HMI,High
-T2003,L1003,U4,Plant1,RTU,Medium
-T2004,L1004,U5,Plant2,Historian,High
-T2005,L1005,U6,Plant3,Drive,High
-T2006,L1006,U1,Plant1,Switch,Low
-T2007,L1007,U2,Plant2,PLC,Low
-T2008,L1008,U3,Plant3,SCADA,Medium
-T2009,L1009,U4,Plant1,HMI,Medium
-T2010,L1010,U5,Plant2,RTU,Medium
-T2011,L1011,U6,Plant3,Historian,Medium
-T2012,L1012,U1,Plant1,Drive,Medium
-T2013,L1013,U2,Plant2,Switch,Low
-T2014,L1014,U3,Plant3,PLC,High
-T2015,L1015,U4,Plant1,SCADA,Medium
-T2016,L1016,U5,Plant2,HMI,Low
-T2017,L1017,U6,Plant3,RTU,High
-T2018,L1018,U1,Plant1,Historian,Low
-T2019,L1019,U2,Plant2,Drive,Medium
-T2020,L1020,U3,Plant3,Switch,High
-T2021,L1021,U4,Plant1,PLC,Low
-T2022,L1022,U5,Plant2,SCADA,Medium
-T2023,L1023,U6,Plant3,HMI,Medium
-T2024,L1024,U1,Plant1,RTU,Medium
-T2025,L1025,U2,Plant2,Historian,Medium
-T2026,L1026,U3,Plant3,Drive,Low
-T2027,L1027,U4,Plant1,Switch,Medium
-T2028,L1028,U5,Plant2,PLC,High
-T2029,L1029,U6,Plant3,SCADA,Medium
-T2030,L1030,U1,Plant1,HMI,Medium
-T2031,L1031,U2,Plant2,RTU,High
-T2032,L1032,U3,Plant3,Historian,High
-T2033,L1033,U4,Plant1,Drive,High
-T2034,L1034,U5,Plant2,Switch,Low
-T2035,L1035,U6,Plant3,PLC,Low
-T2036,L1036,U1,Plant1,SCADA,Medium
-T2037,L1037,U2,Plant2,HMI,Low
-T2038,L1038,U3,Plant3,RTU,Medium
-T2039,L1039,U4,Plant1,Historian,Medium
-T2040,L1040,U5,Plant2,Drive,Medium
-T2041,L1041,U6,Plant3,Switch,Medium
-T2042,L1042,U1,Plant1,PLC,Low
-T2043,L1043,U2,Plant2,SCADA,Medium
-T2044,L1044,U3,Plant3,HMI,Low
-T2045,L1045,U4,Plant1,RTU,Medium
-T2046,L1046,U5,Plant2,Historian,Low
-T2047,L1047,U6,Plant3,Drive,Low
-T2048,L1048,U1,Plant1,Switch,Medium
-T2049,L1049,U2,Plant2,PLC,High
-T2050,L1050,U3,Plant3,SCADA,High
-T2051,L1051,U4,Plant1,HMI,Medium
-T2052,L1052,U5,Plant2,RTU,Medium
-T2053,L1053,U6,Plant3,Historian,High
-T2054,L1054,U1,Plant1,Drive,Low
-T2055,L1055,U2,Plant2,Switch,Medium
-T2056,L1056,U3,Plant3,PLC,Medium
-T2057,L1057,U4,Plant1,SCADA,High
-T2058,L1058,U5,Plant2,HMI,Medium
-T2059,L1059,U6,Plant3,RTU,Medium
-T2060,L1060,U1,Plant1,Historian,Medium
-T2061,L1061,U2,Plant2,Drive,Medium
-T2062,L1062,U3,Plant3,Switch,Low
-T2063,L1063,U4,Plant1,PLC,High
-T2064,L1064,U5,Plant2,SCADA,High
-T2065,L1065,U6,Plant3,HMI,Low
-T2066,L1066,U1,Plant1,RTU,Medium
-T2067,L1067,U2,Plant2,Historian,Medium
-T2068,L1068,U3,Plant3,Drive,Medium
-T2069,L1069,U4,Plant1,Switch,Medium
-T2070,L1070,U5,Plant2,PLC,High
-T2071,L1071,U6,Plant3,SCADA,Medium
-T2072,L1072,U1,Plant1,HMI,High
-T2073,L1073,U2,Plant2,RTU,High
-T2074,L1074,U3,Plant3,Historian,Medium
-T2075,L1075,U4,Plant1,Drive,Low
-T2076,L1076,U5,Plant2,Switch,Low
-T2077,L1077,U6,Plant3,PLC,High
-T2078,L1078,U1,Plant1,SCADA,Medium
-T2079,L1079,U2,Plant2,HMI,High
-T2080,L1080,U3,Plant3,RTU,Low
-T2081,L1081,U4,Plant1,Historian,Medium
-T2082,L1082,U5,Plant2,Drive,Medium
-T2083,L1083,U6,Plant3,Switch,Low
-T2084,L1084,U1,Plant1,PLC,High
-T2085,L1085,U2,Plant2,SCADA,Medium
-T2086,L1086,U3,Plant3,HMI,Low
-T2087,L1087,U4,Plant1,RTU,High
-T2088,L1088,U5,Plant2,Historian,Low
-T2089,L1089,U6,Plant3,Drive,Medium
-T2090,L1090,U1,Plant1,Switch,Medium
-T2091,L1091,U2,Plant2,PLC,Medium
-T2092,L1092,U3,Plant3,SCADA,Medium
-T2093,L1093,U4,Plant1,HMI,Medium
-T2094,L1094,U5,Plant2,RTU,Medium
-T2095,L1095,U6,Plant3,Historian,Low
-T2096,L1096,U1,Plant1,Drive,Low
-T2097,L1097,U2,Plant2,Switch,Medium
-T2098,L1098,U3,Plant3,PLC,Low
-T2099,L1099,U4,Plant1,SCADA,High
-T2100,L1100,U5,Plant2,HMI,Medium
-T2101,L1101,U6,Plant3,RTU,Medium
-T2102,L1102,U1,Plant1,Historian,Low
-T2103,L1103,U2,Plant2,Drive,High
-T2104,L1104,U3,Plant3,Switch,High
-T2105,L1105,U4,Plant1,PLC,Medium
-T2106,L1106,U5,Plant2,SCADA,Medium
-T2107,L1107,U6,Plant3,HMI,Medium
-T2108,L1108,U1,Plant1,RTU,High
-T2109,L1109,U2,Plant2,Historian,High
-T2110,L1110,U3,Plant3,Drive,Medium
-T2111,L1111,U4,Plant1,Switch,Medium
-T2112,L1112,U5,Plant2,PLC,Low
-T2113,L1113,U6,Plant3,SCADA,Low
-T2114,L1114,U1,Plant1,HMI,Medium
-T2115,L1115,U2,Plant2,RTU,Medium
-T2116,L1116,U3,Plant3,Historian,Low
-T2117,L1117,U4,Plant1,Drive,Medium
-T2118,L1118,U5,Plant2,Switch,Low
-T2119,L1119,U6,Plant3,PLC,Medium
+CRU_DC_0000,CRU_LOOP_000,Crude Distillation Unit (CDU),Gulf Coast Refinery,DCS_Controller,High
+FLU_SA_0001,FLU_LOOP_000,Fluid Catalytic Cracking (FCC),Texas City Complex,Safety_PLC,High
+HYD_FI_0002,HYD_LOOP_000,Hydrocracking Unit (HCU),Baytown Refinery,Field_PLC,High
+REF_HM_0003,REF_LOOP_000,Reformer Unit,Gulf Coast Refinery,HMI_Station,Low
+ALK_HI_0004,ALK_LOOP_000,Alkylation Unit,Texas City Complex,Historian_Server,Medium
+COK_VF_0005,COK_LOOP_000,Coker Unit,Baytown Refinery,VFD,High
+HYD_SM_0006,HYD_LOOP_000,Hydrotreater,Gulf Coast Refinery,Smart_Transmitter,Low
+ISO_CO_0007,ISO_LOOP_000,Isomerization Unit,Texas City Complex,Control_Valve,Medium
+CRU_FL_0008,CRU_LOOP_000,Crude Distillation Unit (CDU),Baytown Refinery,Flow_Computer,Medium
+FLU_AN_0009,FLU_LOOP_000,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery,Analyzer,Low
+HYD_SA_0010,HYD_LOOP_001,Hydrocracking Unit (HCU),Texas City Complex,Safety_System,Medium
+REF_CO_0011,REF_LOOP_001,Reformer Unit,Baytown Refinery,Compressor_Controller,Medium
+ALK_TU_0012,ALK_LOOP_001,Alkylation Unit,Gulf Coast Refinery,Turbine_Controller,Medium
+COK_TA_0013,COK_LOOP_001,Coker Unit,Texas City Complex,Tank_Gauging,Low
+HYD_FI_0014,HYD_LOOP_001,Hydrotreater,Baytown Refinery,Fire_Gas_System,Low
+ISO_DC_0015,ISO_LOOP_001,Isomerization Unit,Gulf Coast Refinery,DCS_Controller,High
+CRU_SA_0016,CRU_LOOP_001,Crude Distillation Unit (CDU),Texas City Complex,Safety_PLC,High
+FLU_FI_0017,FLU_LOOP_001,Fluid Catalytic Cracking (FCC),Baytown Refinery,Field_PLC,High
+HYD_HM_0018,HYD_LOOP_001,Hydrocracking Unit (HCU),Gulf Coast Refinery,HMI_Station,High
+REF_HI_0019,REF_LOOP_001,Reformer Unit,Texas City Complex,Historian_Server,Low
+ALK_VF_0020,ALK_LOOP_002,Alkylation Unit,Baytown Refinery,VFD,High
+COK_SM_0021,COK_LOOP_002,Coker Unit,Gulf Coast Refinery,Smart_Transmitter,Medium
+HYD_CO_0022,HYD_LOOP_002,Hydrotreater,Texas City Complex,Control_Valve,Low
+ISO_FL_0023,ISO_LOOP_002,Isomerization Unit,Baytown Refinery,Flow_Computer,Low
+CRU_AN_0024,CRU_LOOP_002,Crude Distillation Unit (CDU),Gulf Coast Refinery,Analyzer,Medium
+FLU_SA_0025,FLU_LOOP_002,Fluid Catalytic Cracking (FCC),Texas City Complex,Safety_System,Medium
+HYD_CO_0026,HYD_LOOP_002,Hydrocracking Unit (HCU),Baytown Refinery,Compressor_Controller,High
+REF_TU_0027,REF_LOOP_002,Reformer Unit,Gulf Coast Refinery,Turbine_Controller,Medium
+ALK_TA_0028,ALK_LOOP_002,Alkylation Unit,Texas City Complex,Tank_Gauging,Medium
+COK_FI_0029,COK_LOOP_002,Coker Unit,Baytown Refinery,Fire_Gas_System,Low
+HYD_DC_0030,HYD_LOOP_003,Hydrotreater,Gulf Coast Refinery,DCS_Controller,High
+ISO_SA_0031,ISO_LOOP_003,Isomerization Unit,Texas City Complex,Safety_PLC,Medium
+CRU_FI_0032,CRU_LOOP_003,Crude Distillation Unit (CDU),Baytown Refinery,Field_PLC,Medium
+FLU_HM_0033,FLU_LOOP_003,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery,HMI_Station,Low
+HYD_HI_0034,HYD_LOOP_003,Hydrocracking Unit (HCU),Texas City Complex,Historian_Server,Low
+REF_VF_0035,REF_LOOP_003,Reformer Unit,Baytown Refinery,VFD,Medium
+ALK_SM_0036,ALK_LOOP_003,Alkylation Unit,Gulf Coast Refinery,Smart_Transmitter,Medium
+COK_CO_0037,COK_LOOP_003,Coker Unit,Texas City Complex,Control_Valve,Medium
+HYD_FL_0038,HYD_LOOP_003,Hydrotreater,Baytown Refinery,Flow_Computer,High
+ISO_AN_0039,ISO_LOOP_003,Isomerization Unit,Gulf Coast Refinery,Analyzer,High
+CRU_SA_0040,CRU_LOOP_004,Crude Distillation Unit (CDU),Texas City Complex,Safety_System,High
+FLU_CO_0041,FLU_LOOP_004,Fluid Catalytic Cracking (FCC),Baytown Refinery,Compressor_Controller,Medium
+HYD_TU_0042,HYD_LOOP_004,Hydrocracking Unit (HCU),Gulf Coast Refinery,Turbine_Controller,High
+REF_TA_0043,REF_LOOP_004,Reformer Unit,Texas City Complex,Tank_Gauging,Medium
+ALK_FI_0044,ALK_LOOP_004,Alkylation Unit,Baytown Refinery,Fire_Gas_System,Medium
+COK_DC_0045,COK_LOOP_004,Coker Unit,Gulf Coast Refinery,DCS_Controller,High
+HYD_SA_0046,HYD_LOOP_004,Hydrotreater,Texas City Complex,Safety_PLC,High
+ISO_FI_0047,ISO_LOOP_004,Isomerization Unit,Baytown Refinery,Field_PLC,Medium
+CRU_HM_0048,CRU_LOOP_004,Crude Distillation Unit (CDU),Gulf Coast Refinery,HMI_Station,Medium
+FLU_HI_0049,FLU_LOOP_004,Fluid Catalytic Cracking (FCC),Texas City Complex,Historian_Server,Low
+HYD_VF_0050,HYD_LOOP_005,Hydrocracking Unit (HCU),Baytown Refinery,VFD,Medium
+REF_SM_0051,REF_LOOP_005,Reformer Unit,Gulf Coast Refinery,Smart_Transmitter,Medium
+ALK_CO_0052,ALK_LOOP_005,Alkylation Unit,Texas City Complex,Control_Valve,High
+COK_FL_0053,COK_LOOP_005,Coker Unit,Baytown Refinery,Flow_Computer,Medium
+HYD_AN_0054,HYD_LOOP_005,Hydrotreater,Gulf Coast Refinery,Analyzer,High
+ISO_SA_0055,ISO_LOOP_005,Isomerization Unit,Texas City Complex,Safety_System,High
+CRU_CO_0056,CRU_LOOP_005,Crude Distillation Unit (CDU),Baytown Refinery,Compressor_Controller,Low
+FLU_TU_0057,FLU_LOOP_005,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery,Turbine_Controller,Medium
+HYD_TA_0058,HYD_LOOP_005,Hydrocracking Unit (HCU),Texas City Complex,Tank_Gauging,Medium
+REF_FI_0059,REF_LOOP_005,Reformer Unit,Baytown Refinery,Fire_Gas_System,Low
+ALK_DC_0060,ALK_LOOP_006,Alkylation Unit,Gulf Coast Refinery,DCS_Controller,High
+COK_SA_0061,COK_LOOP_006,Coker Unit,Texas City Complex,Safety_PLC,High
+HYD_FI_0062,HYD_LOOP_006,Hydrotreater,Baytown Refinery,Field_PLC,Low
+ISO_HM_0063,ISO_LOOP_006,Isomerization Unit,Gulf Coast Refinery,HMI_Station,High
+CRU_HI_0064,CRU_LOOP_006,Crude Distillation Unit (CDU),Texas City Complex,Historian_Server,High
+FLU_VF_0065,FLU_LOOP_006,Fluid Catalytic Cracking (FCC),Baytown Refinery,VFD,Low
+HYD_SM_0066,HYD_LOOP_006,Hydrocracking Unit (HCU),Gulf Coast Refinery,Smart_Transmitter,High
+REF_CO_0067,REF_LOOP_006,Reformer Unit,Texas City Complex,Control_Valve,Low
+ALK_FL_0068,ALK_LOOP_006,Alkylation Unit,Baytown Refinery,Flow_Computer,Low
+COK_AN_0069,COK_LOOP_006,Coker Unit,Gulf Coast Refinery,Analyzer,Medium
+HYD_SA_0070,HYD_LOOP_007,Hydrotreater,Texas City Complex,Safety_System,High
+ISO_CO_0071,ISO_LOOP_007,Isomerization Unit,Baytown Refinery,Compressor_Controller,Medium
+CRU_TU_0072,CRU_LOOP_007,Crude Distillation Unit (CDU),Gulf Coast Refinery,Turbine_Controller,Medium
+FLU_TA_0073,FLU_LOOP_007,Fluid Catalytic Cracking (FCC),Texas City Complex,Tank_Gauging,Medium
+HYD_FI_0074,HYD_LOOP_007,Hydrocracking Unit (HCU),Baytown Refinery,Fire_Gas_System,Medium
+REF_DC_0075,REF_LOOP_007,Reformer Unit,Gulf Coast Refinery,DCS_Controller,High
+ALK_SA_0076,ALK_LOOP_007,Alkylation Unit,Texas City Complex,Safety_PLC,High
+COK_FI_0077,COK_LOOP_007,Coker Unit,Baytown Refinery,Field_PLC,High
+HYD_HM_0078,HYD_LOOP_007,Hydrotreater,Gulf Coast Refinery,HMI_Station,High
+ISO_HI_0079,ISO_LOOP_007,Isomerization Unit,Texas City Complex,Historian_Server,High
+CRU_VF_0080,CRU_LOOP_008,Crude Distillation Unit (CDU),Baytown Refinery,VFD,High
+FLU_SM_0081,FLU_LOOP_008,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery,Smart_Transmitter,High
+HYD_CO_0082,HYD_LOOP_008,Hydrocracking Unit (HCU),Texas City Complex,Control_Valve,Medium
+REF_FL_0083,REF_LOOP_008,Reformer Unit,Baytown Refinery,Flow_Computer,Medium
+ALK_AN_0084,ALK_LOOP_008,Alkylation Unit,Gulf Coast Refinery,Analyzer,Medium
+COK_SA_0085,COK_LOOP_008,Coker Unit,Texas City Complex,Safety_System,High
+HYD_CO_0086,HYD_LOOP_008,Hydrotreater,Baytown Refinery,Compressor_Controller,Medium
+ISO_TU_0087,ISO_LOOP_008,Isomerization Unit,Gulf Coast Refinery,Turbine_Controller,Low
+CRU_TA_0088,CRU_LOOP_008,Crude Distillation Unit (CDU),Texas City Complex,Tank_Gauging,Medium
+FLU_FI_0089,FLU_LOOP_008,Fluid Catalytic Cracking (FCC),Baytown Refinery,Fire_Gas_System,High
+HYD_DC_0090,HYD_LOOP_009,Hydrocracking Unit (HCU),Gulf Coast Refinery,DCS_Controller,High
+REF_SA_0091,REF_LOOP_009,Reformer Unit,Texas City Complex,Safety_PLC,High
+ALK_FI_0092,ALK_LOOP_009,Alkylation Unit,Baytown Refinery,Field_PLC,Medium
+COK_HM_0093,COK_LOOP_009,Coker Unit,Gulf Coast Refinery,HMI_Station,Medium
+HYD_HI_0094,HYD_LOOP_009,Hydrotreater,Texas City Complex,Historian_Server,Low
+ISO_VF_0095,ISO_LOOP_009,Isomerization Unit,Baytown Refinery,VFD,High
+CRU_SM_0096,CRU_LOOP_009,Crude Distillation Unit (CDU),Gulf Coast Refinery,Smart_Transmitter,Medium
+FLU_CO_0097,FLU_LOOP_009,Fluid Catalytic Cracking (FCC),Texas City Complex,Control_Valve,Low
+HYD_FL_0098,HYD_LOOP_009,Hydrocracking Unit (HCU),Baytown Refinery,Flow_Computer,Medium
+REF_AN_0099,REF_LOOP_009,Reformer Unit,Gulf Coast Refinery,Analyzer,Medium
+ALK_SA_0100,ALK_LOOP_010,Alkylation Unit,Texas City Complex,Safety_System,High
+COK_CO_0101,COK_LOOP_010,Coker Unit,Baytown Refinery,Compressor_Controller,Medium
+HYD_TU_0102,HYD_LOOP_010,Hydrotreater,Gulf Coast Refinery,Turbine_Controller,Low
+ISO_TA_0103,ISO_LOOP_010,Isomerization Unit,Texas City Complex,Tank_Gauging,High
+CRU_FI_0104,CRU_LOOP_010,Crude Distillation Unit (CDU),Baytown Refinery,Fire_Gas_System,Medium
+FLU_DC_0105,FLU_LOOP_010,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery,DCS_Controller,Medium
+HYD_SA_0106,HYD_LOOP_010,Hydrocracking Unit (HCU),Texas City Complex,Safety_PLC,High
+REF_FI_0107,REF_LOOP_010,Reformer Unit,Baytown Refinery,Field_PLC,Medium
+ALK_HM_0108,ALK_LOOP_010,Alkylation Unit,Gulf Coast Refinery,HMI_Station,Low
+COK_HI_0109,COK_LOOP_010,Coker Unit,Texas City Complex,Historian_Server,Medium
+HYD_VF_0110,HYD_LOOP_011,Hydrotreater,Baytown Refinery,VFD,Medium
+ISO_SM_0111,ISO_LOOP_011,Isomerization Unit,Gulf Coast Refinery,Smart_Transmitter,Medium
+CRU_CO_0112,CRU_LOOP_011,Crude Distillation Unit (CDU),Texas City Complex,Control_Valve,High
+FLU_FL_0113,FLU_LOOP_011,Fluid Catalytic Cracking (FCC),Baytown Refinery,Flow_Computer,Medium
+HYD_AN_0114,HYD_LOOP_011,Hydrocracking Unit (HCU),Gulf Coast Refinery,Analyzer,Medium
+REF_SA_0115,REF_LOOP_011,Reformer Unit,Texas City Complex,Safety_System,High
+ALK_CO_0116,ALK_LOOP_011,Alkylation Unit,Baytown Refinery,Compressor_Controller,High
+COK_TU_0117,COK_LOOP_011,Coker Unit,Gulf Coast Refinery,Turbine_Controller,Medium
+HYD_TA_0118,HYD_LOOP_011,Hydrotreater,Texas City Complex,Tank_Gauging,Low
+ISO_FI_0119,ISO_LOOP_011,Isomerization Unit,Baytown Refinery,Fire_Gas_System,Medium
+CRU_DC_0120,CRU_LOOP_012,Crude Distillation Unit (CDU),Gulf Coast Refinery,DCS_Controller,High
+FLU_SA_0121,FLU_LOOP_012,Fluid Catalytic Cracking (FCC),Texas City Complex,Safety_PLC,High
+HYD_FI_0122,HYD_LOOP_012,Hydrocracking Unit (HCU),Baytown Refinery,Field_PLC,Medium
+REF_HM_0123,REF_LOOP_012,Reformer Unit,Gulf Coast Refinery,HMI_Station,Medium
+ALK_HI_0124,ALK_LOOP_012,Alkylation Unit,Texas City Complex,Historian_Server,Medium
+COK_VF_0125,COK_LOOP_012,Coker Unit,Baytown Refinery,VFD,Medium
+HYD_SM_0126,HYD_LOOP_012,Hydrotreater,Gulf Coast Refinery,Smart_Transmitter,Medium
+ISO_CO_0127,ISO_LOOP_012,Isomerization Unit,Texas City Complex,Control_Valve,High
+CRU_FL_0128,CRU_LOOP_012,Crude Distillation Unit (CDU),Baytown Refinery,Flow_Computer,High
+FLU_AN_0129,FLU_LOOP_012,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery,Analyzer,High
+HYD_SA_0130,HYD_LOOP_013,Hydrocracking Unit (HCU),Texas City Complex,Safety_System,High
+REF_CO_0131,REF_LOOP_013,Reformer Unit,Baytown Refinery,Compressor_Controller,Low
+ALK_TU_0132,ALK_LOOP_013,Alkylation Unit,Gulf Coast Refinery,Turbine_Controller,High
+COK_TA_0133,COK_LOOP_013,Coker Unit,Texas City Complex,Tank_Gauging,Medium
+HYD_FI_0134,HYD_LOOP_013,Hydrotreater,Baytown Refinery,Fire_Gas_System,Low
+ISO_DC_0135,ISO_LOOP_013,Isomerization Unit,Gulf Coast Refinery,DCS_Controller,High
+CRU_SA_0136,CRU_LOOP_013,Crude Distillation Unit (CDU),Texas City Complex,Safety_PLC,Medium
+FLU_FI_0137,FLU_LOOP_013,Fluid Catalytic Cracking (FCC),Baytown Refinery,Field_PLC,Medium
+HYD_HM_0138,HYD_LOOP_013,Hydrocracking Unit (HCU),Gulf Coast Refinery,HMI_Station,Medium
+REF_HI_0139,REF_LOOP_013,Reformer Unit,Texas City Complex,Historian_Server,Medium
+ALK_VF_0140,ALK_LOOP_014,Alkylation Unit,Baytown Refinery,VFD,Low
+COK_SM_0141,COK_LOOP_014,Coker Unit,Gulf Coast Refinery,Smart_Transmitter,High
+HYD_CO_0142,HYD_LOOP_014,Hydrotreater,Texas City Complex,Control_Valve,High
+ISO_FL_0143,ISO_LOOP_014,Isomerization Unit,Baytown Refinery,Flow_Computer,Medium
+CRU_AN_0144,CRU_LOOP_014,Crude Distillation Unit (CDU),Gulf Coast Refinery,Analyzer,Medium
+FLU_SA_0145,FLU_LOOP_014,Fluid Catalytic Cracking (FCC),Texas City Complex,Safety_System,High
+HYD_CO_0146,HYD_LOOP_014,Hydrocracking Unit (HCU),Baytown Refinery,Compressor_Controller,Medium
+REF_TU_0147,REF_LOOP_014,Reformer Unit,Gulf Coast Refinery,Turbine_Controller,Medium
+ALK_TA_0148,ALK_LOOP_014,Alkylation Unit,Texas City Complex,Tank_Gauging,Medium
+COK_FI_0149,COK_LOOP_014,Coker Unit,Baytown Refinery,Fire_Gas_System,Low
+HYD_DC_0150,HYD_LOOP_015,Hydrotreater,Gulf Coast Refinery,DCS_Controller,Medium
+ISO_SA_0151,ISO_LOOP_015,Isomerization Unit,Texas City Complex,Safety_PLC,High
+CRU_FI_0152,CRU_LOOP_015,Crude Distillation Unit (CDU),Baytown Refinery,Field_PLC,Medium
+FLU_HM_0153,FLU_LOOP_015,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery,HMI_Station,Medium
+HYD_HI_0154,HYD_LOOP_015,Hydrocracking Unit (HCU),Texas City Complex,Historian_Server,High
+REF_VF_0155,REF_LOOP_015,Reformer Unit,Baytown Refinery,VFD,High
+ALK_SM_0156,ALK_LOOP_015,Alkylation Unit,Gulf Coast Refinery,Smart_Transmitter,Low
+COK_CO_0157,COK_LOOP_015,Coker Unit,Texas City Complex,Control_Valve,Low
+HYD_FL_0158,HYD_LOOP_015,Hydrotreater,Baytown Refinery,Flow_Computer,High
+ISO_AN_0159,ISO_LOOP_015,Isomerization Unit,Gulf Coast Refinery,Analyzer,Medium
+CRU_SA_0160,CRU_LOOP_016,Crude Distillation Unit (CDU),Texas City Complex,Safety_System,High
+FLU_CO_0161,FLU_LOOP_016,Fluid Catalytic Cracking (FCC),Baytown Refinery,Compressor_Controller,Medium
+HYD_TU_0162,HYD_LOOP_016,Hydrocracking Unit (HCU),Gulf Coast Refinery,Turbine_Controller,Medium
+REF_TA_0163,REF_LOOP_016,Reformer Unit,Texas City Complex,Tank_Gauging,Medium
+ALK_FI_0164,ALK_LOOP_016,Alkylation Unit,Baytown Refinery,Fire_Gas_System,Medium
+COK_DC_0165,COK_LOOP_016,Coker Unit,Gulf Coast Refinery,DCS_Controller,High
+HYD_SA_0166,HYD_LOOP_016,Hydrotreater,Texas City Complex,Safety_PLC,High
+ISO_FI_0167,ISO_LOOP_016,Isomerization Unit,Baytown Refinery,Field_PLC,High
+CRU_HM_0168,CRU_LOOP_016,Crude Distillation Unit (CDU),Gulf Coast Refinery,HMI_Station,High
+FLU_HI_0169,FLU_LOOP_016,Fluid Catalytic Cracking (FCC),Texas City Complex,Historian_Server,High
+HYD_VF_0170,HYD_LOOP_017,Hydrocracking Unit (HCU),Baytown Refinery,VFD,Medium
+REF_SM_0171,REF_LOOP_017,Reformer Unit,Gulf Coast Refinery,Smart_Transmitter,High
+ALK_CO_0172,ALK_LOOP_017,Alkylation Unit,Texas City Complex,Control_Valve,Low
+COK_FL_0173,COK_LOOP_017,Coker Unit,Baytown Refinery,Flow_Computer,Low
+HYD_AN_0174,HYD_LOOP_017,Hydrotreater,Gulf Coast Refinery,Analyzer,High
+ISO_SA_0175,ISO_LOOP_017,Isomerization Unit,Texas City Complex,Safety_System,High
+CRU_CO_0176,CRU_LOOP_017,Crude Distillation Unit (CDU),Baytown Refinery,Compressor_Controller,Medium
+FLU_TU_0177,FLU_LOOP_017,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery,Turbine_Controller,Medium
+HYD_TA_0178,HYD_LOOP_017,Hydrocracking Unit (HCU),Texas City Complex,Tank_Gauging,Low
+REF_FI_0179,REF_LOOP_017,Reformer Unit,Baytown Refinery,Fire_Gas_System,High
+ALK_DC_0180,ALK_LOOP_018,Alkylation Unit,Gulf Coast Refinery,DCS_Controller,High
+COK_SA_0181,COK_LOOP_018,Coker Unit,Texas City Complex,Safety_PLC,High
+HYD_FI_0182,HYD_LOOP_018,Hydrotreater,Baytown Refinery,Field_PLC,High
+ISO_HM_0183,ISO_LOOP_018,Isomerization Unit,Gulf Coast Refinery,HMI_Station,Medium
+CRU_HI_0184,CRU_LOOP_018,Crude Distillation Unit (CDU),Texas City Complex,Historian_Server,Medium
+FLU_VF_0185,FLU_LOOP_018,Fluid Catalytic Cracking (FCC),Baytown Refinery,VFD,Medium
+HYD_SM_0186,HYD_LOOP_018,Hydrocracking Unit (HCU),Gulf Coast Refinery,Smart_Transmitter,Medium
+REF_CO_0187,REF_LOOP_018,Reformer Unit,Texas City Complex,Control_Valve,Medium
+ALK_FL_0188,ALK_LOOP_018,Alkylation Unit,Baytown Refinery,Flow_Computer,Medium
+COK_AN_0189,COK_LOOP_018,Coker Unit,Gulf Coast Refinery,Analyzer,Low
+HYD_SA_0190,HYD_LOOP_019,Hydrotreater,Texas City Complex,Safety_System,Medium
+ISO_CO_0191,ISO_LOOP_019,Isomerization Unit,Baytown Refinery,Compressor_Controller,Low
+CRU_TU_0192,CRU_LOOP_019,Crude Distillation Unit (CDU),Gulf Coast Refinery,Turbine_Controller,Medium
+FLU_TA_0193,FLU_LOOP_019,Fluid Catalytic Cracking (FCC),Texas City Complex,Tank_Gauging,Low
+HYD_FI_0194,HYD_LOOP_019,Hydrocracking Unit (HCU),Baytown Refinery,Fire_Gas_System,Medium
+REF_DC_0195,REF_LOOP_019,Reformer Unit,Gulf Coast Refinery,DCS_Controller,High
+ALK_SA_0196,ALK_LOOP_019,Alkylation Unit,Texas City Complex,Safety_PLC,High
+COK_FI_0197,COK_LOOP_019,Coker Unit,Baytown Refinery,Field_PLC,High
+HYD_HM_0198,HYD_LOOP_019,Hydrotreater,Gulf Coast Refinery,HMI_Station,Low
+ISO_HI_0199,ISO_LOOP_019,Isomerization Unit,Texas City Complex,Historian_Server,High
+CRU_VF_0200,CRU_LOOP_020,Crude Distillation Unit (CDU),Baytown Refinery,VFD,Medium
+FLU_SM_0201,FLU_LOOP_020,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery,Smart_Transmitter,Medium
+HYD_CO_0202,HYD_LOOP_020,Hydrocracking Unit (HCU),Texas City Complex,Control_Valve,Low
+REF_FL_0203,REF_LOOP_020,Reformer Unit,Baytown Refinery,Flow_Computer,Low
+ALK_AN_0204,ALK_LOOP_020,Alkylation Unit,Gulf Coast Refinery,Analyzer,High
+COK_SA_0205,COK_LOOP_020,Coker Unit,Texas City Complex,Safety_System,High
+HYD_CO_0206,HYD_LOOP_020,Hydrotreater,Baytown Refinery,Compressor_Controller,High
+ISO_TU_0207,ISO_LOOP_020,Isomerization Unit,Gulf Coast Refinery,Turbine_Controller,Medium
+CRU_TA_0208,CRU_LOOP_020,Crude Distillation Unit (CDU),Texas City Complex,Tank_Gauging,High
+FLU_FI_0209,FLU_LOOP_020,Fluid Catalytic Cracking (FCC),Baytown Refinery,Fire_Gas_System,Low
+HYD_DC_0210,HYD_LOOP_021,Hydrocracking Unit (HCU),Gulf Coast Refinery,DCS_Controller,Medium
+REF_SA_0211,REF_LOOP_021,Reformer Unit,Texas City Complex,Safety_PLC,High
+ALK_FI_0212,ALK_LOOP_021,Alkylation Unit,Baytown Refinery,Field_PLC,Medium
+COK_HM_0213,COK_LOOP_021,Coker Unit,Gulf Coast Refinery,HMI_Station,Low
+HYD_HI_0214,HYD_LOOP_021,Hydrotreater,Texas City Complex,Historian_Server,Medium
+ISO_VF_0215,ISO_LOOP_021,Isomerization Unit,Baytown Refinery,VFD,Low
+CRU_SM_0216,CRU_LOOP_021,Crude Distillation Unit (CDU),Gulf Coast Refinery,Smart_Transmitter,Medium
+FLU_CO_0217,FLU_LOOP_021,Fluid Catalytic Cracking (FCC),Texas City Complex,Control_Valve,Low
+HYD_FL_0218,HYD_LOOP_021,Hydrocracking Unit (HCU),Baytown Refinery,Flow_Computer,Medium
+REF_AN_0219,REF_LOOP_021,Reformer Unit,Gulf Coast Refinery,Analyzer,Medium
+ALK_SA_0220,ALK_LOOP_022,Alkylation Unit,Texas City Complex,Safety_System,High
+COK_CO_0221,COK_LOOP_022,Coker Unit,Baytown Refinery,Compressor_Controller,High
+HYD_TU_0222,HYD_LOOP_022,Hydrotreater,Gulf Coast Refinery,Turbine_Controller,Medium
+ISO_TA_0223,ISO_LOOP_022,Isomerization Unit,Texas City Complex,Tank_Gauging,Low
+CRU_FI_0224,CRU_LOOP_022,Crude Distillation Unit (CDU),Baytown Refinery,Fire_Gas_System,Medium
+FLU_DC_0225,FLU_LOOP_022,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery,DCS_Controller,High
+HYD_SA_0226,HYD_LOOP_022,Hydrocracking Unit (HCU),Texas City Complex,Safety_PLC,High
+REF_FI_0227,REF_LOOP_022,Reformer Unit,Baytown Refinery,Field_PLC,Medium
+ALK_HM_0228,ALK_LOOP_022,Alkylation Unit,Gulf Coast Refinery,HMI_Station,Medium
+COK_HI_0229,COK_LOOP_022,Coker Unit,Texas City Complex,Historian_Server,Medium
+HYD_VF_0230,HYD_LOOP_023,Hydrotreater,Baytown Refinery,VFD,Medium
+ISO_SM_0231,ISO_LOOP_023,Isomerization Unit,Gulf Coast Refinery,Smart_Transmitter,Medium
+CRU_CO_0232,CRU_LOOP_023,Crude Distillation Unit (CDU),Texas City Complex,Control_Valve,Medium
+FLU_FL_0233,FLU_LOOP_023,Fluid Catalytic Cracking (FCC),Baytown Refinery,Flow_Computer,Low
+HYD_AN_0234,HYD_LOOP_023,Hydrocracking Unit (HCU),Gulf Coast Refinery,Analyzer,Medium
+REF_SA_0235,REF_LOOP_023,Reformer Unit,Texas City Complex,Safety_System,High
+ALK_CO_0236,ALK_LOOP_023,Alkylation Unit,Baytown Refinery,Compressor_Controller,Low
+COK_TU_0237,COK_LOOP_023,Coker Unit,Gulf Coast Refinery,Turbine_Controller,High
+HYD_TA_0238,HYD_LOOP_023,Hydrotreater,Texas City Complex,Tank_Gauging,Low
+ISO_FI_0239,ISO_LOOP_023,Isomerization Unit,Baytown Refinery,Fire_Gas_System,High
+CRU_DC_0240,CRU_LOOP_024,Crude Distillation Unit (CDU),Gulf Coast Refinery,DCS_Controller,High
+FLU_SA_0241,FLU_LOOP_024,Fluid Catalytic Cracking (FCC),Texas City Complex,Safety_PLC,High
+HYD_FI_0242,HYD_LOOP_024,Hydrocracking Unit (HCU),Baytown Refinery,Field_PLC,Medium
+REF_HM_0243,REF_LOOP_024,Reformer Unit,Gulf Coast Refinery,HMI_Station,High
+ALK_HI_0244,ALK_LOOP_024,Alkylation Unit,Texas City Complex,Historian_Server,High
+COK_VF_0245,COK_LOOP_024,Coker Unit,Baytown Refinery,VFD,Medium
+HYD_SM_0246,HYD_LOOP_024,Hydrotreater,Gulf Coast Refinery,Smart_Transmitter,Medium
+ISO_CO_0247,ISO_LOOP_024,Isomerization Unit,Texas City Complex,Control_Valve,High
+CRU_FL_0248,CRU_LOOP_024,Crude Distillation Unit (CDU),Baytown Refinery,Flow_Computer,Low
+FLU_AN_0249,FLU_LOOP_024,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery,Analyzer,Medium
+HYD_SA_0250,HYD_LOOP_025,Hydrocracking Unit (HCU),Texas City Complex,Safety_System,High
+REF_CO_0251,REF_LOOP_025,Reformer Unit,Baytown Refinery,Compressor_Controller,Low
+ALK_TU_0252,ALK_LOOP_025,Alkylation Unit,Gulf Coast Refinery,Turbine_Controller,Medium
+COK_TA_0253,COK_LOOP_025,Coker Unit,Texas City Complex,Tank_Gauging,High
+HYD_FI_0254,HYD_LOOP_025,Hydrotreater,Baytown Refinery,Fire_Gas_System,High
+ISO_DC_0255,ISO_LOOP_025,Isomerization Unit,Gulf Coast Refinery,DCS_Controller,High
+CRU_SA_0256,CRU_LOOP_025,Crude Distillation Unit (CDU),Texas City Complex,Safety_PLC,High
+FLU_FI_0257,FLU_LOOP_025,Fluid Catalytic Cracking (FCC),Baytown Refinery,Field_PLC,Medium
+HYD_HM_0258,HYD_LOOP_025,Hydrocracking Unit (HCU),Gulf Coast Refinery,HMI_Station,Low
+REF_HI_0259,REF_LOOP_025,Reformer Unit,Texas City Complex,Historian_Server,High
+ALK_VF_0260,ALK_LOOP_026,Alkylation Unit,Baytown Refinery,VFD,Low
+COK_SM_0261,COK_LOOP_026,Coker Unit,Gulf Coast Refinery,Smart_Transmitter,High
+HYD_CO_0262,HYD_LOOP_026,Hydrotreater,Texas City Complex,Control_Valve,Low
+ISO_FL_0263,ISO_LOOP_026,Isomerization Unit,Baytown Refinery,Flow_Computer,Medium
+CRU_AN_0264,CRU_LOOP_026,Crude Distillation Unit (CDU),Gulf Coast Refinery,Analyzer,Medium
+FLU_SA_0265,FLU_LOOP_026,Fluid Catalytic Cracking (FCC),Texas City Complex,Safety_System,Medium
+HYD_CO_0266,HYD_LOOP_026,Hydrocracking Unit (HCU),Baytown Refinery,Compressor_Controller,Medium
+REF_TU_0267,REF_LOOP_026,Reformer Unit,Gulf Coast Refinery,Turbine_Controller,Medium
+ALK_TA_0268,ALK_LOOP_026,Alkylation Unit,Texas City Complex,Tank_Gauging,High
+COK_FI_0269,COK_LOOP_026,Coker Unit,Baytown Refinery,Fire_Gas_System,Medium
+HYD_DC_0270,HYD_LOOP_027,Hydrotreater,Gulf Coast Refinery,DCS_Controller,High
+ISO_SA_0271,ISO_LOOP_027,Isomerization Unit,Texas City Complex,Safety_PLC,High
+CRU_FI_0272,CRU_LOOP_027,Crude Distillation Unit (CDU),Baytown Refinery,Field_PLC,High
+FLU_HM_0273,FLU_LOOP_027,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery,HMI_Station,Low
+HYD_HI_0274,HYD_LOOP_027,Hydrocracking Unit (HCU),Texas City Complex,Historian_Server,High
+REF_VF_0275,REF_LOOP_027,Reformer Unit,Baytown Refinery,VFD,Medium
+ALK_SM_0276,ALK_LOOP_027,Alkylation Unit,Gulf Coast Refinery,Smart_Transmitter,Medium
+COK_CO_0277,COK_LOOP_027,Coker Unit,Texas City Complex,Control_Valve,Medium
+HYD_FL_0278,HYD_LOOP_027,Hydrotreater,Baytown Refinery,Flow_Computer,High
+ISO_AN_0279,ISO_LOOP_027,Isomerization Unit,Gulf Coast Refinery,Analyzer,Low
+CRU_SA_0280,CRU_LOOP_028,Crude Distillation Unit (CDU),Texas City Complex,Safety_System,High
+FLU_CO_0281,FLU_LOOP_028,Fluid Catalytic Cracking (FCC),Baytown Refinery,Compressor_Controller,Medium
+HYD_TU_0282,HYD_LOOP_028,Hydrocracking Unit (HCU),Gulf Coast Refinery,Turbine_Controller,Medium
+REF_TA_0283,REF_LOOP_028,Reformer Unit,Texas City Complex,Tank_Gauging,Medium
+ALK_FI_0284,ALK_LOOP_028,Alkylation Unit,Baytown Refinery,Fire_Gas_System,High
+COK_DC_0285,COK_LOOP_028,Coker Unit,Gulf Coast Refinery,DCS_Controller,High
+HYD_SA_0286,HYD_LOOP_028,Hydrotreater,Texas City Complex,Safety_PLC,High
+ISO_FI_0287,ISO_LOOP_028,Isomerization Unit,Baytown Refinery,Field_PLC,Medium
+CRU_HM_0288,CRU_LOOP_028,Crude Distillation Unit (CDU),Gulf Coast Refinery,HMI_Station,Medium
+FLU_HI_0289,FLU_LOOP_028,Fluid Catalytic Cracking (FCC),Texas City Complex,Historian_Server,Medium
+HYD_VF_0290,HYD_LOOP_029,Hydrocracking Unit (HCU),Baytown Refinery,VFD,Medium
+REF_SM_0291,REF_LOOP_029,Reformer Unit,Gulf Coast Refinery,Smart_Transmitter,Medium
+ALK_CO_0292,ALK_LOOP_029,Alkylation Unit,Texas City Complex,Control_Valve,Low
+COK_FL_0293,COK_LOOP_029,Coker Unit,Baytown Refinery,Flow_Computer,Low
+HYD_AN_0294,HYD_LOOP_029,Hydrotreater,Gulf Coast Refinery,Analyzer,Medium
+ISO_SA_0295,ISO_LOOP_029,Isomerization Unit,Texas City Complex,Safety_System,High
+CRU_CO_0296,CRU_LOOP_029,Crude Distillation Unit (CDU),Baytown Refinery,Compressor_Controller,High
+FLU_TU_0297,FLU_LOOP_029,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery,Turbine_Controller,Medium
+HYD_TA_0298,HYD_LOOP_029,Hydrocracking Unit (HCU),Texas City Complex,Tank_Gauging,High
+REF_FI_0299,REF_LOOP_029,Reformer Unit,Baytown Refinery,Fire_Gas_System,Medium
+ALK_DC_0300,ALK_LOOP_030,Alkylation Unit,Gulf Coast Refinery,DCS_Controller,High
+COK_SA_0301,COK_LOOP_030,Coker Unit,Texas City Complex,Safety_PLC,High
+HYD_FI_0302,HYD_LOOP_030,Hydrotreater,Baytown Refinery,Field_PLC,High
+ISO_HM_0303,ISO_LOOP_030,Isomerization Unit,Gulf Coast Refinery,HMI_Station,Medium
+CRU_HI_0304,CRU_LOOP_030,Crude Distillation Unit (CDU),Texas City Complex,Historian_Server,High
+FLU_VF_0305,FLU_LOOP_030,Fluid Catalytic Cracking (FCC),Baytown Refinery,VFD,High
+HYD_SM_0306,HYD_LOOP_030,Hydrocracking Unit (HCU),Gulf Coast Refinery,Smart_Transmitter,High
+REF_CO_0307,REF_LOOP_030,Reformer Unit,Texas City Complex,Control_Valve,High
+ALK_FL_0308,ALK_LOOP_030,Alkylation Unit,Baytown Refinery,Flow_Computer,High
+COK_AN_0309,COK_LOOP_030,Coker Unit,Gulf Coast Refinery,Analyzer,High
+HYD_SA_0310,HYD_LOOP_031,Hydrotreater,Texas City Complex,Safety_System,High
+ISO_CO_0311,ISO_LOOP_031,Isomerization Unit,Baytown Refinery,Compressor_Controller,Medium
+CRU_TU_0312,CRU_LOOP_031,Crude Distillation Unit (CDU),Gulf Coast Refinery,Turbine_Controller,Medium
+FLU_TA_0313,FLU_LOOP_031,Fluid Catalytic Cracking (FCC),Texas City Complex,Tank_Gauging,Low
+HYD_FI_0314,HYD_LOOP_031,Hydrocracking Unit (HCU),Baytown Refinery,Fire_Gas_System,High
+REF_DC_0315,REF_LOOP_031,Reformer Unit,Gulf Coast Refinery,DCS_Controller,Medium
+ALK_SA_0316,ALK_LOOP_031,Alkylation Unit,Texas City Complex,Safety_PLC,High
+COK_FI_0317,COK_LOOP_031,Coker Unit,Baytown Refinery,Field_PLC,High
+HYD_HM_0318,HYD_LOOP_031,Hydrotreater,Gulf Coast Refinery,HMI_Station,Medium
+ISO_HI_0319,ISO_LOOP_031,Isomerization Unit,Texas City Complex,Historian_Server,Medium
+CRU_VF_0320,CRU_LOOP_032,Crude Distillation Unit (CDU),Baytown Refinery,VFD,High
+FLU_SM_0321,FLU_LOOP_032,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery,Smart_Transmitter,High
+HYD_CO_0322,HYD_LOOP_032,Hydrocracking Unit (HCU),Texas City Complex,Control_Valve,Medium
+REF_FL_0323,REF_LOOP_032,Reformer Unit,Baytown Refinery,Flow_Computer,Medium
+ALK_AN_0324,ALK_LOOP_032,Alkylation Unit,Gulf Coast Refinery,Analyzer,High
+COK_SA_0325,COK_LOOP_032,Coker Unit,Texas City Complex,Safety_System,Medium
+HYD_CO_0326,HYD_LOOP_032,Hydrotreater,Baytown Refinery,Compressor_Controller,Low
+ISO_TU_0327,ISO_LOOP_032,Isomerization Unit,Gulf Coast Refinery,Turbine_Controller,High
+CRU_TA_0328,CRU_LOOP_032,Crude Distillation Unit (CDU),Texas City Complex,Tank_Gauging,Medium
+FLU_FI_0329,FLU_LOOP_032,Fluid Catalytic Cracking (FCC),Baytown Refinery,Fire_Gas_System,High
+HYD_DC_0330,HYD_LOOP_033,Hydrocracking Unit (HCU),Gulf Coast Refinery,DCS_Controller,High
+REF_SA_0331,REF_LOOP_033,Reformer Unit,Texas City Complex,Safety_PLC,Medium
+ALK_FI_0332,ALK_LOOP_033,Alkylation Unit,Baytown Refinery,Field_PLC,Medium
+COK_HM_0333,COK_LOOP_033,Coker Unit,Gulf Coast Refinery,HMI_Station,High
+HYD_HI_0334,HYD_LOOP_033,Hydrotreater,Texas City Complex,Historian_Server,Medium
+ISO_VF_0335,ISO_LOOP_033,Isomerization Unit,Baytown Refinery,VFD,High
+CRU_SM_0336,CRU_LOOP_033,Crude Distillation Unit (CDU),Gulf Coast Refinery,Smart_Transmitter,High
+FLU_CO_0337,FLU_LOOP_033,Fluid Catalytic Cracking (FCC),Texas City Complex,Control_Valve,Medium
+HYD_FL_0338,HYD_LOOP_033,Hydrocracking Unit (HCU),Baytown Refinery,Flow_Computer,High
+REF_AN_0339,REF_LOOP_033,Reformer Unit,Gulf Coast Refinery,Analyzer,Medium
+ALK_SA_0340,ALK_LOOP_034,Alkylation Unit,Texas City Complex,Safety_System,High
+COK_CO_0341,COK_LOOP_034,Coker Unit,Baytown Refinery,Compressor_Controller,Medium
+HYD_TU_0342,HYD_LOOP_034,Hydrotreater,Gulf Coast Refinery,Turbine_Controller,Low
+ISO_TA_0343,ISO_LOOP_034,Isomerization Unit,Texas City Complex,Tank_Gauging,High
+CRU_FI_0344,CRU_LOOP_034,Crude Distillation Unit (CDU),Baytown Refinery,Fire_Gas_System,Medium
+FLU_DC_0345,FLU_LOOP_034,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery,DCS_Controller,High
+HYD_SA_0346,HYD_LOOP_034,Hydrocracking Unit (HCU),Texas City Complex,Safety_PLC,Medium
+REF_FI_0347,REF_LOOP_034,Reformer Unit,Baytown Refinery,Field_PLC,High
+ALK_HM_0348,ALK_LOOP_034,Alkylation Unit,Gulf Coast Refinery,HMI_Station,Medium
+COK_HI_0349,COK_LOOP_034,Coker Unit,Texas City Complex,Historian_Server,Low
+HYD_VF_0350,HYD_LOOP_035,Hydrotreater,Baytown Refinery,VFD,Low
+ISO_SM_0351,ISO_LOOP_035,Isomerization Unit,Gulf Coast Refinery,Smart_Transmitter,High
+CRU_CO_0352,CRU_LOOP_035,Crude Distillation Unit (CDU),Texas City Complex,Control_Valve,Low
+FLU_FL_0353,FLU_LOOP_035,Fluid Catalytic Cracking (FCC),Baytown Refinery,Flow_Computer,High
+HYD_AN_0354,HYD_LOOP_035,Hydrocracking Unit (HCU),Gulf Coast Refinery,Analyzer,Medium
+REF_SA_0355,REF_LOOP_035,Reformer Unit,Texas City Complex,Safety_System,High
+ALK_CO_0356,ALK_LOOP_035,Alkylation Unit,Baytown Refinery,Compressor_Controller,Medium
+COK_TU_0357,COK_LOOP_035,Coker Unit,Gulf Coast Refinery,Turbine_Controller,High
+HYD_TA_0358,HYD_LOOP_035,Hydrotreater,Texas City Complex,Tank_Gauging,Medium
+ISO_FI_0359,ISO_LOOP_035,Isomerization Unit,Baytown Refinery,Fire_Gas_System,Low
+CRU_DC_0360,CRU_LOOP_036,Crude Distillation Unit (CDU),Gulf Coast Refinery,DCS_Controller,Medium
+FLU_SA_0361,FLU_LOOP_036,Fluid Catalytic Cracking (FCC),Texas City Complex,Safety_PLC,High
+HYD_FI_0362,HYD_LOOP_036,Hydrocracking Unit (HCU),Baytown Refinery,Field_PLC,Medium
+REF_HM_0363,REF_LOOP_036,Reformer Unit,Gulf Coast Refinery,HMI_Station,High
+ALK_HI_0364,ALK_LOOP_036,Alkylation Unit,Texas City Complex,Historian_Server,Medium
+COK_VF_0365,COK_LOOP_036,Coker Unit,Baytown Refinery,VFD,Medium
+HYD_SM_0366,HYD_LOOP_036,Hydrotreater,Gulf Coast Refinery,Smart_Transmitter,Medium
+ISO_CO_0367,ISO_LOOP_036,Isomerization Unit,Texas City Complex,Control_Valve,Medium
+CRU_FL_0368,CRU_LOOP_036,Crude Distillation Unit (CDU),Baytown Refinery,Flow_Computer,Medium
+FLU_AN_0369,FLU_LOOP_036,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery,Analyzer,Medium
+HYD_SA_0370,HYD_LOOP_037,Hydrocracking Unit (HCU),Texas City Complex,Safety_System,High
+REF_CO_0371,REF_LOOP_037,Reformer Unit,Baytown Refinery,Compressor_Controller,Low
+ALK_TU_0372,ALK_LOOP_037,Alkylation Unit,Gulf Coast Refinery,Turbine_Controller,Medium
+COK_TA_0373,COK_LOOP_037,Coker Unit,Texas City Complex,Tank_Gauging,High
+HYD_FI_0374,HYD_LOOP_037,Hydrotreater,Baytown Refinery,Fire_Gas_System,Low
+ISO_DC_0375,ISO_LOOP_037,Isomerization Unit,Gulf Coast Refinery,DCS_Controller,High
+CRU_SA_0376,CRU_LOOP_037,Crude Distillation Unit (CDU),Texas City Complex,Safety_PLC,High
+FLU_FI_0377,FLU_LOOP_037,Fluid Catalytic Cracking (FCC),Baytown Refinery,Field_PLC,Medium
+HYD_HM_0378,HYD_LOOP_037,Hydrocracking Unit (HCU),Gulf Coast Refinery,HMI_Station,Medium
+REF_HI_0379,REF_LOOP_037,Reformer Unit,Texas City Complex,Historian_Server,Medium
+ALK_VF_0380,ALK_LOOP_038,Alkylation Unit,Baytown Refinery,VFD,Medium
+COK_SM_0381,COK_LOOP_038,Coker Unit,Gulf Coast Refinery,Smart_Transmitter,High
+HYD_CO_0382,HYD_LOOP_038,Hydrotreater,Texas City Complex,Control_Valve,Low
+ISO_FL_0383,ISO_LOOP_038,Isomerization Unit,Baytown Refinery,Flow_Computer,Low
+CRU_AN_0384,CRU_LOOP_038,Crude Distillation Unit (CDU),Gulf Coast Refinery,Analyzer,Low
+FLU_SA_0385,FLU_LOOP_038,Fluid Catalytic Cracking (FCC),Texas City Complex,Safety_System,High
+HYD_CO_0386,HYD_LOOP_038,Hydrocracking Unit (HCU),Baytown Refinery,Compressor_Controller,Medium
+REF_TU_0387,REF_LOOP_038,Reformer Unit,Gulf Coast Refinery,Turbine_Controller,Low
+ALK_TA_0388,ALK_LOOP_038,Alkylation Unit,Texas City Complex,Tank_Gauging,Medium
+COK_FI_0389,COK_LOOP_038,Coker Unit,Baytown Refinery,Fire_Gas_System,Medium
+HYD_DC_0390,HYD_LOOP_039,Hydrotreater,Gulf Coast Refinery,DCS_Controller,High
+ISO_SA_0391,ISO_LOOP_039,Isomerization Unit,Texas City Complex,Safety_PLC,High
+CRU_FI_0392,CRU_LOOP_039,Crude Distillation Unit (CDU),Baytown Refinery,Field_PLC,Low
+FLU_HM_0393,FLU_LOOP_039,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery,HMI_Station,Medium
+HYD_HI_0394,HYD_LOOP_039,Hydrocracking Unit (HCU),Texas City Complex,Historian_Server,High
+REF_VF_0395,REF_LOOP_039,Reformer Unit,Baytown Refinery,VFD,Low
+ALK_SM_0396,ALK_LOOP_039,Alkylation Unit,Gulf Coast Refinery,Smart_Transmitter,Medium
+COK_CO_0397,COK_LOOP_039,Coker Unit,Texas City Complex,Control_Valve,Medium
+HYD_FL_0398,HYD_LOOP_039,Hydrotreater,Baytown Refinery,Flow_Computer,Medium
+ISO_AN_0399,ISO_LOOP_039,Isomerization Unit,Gulf Coast Refinery,Analyzer,Low
+CRU_SA_0400,CRU_LOOP_040,Crude Distillation Unit (CDU),Texas City Complex,Safety_System,Medium
+FLU_CO_0401,FLU_LOOP_040,Fluid Catalytic Cracking (FCC),Baytown Refinery,Compressor_Controller,Low
+HYD_TU_0402,HYD_LOOP_040,Hydrocracking Unit (HCU),Gulf Coast Refinery,Turbine_Controller,High
+REF_TA_0403,REF_LOOP_040,Reformer Unit,Texas City Complex,Tank_Gauging,High
+ALK_FI_0404,ALK_LOOP_040,Alkylation Unit,Baytown Refinery,Fire_Gas_System,Medium
+COK_DC_0405,COK_LOOP_040,Coker Unit,Gulf Coast Refinery,DCS_Controller,High
+HYD_SA_0406,HYD_LOOP_040,Hydrotreater,Texas City Complex,Safety_PLC,High
+ISO_FI_0407,ISO_LOOP_040,Isomerization Unit,Baytown Refinery,Field_PLC,Medium
+CRU_HM_0408,CRU_LOOP_040,Crude Distillation Unit (CDU),Gulf Coast Refinery,HMI_Station,Medium
+FLU_HI_0409,FLU_LOOP_040,Fluid Catalytic Cracking (FCC),Texas City Complex,Historian_Server,Medium
+HYD_VF_0410,HYD_LOOP_041,Hydrocracking Unit (HCU),Baytown Refinery,VFD,High
+REF_SM_0411,REF_LOOP_041,Reformer Unit,Gulf Coast Refinery,Smart_Transmitter,Medium
+ALK_CO_0412,ALK_LOOP_041,Alkylation Unit,Texas City Complex,Control_Valve,Medium
+COK_FL_0413,COK_LOOP_041,Coker Unit,Baytown Refinery,Flow_Computer,High
+HYD_AN_0414,HYD_LOOP_041,Hydrotreater,Gulf Coast Refinery,Analyzer,Medium
+ISO_SA_0415,ISO_LOOP_041,Isomerization Unit,Texas City Complex,Safety_System,High
+CRU_CO_0416,CRU_LOOP_041,Crude Distillation Unit (CDU),Baytown Refinery,Compressor_Controller,Low
+FLU_TU_0417,FLU_LOOP_041,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery,Turbine_Controller,High
+HYD_TA_0418,HYD_LOOP_041,Hydrocracking Unit (HCU),Texas City Complex,Tank_Gauging,Low
+REF_FI_0419,REF_LOOP_041,Reformer Unit,Baytown Refinery,Fire_Gas_System,High
+ALK_DC_0420,ALK_LOOP_042,Alkylation Unit,Gulf Coast Refinery,DCS_Controller,High
+COK_SA_0421,COK_LOOP_042,Coker Unit,Texas City Complex,Safety_PLC,High
+HYD_FI_0422,HYD_LOOP_042,Hydrotreater,Baytown Refinery,Field_PLC,Low
+ISO_HM_0423,ISO_LOOP_042,Isomerization Unit,Gulf Coast Refinery,HMI_Station,Medium
+CRU_HI_0424,CRU_LOOP_042,Crude Distillation Unit (CDU),Texas City Complex,Historian_Server,Medium
+FLU_VF_0425,FLU_LOOP_042,Fluid Catalytic Cracking (FCC),Baytown Refinery,VFD,Low
+HYD_SM_0426,HYD_LOOP_042,Hydrocracking Unit (HCU),Gulf Coast Refinery,Smart_Transmitter,High
+REF_CO_0427,REF_LOOP_042,Reformer Unit,Texas City Complex,Control_Valve,Low
+ALK_FL_0428,ALK_LOOP_042,Alkylation Unit,Baytown Refinery,Flow_Computer,Medium
+COK_AN_0429,COK_LOOP_042,Coker Unit,Gulf Coast Refinery,Analyzer,Medium
+HYD_SA_0430,HYD_LOOP_043,Hydrotreater,Texas City Complex,Safety_System,High
+ISO_CO_0431,ISO_LOOP_043,Isomerization Unit,Baytown Refinery,Compressor_Controller,High
+CRU_TU_0432,CRU_LOOP_043,Crude Distillation Unit (CDU),Gulf Coast Refinery,Turbine_Controller,Medium
+FLU_TA_0433,FLU_LOOP_043,Fluid Catalytic Cracking (FCC),Texas City Complex,Tank_Gauging,Medium
+HYD_FI_0434,HYD_LOOP_043,Hydrocracking Unit (HCU),Baytown Refinery,Fire_Gas_System,High
+REF_DC_0435,REF_LOOP_043,Reformer Unit,Gulf Coast Refinery,DCS_Controller,High
+ALK_SA_0436,ALK_LOOP_043,Alkylation Unit,Texas City Complex,Safety_PLC,High
+COK_FI_0437,COK_LOOP_043,Coker Unit,Baytown Refinery,Field_PLC,Medium
+HYD_HM_0438,HYD_LOOP_043,Hydrotreater,Gulf Coast Refinery,HMI_Station,High
+ISO_HI_0439,ISO_LOOP_043,Isomerization Unit,Texas City Complex,Historian_Server,Medium
+CRU_VF_0440,CRU_LOOP_044,Crude Distillation Unit (CDU),Baytown Refinery,VFD,High
+FLU_SM_0441,FLU_LOOP_044,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery,Smart_Transmitter,High
+HYD_CO_0442,HYD_LOOP_044,Hydrocracking Unit (HCU),Texas City Complex,Control_Valve,High
+REF_FL_0443,REF_LOOP_044,Reformer Unit,Baytown Refinery,Flow_Computer,Low
+ALK_AN_0444,ALK_LOOP_044,Alkylation Unit,Gulf Coast Refinery,Analyzer,Low
+COK_SA_0445,COK_LOOP_044,Coker Unit,Texas City Complex,Safety_System,Medium
+HYD_CO_0446,HYD_LOOP_044,Hydrotreater,Baytown Refinery,Compressor_Controller,Medium
+ISO_TU_0447,ISO_LOOP_044,Isomerization Unit,Gulf Coast Refinery,Turbine_Controller,High
+CRU_TA_0448,CRU_LOOP_044,Crude Distillation Unit (CDU),Texas City Complex,Tank_Gauging,High
+FLU_FI_0449,FLU_LOOP_044,Fluid Catalytic Cracking (FCC),Baytown Refinery,Fire_Gas_System,Low
+HYD_DC_0450,HYD_LOOP_045,Hydrocracking Unit (HCU),Gulf Coast Refinery,DCS_Controller,High
+REF_SA_0451,REF_LOOP_045,Reformer Unit,Texas City Complex,Safety_PLC,High
+ALK_FI_0452,ALK_LOOP_045,Alkylation Unit,Baytown Refinery,Field_PLC,Low
+COK_HM_0453,COK_LOOP_045,Coker Unit,Gulf Coast Refinery,HMI_Station,Medium
+HYD_HI_0454,HYD_LOOP_045,Hydrotreater,Texas City Complex,Historian_Server,Low
+ISO_VF_0455,ISO_LOOP_045,Isomerization Unit,Baytown Refinery,VFD,High
+CRU_SM_0456,CRU_LOOP_045,Crude Distillation Unit (CDU),Gulf Coast Refinery,Smart_Transmitter,Medium
+FLU_CO_0457,FLU_LOOP_045,Fluid Catalytic Cracking (FCC),Texas City Complex,Control_Valve,Low
+HYD_FL_0458,HYD_LOOP_045,Hydrocracking Unit (HCU),Baytown Refinery,Flow_Computer,Medium
+REF_AN_0459,REF_LOOP_045,Reformer Unit,Gulf Coast Refinery,Analyzer,High
+ALK_SA_0460,ALK_LOOP_046,Alkylation Unit,Texas City Complex,Safety_System,High
+COK_CO_0461,COK_LOOP_046,Coker Unit,Baytown Refinery,Compressor_Controller,Medium
+HYD_TU_0462,HYD_LOOP_046,Hydrotreater,Gulf Coast Refinery,Turbine_Controller,High
+ISO_TA_0463,ISO_LOOP_046,Isomerization Unit,Texas City Complex,Tank_Gauging,Medium
+CRU_FI_0464,CRU_LOOP_046,Crude Distillation Unit (CDU),Baytown Refinery,Fire_Gas_System,High
+FLU_DC_0465,FLU_LOOP_046,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery,DCS_Controller,High
+HYD_SA_0466,HYD_LOOP_046,Hydrocracking Unit (HCU),Texas City Complex,Safety_PLC,Medium
+REF_FI_0467,REF_LOOP_046,Reformer Unit,Baytown Refinery,Field_PLC,Low
+ALK_HM_0468,ALK_LOOP_046,Alkylation Unit,Gulf Coast Refinery,HMI_Station,High
+COK_HI_0469,COK_LOOP_046,Coker Unit,Texas City Complex,Historian_Server,High
+HYD_VF_0470,HYD_LOOP_047,Hydrotreater,Baytown Refinery,VFD,Low
+ISO_SM_0471,ISO_LOOP_047,Isomerization Unit,Gulf Coast Refinery,Smart_Transmitter,High
+CRU_CO_0472,CRU_LOOP_047,Crude Distillation Unit (CDU),Texas City Complex,Control_Valve,High
+FLU_FL_0473,FLU_LOOP_047,Fluid Catalytic Cracking (FCC),Baytown Refinery,Flow_Computer,High
+HYD_AN_0474,HYD_LOOP_047,Hydrocracking Unit (HCU),Gulf Coast Refinery,Analyzer,Medium
+REF_SA_0475,REF_LOOP_047,Reformer Unit,Texas City Complex,Safety_System,Medium
+ALK_CO_0476,ALK_LOOP_047,Alkylation Unit,Baytown Refinery,Compressor_Controller,High
+COK_TU_0477,COK_LOOP_047,Coker Unit,Gulf Coast Refinery,Turbine_Controller,Medium
+HYD_TA_0478,HYD_LOOP_047,Hydrotreater,Texas City Complex,Tank_Gauging,Low
+ISO_FI_0479,ISO_LOOP_047,Isomerization Unit,Baytown Refinery,Fire_Gas_System,Medium
+CRU_DC_0480,CRU_LOOP_048,Crude Distillation Unit (CDU),Gulf Coast Refinery,DCS_Controller,High
+FLU_SA_0481,FLU_LOOP_048,Fluid Catalytic Cracking (FCC),Texas City Complex,Safety_PLC,Medium
+HYD_FI_0482,HYD_LOOP_048,Hydrocracking Unit (HCU),Baytown Refinery,Field_PLC,High
+REF_HM_0483,REF_LOOP_048,Reformer Unit,Gulf Coast Refinery,HMI_Station,Low
+ALK_HI_0484,ALK_LOOP_048,Alkylation Unit,Texas City Complex,Historian_Server,Low
+COK_VF_0485,COK_LOOP_048,Coker Unit,Baytown Refinery,VFD,Medium
+HYD_SM_0486,HYD_LOOP_048,Hydrotreater,Gulf Coast Refinery,Smart_Transmitter,Medium
+ISO_CO_0487,ISO_LOOP_048,Isomerization Unit,Texas City Complex,Control_Valve,Medium
+CRU_FL_0488,CRU_LOOP_048,Crude Distillation Unit (CDU),Baytown Refinery,Flow_Computer,High
+FLU_AN_0489,FLU_LOOP_048,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery,Analyzer,High
+HYD_SA_0490,HYD_LOOP_049,Hydrocracking Unit (HCU),Texas City Complex,Safety_System,High
+REF_CO_0491,REF_LOOP_049,Reformer Unit,Baytown Refinery,Compressor_Controller,Medium
+ALK_TU_0492,ALK_LOOP_049,Alkylation Unit,Gulf Coast Refinery,Turbine_Controller,Medium
+COK_TA_0493,COK_LOOP_049,Coker Unit,Texas City Complex,Tank_Gauging,High
+HYD_FI_0494,HYD_LOOP_049,Hydrotreater,Baytown Refinery,Fire_Gas_System,High
+ISO_DC_0495,ISO_LOOP_049,Isomerization Unit,Gulf Coast Refinery,DCS_Controller,Medium
+CRU_SA_0496,CRU_LOOP_049,Crude Distillation Unit (CDU),Texas City Complex,Safety_PLC,High
+FLU_FI_0497,FLU_LOOP_049,Fluid Catalytic Cracking (FCC),Baytown Refinery,Field_PLC,Low
+HYD_HM_0498,HYD_LOOP_049,Hydrocracking Unit (HCU),Gulf Coast Refinery,HMI_Station,Medium
+REF_HI_0499,REF_LOOP_049,Reformer Unit,Texas City Complex,Historian_Server,Medium
+ALK_VF_0500,ALK_LOOP_050,Alkylation Unit,Baytown Refinery,VFD,Medium
+COK_SM_0501,COK_LOOP_050,Coker Unit,Gulf Coast Refinery,Smart_Transmitter,Medium
+HYD_CO_0502,HYD_LOOP_050,Hydrotreater,Texas City Complex,Control_Valve,Medium
+ISO_FL_0503,ISO_LOOP_050,Isomerization Unit,Baytown Refinery,Flow_Computer,High
+CRU_AN_0504,CRU_LOOP_050,Crude Distillation Unit (CDU),Gulf Coast Refinery,Analyzer,Medium
+FLU_SA_0505,FLU_LOOP_050,Fluid Catalytic Cracking (FCC),Texas City Complex,Safety_System,High
+HYD_CO_0506,HYD_LOOP_050,Hydrocracking Unit (HCU),Baytown Refinery,Compressor_Controller,High
+REF_TU_0507,REF_LOOP_050,Reformer Unit,Gulf Coast Refinery,Turbine_Controller,High
+ALK_TA_0508,ALK_LOOP_050,Alkylation Unit,Texas City Complex,Tank_Gauging,Medium
+COK_FI_0509,COK_LOOP_050,Coker Unit,Baytown Refinery,Fire_Gas_System,High
+HYD_DC_0510,HYD_LOOP_051,Hydrotreater,Gulf Coast Refinery,DCS_Controller,High
+ISO_SA_0511,ISO_LOOP_051,Isomerization Unit,Texas City Complex,Safety_PLC,High
+CRU_FI_0512,CRU_LOOP_051,Crude Distillation Unit (CDU),Baytown Refinery,Field_PLC,Medium
+FLU_HM_0513,FLU_LOOP_051,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery,HMI_Station,Medium
+HYD_HI_0514,HYD_LOOP_051,Hydrocracking Unit (HCU),Texas City Complex,Historian_Server,Medium
+REF_VF_0515,REF_LOOP_051,Reformer Unit,Baytown Refinery,VFD,High
+ALK_SM_0516,ALK_LOOP_051,Alkylation Unit,Gulf Coast Refinery,Smart_Transmitter,Medium
+COK_CO_0517,COK_LOOP_051,Coker Unit,Texas City Complex,Control_Valve,Medium
+HYD_FL_0518,HYD_LOOP_051,Hydrotreater,Baytown Refinery,Flow_Computer,High
+ISO_AN_0519,ISO_LOOP_051,Isomerization Unit,Gulf Coast Refinery,Analyzer,Medium
+CRU_SA_0520,CRU_LOOP_052,Crude Distillation Unit (CDU),Texas City Complex,Safety_System,High
+FLU_CO_0521,FLU_LOOP_052,Fluid Catalytic Cracking (FCC),Baytown Refinery,Compressor_Controller,High
+HYD_TU_0522,HYD_LOOP_052,Hydrocracking Unit (HCU),Gulf Coast Refinery,Turbine_Controller,High
+REF_TA_0523,REF_LOOP_052,Reformer Unit,Texas City Complex,Tank_Gauging,High
+ALK_FI_0524,ALK_LOOP_052,Alkylation Unit,Baytown Refinery,Fire_Gas_System,High
+COK_DC_0525,COK_LOOP_052,Coker Unit,Gulf Coast Refinery,DCS_Controller,High
+HYD_SA_0526,HYD_LOOP_052,Hydrotreater,Texas City Complex,Safety_PLC,High
+ISO_FI_0527,ISO_LOOP_052,Isomerization Unit,Baytown Refinery,Field_PLC,Medium
+CRU_HM_0528,CRU_LOOP_052,Crude Distillation Unit (CDU),Gulf Coast Refinery,HMI_Station,High
+FLU_HI_0529,FLU_LOOP_052,Fluid Catalytic Cracking (FCC),Texas City Complex,Historian_Server,Medium
+HYD_VF_0530,HYD_LOOP_053,Hydrocracking Unit (HCU),Baytown Refinery,VFD,High
+REF_SM_0531,REF_LOOP_053,Reformer Unit,Gulf Coast Refinery,Smart_Transmitter,Medium
+ALK_CO_0532,ALK_LOOP_053,Alkylation Unit,Texas City Complex,Control_Valve,Medium
+COK_FL_0533,COK_LOOP_053,Coker Unit,Baytown Refinery,Flow_Computer,High
+HYD_AN_0534,HYD_LOOP_053,Hydrotreater,Gulf Coast Refinery,Analyzer,Medium
+ISO_SA_0535,ISO_LOOP_053,Isomerization Unit,Texas City Complex,Safety_System,High
+CRU_CO_0536,CRU_LOOP_053,Crude Distillation Unit (CDU),Baytown Refinery,Compressor_Controller,Medium
+FLU_TU_0537,FLU_LOOP_053,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery,Turbine_Controller,Low
+HYD_TA_0538,HYD_LOOP_053,Hydrocracking Unit (HCU),Texas City Complex,Tank_Gauging,Medium
+REF_FI_0539,REF_LOOP_053,Reformer Unit,Baytown Refinery,Fire_Gas_System,Medium
+ALK_DC_0540,ALK_LOOP_054,Alkylation Unit,Gulf Coast Refinery,DCS_Controller,High
+COK_SA_0541,COK_LOOP_054,Coker Unit,Texas City Complex,Safety_PLC,High
+HYD_FI_0542,HYD_LOOP_054,Hydrotreater,Baytown Refinery,Field_PLC,Medium
+ISO_HM_0543,ISO_LOOP_054,Isomerization Unit,Gulf Coast Refinery,HMI_Station,High
+CRU_HI_0544,CRU_LOOP_054,Crude Distillation Unit (CDU),Texas City Complex,Historian_Server,High
+FLU_VF_0545,FLU_LOOP_054,Fluid Catalytic Cracking (FCC),Baytown Refinery,VFD,Low
+HYD_SM_0546,HYD_LOOP_054,Hydrocracking Unit (HCU),Gulf Coast Refinery,Smart_Transmitter,Medium
+REF_CO_0547,REF_LOOP_054,Reformer Unit,Texas City Complex,Control_Valve,Low
+ALK_FL_0548,ALK_LOOP_054,Alkylation Unit,Baytown Refinery,Flow_Computer,Medium
+COK_AN_0549,COK_LOOP_054,Coker Unit,Gulf Coast Refinery,Analyzer,Low
+HYD_SA_0550,HYD_LOOP_055,Hydrotreater,Texas City Complex,Safety_System,Medium
+ISO_CO_0551,ISO_LOOP_055,Isomerization Unit,Baytown Refinery,Compressor_Controller,High
+CRU_TU_0552,CRU_LOOP_055,Crude Distillation Unit (CDU),Gulf Coast Refinery,Turbine_Controller,Medium
+FLU_TA_0553,FLU_LOOP_055,Fluid Catalytic Cracking (FCC),Texas City Complex,Tank_Gauging,Low
+HYD_FI_0554,HYD_LOOP_055,Hydrocracking Unit (HCU),Baytown Refinery,Fire_Gas_System,Low
+REF_DC_0555,REF_LOOP_055,Reformer Unit,Gulf Coast Refinery,DCS_Controller,High
+ALK_SA_0556,ALK_LOOP_055,Alkylation Unit,Texas City Complex,Safety_PLC,High
+COK_FI_0557,COK_LOOP_055,Coker Unit,Baytown Refinery,Field_PLC,Medium
+HYD_HM_0558,HYD_LOOP_055,Hydrotreater,Gulf Coast Refinery,HMI_Station,High
+ISO_HI_0559,ISO_LOOP_055,Isomerization Unit,Texas City Complex,Historian_Server,Low
+CRU_VF_0560,CRU_LOOP_056,Crude Distillation Unit (CDU),Baytown Refinery,VFD,Medium
+FLU_SM_0561,FLU_LOOP_056,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery,Smart_Transmitter,Low
+HYD_CO_0562,HYD_LOOP_056,Hydrocracking Unit (HCU),Texas City Complex,Control_Valve,Medium
+REF_FL_0563,REF_LOOP_056,Reformer Unit,Baytown Refinery,Flow_Computer,Low
+ALK_AN_0564,ALK_LOOP_056,Alkylation Unit,Gulf Coast Refinery,Analyzer,Medium
+COK_SA_0565,COK_LOOP_056,Coker Unit,Texas City Complex,Safety_System,High
+HYD_CO_0566,HYD_LOOP_056,Hydrotreater,Baytown Refinery,Compressor_Controller,Low
+ISO_TU_0567,ISO_LOOP_056,Isomerization Unit,Gulf Coast Refinery,Turbine_Controller,Medium
+CRU_TA_0568,CRU_LOOP_056,Crude Distillation Unit (CDU),Texas City Complex,Tank_Gauging,Medium
+FLU_FI_0569,FLU_LOOP_056,Fluid Catalytic Cracking (FCC),Baytown Refinery,Fire_Gas_System,Low
+HYD_DC_0570,HYD_LOOP_057,Hydrocracking Unit (HCU),Gulf Coast Refinery,DCS_Controller,Medium
+REF_SA_0571,REF_LOOP_057,Reformer Unit,Texas City Complex,Safety_PLC,High
+ALK_FI_0572,ALK_LOOP_057,Alkylation Unit,Baytown Refinery,Field_PLC,High
+COK_HM_0573,COK_LOOP_057,Coker Unit,Gulf Coast Refinery,HMI_Station,Medium
+HYD_HI_0574,HYD_LOOP_057,Hydrotreater,Texas City Complex,Historian_Server,High
+ISO_VF_0575,ISO_LOOP_057,Isomerization Unit,Baytown Refinery,VFD,Medium
+CRU_SM_0576,CRU_LOOP_057,Crude Distillation Unit (CDU),Gulf Coast Refinery,Smart_Transmitter,Medium
+FLU_CO_0577,FLU_LOOP_057,Fluid Catalytic Cracking (FCC),Texas City Complex,Control_Valve,High
+HYD_FL_0578,HYD_LOOP_057,Hydrocracking Unit (HCU),Baytown Refinery,Flow_Computer,High
+REF_AN_0579,REF_LOOP_057,Reformer Unit,Gulf Coast Refinery,Analyzer,Low
+ALK_SA_0580,ALK_LOOP_058,Alkylation Unit,Texas City Complex,Safety_System,High
+COK_CO_0581,COK_LOOP_058,Coker Unit,Baytown Refinery,Compressor_Controller,Low
+HYD_TU_0582,HYD_LOOP_058,Hydrotreater,Gulf Coast Refinery,Turbine_Controller,High
+ISO_TA_0583,ISO_LOOP_058,Isomerization Unit,Texas City Complex,Tank_Gauging,Low
+CRU_FI_0584,CRU_LOOP_058,Crude Distillation Unit (CDU),Baytown Refinery,Fire_Gas_System,Low
+FLU_DC_0585,FLU_LOOP_058,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery,DCS_Controller,High
+HYD_SA_0586,HYD_LOOP_058,Hydrocracking Unit (HCU),Texas City Complex,Safety_PLC,Medium
+REF_FI_0587,REF_LOOP_058,Reformer Unit,Baytown Refinery,Field_PLC,Low
+ALK_HM_0588,ALK_LOOP_058,Alkylation Unit,Gulf Coast Refinery,HMI_Station,Medium
+COK_HI_0589,COK_LOOP_058,Coker Unit,Texas City Complex,Historian_Server,Medium
+HYD_VF_0590,HYD_LOOP_059,Hydrotreater,Baytown Refinery,VFD,High
+ISO_SM_0591,ISO_LOOP_059,Isomerization Unit,Gulf Coast Refinery,Smart_Transmitter,High
+CRU_CO_0592,CRU_LOOP_059,Crude Distillation Unit (CDU),Texas City Complex,Control_Valve,Medium
+FLU_FL_0593,FLU_LOOP_059,Fluid Catalytic Cracking (FCC),Baytown Refinery,Flow_Computer,High
+HYD_AN_0594,HYD_LOOP_059,Hydrocracking Unit (HCU),Gulf Coast Refinery,Analyzer,High
+REF_SA_0595,REF_LOOP_059,Reformer Unit,Texas City Complex,Safety_System,High
+ALK_CO_0596,ALK_LOOP_059,Alkylation Unit,Baytown Refinery,Compressor_Controller,High
+COK_TU_0597,COK_LOOP_059,Coker Unit,Gulf Coast Refinery,Turbine_Controller,Medium
+HYD_TA_0598,HYD_LOOP_059,Hydrotreater,Texas City Complex,Tank_Gauging,Medium
+ISO_FI_0599,ISO_LOOP_059,Isomerization Unit,Baytown Refinery,Fire_Gas_System,Low
+CRU_DC_0600,CRU_LOOP_060,Crude Distillation Unit (CDU),Gulf Coast Refinery,DCS_Controller,High
+FLU_SA_0601,FLU_LOOP_060,Fluid Catalytic Cracking (FCC),Texas City Complex,Safety_PLC,High
+HYD_FI_0602,HYD_LOOP_060,Hydrocracking Unit (HCU),Baytown Refinery,Field_PLC,High
+REF_HM_0603,REF_LOOP_060,Reformer Unit,Gulf Coast Refinery,HMI_Station,Medium
+ALK_HI_0604,ALK_LOOP_060,Alkylation Unit,Texas City Complex,Historian_Server,Low
+COK_VF_0605,COK_LOOP_060,Coker Unit,Baytown Refinery,VFD,High
+HYD_SM_0606,HYD_LOOP_060,Hydrotreater,Gulf Coast Refinery,Smart_Transmitter,Medium
+ISO_CO_0607,ISO_LOOP_060,Isomerization Unit,Texas City Complex,Control_Valve,Medium
+CRU_FL_0608,CRU_LOOP_060,Crude Distillation Unit (CDU),Baytown Refinery,Flow_Computer,High
+FLU_AN_0609,FLU_LOOP_060,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery,Analyzer,Medium
+HYD_SA_0610,HYD_LOOP_061,Hydrocracking Unit (HCU),Texas City Complex,Safety_System,High
+REF_CO_0611,REF_LOOP_061,Reformer Unit,Baytown Refinery,Compressor_Controller,High
+ALK_TU_0612,ALK_LOOP_061,Alkylation Unit,Gulf Coast Refinery,Turbine_Controller,Low
+COK_TA_0613,COK_LOOP_061,Coker Unit,Texas City Complex,Tank_Gauging,Low
+HYD_FI_0614,HYD_LOOP_061,Hydrotreater,Baytown Refinery,Fire_Gas_System,Medium
+ISO_DC_0615,ISO_LOOP_061,Isomerization Unit,Gulf Coast Refinery,DCS_Controller,High
+CRU_SA_0616,CRU_LOOP_061,Crude Distillation Unit (CDU),Texas City Complex,Safety_PLC,High
+FLU_FI_0617,FLU_LOOP_061,Fluid Catalytic Cracking (FCC),Baytown Refinery,Field_PLC,High
+HYD_HM_0618,HYD_LOOP_061,Hydrocracking Unit (HCU),Gulf Coast Refinery,HMI_Station,Low
+REF_HI_0619,REF_LOOP_061,Reformer Unit,Texas City Complex,Historian_Server,Low
+ALK_VF_0620,ALK_LOOP_062,Alkylation Unit,Baytown Refinery,VFD,Low
+COK_SM_0621,COK_LOOP_062,Coker Unit,Gulf Coast Refinery,Smart_Transmitter,Medium
+HYD_CO_0622,HYD_LOOP_062,Hydrotreater,Texas City Complex,Control_Valve,Low
+ISO_FL_0623,ISO_LOOP_062,Isomerization Unit,Baytown Refinery,Flow_Computer,Medium
+CRU_AN_0624,CRU_LOOP_062,Crude Distillation Unit (CDU),Gulf Coast Refinery,Analyzer,Medium
+FLU_SA_0625,FLU_LOOP_062,Fluid Catalytic Cracking (FCC),Texas City Complex,Safety_System,High
+HYD_CO_0626,HYD_LOOP_062,Hydrocracking Unit (HCU),Baytown Refinery,Compressor_Controller,Low
+REF_TU_0627,REF_LOOP_062,Reformer Unit,Gulf Coast Refinery,Turbine_Controller,Low
+ALK_TA_0628,ALK_LOOP_062,Alkylation Unit,Texas City Complex,Tank_Gauging,Medium
+COK_FI_0629,COK_LOOP_062,Coker Unit,Baytown Refinery,Fire_Gas_System,High
+HYD_DC_0630,HYD_LOOP_063,Hydrotreater,Gulf Coast Refinery,DCS_Controller,High
+ISO_SA_0631,ISO_LOOP_063,Isomerization Unit,Texas City Complex,Safety_PLC,Medium
+CRU_FI_0632,CRU_LOOP_063,Crude Distillation Unit (CDU),Baytown Refinery,Field_PLC,High
+FLU_HM_0633,FLU_LOOP_063,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery,HMI_Station,Low
+HYD_HI_0634,HYD_LOOP_063,Hydrocracking Unit (HCU),Texas City Complex,Historian_Server,Medium
+REF_VF_0635,REF_LOOP_063,Reformer Unit,Baytown Refinery,VFD,High
+ALK_SM_0636,ALK_LOOP_063,Alkylation Unit,Gulf Coast Refinery,Smart_Transmitter,Medium
+COK_CO_0637,COK_LOOP_063,Coker Unit,Texas City Complex,Control_Valve,Low
+HYD_FL_0638,HYD_LOOP_063,Hydrotreater,Baytown Refinery,Flow_Computer,Low
+ISO_AN_0639,ISO_LOOP_063,Isomerization Unit,Gulf Coast Refinery,Analyzer,Low
+CRU_SA_0640,CRU_LOOP_064,Crude Distillation Unit (CDU),Texas City Complex,Safety_System,High
+FLU_CO_0641,FLU_LOOP_064,Fluid Catalytic Cracking (FCC),Baytown Refinery,Compressor_Controller,Medium
+HYD_TU_0642,HYD_LOOP_064,Hydrocracking Unit (HCU),Gulf Coast Refinery,Turbine_Controller,High
+REF_TA_0643,REF_LOOP_064,Reformer Unit,Texas City Complex,Tank_Gauging,High
+ALK_FI_0644,ALK_LOOP_064,Alkylation Unit,Baytown Refinery,Fire_Gas_System,Medium
+COK_DC_0645,COK_LOOP_064,Coker Unit,Gulf Coast Refinery,DCS_Controller,High
+HYD_SA_0646,HYD_LOOP_064,Hydrotreater,Texas City Complex,Safety_PLC,High
+ISO_FI_0647,ISO_LOOP_064,Isomerization Unit,Baytown Refinery,Field_PLC,High
+CRU_HM_0648,CRU_LOOP_064,Crude Distillation Unit (CDU),Gulf Coast Refinery,HMI_Station,Medium
+FLU_HI_0649,FLU_LOOP_064,Fluid Catalytic Cracking (FCC),Texas City Complex,Historian_Server,Medium
+HYD_VF_0650,HYD_LOOP_065,Hydrocracking Unit (HCU),Baytown Refinery,VFD,High
+REF_SM_0651,REF_LOOP_065,Reformer Unit,Gulf Coast Refinery,Smart_Transmitter,Medium
+ALK_CO_0652,ALK_LOOP_065,Alkylation Unit,Texas City Complex,Control_Valve,Medium
+COK_FL_0653,COK_LOOP_065,Coker Unit,Baytown Refinery,Flow_Computer,High
+HYD_AN_0654,HYD_LOOP_065,Hydrotreater,Gulf Coast Refinery,Analyzer,Low
+ISO_SA_0655,ISO_LOOP_065,Isomerization Unit,Texas City Complex,Safety_System,High
+CRU_CO_0656,CRU_LOOP_065,Crude Distillation Unit (CDU),Baytown Refinery,Compressor_Controller,Medium
+FLU_TU_0657,FLU_LOOP_065,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery,Turbine_Controller,Low
+HYD_TA_0658,HYD_LOOP_065,Hydrocracking Unit (HCU),Texas City Complex,Tank_Gauging,Medium
+REF_FI_0659,REF_LOOP_065,Reformer Unit,Baytown Refinery,Fire_Gas_System,Medium
+ALK_DC_0660,ALK_LOOP_066,Alkylation Unit,Gulf Coast Refinery,DCS_Controller,High
+COK_SA_0661,COK_LOOP_066,Coker Unit,Texas City Complex,Safety_PLC,High
+HYD_FI_0662,HYD_LOOP_066,Hydrotreater,Baytown Refinery,Field_PLC,Low
+ISO_HM_0663,ISO_LOOP_066,Isomerization Unit,Gulf Coast Refinery,HMI_Station,Medium
+CRU_HI_0664,CRU_LOOP_066,Crude Distillation Unit (CDU),Texas City Complex,Historian_Server,High
+FLU_VF_0665,FLU_LOOP_066,Fluid Catalytic Cracking (FCC),Baytown Refinery,VFD,High
+HYD_SM_0666,HYD_LOOP_066,Hydrocracking Unit (HCU),Gulf Coast Refinery,Smart_Transmitter,Low
+REF_CO_0667,REF_LOOP_066,Reformer Unit,Texas City Complex,Control_Valve,Medium
+ALK_FL_0668,ALK_LOOP_066,Alkylation Unit,Baytown Refinery,Flow_Computer,Low
+COK_AN_0669,COK_LOOP_066,Coker Unit,Gulf Coast Refinery,Analyzer,High
+HYD_SA_0670,HYD_LOOP_067,Hydrotreater,Texas City Complex,Safety_System,Medium
+ISO_CO_0671,ISO_LOOP_067,Isomerization Unit,Baytown Refinery,Compressor_Controller,High
+CRU_TU_0672,CRU_LOOP_067,Crude Distillation Unit (CDU),Gulf Coast Refinery,Turbine_Controller,Low
+FLU_TA_0673,FLU_LOOP_067,Fluid Catalytic Cracking (FCC),Texas City Complex,Tank_Gauging,Medium
+HYD_FI_0674,HYD_LOOP_067,Hydrocracking Unit (HCU),Baytown Refinery,Fire_Gas_System,Medium
+REF_DC_0675,REF_LOOP_067,Reformer Unit,Gulf Coast Refinery,DCS_Controller,High
+ALK_SA_0676,ALK_LOOP_067,Alkylation Unit,Texas City Complex,Safety_PLC,High
+COK_FI_0677,COK_LOOP_067,Coker Unit,Baytown Refinery,Field_PLC,Low
+HYD_HM_0678,HYD_LOOP_067,Hydrotreater,Gulf Coast Refinery,HMI_Station,Medium
+ISO_HI_0679,ISO_LOOP_067,Isomerization Unit,Texas City Complex,Historian_Server,Medium
+CRU_VF_0680,CRU_LOOP_068,Crude Distillation Unit (CDU),Baytown Refinery,VFD,High
+FLU_SM_0681,FLU_LOOP_068,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery,Smart_Transmitter,Low
+HYD_CO_0682,HYD_LOOP_068,Hydrocracking Unit (HCU),Texas City Complex,Control_Valve,Medium
+REF_FL_0683,REF_LOOP_068,Reformer Unit,Baytown Refinery,Flow_Computer,Medium
+ALK_AN_0684,ALK_LOOP_068,Alkylation Unit,Gulf Coast Refinery,Analyzer,High
+COK_SA_0685,COK_LOOP_068,Coker Unit,Texas City Complex,Safety_System,High
+HYD_CO_0686,HYD_LOOP_068,Hydrotreater,Baytown Refinery,Compressor_Controller,High
+ISO_TU_0687,ISO_LOOP_068,Isomerization Unit,Gulf Coast Refinery,Turbine_Controller,Low
+CRU_TA_0688,CRU_LOOP_068,Crude Distillation Unit (CDU),Texas City Complex,Tank_Gauging,Low
+FLU_FI_0689,FLU_LOOP_068,Fluid Catalytic Cracking (FCC),Baytown Refinery,Fire_Gas_System,Low
+HYD_DC_0690,HYD_LOOP_069,Hydrocracking Unit (HCU),Gulf Coast Refinery,DCS_Controller,High
+REF_SA_0691,REF_LOOP_069,Reformer Unit,Texas City Complex,Safety_PLC,High
+ALK_FI_0692,ALK_LOOP_069,Alkylation Unit,Baytown Refinery,Field_PLC,Medium
+COK_HM_0693,COK_LOOP_069,Coker Unit,Gulf Coast Refinery,HMI_Station,Low
+HYD_HI_0694,HYD_LOOP_069,Hydrotreater,Texas City Complex,Historian_Server,Low
+ISO_VF_0695,ISO_LOOP_069,Isomerization Unit,Baytown Refinery,VFD,Medium
+CRU_SM_0696,CRU_LOOP_069,Crude Distillation Unit (CDU),Gulf Coast Refinery,Smart_Transmitter,Medium
+FLU_CO_0697,FLU_LOOP_069,Fluid Catalytic Cracking (FCC),Texas City Complex,Control_Valve,High
+HYD_FL_0698,HYD_LOOP_069,Hydrocracking Unit (HCU),Baytown Refinery,Flow_Computer,High
+REF_AN_0699,REF_LOOP_069,Reformer Unit,Gulf Coast Refinery,Analyzer,Medium
+ALK_SA_0700,ALK_LOOP_070,Alkylation Unit,Texas City Complex,Safety_System,High
+COK_CO_0701,COK_LOOP_070,Coker Unit,Baytown Refinery,Compressor_Controller,Medium
+HYD_TU_0702,HYD_LOOP_070,Hydrotreater,Gulf Coast Refinery,Turbine_Controller,Low
+ISO_TA_0703,ISO_LOOP_070,Isomerization Unit,Texas City Complex,Tank_Gauging,Low
+CRU_FI_0704,CRU_LOOP_070,Crude Distillation Unit (CDU),Baytown Refinery,Fire_Gas_System,High
+FLU_DC_0705,FLU_LOOP_070,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery,DCS_Controller,High
+HYD_SA_0706,HYD_LOOP_070,Hydrocracking Unit (HCU),Texas City Complex,Safety_PLC,High
+REF_FI_0707,REF_LOOP_070,Reformer Unit,Baytown Refinery,Field_PLC,Medium
+ALK_HM_0708,ALK_LOOP_070,Alkylation Unit,Gulf Coast Refinery,HMI_Station,Medium
+COK_HI_0709,COK_LOOP_070,Coker Unit,Texas City Complex,Historian_Server,High
+HYD_VF_0710,HYD_LOOP_071,Hydrotreater,Baytown Refinery,VFD,High
+ISO_SM_0711,ISO_LOOP_071,Isomerization Unit,Gulf Coast Refinery,Smart_Transmitter,High
+CRU_CO_0712,CRU_LOOP_071,Crude Distillation Unit (CDU),Texas City Complex,Control_Valve,Medium
+FLU_FL_0713,FLU_LOOP_071,Fluid Catalytic Cracking (FCC),Baytown Refinery,Flow_Computer,High
+HYD_AN_0714,HYD_LOOP_071,Hydrocracking Unit (HCU),Gulf Coast Refinery,Analyzer,Low
+REF_SA_0715,REF_LOOP_071,Reformer Unit,Texas City Complex,Safety_System,Medium
+ALK_CO_0716,ALK_LOOP_071,Alkylation Unit,Baytown Refinery,Compressor_Controller,Medium
+COK_TU_0717,COK_LOOP_071,Coker Unit,Gulf Coast Refinery,Turbine_Controller,High
+HYD_TA_0718,HYD_LOOP_071,Hydrotreater,Texas City Complex,Tank_Gauging,Medium
+ISO_FI_0719,ISO_LOOP_071,Isomerization Unit,Baytown Refinery,Fire_Gas_System,High
+CRU_DC_0720,CRU_LOOP_072,Crude Distillation Unit (CDU),Gulf Coast Refinery,DCS_Controller,Medium
+FLU_SA_0721,FLU_LOOP_072,Fluid Catalytic Cracking (FCC),Texas City Complex,Safety_PLC,High
+HYD_FI_0722,HYD_LOOP_072,Hydrocracking Unit (HCU),Baytown Refinery,Field_PLC,Low
+REF_HM_0723,REF_LOOP_072,Reformer Unit,Gulf Coast Refinery,HMI_Station,Medium
+ALK_HI_0724,ALK_LOOP_072,Alkylation Unit,Texas City Complex,Historian_Server,Low
+COK_VF_0725,COK_LOOP_072,Coker Unit,Baytown Refinery,VFD,High
+HYD_SM_0726,HYD_LOOP_072,Hydrotreater,Gulf Coast Refinery,Smart_Transmitter,Medium
+ISO_CO_0727,ISO_LOOP_072,Isomerization Unit,Texas City Complex,Control_Valve,High
+CRU_FL_0728,CRU_LOOP_072,Crude Distillation Unit (CDU),Baytown Refinery,Flow_Computer,High
+FLU_AN_0729,FLU_LOOP_072,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery,Analyzer,Medium
+HYD_SA_0730,HYD_LOOP_073,Hydrocracking Unit (HCU),Texas City Complex,Safety_System,High
+REF_CO_0731,REF_LOOP_073,Reformer Unit,Baytown Refinery,Compressor_Controller,Medium
+ALK_TU_0732,ALK_LOOP_073,Alkylation Unit,Gulf Coast Refinery,Turbine_Controller,Medium
+COK_TA_0733,COK_LOOP_073,Coker Unit,Texas City Complex,Tank_Gauging,High
+HYD_FI_0734,HYD_LOOP_073,Hydrotreater,Baytown Refinery,Fire_Gas_System,High
+ISO_DC_0735,ISO_LOOP_073,Isomerization Unit,Gulf Coast Refinery,DCS_Controller,High
+CRU_SA_0736,CRU_LOOP_073,Crude Distillation Unit (CDU),Texas City Complex,Safety_PLC,High
+FLU_FI_0737,FLU_LOOP_073,Fluid Catalytic Cracking (FCC),Baytown Refinery,Field_PLC,High
+HYD_HM_0738,HYD_LOOP_073,Hydrocracking Unit (HCU),Gulf Coast Refinery,HMI_Station,Low
+REF_HI_0739,REF_LOOP_073,Reformer Unit,Texas City Complex,Historian_Server,Medium
+ALK_VF_0740,ALK_LOOP_074,Alkylation Unit,Baytown Refinery,VFD,Medium
+COK_SM_0741,COK_LOOP_074,Coker Unit,Gulf Coast Refinery,Smart_Transmitter,Low
+HYD_CO_0742,HYD_LOOP_074,Hydrotreater,Texas City Complex,Control_Valve,High
+ISO_FL_0743,ISO_LOOP_074,Isomerization Unit,Baytown Refinery,Flow_Computer,High
+CRU_AN_0744,CRU_LOOP_074,Crude Distillation Unit (CDU),Gulf Coast Refinery,Analyzer,Low
+FLU_SA_0745,FLU_LOOP_074,Fluid Catalytic Cracking (FCC),Texas City Complex,Safety_System,Medium
+HYD_CO_0746,HYD_LOOP_074,Hydrocracking Unit (HCU),Baytown Refinery,Compressor_Controller,Medium
+REF_TU_0747,REF_LOOP_074,Reformer Unit,Gulf Coast Refinery,Turbine_Controller,Medium
+ALK_TA_0748,ALK_LOOP_074,Alkylation Unit,Texas City Complex,Tank_Gauging,Medium
+COK_FI_0749,COK_LOOP_074,Coker Unit,Baytown Refinery,Fire_Gas_System,Medium
+HYD_DC_0750,HYD_LOOP_075,Hydrotreater,Gulf Coast Refinery,DCS_Controller,Medium
+ISO_SA_0751,ISO_LOOP_075,Isomerization Unit,Texas City Complex,Safety_PLC,High
+CRU_FI_0752,CRU_LOOP_075,Crude Distillation Unit (CDU),Baytown Refinery,Field_PLC,Low
+FLU_HM_0753,FLU_LOOP_075,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery,HMI_Station,High
+HYD_HI_0754,HYD_LOOP_075,Hydrocracking Unit (HCU),Texas City Complex,Historian_Server,Medium
+REF_VF_0755,REF_LOOP_075,Reformer Unit,Baytown Refinery,VFD,Low
+ALK_SM_0756,ALK_LOOP_075,Alkylation Unit,Gulf Coast Refinery,Smart_Transmitter,High
+COK_CO_0757,COK_LOOP_075,Coker Unit,Texas City Complex,Control_Valve,Medium
+HYD_FL_0758,HYD_LOOP_075,Hydrotreater,Baytown Refinery,Flow_Computer,High
+ISO_AN_0759,ISO_LOOP_075,Isomerization Unit,Gulf Coast Refinery,Analyzer,Low
+CRU_SA_0760,CRU_LOOP_076,Crude Distillation Unit (CDU),Texas City Complex,Safety_System,High
+FLU_CO_0761,FLU_LOOP_076,Fluid Catalytic Cracking (FCC),Baytown Refinery,Compressor_Controller,Medium
+HYD_TU_0762,HYD_LOOP_076,Hydrocracking Unit (HCU),Gulf Coast Refinery,Turbine_Controller,Low
+REF_TA_0763,REF_LOOP_076,Reformer Unit,Texas City Complex,Tank_Gauging,High
+ALK_FI_0764,ALK_LOOP_076,Alkylation Unit,Baytown Refinery,Fire_Gas_System,High
+COK_DC_0765,COK_LOOP_076,Coker Unit,Gulf Coast Refinery,DCS_Controller,High
+HYD_SA_0766,HYD_LOOP_076,Hydrotreater,Texas City Complex,Safety_PLC,High
+ISO_FI_0767,ISO_LOOP_076,Isomerization Unit,Baytown Refinery,Field_PLC,Medium
+CRU_HM_0768,CRU_LOOP_076,Crude Distillation Unit (CDU),Gulf Coast Refinery,HMI_Station,Medium
+FLU_HI_0769,FLU_LOOP_076,Fluid Catalytic Cracking (FCC),Texas City Complex,Historian_Server,Low
+HYD_VF_0770,HYD_LOOP_077,Hydrocracking Unit (HCU),Baytown Refinery,VFD,Medium
+REF_SM_0771,REF_LOOP_077,Reformer Unit,Gulf Coast Refinery,Smart_Transmitter,Medium
+ALK_CO_0772,ALK_LOOP_077,Alkylation Unit,Texas City Complex,Control_Valve,High
+COK_FL_0773,COK_LOOP_077,Coker Unit,Baytown Refinery,Flow_Computer,High
+HYD_AN_0774,HYD_LOOP_077,Hydrotreater,Gulf Coast Refinery,Analyzer,Medium
+ISO_SA_0775,ISO_LOOP_077,Isomerization Unit,Texas City Complex,Safety_System,High
+CRU_CO_0776,CRU_LOOP_077,Crude Distillation Unit (CDU),Baytown Refinery,Compressor_Controller,Medium
+FLU_TU_0777,FLU_LOOP_077,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery,Turbine_Controller,Medium
+HYD_TA_0778,HYD_LOOP_077,Hydrocracking Unit (HCU),Texas City Complex,Tank_Gauging,Low
+REF_FI_0779,REF_LOOP_077,Reformer Unit,Baytown Refinery,Fire_Gas_System,Low
+ALK_DC_0780,ALK_LOOP_078,Alkylation Unit,Gulf Coast Refinery,DCS_Controller,High
+COK_SA_0781,COK_LOOP_078,Coker Unit,Texas City Complex,Safety_PLC,High
+HYD_FI_0782,HYD_LOOP_078,Hydrotreater,Baytown Refinery,Field_PLC,Low
+ISO_HM_0783,ISO_LOOP_078,Isomerization Unit,Gulf Coast Refinery,HMI_Station,Low
+CRU_HI_0784,CRU_LOOP_078,Crude Distillation Unit (CDU),Texas City Complex,Historian_Server,High
+FLU_VF_0785,FLU_LOOP_078,Fluid Catalytic Cracking (FCC),Baytown Refinery,VFD,Medium
+HYD_SM_0786,HYD_LOOP_078,Hydrocracking Unit (HCU),Gulf Coast Refinery,Smart_Transmitter,Medium
+REF_CO_0787,REF_LOOP_078,Reformer Unit,Texas City Complex,Control_Valve,Medium
+ALK_FL_0788,ALK_LOOP_078,Alkylation Unit,Baytown Refinery,Flow_Computer,Low
+COK_AN_0789,COK_LOOP_078,Coker Unit,Gulf Coast Refinery,Analyzer,Medium
+HYD_SA_0790,HYD_LOOP_079,Hydrotreater,Texas City Complex,Safety_System,Medium
+ISO_CO_0791,ISO_LOOP_079,Isomerization Unit,Baytown Refinery,Compressor_Controller,Medium
+CRU_TU_0792,CRU_LOOP_079,Crude Distillation Unit (CDU),Gulf Coast Refinery,Turbine_Controller,Medium
+FLU_TA_0793,FLU_LOOP_079,Fluid Catalytic Cracking (FCC),Texas City Complex,Tank_Gauging,Medium
+HYD_FI_0794,HYD_LOOP_079,Hydrocracking Unit (HCU),Baytown Refinery,Fire_Gas_System,High
+REF_DC_0795,REF_LOOP_079,Reformer Unit,Gulf Coast Refinery,DCS_Controller,High
+ALK_SA_0796,ALK_LOOP_079,Alkylation Unit,Texas City Complex,Safety_PLC,High
+COK_FI_0797,COK_LOOP_079,Coker Unit,Baytown Refinery,Field_PLC,High
+HYD_HM_0798,HYD_LOOP_079,Hydrotreater,Gulf Coast Refinery,HMI_Station,Medium
+ISO_HI_0799,ISO_LOOP_079,Isomerization Unit,Texas City Complex,Historian_Server,Medium
+CRU_VF_0800,CRU_LOOP_080,Crude Distillation Unit (CDU),Baytown Refinery,VFD,Medium
+FLU_SM_0801,FLU_LOOP_080,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery,Smart_Transmitter,High
+HYD_CO_0802,HYD_LOOP_080,Hydrocracking Unit (HCU),Texas City Complex,Control_Valve,Medium
+REF_FL_0803,REF_LOOP_080,Reformer Unit,Baytown Refinery,Flow_Computer,Medium
+ALK_AN_0804,ALK_LOOP_080,Alkylation Unit,Gulf Coast Refinery,Analyzer,High
+COK_SA_0805,COK_LOOP_080,Coker Unit,Texas City Complex,Safety_System,High
+HYD_CO_0806,HYD_LOOP_080,Hydrotreater,Baytown Refinery,Compressor_Controller,Low
+ISO_TU_0807,ISO_LOOP_080,Isomerization Unit,Gulf Coast Refinery,Turbine_Controller,Low
+CRU_TA_0808,CRU_LOOP_080,Crude Distillation Unit (CDU),Texas City Complex,Tank_Gauging,Medium
+FLU_FI_0809,FLU_LOOP_080,Fluid Catalytic Cracking (FCC),Baytown Refinery,Fire_Gas_System,High
+HYD_DC_0810,HYD_LOOP_081,Hydrocracking Unit (HCU),Gulf Coast Refinery,DCS_Controller,High
+REF_SA_0811,REF_LOOP_081,Reformer Unit,Texas City Complex,Safety_PLC,High
+ALK_FI_0812,ALK_LOOP_081,Alkylation Unit,Baytown Refinery,Field_PLC,Medium
+COK_HM_0813,COK_LOOP_081,Coker Unit,Gulf Coast Refinery,HMI_Station,Medium
+HYD_HI_0814,HYD_LOOP_081,Hydrotreater,Texas City Complex,Historian_Server,High
+ISO_VF_0815,ISO_LOOP_081,Isomerization Unit,Baytown Refinery,VFD,Medium
+CRU_SM_0816,CRU_LOOP_081,Crude Distillation Unit (CDU),Gulf Coast Refinery,Smart_Transmitter,Medium
+FLU_CO_0817,FLU_LOOP_081,Fluid Catalytic Cracking (FCC),Texas City Complex,Control_Valve,Medium
+HYD_FL_0818,HYD_LOOP_081,Hydrocracking Unit (HCU),Baytown Refinery,Flow_Computer,Low
+REF_AN_0819,REF_LOOP_081,Reformer Unit,Gulf Coast Refinery,Analyzer,Medium
+ALK_SA_0820,ALK_LOOP_082,Alkylation Unit,Texas City Complex,Safety_System,High
+COK_CO_0821,COK_LOOP_082,Coker Unit,Baytown Refinery,Compressor_Controller,High
+HYD_TU_0822,HYD_LOOP_082,Hydrotreater,Gulf Coast Refinery,Turbine_Controller,Medium
+ISO_TA_0823,ISO_LOOP_082,Isomerization Unit,Texas City Complex,Tank_Gauging,Medium
+CRU_FI_0824,CRU_LOOP_082,Crude Distillation Unit (CDU),Baytown Refinery,Fire_Gas_System,Low
+FLU_DC_0825,FLU_LOOP_082,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery,DCS_Controller,High
+HYD_SA_0826,HYD_LOOP_082,Hydrocracking Unit (HCU),Texas City Complex,Safety_PLC,High
+REF_FI_0827,REF_LOOP_082,Reformer Unit,Baytown Refinery,Field_PLC,High
+ALK_HM_0828,ALK_LOOP_082,Alkylation Unit,Gulf Coast Refinery,HMI_Station,Medium
+COK_HI_0829,COK_LOOP_082,Coker Unit,Texas City Complex,Historian_Server,Medium
+HYD_VF_0830,HYD_LOOP_083,Hydrotreater,Baytown Refinery,VFD,Low
+ISO_SM_0831,ISO_LOOP_083,Isomerization Unit,Gulf Coast Refinery,Smart_Transmitter,Medium
+CRU_CO_0832,CRU_LOOP_083,Crude Distillation Unit (CDU),Texas City Complex,Control_Valve,Medium
+FLU_FL_0833,FLU_LOOP_083,Fluid Catalytic Cracking (FCC),Baytown Refinery,Flow_Computer,High
+HYD_AN_0834,HYD_LOOP_083,Hydrocracking Unit (HCU),Gulf Coast Refinery,Analyzer,Medium
+REF_SA_0835,REF_LOOP_083,Reformer Unit,Texas City Complex,Safety_System,High
+ALK_CO_0836,ALK_LOOP_083,Alkylation Unit,Baytown Refinery,Compressor_Controller,Medium
+COK_TU_0837,COK_LOOP_083,Coker Unit,Gulf Coast Refinery,Turbine_Controller,Medium
+HYD_TA_0838,HYD_LOOP_083,Hydrotreater,Texas City Complex,Tank_Gauging,Low
+ISO_FI_0839,ISO_LOOP_083,Isomerization Unit,Baytown Refinery,Fire_Gas_System,Medium
+CRU_DC_0840,CRU_LOOP_084,Crude Distillation Unit (CDU),Gulf Coast Refinery,DCS_Controller,High
+FLU_SA_0841,FLU_LOOP_084,Fluid Catalytic Cracking (FCC),Texas City Complex,Safety_PLC,High
+HYD_FI_0842,HYD_LOOP_084,Hydrocracking Unit (HCU),Baytown Refinery,Field_PLC,Medium
+REF_HM_0843,REF_LOOP_084,Reformer Unit,Gulf Coast Refinery,HMI_Station,Medium
+ALK_HI_0844,ALK_LOOP_084,Alkylation Unit,Texas City Complex,Historian_Server,Medium
+COK_VF_0845,COK_LOOP_084,Coker Unit,Baytown Refinery,VFD,Low
+HYD_SM_0846,HYD_LOOP_084,Hydrotreater,Gulf Coast Refinery,Smart_Transmitter,High
+ISO_CO_0847,ISO_LOOP_084,Isomerization Unit,Texas City Complex,Control_Valve,Medium
+CRU_FL_0848,CRU_LOOP_084,Crude Distillation Unit (CDU),Baytown Refinery,Flow_Computer,High
+FLU_AN_0849,FLU_LOOP_084,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery,Analyzer,High
+HYD_SA_0850,HYD_LOOP_085,Hydrocracking Unit (HCU),Texas City Complex,Safety_System,High
+REF_CO_0851,REF_LOOP_085,Reformer Unit,Baytown Refinery,Compressor_Controller,Medium
+ALK_TU_0852,ALK_LOOP_085,Alkylation Unit,Gulf Coast Refinery,Turbine_Controller,Low
+COK_TA_0853,COK_LOOP_085,Coker Unit,Texas City Complex,Tank_Gauging,High
+HYD_FI_0854,HYD_LOOP_085,Hydrotreater,Baytown Refinery,Fire_Gas_System,High
+ISO_DC_0855,ISO_LOOP_085,Isomerization Unit,Gulf Coast Refinery,DCS_Controller,High
+CRU_SA_0856,CRU_LOOP_085,Crude Distillation Unit (CDU),Texas City Complex,Safety_PLC,High
+FLU_FI_0857,FLU_LOOP_085,Fluid Catalytic Cracking (FCC),Baytown Refinery,Field_PLC,High
+HYD_HM_0858,HYD_LOOP_085,Hydrocracking Unit (HCU),Gulf Coast Refinery,HMI_Station,Medium
+REF_HI_0859,REF_LOOP_085,Reformer Unit,Texas City Complex,Historian_Server,Low
+ALK_VF_0860,ALK_LOOP_086,Alkylation Unit,Baytown Refinery,VFD,High
+COK_SM_0861,COK_LOOP_086,Coker Unit,Gulf Coast Refinery,Smart_Transmitter,High
+HYD_CO_0862,HYD_LOOP_086,Hydrotreater,Texas City Complex,Control_Valve,High
+ISO_FL_0863,ISO_LOOP_086,Isomerization Unit,Baytown Refinery,Flow_Computer,High
+CRU_AN_0864,CRU_LOOP_086,Crude Distillation Unit (CDU),Gulf Coast Refinery,Analyzer,Low
+FLU_SA_0865,FLU_LOOP_086,Fluid Catalytic Cracking (FCC),Texas City Complex,Safety_System,Medium
+HYD_CO_0866,HYD_LOOP_086,Hydrocracking Unit (HCU),Baytown Refinery,Compressor_Controller,Medium
+REF_TU_0867,REF_LOOP_086,Reformer Unit,Gulf Coast Refinery,Turbine_Controller,Medium
+ALK_TA_0868,ALK_LOOP_086,Alkylation Unit,Texas City Complex,Tank_Gauging,Low
+COK_FI_0869,COK_LOOP_086,Coker Unit,Baytown Refinery,Fire_Gas_System,High
+HYD_DC_0870,HYD_LOOP_087,Hydrotreater,Gulf Coast Refinery,DCS_Controller,High
+ISO_SA_0871,ISO_LOOP_087,Isomerization Unit,Texas City Complex,Safety_PLC,High
+CRU_FI_0872,CRU_LOOP_087,Crude Distillation Unit (CDU),Baytown Refinery,Field_PLC,High
+FLU_HM_0873,FLU_LOOP_087,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery,HMI_Station,High
+HYD_HI_0874,HYD_LOOP_087,Hydrocracking Unit (HCU),Texas City Complex,Historian_Server,Medium
+REF_VF_0875,REF_LOOP_087,Reformer Unit,Baytown Refinery,VFD,Medium
+ALK_SM_0876,ALK_LOOP_087,Alkylation Unit,Gulf Coast Refinery,Smart_Transmitter,High
+COK_CO_0877,COK_LOOP_087,Coker Unit,Texas City Complex,Control_Valve,High
+HYD_FL_0878,HYD_LOOP_087,Hydrotreater,Baytown Refinery,Flow_Computer,High
+ISO_AN_0879,ISO_LOOP_087,Isomerization Unit,Gulf Coast Refinery,Analyzer,Low
+CRU_SA_0880,CRU_LOOP_088,Crude Distillation Unit (CDU),Texas City Complex,Safety_System,High
+FLU_CO_0881,FLU_LOOP_088,Fluid Catalytic Cracking (FCC),Baytown Refinery,Compressor_Controller,Medium
+HYD_TU_0882,HYD_LOOP_088,Hydrocracking Unit (HCU),Gulf Coast Refinery,Turbine_Controller,Medium
+REF_TA_0883,REF_LOOP_088,Reformer Unit,Texas City Complex,Tank_Gauging,High
+ALK_FI_0884,ALK_LOOP_088,Alkylation Unit,Baytown Refinery,Fire_Gas_System,Medium
+COK_DC_0885,COK_LOOP_088,Coker Unit,Gulf Coast Refinery,DCS_Controller,High
+HYD_SA_0886,HYD_LOOP_088,Hydrotreater,Texas City Complex,Safety_PLC,High
+ISO_FI_0887,ISO_LOOP_088,Isomerization Unit,Baytown Refinery,Field_PLC,Medium
+CRU_HM_0888,CRU_LOOP_088,Crude Distillation Unit (CDU),Gulf Coast Refinery,HMI_Station,High
+FLU_HI_0889,FLU_LOOP_088,Fluid Catalytic Cracking (FCC),Texas City Complex,Historian_Server,Medium
+HYD_VF_0890,HYD_LOOP_089,Hydrocracking Unit (HCU),Baytown Refinery,VFD,Low
+REF_SM_0891,REF_LOOP_089,Reformer Unit,Gulf Coast Refinery,Smart_Transmitter,Medium
+ALK_CO_0892,ALK_LOOP_089,Alkylation Unit,Texas City Complex,Control_Valve,Medium
+COK_FL_0893,COK_LOOP_089,Coker Unit,Baytown Refinery,Flow_Computer,Medium
+HYD_AN_0894,HYD_LOOP_089,Hydrotreater,Gulf Coast Refinery,Analyzer,High
+ISO_SA_0895,ISO_LOOP_089,Isomerization Unit,Texas City Complex,Safety_System,High
+CRU_CO_0896,CRU_LOOP_089,Crude Distillation Unit (CDU),Baytown Refinery,Compressor_Controller,Medium
+FLU_TU_0897,FLU_LOOP_089,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery,Turbine_Controller,Medium
+HYD_TA_0898,HYD_LOOP_089,Hydrocracking Unit (HCU),Texas City Complex,Tank_Gauging,Medium
+REF_FI_0899,REF_LOOP_089,Reformer Unit,Baytown Refinery,Fire_Gas_System,High
+ALK_DC_0900,ALK_LOOP_090,Alkylation Unit,Gulf Coast Refinery,DCS_Controller,High
+COK_SA_0901,COK_LOOP_090,Coker Unit,Texas City Complex,Safety_PLC,High
+HYD_FI_0902,HYD_LOOP_090,Hydrotreater,Baytown Refinery,Field_PLC,Medium
+ISO_HM_0903,ISO_LOOP_090,Isomerization Unit,Gulf Coast Refinery,HMI_Station,Medium
+CRU_HI_0904,CRU_LOOP_090,Crude Distillation Unit (CDU),Texas City Complex,Historian_Server,Medium
+FLU_VF_0905,FLU_LOOP_090,Fluid Catalytic Cracking (FCC),Baytown Refinery,VFD,Low
+HYD_SM_0906,HYD_LOOP_090,Hydrocracking Unit (HCU),Gulf Coast Refinery,Smart_Transmitter,Medium
+REF_CO_0907,REF_LOOP_090,Reformer Unit,Texas City Complex,Control_Valve,Medium
+ALK_FL_0908,ALK_LOOP_090,Alkylation Unit,Baytown Refinery,Flow_Computer,Medium
+COK_AN_0909,COK_LOOP_090,Coker Unit,Gulf Coast Refinery,Analyzer,Medium
+HYD_SA_0910,HYD_LOOP_091,Hydrotreater,Texas City Complex,Safety_System,Medium
+ISO_CO_0911,ISO_LOOP_091,Isomerization Unit,Baytown Refinery,Compressor_Controller,Medium
+CRU_TU_0912,CRU_LOOP_091,Crude Distillation Unit (CDU),Gulf Coast Refinery,Turbine_Controller,Medium
+FLU_TA_0913,FLU_LOOP_091,Fluid Catalytic Cracking (FCC),Texas City Complex,Tank_Gauging,High
+HYD_FI_0914,HYD_LOOP_091,Hydrocracking Unit (HCU),Baytown Refinery,Fire_Gas_System,Low
+REF_DC_0915,REF_LOOP_091,Reformer Unit,Gulf Coast Refinery,DCS_Controller,Medium
+ALK_SA_0916,ALK_LOOP_091,Alkylation Unit,Texas City Complex,Safety_PLC,High
+COK_FI_0917,COK_LOOP_091,Coker Unit,Baytown Refinery,Field_PLC,High
+HYD_HM_0918,HYD_LOOP_091,Hydrotreater,Gulf Coast Refinery,HMI_Station,Low
+ISO_HI_0919,ISO_LOOP_091,Isomerization Unit,Texas City Complex,Historian_Server,Medium
+CRU_VF_0920,CRU_LOOP_092,Crude Distillation Unit (CDU),Baytown Refinery,VFD,Low
+FLU_SM_0921,FLU_LOOP_092,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery,Smart_Transmitter,Medium
+HYD_CO_0922,HYD_LOOP_092,Hydrocracking Unit (HCU),Texas City Complex,Control_Valve,Medium
+REF_FL_0923,REF_LOOP_092,Reformer Unit,Baytown Refinery,Flow_Computer,Medium
+ALK_AN_0924,ALK_LOOP_092,Alkylation Unit,Gulf Coast Refinery,Analyzer,High
+COK_SA_0925,COK_LOOP_092,Coker Unit,Texas City Complex,Safety_System,High
+HYD_CO_0926,HYD_LOOP_092,Hydrotreater,Baytown Refinery,Compressor_Controller,Medium
+ISO_TU_0927,ISO_LOOP_092,Isomerization Unit,Gulf Coast Refinery,Turbine_Controller,High
+CRU_TA_0928,CRU_LOOP_092,Crude Distillation Unit (CDU),Texas City Complex,Tank_Gauging,Medium
+FLU_FI_0929,FLU_LOOP_092,Fluid Catalytic Cracking (FCC),Baytown Refinery,Fire_Gas_System,Medium
+HYD_DC_0930,HYD_LOOP_093,Hydrocracking Unit (HCU),Gulf Coast Refinery,DCS_Controller,High
+REF_SA_0931,REF_LOOP_093,Reformer Unit,Texas City Complex,Safety_PLC,High
+ALK_FI_0932,ALK_LOOP_093,Alkylation Unit,Baytown Refinery,Field_PLC,High
+COK_HM_0933,COK_LOOP_093,Coker Unit,Gulf Coast Refinery,HMI_Station,Low
+HYD_HI_0934,HYD_LOOP_093,Hydrotreater,Texas City Complex,Historian_Server,Medium
+ISO_VF_0935,ISO_LOOP_093,Isomerization Unit,Baytown Refinery,VFD,Low
+CRU_SM_0936,CRU_LOOP_093,Crude Distillation Unit (CDU),Gulf Coast Refinery,Smart_Transmitter,High
+FLU_CO_0937,FLU_LOOP_093,Fluid Catalytic Cracking (FCC),Texas City Complex,Control_Valve,High
+HYD_FL_0938,HYD_LOOP_093,Hydrocracking Unit (HCU),Baytown Refinery,Flow_Computer,High
+REF_AN_0939,REF_LOOP_093,Reformer Unit,Gulf Coast Refinery,Analyzer,Medium
+ALK_SA_0940,ALK_LOOP_094,Alkylation Unit,Texas City Complex,Safety_System,High
+COK_CO_0941,COK_LOOP_094,Coker Unit,Baytown Refinery,Compressor_Controller,Low
+HYD_TU_0942,HYD_LOOP_094,Hydrotreater,Gulf Coast Refinery,Turbine_Controller,High
+ISO_TA_0943,ISO_LOOP_094,Isomerization Unit,Texas City Complex,Tank_Gauging,Medium
+CRU_FI_0944,CRU_LOOP_094,Crude Distillation Unit (CDU),Baytown Refinery,Fire_Gas_System,Low
+FLU_DC_0945,FLU_LOOP_094,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery,DCS_Controller,High
+HYD_SA_0946,HYD_LOOP_094,Hydrocracking Unit (HCU),Texas City Complex,Safety_PLC,High
+REF_FI_0947,REF_LOOP_094,Reformer Unit,Baytown Refinery,Field_PLC,Medium
+ALK_HM_0948,ALK_LOOP_094,Alkylation Unit,Gulf Coast Refinery,HMI_Station,Medium
+COK_HI_0949,COK_LOOP_094,Coker Unit,Texas City Complex,Historian_Server,High
+HYD_VF_0950,HYD_LOOP_095,Hydrotreater,Baytown Refinery,VFD,High
+ISO_SM_0951,ISO_LOOP_095,Isomerization Unit,Gulf Coast Refinery,Smart_Transmitter,Medium
+CRU_CO_0952,CRU_LOOP_095,Crude Distillation Unit (CDU),Texas City Complex,Control_Valve,Medium
+FLU_FL_0953,FLU_LOOP_095,Fluid Catalytic Cracking (FCC),Baytown Refinery,Flow_Computer,Medium
+HYD_AN_0954,HYD_LOOP_095,Hydrocracking Unit (HCU),Gulf Coast Refinery,Analyzer,Low
+REF_SA_0955,REF_LOOP_095,Reformer Unit,Texas City Complex,Safety_System,High
+ALK_CO_0956,ALK_LOOP_095,Alkylation Unit,Baytown Refinery,Compressor_Controller,Low
+COK_TU_0957,COK_LOOP_095,Coker Unit,Gulf Coast Refinery,Turbine_Controller,Medium
+HYD_TA_0958,HYD_LOOP_095,Hydrotreater,Texas City Complex,Tank_Gauging,High
+ISO_FI_0959,ISO_LOOP_095,Isomerization Unit,Baytown Refinery,Fire_Gas_System,High
+CRU_DC_0960,CRU_LOOP_096,Crude Distillation Unit (CDU),Gulf Coast Refinery,DCS_Controller,High
+FLU_SA_0961,FLU_LOOP_096,Fluid Catalytic Cracking (FCC),Texas City Complex,Safety_PLC,High
+HYD_FI_0962,HYD_LOOP_096,Hydrocracking Unit (HCU),Baytown Refinery,Field_PLC,Medium
+REF_HM_0963,REF_LOOP_096,Reformer Unit,Gulf Coast Refinery,HMI_Station,High
+ALK_HI_0964,ALK_LOOP_096,Alkylation Unit,Texas City Complex,Historian_Server,Medium
+COK_VF_0965,COK_LOOP_096,Coker Unit,Baytown Refinery,VFD,Medium
+HYD_SM_0966,HYD_LOOP_096,Hydrotreater,Gulf Coast Refinery,Smart_Transmitter,Medium
+ISO_CO_0967,ISO_LOOP_096,Isomerization Unit,Texas City Complex,Control_Valve,High
+CRU_FL_0968,CRU_LOOP_096,Crude Distillation Unit (CDU),Baytown Refinery,Flow_Computer,Low
+FLU_AN_0969,FLU_LOOP_096,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery,Analyzer,Medium
+HYD_SA_0970,HYD_LOOP_097,Hydrocracking Unit (HCU),Texas City Complex,Safety_System,High
+REF_CO_0971,REF_LOOP_097,Reformer Unit,Baytown Refinery,Compressor_Controller,High
+ALK_TU_0972,ALK_LOOP_097,Alkylation Unit,Gulf Coast Refinery,Turbine_Controller,Medium
+COK_TA_0973,COK_LOOP_097,Coker Unit,Texas City Complex,Tank_Gauging,Medium
+HYD_FI_0974,HYD_LOOP_097,Hydrotreater,Baytown Refinery,Fire_Gas_System,High
+ISO_DC_0975,ISO_LOOP_097,Isomerization Unit,Gulf Coast Refinery,DCS_Controller,High
+CRU_SA_0976,CRU_LOOP_097,Crude Distillation Unit (CDU),Texas City Complex,Safety_PLC,High
+FLU_FI_0977,FLU_LOOP_097,Fluid Catalytic Cracking (FCC),Baytown Refinery,Field_PLC,High
+HYD_HM_0978,HYD_LOOP_097,Hydrocracking Unit (HCU),Gulf Coast Refinery,HMI_Station,Low
+REF_HI_0979,REF_LOOP_097,Reformer Unit,Texas City Complex,Historian_Server,Medium
+ALK_VF_0980,ALK_LOOP_098,Alkylation Unit,Baytown Refinery,VFD,Low
+COK_SM_0981,COK_LOOP_098,Coker Unit,Gulf Coast Refinery,Smart_Transmitter,Low
+HYD_CO_0982,HYD_LOOP_098,Hydrotreater,Texas City Complex,Control_Valve,Medium
+ISO_FL_0983,ISO_LOOP_098,Isomerization Unit,Baytown Refinery,Flow_Computer,Medium
+CRU_AN_0984,CRU_LOOP_098,Crude Distillation Unit (CDU),Gulf Coast Refinery,Analyzer,Medium
+FLU_SA_0985,FLU_LOOP_098,Fluid Catalytic Cracking (FCC),Texas City Complex,Safety_System,High
+HYD_CO_0986,HYD_LOOP_098,Hydrocracking Unit (HCU),Baytown Refinery,Compressor_Controller,Low
+REF_TU_0987,REF_LOOP_098,Reformer Unit,Gulf Coast Refinery,Turbine_Controller,High
+ALK_TA_0988,ALK_LOOP_098,Alkylation Unit,Texas City Complex,Tank_Gauging,Medium
+COK_FI_0989,COK_LOOP_098,Coker Unit,Baytown Refinery,Fire_Gas_System,Medium
+HYD_DC_0990,HYD_LOOP_099,Hydrotreater,Gulf Coast Refinery,DCS_Controller,High
+ISO_SA_0991,ISO_LOOP_099,Isomerization Unit,Texas City Complex,Safety_PLC,High
+CRU_FI_0992,CRU_LOOP_099,Crude Distillation Unit (CDU),Baytown Refinery,Field_PLC,Low
+FLU_HM_0993,FLU_LOOP_099,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery,HMI_Station,Medium
+HYD_HI_0994,HYD_LOOP_099,Hydrocracking Unit (HCU),Texas City Complex,Historian_Server,Medium
+REF_VF_0995,REF_LOOP_099,Reformer Unit,Baytown Refinery,VFD,Low
+ALK_SM_0996,ALK_LOOP_099,Alkylation Unit,Gulf Coast Refinery,Smart_Transmitter,Medium
+COK_CO_0997,COK_LOOP_099,Coker Unit,Texas City Complex,Control_Valve,High
+HYD_FL_0998,HYD_LOOP_099,Hydrotreater,Baytown Refinery,Flow_Computer,Low
+ISO_AN_0999,ISO_LOOP_099,Isomerization Unit,Gulf Coast Refinery,Analyzer,Medium
+CRU_SA_1000,CRU_LOOP_100,Crude Distillation Unit (CDU),Texas City Complex,Safety_System,High
+FLU_CO_1001,FLU_LOOP_100,Fluid Catalytic Cracking (FCC),Baytown Refinery,Compressor_Controller,Low
+HYD_TU_1002,HYD_LOOP_100,Hydrocracking Unit (HCU),Gulf Coast Refinery,Turbine_Controller,Medium
+REF_TA_1003,REF_LOOP_100,Reformer Unit,Texas City Complex,Tank_Gauging,Low
+ALK_FI_1004,ALK_LOOP_100,Alkylation Unit,Baytown Refinery,Fire_Gas_System,Medium
+COK_DC_1005,COK_LOOP_100,Coker Unit,Gulf Coast Refinery,DCS_Controller,High
+HYD_SA_1006,HYD_LOOP_100,Hydrotreater,Texas City Complex,Safety_PLC,Medium
+ISO_FI_1007,ISO_LOOP_100,Isomerization Unit,Baytown Refinery,Field_PLC,Medium
+CRU_HM_1008,CRU_LOOP_100,Crude Distillation Unit (CDU),Gulf Coast Refinery,HMI_Station,Medium
+FLU_HI_1009,FLU_LOOP_100,Fluid Catalytic Cracking (FCC),Texas City Complex,Historian_Server,Medium
+HYD_VF_1010,HYD_LOOP_101,Hydrocracking Unit (HCU),Baytown Refinery,VFD,Low
+REF_SM_1011,REF_LOOP_101,Reformer Unit,Gulf Coast Refinery,Smart_Transmitter,High
+ALK_CO_1012,ALK_LOOP_101,Alkylation Unit,Texas City Complex,Control_Valve,Low
+COK_FL_1013,COK_LOOP_101,Coker Unit,Baytown Refinery,Flow_Computer,Medium
+HYD_AN_1014,HYD_LOOP_101,Hydrotreater,Gulf Coast Refinery,Analyzer,High
+ISO_SA_1015,ISO_LOOP_101,Isomerization Unit,Texas City Complex,Safety_System,Medium
+CRU_CO_1016,CRU_LOOP_101,Crude Distillation Unit (CDU),Baytown Refinery,Compressor_Controller,Low
+FLU_TU_1017,FLU_LOOP_101,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery,Turbine_Controller,High
+HYD_TA_1018,HYD_LOOP_101,Hydrocracking Unit (HCU),Texas City Complex,Tank_Gauging,Medium
+REF_FI_1019,REF_LOOP_101,Reformer Unit,Baytown Refinery,Fire_Gas_System,Low
+ALK_DC_1020,ALK_LOOP_102,Alkylation Unit,Gulf Coast Refinery,DCS_Controller,High
+COK_SA_1021,COK_LOOP_102,Coker Unit,Texas City Complex,Safety_PLC,High
+HYD_FI_1022,HYD_LOOP_102,Hydrotreater,Baytown Refinery,Field_PLC,High
+ISO_HM_1023,ISO_LOOP_102,Isomerization Unit,Gulf Coast Refinery,HMI_Station,Medium
+CRU_HI_1024,CRU_LOOP_102,Crude Distillation Unit (CDU),Texas City Complex,Historian_Server,Medium
+FLU_VF_1025,FLU_LOOP_102,Fluid Catalytic Cracking (FCC),Baytown Refinery,VFD,Medium
+HYD_SM_1026,HYD_LOOP_102,Hydrocracking Unit (HCU),Gulf Coast Refinery,Smart_Transmitter,Medium
+REF_CO_1027,REF_LOOP_102,Reformer Unit,Texas City Complex,Control_Valve,High
+ALK_FL_1028,ALK_LOOP_102,Alkylation Unit,Baytown Refinery,Flow_Computer,Low
+COK_AN_1029,COK_LOOP_102,Coker Unit,Gulf Coast Refinery,Analyzer,Medium
+HYD_SA_1030,HYD_LOOP_103,Hydrotreater,Texas City Complex,Safety_System,High
+ISO_CO_1031,ISO_LOOP_103,Isomerization Unit,Baytown Refinery,Compressor_Controller,Medium
+CRU_TU_1032,CRU_LOOP_103,Crude Distillation Unit (CDU),Gulf Coast Refinery,Turbine_Controller,Medium
+FLU_TA_1033,FLU_LOOP_103,Fluid Catalytic Cracking (FCC),Texas City Complex,Tank_Gauging,Medium
+HYD_FI_1034,HYD_LOOP_103,Hydrocracking Unit (HCU),Baytown Refinery,Fire_Gas_System,Medium
+REF_DC_1035,REF_LOOP_103,Reformer Unit,Gulf Coast Refinery,DCS_Controller,Medium
+ALK_SA_1036,ALK_LOOP_103,Alkylation Unit,Texas City Complex,Safety_PLC,Medium
+COK_FI_1037,COK_LOOP_103,Coker Unit,Baytown Refinery,Field_PLC,Medium
+HYD_HM_1038,HYD_LOOP_103,Hydrotreater,Gulf Coast Refinery,HMI_Station,Medium
+ISO_HI_1039,ISO_LOOP_103,Isomerization Unit,Texas City Complex,Historian_Server,Medium
+CRU_VF_1040,CRU_LOOP_104,Crude Distillation Unit (CDU),Baytown Refinery,VFD,High
+FLU_SM_1041,FLU_LOOP_104,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery,Smart_Transmitter,Medium
+HYD_CO_1042,HYD_LOOP_104,Hydrocracking Unit (HCU),Texas City Complex,Control_Valve,High
+REF_FL_1043,REF_LOOP_104,Reformer Unit,Baytown Refinery,Flow_Computer,Medium
+ALK_AN_1044,ALK_LOOP_104,Alkylation Unit,Gulf Coast Refinery,Analyzer,High
+COK_SA_1045,COK_LOOP_104,Coker Unit,Texas City Complex,Safety_System,High
+HYD_CO_1046,HYD_LOOP_104,Hydrotreater,Baytown Refinery,Compressor_Controller,High
+ISO_TU_1047,ISO_LOOP_104,Isomerization Unit,Gulf Coast Refinery,Turbine_Controller,Low
+CRU_TA_1048,CRU_LOOP_104,Crude Distillation Unit (CDU),Texas City Complex,Tank_Gauging,High
+FLU_FI_1049,FLU_LOOP_104,Fluid Catalytic Cracking (FCC),Baytown Refinery,Fire_Gas_System,Low
+HYD_DC_1050,HYD_LOOP_105,Hydrocracking Unit (HCU),Gulf Coast Refinery,DCS_Controller,High
+REF_SA_1051,REF_LOOP_105,Reformer Unit,Texas City Complex,Safety_PLC,High
+ALK_FI_1052,ALK_LOOP_105,Alkylation Unit,Baytown Refinery,Field_PLC,High
+COK_HM_1053,COK_LOOP_105,Coker Unit,Gulf Coast Refinery,HMI_Station,Low
+HYD_HI_1054,HYD_LOOP_105,Hydrotreater,Texas City Complex,Historian_Server,Medium
+ISO_VF_1055,ISO_LOOP_105,Isomerization Unit,Baytown Refinery,VFD,Medium
+CRU_SM_1056,CRU_LOOP_105,Crude Distillation Unit (CDU),Gulf Coast Refinery,Smart_Transmitter,High
+FLU_CO_1057,FLU_LOOP_105,Fluid Catalytic Cracking (FCC),Texas City Complex,Control_Valve,Low
+HYD_FL_1058,HYD_LOOP_105,Hydrocracking Unit (HCU),Baytown Refinery,Flow_Computer,Low
+REF_AN_1059,REF_LOOP_105,Reformer Unit,Gulf Coast Refinery,Analyzer,Medium
+ALK_SA_1060,ALK_LOOP_106,Alkylation Unit,Texas City Complex,Safety_System,High
+COK_CO_1061,COK_LOOP_106,Coker Unit,Baytown Refinery,Compressor_Controller,Medium
+HYD_TU_1062,HYD_LOOP_106,Hydrotreater,Gulf Coast Refinery,Turbine_Controller,High
+ISO_TA_1063,ISO_LOOP_106,Isomerization Unit,Texas City Complex,Tank_Gauging,Low
+CRU_FI_1064,CRU_LOOP_106,Crude Distillation Unit (CDU),Baytown Refinery,Fire_Gas_System,Low
+FLU_DC_1065,FLU_LOOP_106,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery,DCS_Controller,Medium
+HYD_SA_1066,HYD_LOOP_106,Hydrocracking Unit (HCU),Texas City Complex,Safety_PLC,High
+REF_FI_1067,REF_LOOP_106,Reformer Unit,Baytown Refinery,Field_PLC,High
+ALK_HM_1068,ALK_LOOP_106,Alkylation Unit,Gulf Coast Refinery,HMI_Station,Medium
+COK_HI_1069,COK_LOOP_106,Coker Unit,Texas City Complex,Historian_Server,High
+HYD_VF_1070,HYD_LOOP_107,Hydrotreater,Baytown Refinery,VFD,Medium
+ISO_SM_1071,ISO_LOOP_107,Isomerization Unit,Gulf Coast Refinery,Smart_Transmitter,Medium
+CRU_CO_1072,CRU_LOOP_107,Crude Distillation Unit (CDU),Texas City Complex,Control_Valve,High
+FLU_FL_1073,FLU_LOOP_107,Fluid Catalytic Cracking (FCC),Baytown Refinery,Flow_Computer,High
+HYD_AN_1074,HYD_LOOP_107,Hydrocracking Unit (HCU),Gulf Coast Refinery,Analyzer,Low
+REF_SA_1075,REF_LOOP_107,Reformer Unit,Texas City Complex,Safety_System,High
+ALK_CO_1076,ALK_LOOP_107,Alkylation Unit,Baytown Refinery,Compressor_Controller,Medium
+COK_TU_1077,COK_LOOP_107,Coker Unit,Gulf Coast Refinery,Turbine_Controller,Medium
+HYD_TA_1078,HYD_LOOP_107,Hydrotreater,Texas City Complex,Tank_Gauging,High
+ISO_FI_1079,ISO_LOOP_107,Isomerization Unit,Baytown Refinery,Fire_Gas_System,Medium
+CRU_DC_1080,CRU_LOOP_108,Crude Distillation Unit (CDU),Gulf Coast Refinery,DCS_Controller,High
+FLU_SA_1081,FLU_LOOP_108,Fluid Catalytic Cracking (FCC),Texas City Complex,Safety_PLC,High
+HYD_FI_1082,HYD_LOOP_108,Hydrocracking Unit (HCU),Baytown Refinery,Field_PLC,Medium
+REF_HM_1083,REF_LOOP_108,Reformer Unit,Gulf Coast Refinery,HMI_Station,Low
+ALK_HI_1084,ALK_LOOP_108,Alkylation Unit,Texas City Complex,Historian_Server,Low
+COK_VF_1085,COK_LOOP_108,Coker Unit,Baytown Refinery,VFD,Medium
+HYD_SM_1086,HYD_LOOP_108,Hydrotreater,Gulf Coast Refinery,Smart_Transmitter,Medium
+ISO_CO_1087,ISO_LOOP_108,Isomerization Unit,Texas City Complex,Control_Valve,Medium
+CRU_FL_1088,CRU_LOOP_108,Crude Distillation Unit (CDU),Baytown Refinery,Flow_Computer,High
+FLU_AN_1089,FLU_LOOP_108,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery,Analyzer,Medium
+HYD_SA_1090,HYD_LOOP_109,Hydrocracking Unit (HCU),Texas City Complex,Safety_System,High
+REF_CO_1091,REF_LOOP_109,Reformer Unit,Baytown Refinery,Compressor_Controller,Medium
+ALK_TU_1092,ALK_LOOP_109,Alkylation Unit,Gulf Coast Refinery,Turbine_Controller,High
+COK_TA_1093,COK_LOOP_109,Coker Unit,Texas City Complex,Tank_Gauging,Low
+HYD_FI_1094,HYD_LOOP_109,Hydrotreater,Baytown Refinery,Fire_Gas_System,High
+ISO_DC_1095,ISO_LOOP_109,Isomerization Unit,Gulf Coast Refinery,DCS_Controller,High
+CRU_SA_1096,CRU_LOOP_109,Crude Distillation Unit (CDU),Texas City Complex,Safety_PLC,High
+FLU_FI_1097,FLU_LOOP_109,Fluid Catalytic Cracking (FCC),Baytown Refinery,Field_PLC,Medium
+HYD_HM_1098,HYD_LOOP_109,Hydrocracking Unit (HCU),Gulf Coast Refinery,HMI_Station,Medium
+REF_HI_1099,REF_LOOP_109,Reformer Unit,Texas City Complex,Historian_Server,Medium
+ALK_VF_1100,ALK_LOOP_110,Alkylation Unit,Baytown Refinery,VFD,Medium
+COK_SM_1101,COK_LOOP_110,Coker Unit,Gulf Coast Refinery,Smart_Transmitter,Medium
+HYD_CO_1102,HYD_LOOP_110,Hydrotreater,Texas City Complex,Control_Valve,Medium
+ISO_FL_1103,ISO_LOOP_110,Isomerization Unit,Baytown Refinery,Flow_Computer,Medium
+CRU_AN_1104,CRU_LOOP_110,Crude Distillation Unit (CDU),Gulf Coast Refinery,Analyzer,Medium
+FLU_SA_1105,FLU_LOOP_110,Fluid Catalytic Cracking (FCC),Texas City Complex,Safety_System,High
+HYD_CO_1106,HYD_LOOP_110,Hydrocracking Unit (HCU),Baytown Refinery,Compressor_Controller,High
+REF_TU_1107,REF_LOOP_110,Reformer Unit,Gulf Coast Refinery,Turbine_Controller,Medium
+ALK_TA_1108,ALK_LOOP_110,Alkylation Unit,Texas City Complex,Tank_Gauging,Medium
+COK_FI_1109,COK_LOOP_110,Coker Unit,Baytown Refinery,Fire_Gas_System,Medium
+HYD_DC_1110,HYD_LOOP_111,Hydrotreater,Gulf Coast Refinery,DCS_Controller,Medium
+ISO_SA_1111,ISO_LOOP_111,Isomerization Unit,Texas City Complex,Safety_PLC,High
+CRU_FI_1112,CRU_LOOP_111,Crude Distillation Unit (CDU),Baytown Refinery,Field_PLC,Medium
+FLU_HM_1113,FLU_LOOP_111,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery,HMI_Station,Medium
+HYD_HI_1114,HYD_LOOP_111,Hydrocracking Unit (HCU),Texas City Complex,Historian_Server,Low
+REF_VF_1115,REF_LOOP_111,Reformer Unit,Baytown Refinery,VFD,Low
+ALK_SM_1116,ALK_LOOP_111,Alkylation Unit,Gulf Coast Refinery,Smart_Transmitter,Medium
+COK_CO_1117,COK_LOOP_111,Coker Unit,Texas City Complex,Control_Valve,High
+HYD_FL_1118,HYD_LOOP_111,Hydrotreater,Baytown Refinery,Flow_Computer,Medium
+ISO_AN_1119,ISO_LOOP_111,Isomerization Unit,Gulf Coast Refinery,Analyzer,Medium
+CRU_SA_1120,CRU_LOOP_112,Crude Distillation Unit (CDU),Texas City Complex,Safety_System,Medium
+FLU_CO_1121,FLU_LOOP_112,Fluid Catalytic Cracking (FCC),Baytown Refinery,Compressor_Controller,High
+HYD_TU_1122,HYD_LOOP_112,Hydrocracking Unit (HCU),Gulf Coast Refinery,Turbine_Controller,Medium
+REF_TA_1123,REF_LOOP_112,Reformer Unit,Texas City Complex,Tank_Gauging,Medium
+ALK_FI_1124,ALK_LOOP_112,Alkylation Unit,Baytown Refinery,Fire_Gas_System,Medium
+COK_DC_1125,COK_LOOP_112,Coker Unit,Gulf Coast Refinery,DCS_Controller,Medium
+HYD_SA_1126,HYD_LOOP_112,Hydrotreater,Texas City Complex,Safety_PLC,Medium
+ISO_FI_1127,ISO_LOOP_112,Isomerization Unit,Baytown Refinery,Field_PLC,Medium
+CRU_HM_1128,CRU_LOOP_112,Crude Distillation Unit (CDU),Gulf Coast Refinery,HMI_Station,Medium
+FLU_HI_1129,FLU_LOOP_112,Fluid Catalytic Cracking (FCC),Texas City Complex,Historian_Server,Low
+HYD_VF_1130,HYD_LOOP_113,Hydrocracking Unit (HCU),Baytown Refinery,VFD,High
+REF_SM_1131,REF_LOOP_113,Reformer Unit,Gulf Coast Refinery,Smart_Transmitter,Medium
+ALK_CO_1132,ALK_LOOP_113,Alkylation Unit,Texas City Complex,Control_Valve,Low
+COK_FL_1133,COK_LOOP_113,Coker Unit,Baytown Refinery,Flow_Computer,Medium
+HYD_AN_1134,HYD_LOOP_113,Hydrotreater,Gulf Coast Refinery,Analyzer,High
+ISO_SA_1135,ISO_LOOP_113,Isomerization Unit,Texas City Complex,Safety_System,Medium
+CRU_CO_1136,CRU_LOOP_113,Crude Distillation Unit (CDU),Baytown Refinery,Compressor_Controller,High
+FLU_TU_1137,FLU_LOOP_113,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery,Turbine_Controller,High
+HYD_TA_1138,HYD_LOOP_113,Hydrocracking Unit (HCU),Texas City Complex,Tank_Gauging,Low
+REF_FI_1139,REF_LOOP_113,Reformer Unit,Baytown Refinery,Fire_Gas_System,High
+ALK_DC_1140,ALK_LOOP_114,Alkylation Unit,Gulf Coast Refinery,DCS_Controller,High
+COK_SA_1141,COK_LOOP_114,Coker Unit,Texas City Complex,Safety_PLC,High
+HYD_FI_1142,HYD_LOOP_114,Hydrotreater,Baytown Refinery,Field_PLC,Low
+ISO_HM_1143,ISO_LOOP_114,Isomerization Unit,Gulf Coast Refinery,HMI_Station,High
+CRU_HI_1144,CRU_LOOP_114,Crude Distillation Unit (CDU),Texas City Complex,Historian_Server,High
+FLU_VF_1145,FLU_LOOP_114,Fluid Catalytic Cracking (FCC),Baytown Refinery,VFD,High
+HYD_SM_1146,HYD_LOOP_114,Hydrocracking Unit (HCU),Gulf Coast Refinery,Smart_Transmitter,Medium
+REF_CO_1147,REF_LOOP_114,Reformer Unit,Texas City Complex,Control_Valve,High
+ALK_FL_1148,ALK_LOOP_114,Alkylation Unit,Baytown Refinery,Flow_Computer,High
+COK_AN_1149,COK_LOOP_114,Coker Unit,Gulf Coast Refinery,Analyzer,High
+HYD_SA_1150,HYD_LOOP_115,Hydrotreater,Texas City Complex,Safety_System,Medium
+ISO_CO_1151,ISO_LOOP_115,Isomerization Unit,Baytown Refinery,Compressor_Controller,Low
+CRU_TU_1152,CRU_LOOP_115,Crude Distillation Unit (CDU),Gulf Coast Refinery,Turbine_Controller,Medium
+FLU_TA_1153,FLU_LOOP_115,Fluid Catalytic Cracking (FCC),Texas City Complex,Tank_Gauging,High
+HYD_FI_1154,HYD_LOOP_115,Hydrocracking Unit (HCU),Baytown Refinery,Fire_Gas_System,Medium
+REF_DC_1155,REF_LOOP_115,Reformer Unit,Gulf Coast Refinery,DCS_Controller,Medium
+ALK_SA_1156,ALK_LOOP_115,Alkylation Unit,Texas City Complex,Safety_PLC,High
+COK_FI_1157,COK_LOOP_115,Coker Unit,Baytown Refinery,Field_PLC,Low
+HYD_HM_1158,HYD_LOOP_115,Hydrotreater,Gulf Coast Refinery,HMI_Station,Medium
+ISO_HI_1159,ISO_LOOP_115,Isomerization Unit,Texas City Complex,Historian_Server,Medium
+CRU_VF_1160,CRU_LOOP_116,Crude Distillation Unit (CDU),Baytown Refinery,VFD,High
+FLU_SM_1161,FLU_LOOP_116,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery,Smart_Transmitter,High
+HYD_CO_1162,HYD_LOOP_116,Hydrocracking Unit (HCU),Texas City Complex,Control_Valve,Medium
+REF_FL_1163,REF_LOOP_116,Reformer Unit,Baytown Refinery,Flow_Computer,Medium
+ALK_AN_1164,ALK_LOOP_116,Alkylation Unit,Gulf Coast Refinery,Analyzer,High
+COK_SA_1165,COK_LOOP_116,Coker Unit,Texas City Complex,Safety_System,Medium
+HYD_CO_1166,HYD_LOOP_116,Hydrotreater,Baytown Refinery,Compressor_Controller,Medium
+ISO_TU_1167,ISO_LOOP_116,Isomerization Unit,Gulf Coast Refinery,Turbine_Controller,Medium
+CRU_TA_1168,CRU_LOOP_116,Crude Distillation Unit (CDU),Texas City Complex,Tank_Gauging,Medium
+FLU_FI_1169,FLU_LOOP_116,Fluid Catalytic Cracking (FCC),Baytown Refinery,Fire_Gas_System,Medium
+HYD_DC_1170,HYD_LOOP_117,Hydrocracking Unit (HCU),Gulf Coast Refinery,DCS_Controller,High
+REF_SA_1171,REF_LOOP_117,Reformer Unit,Texas City Complex,Safety_PLC,High
+ALK_FI_1172,ALK_LOOP_117,Alkylation Unit,Baytown Refinery,Field_PLC,Low
+COK_HM_1173,COK_LOOP_117,Coker Unit,Gulf Coast Refinery,HMI_Station,Medium
+HYD_HI_1174,HYD_LOOP_117,Hydrotreater,Texas City Complex,Historian_Server,Medium
+ISO_VF_1175,ISO_LOOP_117,Isomerization Unit,Baytown Refinery,VFD,Medium
+CRU_SM_1176,CRU_LOOP_117,Crude Distillation Unit (CDU),Gulf Coast Refinery,Smart_Transmitter,Low
+FLU_CO_1177,FLU_LOOP_117,Fluid Catalytic Cracking (FCC),Texas City Complex,Control_Valve,Medium
+HYD_FL_1178,HYD_LOOP_117,Hydrocracking Unit (HCU),Baytown Refinery,Flow_Computer,Medium
+REF_AN_1179,REF_LOOP_117,Reformer Unit,Gulf Coast Refinery,Analyzer,Low
+ALK_SA_1180,ALK_LOOP_118,Alkylation Unit,Texas City Complex,Safety_System,High
+COK_CO_1181,COK_LOOP_118,Coker Unit,Baytown Refinery,Compressor_Controller,Medium
+HYD_TU_1182,HYD_LOOP_118,Hydrotreater,Gulf Coast Refinery,Turbine_Controller,Medium
+ISO_TA_1183,ISO_LOOP_118,Isomerization Unit,Texas City Complex,Tank_Gauging,High
+CRU_FI_1184,CRU_LOOP_118,Crude Distillation Unit (CDU),Baytown Refinery,Fire_Gas_System,High
+FLU_DC_1185,FLU_LOOP_118,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery,DCS_Controller,High
+HYD_SA_1186,HYD_LOOP_118,Hydrocracking Unit (HCU),Texas City Complex,Safety_PLC,High
+REF_FI_1187,REF_LOOP_118,Reformer Unit,Baytown Refinery,Field_PLC,Medium
+ALK_HM_1188,ALK_LOOP_118,Alkylation Unit,Gulf Coast Refinery,HMI_Station,High
+COK_HI_1189,COK_LOOP_118,Coker Unit,Texas City Complex,Historian_Server,High
+HYD_VF_1190,HYD_LOOP_119,Hydrotreater,Baytown Refinery,VFD,High
+ISO_SM_1191,ISO_LOOP_119,Isomerization Unit,Gulf Coast Refinery,Smart_Transmitter,Low
+CRU_CO_1192,CRU_LOOP_119,Crude Distillation Unit (CDU),Texas City Complex,Control_Valve,Medium
+FLU_FL_1193,FLU_LOOP_119,Fluid Catalytic Cracking (FCC),Baytown Refinery,Flow_Computer,High
+HYD_AN_1194,HYD_LOOP_119,Hydrocracking Unit (HCU),Gulf Coast Refinery,Analyzer,High
+REF_SA_1195,REF_LOOP_119,Reformer Unit,Texas City Complex,Safety_System,High
+ALK_CO_1196,ALK_LOOP_119,Alkylation Unit,Baytown Refinery,Compressor_Controller,Medium
+COK_TU_1197,COK_LOOP_119,Coker Unit,Gulf Coast Refinery,Turbine_Controller,Medium
+HYD_TA_1198,HYD_LOOP_119,Hydrotreater,Texas City Complex,Tank_Gauging,Low
+ISO_FI_1199,ISO_LOOP_119,Isomerization Unit,Baytown Refinery,Fire_Gas_System,High

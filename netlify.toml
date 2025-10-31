@@ -1,7 +1,15 @@
 [build]
-  command   = "npm run build"
+  command   = "npm ci && npm run build"
   publish   = "dist"
   functions = "netlify/functions"
+
+[build.environment]
+  NODE_VERSION = "20.19.0"
+
+[[plugins]]
+  package = "@netlify/plugin-node-version"
+  [plugins.inputs]
+    nodeVersion = "20.19.0"
 
 [[headers]]
   for = "/*"

@@ -1,0 +1,7 @@
+tag_id,loop_id,unit,plant,instrument_type,criticality
+T2000,L1000,U1,Plant1,PLC,High
+T2001,L1001,U1,Plant1,SCADA,High
+T2002,L1002,U2,Plant1,HMI,Medium
+T2003,L1003,U3,Plant2,RTU,High
+T2004,L1004,U4,Plant2,Historian,Medium
+T2005,L1005,U5,Plant3,PLC,High

@@ -1,0 +1,834 @@
+/* Gulf Coast Refinery Digital Twin Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #0a0f1c;
+  color: #e1e5e9;
+  line-height: 1.6;
+}
+
+.refinery-app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header Styles */
+.app-header {
+  background: linear-gradient(135deg, #1a2332 0%, #2d3748 100%);
+  padding: 1rem 2rem;
+  border-bottom: 3px solid #4299e1;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.header-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.deloitte-branding {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.deloitte-logo {
+  font-size: 1.2rem;
+  color: #86efac;
+}
+
+.deloitte-text {
+  color: #86efac;
+  font-weight: 600;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.app-header h1 {
+  color: #63b3ed;
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.plant-info {
+  display: flex;
+  gap: 2rem;
+  font-size: 0.9rem;
+  color: #a0aec0;
+}
+
+.plant-info span {
+  padding: 0.25rem 0.75rem;
+  background-color: rgba(66, 153, 225, 0.1);
+  border-radius: 4px;
+  border: 1px solid rgba(66, 153, 225, 0.3);
+}
+
+.canonical-graph {
+  color: #86efac !important;
+  border-color: rgba(134, 239, 172, 0.3) !important;
+  background-color: rgba(134, 239, 172, 0.1) !important;
+}
+
+.last-update {
+  color: #68d391 !important;
+  border-color: rgba(104, 211, 145, 0.3) !important;
+  background-color: rgba(104, 211, 145, 0.1) !important;
+}
+
+/* Navigation Styles */
+.unit-nav {
+  background-color: #2d3748;
+  padding: 0 2rem;
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid #4a5568;
+}
+
+.unit-nav button {
+  background: none;
+  border: none;
+  color: #a0aec0;
+  padding: 1rem 1.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.unit-nav button:hover {
+  color: #63b3ed;
+  background-color: rgba(66, 153, 225, 0.1);
+}
+
+.unit-nav button.active {
+  color: #63b3ed;
+  border-bottom-color: #4299e1;
+  background-color: rgba(66, 153, 225, 0.15);
+}
+
+/* Main Content */
+.main-content {
+  flex: 1;
+  padding: 2rem;
+  background-color: #0a0f1c;
+}
+
+.overview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+/* Asset Card Styles */
+.asset-card {
+  background: linear-gradient(145deg, #1a202c 0%, #2d3748 100%);
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid #4a5568;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.asset-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+.asset-card.warning {
+  border-color: #ed8936;
+  box-shadow: 0 4px 6px rgba(237, 137, 54, 0.2);
+}
+
+.asset-card.critical {
+  border-color: #e53e3e;
+  box-shadow: 0 4px 6px rgba(229, 62, 62, 0.2);
+}
+
+.asset-card h3 {
+  color: #63b3ed;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid rgba(66, 153, 225, 0.3);
+}
+
+/* Metric Display */
+.metric {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(74, 85, 104, 0.3);
+}
+
+.metric:last-child {
+  border-bottom: none;
+}
+
+.metric-label {
+  color: #a0aec0;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.metric-value {
+  color: #e2e8f0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.metric.warning .metric-value {
+  color: #fbb040;
+}
+
+.metric.critical .metric-value {
+  color: #f56565;
+}
+
+/* Maintenance List */
+.maintenance-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.maintenance-item {
+  padding: 1rem;
+  border-radius: 8px;
+  border-left: 4px solid #4299e1;
+  background-color: rgba(66, 153, 225, 0.1);
+}
+
+.maintenance-item.high {
+  border-left-color: #ed8936;
+  background-color: rgba(237, 137, 54, 0.1);
+}
+
+.maintenance-item.critical {
+  border-left-color: #e53e3e;
+  background-color: rgba(229, 62, 62, 0.1);
+}
+
+.maintenance-item strong {
+  color: #63b3ed;
+}
+
+.maintenance-item small {
+  color: #a0aec0;
+}
+
+/* Data Sources */
+.data-sources {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.source-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: rgba(45, 55, 72, 0.5);
+  border-radius: 8px;
+  border: 1px solid rgba(74, 85, 104, 0.3);
+}
+
+.source-icon {
+  font-size: 1.5rem;
+  min-width: 2rem;
+}
+
+.source-item strong {
+  color: #63b3ed;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.source-item p {
+  color: #cbd5e0;
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
+}
+
+.source-item small {
+  color: #a0aec0;
+  font-size: 0.8rem;
+}
+
+/* Unit Detail */
+.unit-detail h2 {
+  color: #63b3ed;
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+  text-align: center;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid rgba(66, 153, 225, 0.3);
+}
+
+/* Performance Insights */
+.performance-insights {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.performance-insights p {
+  color: #cbd5e0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.performance-insights strong {
+  color: #63b3ed;
+}
+
+/* Footer */
+.app-footer {
+  background-color: #1a202c;
+  padding: 1rem 2rem;
+  border-top: 1px solid #4a5568;
+  text-align: center;
+  color: #a0aec0;
+  font-size: 0.85rem;
+}
+
+.app-footer p {
+  margin: 0.25rem 0;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .overview-grid {
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  }
+  
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    padding: 1rem;
+  }
+  
+  .app-header {
+    padding: 1rem;
+  }
+  
+  .app-header h1 {
+    font-size: 1.4rem;
+  }
+  
+  .plant-info {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .unit-nav {
+    padding: 0 1rem;
+    flex-wrap: wrap;
+  }
+  
+  .unit-nav button {
+    padding: 0.75rem 1rem;
+    font-size: 0.8rem;
+  }
+  
+  .overview-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Animation for real-time updates */
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.7; }
+  100% { opacity: 1; }
+}
+
+.metric-value {
+  animation: pulse 3s ease-in-out infinite;
+}
+
+/* Status indicators */
+.status-normal { color: #48bb78; }
+.status-warning { color: #ed8936; }
+.status-critical { color: #e53e3e; }
+
+/* Deloitte OT Assurance Twin Specific Styles */
+
+/* Canonical Graph Styles */
+.canonical-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.graph-visualization {
+  margin-top: 1rem;
+}
+
+.network-diagram {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 1rem 0;
+  padding: 1rem;
+  background-color: rgba(45, 55, 72, 0.3);
+  border-radius: 8px;
+  flex-wrap: wrap;
+}
+
+.node {
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: white;
+  text-align: center;
+  min-width: 60px;
+}
+
+.node.primary {
+  background-color: #4299e1;
+  box-shadow: 0 0 10px rgba(66, 153, 225, 0.3);
+}
+
+.node.secondary {
+  background-color: #68d391;
+  color: #1a202c;
+}
+
+.connection {
+  width: 20px;
+  height: 2px;
+  background-color: #a0aec0;
+  position: relative;
+}
+
+.connection::after {
+  content: '→';
+  position: absolute;
+  right: -10px;
+  top: -8px;
+  color: #a0aec0;
+  font-size: 12px;
+}
+
+/* Loop Analysis Styles */
+.loop-analysis {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.loop-item {
+  background-color: rgba(45, 55, 72, 0.5);
+  padding: 1rem;
+  border-radius: 8px;
+  border-left: 4px solid #4299e1;
+}
+
+.loop-details {
+  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.loop-details p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #cbd5e0;
+}
+
+.validation-status {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.status-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.status-badge.fresh {
+  background-color: rgba(104, 211, 145, 0.2);
+  color: #68d391;
+  border: 1px solid rgba(104, 211, 145, 0.3);
+}
+
+.status-badge.validated {
+  background-color: rgba(66, 153, 225, 0.2);
+  color: #63b3ed;
+  border: 1px solid rgba(66, 153, 225, 0.3);
+}
+
+.status-badge.compliant {
+  background-color: rgba(134, 239, 172, 0.2);
+  color: #86efac;
+  border: 1px solid rgba(134, 239, 172, 0.3);
+}
+
+/* Differentiator Content */
+.differentiator-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.comparison {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.others, .deloitte {
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.others {
+  background-color: rgba(229, 62, 62, 0.1);
+  border-left: 4px solid #e53e3e;
+}
+
+.deloitte {
+  background-color: rgba(134, 239, 172, 0.1);
+  border-left: 4px solid #86efac;
+}
+
+.others h5 {
+  color: #f56565;
+  margin-bottom: 0.5rem;
+}
+
+.deloitte h5 {
+  color: #86efac;
+  margin-bottom: 0.5rem;
+}
+
+.others ul, .deloitte ul {
+  margin: 0;
+  padding-left: 1.5rem;
+  color: #cbd5e0;
+}
+
+.deloitte ul li {
+  margin-bottom: 0.25rem;
+}
+
+/* Change Governance Styles */
+.ledger-content, .compliance-content, .trust-stream {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.change-record {
+  background-color: rgba(45, 55, 72, 0.5);
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid rgba(134, 239, 172, 0.3);
+}
+
+.change-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.change-metadata {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.85rem;
+  color: #a0aec0;
+}
+
+.merkle-proof {
+  background-color: rgba(45, 55, 72, 0.3);
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid rgba(66, 153, 225, 0.3);
+}
+
+.merkle-proof code {
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: 0.5rem;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.8rem;
+  color: #86efac;
+  display: block;
+  word-break: break-all;
+  margin: 0.5rem 0;
+}
+
+/* Evidence Packs */
+.evidence-packs {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.pack-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: rgba(45, 55, 72, 0.3);
+  border-radius: 8px;
+  border: 1px solid rgba(134, 239, 172, 0.2);
+}
+
+.pack-icon {
+  font-size: 1.5rem;
+  min-width: 2rem;
+}
+
+/* Timeline Styles */
+.evidence-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.timeline-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.timeline-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #68d391;
+  border: 2px solid #2d3748;
+  box-shadow: 0 0 0 2px #68d391;
+}
+
+.timeline-item.completed .timeline-dot {
+  background-color: #68d391;
+}
+
+.evidence-output {
+  background-color: rgba(104, 211, 145, 0.1);
+  padding: 1rem;
+  border-radius: 8px;
+  border-left: 4px solid #68d391;
+}
+
+.evidence-output ul {
+  margin: 0.5rem 0 0 1.5rem;
+  color: #cbd5e0;
+}
+
+/* Business Impact Styles */
+.financial-metrics {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.what-if-scenarios {
+  margin-top: 1.5rem;
+}
+
+.scenario {
+  background-color: rgba(45, 55, 72, 0.5);
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  border-left: 4px solid #ed8936;
+}
+
+.cost-highlight {
+  color: #f56565;
+  font-weight: bold;
+}
+
+.savings-highlight {
+  color: #68d391;
+  font-weight: bold;
+}
+
+/* ROI Analysis */
+.roi-analysis {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.roi-metrics {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.roi-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  background-color: rgba(45, 55, 72, 0.3);
+  border-radius: 6px;
+}
+
+.roi-label {
+  color: #a0aec0;
+  font-weight: 500;
+}
+
+.roi-value {
+  color: #e2e8f0;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.roi-value.savings {
+  color: #68d391;
+}
+
+.roi-breakdown ul {
+  margin: 0.5rem 0 0 1.5rem;
+  color: #cbd5e0;
+}
+
+/* Executive Dashboard */
+.executive-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.kpi-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  background-color: rgba(45, 55, 72, 0.3);
+  border-radius: 8px;
+  border: 1px solid rgba(66, 153, 225, 0.3);
+}
+
+.kpi-value {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #63b3ed;
+  margin-bottom: 0.25rem;
+}
+
+.kpi-label {
+  font-size: 0.9rem;
+  color: #a0aec0;
+  text-align: center;
+}
+
+.strategic-value {
+  background-color: rgba(134, 239, 172, 0.1);
+  padding: 1rem;
+  border-radius: 8px;
+  border-left: 4px solid #86efac;
+}
+
+.strategic-value p {
+  margin-bottom: 0.75rem;
+  color: #cbd5e0;
+  line-height: 1.5;
+}
+
+.strategic-value strong {
+  color: #86efac;
+}
+
+/* Responsive adjustments for new content */
+@media (max-width: 1200px) {
+  .comparison {
+    grid-template-columns: 1fr;
+  }
+  
+  .canonical-stats {
+    grid-template-columns: 1fr;
+  }
+  
+  .kpi-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .network-diagram {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .connection {
+    width: 2px;
+    height: 20px;
+  }
+  
+  .connection::after {
+    content: '↓';
+    right: -6px;
+    top: 15px;
+  }
+}
+
+@media (max-width: 768px) {
+  .unit-nav {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .unit-nav button {
+    flex: 1;
+    min-width: 120px;
+  }
+  
+  .roi-metrics {
+    gap: 0.5rem;
+  }
+  
+  .roi-item {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.25rem;
+  }
+}

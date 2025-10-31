@@ -4,10 +4,17 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "netlify dev",
+    "dev:vite": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "seed": "node tools/seed-demo-data.mjs"
+    "seed": "node tools/seed-demo-data.mjs",
+    "seed:automotive": "node tools/automotive-seed.mjs",
+    "seed:pharma": "node tools/pharma-seed.mjs",
+    "seed:utilities": "node tools/utilities-seed.mjs",
+    "seed:ot-discovery": "node tools/ot-discovery-seed.mjs",
+    "seed:demo": "node tools/demo-data-generator.mjs",
+    "seed:all": "npm run seed:automotive && npm run seed:pharma && npm run seed:utilities && npm run seed:ot-discovery"
   },
   "dependencies": {
     "dayjs": "^1.11.11",
@@ -17,6 +24,11 @@
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.3.1",
-    "vite": "^5.4.8"
-  }
+    "netlify-cli": "^17.36.4",
+    "vite": "^4.5.3"
+  },
+  "engines": {
+    "node": ">=20.19.0"
+  },
+  "volta": { "node": "20.19.0" }
 }

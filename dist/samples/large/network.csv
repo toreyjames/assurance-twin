@@ -1,85 +1,806 @@
 asset_id,ip,mac,proto,last_seen,unit,plant
-N4041,10.2.42.51,15:d7:92:bf:86:c3,TCP,2025-09-24,U6,Plant3
-A3119,10.20.120.129,9a:7d:04:32:a3:2f,UDP,2025-09-24,U6,Plant3
-A3069,10.10.70.79,9b:53:3c:92:4e:45,TCP,2025-09-24,U4,Plant1
-A3105,10.6.106.115,77:f7:a9:2d:3b:42,UDP,2025-07-24,U4,Plant1
-A3112,10.13.113.122,8c:e4:d5:f8:c8:9a,TCP,2025-09-24,U5,Plant2
-A3071,10.12.72.81,03:f9:ad:0d:d4:77,TCP,2025-07-24,U6,Plant3
-A3101,10.2.102.111,c9:4e:b4:53:36:3a,TCP,2025-09-24,U6,Plant3
-A3000,10.1.1.10,ee:63:a5:a9:60:98,UDP,2025-08-24,U1,Plant1
-A3096,10.17.97.106,30:66:b3:8a:4b:75,TCP,2025-09-24,U1,Plant1
-A3103,10.4.104.113,dd:e5:b4:9b:be:53,UDP,2025-07-24,U2,Plant2
-A3003,10.4.4.13,8f:00:24:4e:a3:e5,TCP,2025-07-24,U4,Plant1
-A3062,10.3.63.72,5c:16:6f:be:25:73,UDP,2025-07-24,U3,Plant3
-A3048,10.9.49.58,6a:46:4c:fc:de:38,UDP,2025-08-24,U1,Plant1
-A3094,10.15.95.104,80:fb:21:da:3a:b2,UDP,2025-08-24,U5,Plant2
-A3110,10.11.111.120,d6:c6:d2:36:0f:df,UDP,2025-08-24,U3,Plant3
-A3039,10.20.40.49,a9:1b:27:1e:0f:69,UDP,2025-07-24,U4,Plant1
-A3057,10.18.58.67,f4:3a:7d:03:a1:66,TCP,2025-09-24,U4,Plant1
-A3087,10.8.88.97,d7:f3:a4:7b:fe:06,ICMP,2025-09-24,U4,Plant1
-A3111,10.12.112.121,f1:65:d5:a0:cc:fa,TCP,2025-07-24,U4,Plant1
-A3059,10.20.60.69,4a:d7:e1:88:f3:2a,UDP,2025-07-24,U6,Plant3
-A3019,10.20.20.29,39:cd:29:64:e8:46,UDP,2025-07-24,U2,Plant2
-A3055,10.16.56.65,9d:31:f0:76:b6:4e,TCP,2025-07-24,U2,Plant2
-A3014,10.15.15.24,6f:ab:58:3f:eb:7b,TCP,2025-07-24,U3,Plant3
-N4012,10.13.13.22,30:84:39:24:a0:5f,TCP,2025-09-24,U1,Plant1
-A3030,10.11.31.40,52:54:4a:be:d5:83,TCP,2025-08-24,U1,Plant1
-A3093,10.14.94.103,c1:0c:b0:a7:20:b7,TCP,2025-09-24,U4,Plant1
-A3116,10.17.117.126,fa:03:ef:66:fc:13,TCP,2025-07-24,U3,Plant3
-A3028,10.9.29.38,99:45:b1:46:06:c6,UDP,2025-07-24,U5,Plant2
-A3017,10.18.18.27,b2:72:20:08:ba:19,TCP,2025-09-24,U6,Plant3
-A3002,10.3.3.12,a3:88:3e:64:60:88,TCP,2025-07-24,U3,Plant3
-A3070,10.11.71.80,ed:fa:aa:e6:80:35,TCP,2025-07-24,U5,Plant2
-A3074,10.15.75.84,1d:40:c5:5b:1c:6f,TCP,2025-07-24,U3,Plant3
-A3118,10.19.119.128,7b:33:65:b9:e0:94,TCP,2025-09-24,U5,Plant2
-A3027,10.8.28.37,c1:96:59:33:fb:70,ICMP,2025-09-24,U4,Plant1
-A3067,10.8.68.77,e6:14:cb:95:4b:b4,TCP,2025-09-24,U2,Plant2
-A3115,10.16.116.125,6f:53:c6:16:3a:6f,UDP,2025-09-24,U2,Plant2
-A3117,10.18.118.127,53:30:9b:60:76:60,TCP,2025-09-24,U4,Plant1
-A3004,10.5.5.14,d5:80:bf:14:03:4a,TCP,2025-07-24,U5,Plant2
-A3024,10.5.25.34,8a:1b:91:78:97:13,TCP,2025-07-24,U1,Plant1
-A3045,10.6.46.55,89:4f:8f:f4:a4:a0,TCP,2025-09-24,U4,Plant1
-A3011,10.12.12.21,43:66:05:7b:77:33,TCP,2025-07-24,U6,Plant3
-A3084,10.5.85.94,01:79:11:ee:5d:53,TCP,2025-09-24,U1,Plant1
-A3077,10.18.78.87,7a:c8:56:0b:35:6b,UDP,2025-08-24,U6,Plant3
-A3033,10.14.34.43,81:b7:e5:8f:ea:08,TCP,2025-07-24,U4,Plant1
-A3079,10.20.80.89,00:2f:9e:c9:ef:f1,TCP,2025-09-24,U2,Plant2
-A3025,10.6.26.35,5e:56:fc:76:10:1d,TCP,2025-09-24,U2,Plant2
-A3032,10.13.33.42,92:1f:09:c1:fe:1c,TCP,2025-07-24,U3,Plant3
-N4102,10.3.103.112,ce:0b:f5:85:d6:b9,UDP,2025-09-24,U1,Plant1
-A3109,10.10.110.119,f8:c1:86:78:a4:af,TCP,2025-09-24,U2,Plant2
-A3050,10.11.51.60,0f:37:2d:f9:54:bf,ICMP,2025-07-24,U3,Plant3
-N4040,10.1.41.50,56:df:78:f2:0b:03,TCP,2025-07-24,U5,Plant2
-A3088,10.9.89.98,a1:96:75:b9:db:f9,TCP,2025-08-24,U5,Plant2
-A3080,10.1.81.90,40:e3:e1:da:fe:2a,TCP,2025-08-24,U3,Plant3
-A3021,10.2.22.31,bf:26:71:4c:e3:cf,UDP,2025-08-24,U4,Plant1
-A3013,10.14.14.23,b3:60:29:85:6e:4e,UDP,2025-08-24,U2,Plant2
-A3076,10.17.77.86,49:05:bb:0b:bb:02,TCP,2025-07-24,U5,Plant2
-N4008,10.9.9.18,56:a8:69:fa:e5:09,UDP,2025-09-24,U3,Plant3
-A3010,10.11.11.20,80:28:2c:c5:29:49,ICMP,2025-07-24,U5,Plant2
-N4020,10.1.21.30,18:d3:a6:cb:4b:86,UDP,2025-08-24,U3,Plant3
-A3061,10.2.62.71,fa:d8:98:b0:21:fe,TCP,2025-07-24,U2,Plant2
-A3107,10.8.108.117,01:27:42:d2:e8:11,ICMP,2025-09-24,U6,Plant3
-A3034,10.15.35.44,fa:dd:39:0b:0f:0a,TCP,2025-07-24,U5,Plant2
-A3081,10.2.82.91,44:f9:4d:2c:87:4a,ICMP,2025-08-24,U4,Plant1
-A3089,10.10.90.99,9e:e5:39:db:82:92,TCP,2025-08-24,U6,Plant3
-A3042,10.3.43.52,26:45:78:37:89:9b,UDP,2025-09-24,U1,Plant1
-A3053,10.14.54.63,1c:54:90:19:2c:21,UDP,2025-08-24,U6,Plant3
-A3060,10.1.61.70,41:82:4d:70:5f:49,TCP,2025-08-24,U1,Plant1
-N4029,10.10.30.39,57:24:f8:fb:16:cc,TCP,2025-09-24,U6,Plant3
-A3106,10.7.107.116,9d:c0:68:6b:17:79,UDP,2025-09-24,U5,Plant2
-A3031,10.12.32.41,96:05:9c:55:a6:9a,TCP,2025-08-24,U2,Plant2
-A3036,10.17.37.46,42:0d:d1:d7:b2:5d,TCP,2025-08-24,U1,Plant1
-A3047,10.8.48.57,d5:72:b4:49:01:9a,TCP,2025-09-24,U6,Plant3
-A3083,10.4.84.93,b5:7d:f6:a5:3d:12,TCP,2025-08-24,U6,Plant3
-A3065,10.6.66.75,a2:b9:95:24:b9:7c,TCP,2025-08-24,U6,Plant3
-N4049,10.10.50.59,7e:d9:2e:d8:21:30,ICMP,2025-07-24,U2,Plant2
-A3038,10.19.39.48,28:b2:ca:d5:7b:51,TCP,2025-07-24,U3,Plant3
-ORPH8000,10.5.5.50,44:72:4a:bf:39:62,TCP,2025-08-24,U1,Plant1
-ORPH8001,10.6.6.51,61:f9:84:41:2c:f5,UDP,2025-08-24,U2,Plant2
-ORPH8002,10.7.7.52,43:17:34:ae:cb:0a,TCP,2025-08-24,U3,Plant3
-ORPH8003,10.8.8.53,3c:b3:85:3f:fa:dd,UDP,2025-08-24,U4,Plant1
-ORPH8004,10.9.9.54,f8:b9:f3:37:9f:bf,TCP,2025-09-24,U5,Plant2
-ORPH8005,10.10.10.55,bc:1a:70:8a:36:02,TCP,2025-09-24,U6,Plant3
-ORPH8006,10.11.11.56,e3:09:08:8a:ec:57,TCP,2025-08-24,U1,Plant1
-ORPH8007,10.12.12.57,1d:8e:c8:cd:25:e2,UDP,2025-08-24,U2,Plant2
+REF_003990,10.4.241.200,73:75:9d:f3:65:60,TCP,2025-08-24,Hydrotreater,Gulf Coast Refinery
+REF_003002,10.3.3.12,35:0a:24:31:50:6a,Modbus,2025-09-24,Hydrocracking Unit (HCU),Baytown Refinery
+REF_003571,10.4.72.181,52:86:35:a3:d0:6f,TCP,2025-09-24,Reformer Unit,Texas City Complex
+REF_003923,10.4.174.133,2d:c6:59:d3:82:b0,TCP,2025-08-24,Reformer Unit,Baytown Refinery
+REF_003741,10.4.242.151,c1:91:bc:e6:ae:a9,TCP,2025-09-24,Coker Unit,Gulf Coast Refinery
+REF_003496,10.1.247.106,95:c7:c1:a4:33:2a,TCP,2025-09-24,Crude Distillation Unit (CDU),Texas City Complex
+REF_003757,10.4.8.167,3f:55:f6:b8:7f:a6,TCP,2025-07-24,Coker Unit,Texas City Complex
+REF_003141,10.4.142.151,1e:c0:d9:f3:8b:55,UDP,2025-07-24,Coker Unit,Gulf Coast Refinery
+REF_003468,10.4.219.78,78:3b:f6:f1:a6:d7,UDP,2025-09-24,Alkylation Unit,Gulf Coast Refinery
+REF_003188,10.4.189.198,b3:e6:5f:b6:42:3c,UDP,2025-08-24,Alkylation Unit,Baytown Refinery
+REF_003763,10.4.14.173,9b:33:86:86:d9:70,TCP,2025-09-24,Reformer Unit,Texas City Complex
+NET_004604,10.4.105.14,45:58:7f:22:e4:6b,Modbus,2025-09-24,Alkylation Unit,Texas City Complex
+REF_003782,10.4.33.192,1a:35:41:f7:47:77,Modbus,2025-08-24,Hydrotreater,Baytown Refinery
+REF_003708,10.4.209.118,45:5f:86:67:70:8b,UDP,2025-07-24,Alkylation Unit,Gulf Coast Refinery
+REF_003599,10.4.100.209,f3:c0:7f:6f:c8:8c,TCP,2025-07-24,Isomerization Unit,Baytown Refinery
+REF_003493,10.4.244.103,5a:38:37:f0:ce:01,TCP,2025-08-24,Coker Unit,Texas City Complex
+REF_003826,10.3.77.36,56:15:7d:58:8d:8b,Modbus,2025-08-24,Hydrocracking Unit (HCU),Texas City Complex
+REF_003309,10.4.60.119,94:49:61:52:68:1b,UDP,2025-09-24,Coker Unit,Gulf Coast Refinery
+REF_003661,10.4.162.71,5b:f9:b9:e2:cc:d7,TCP,2025-07-24,Coker Unit,Texas City Complex
+REF_003473,10.2.224.83,e9:4e:1f:46:d2:bd,TCP,2025-09-24,Fluid Catalytic Cracking (FCC),Baytown Refinery
+REF_003925,10.4.176.135,b3:bc:fa:a6:cf:26,UDP,2025-09-24,Coker Unit,Texas City Complex
+NET_004197,10.4.198.207,e0:e4:3d:91:0f:83,TCP,2025-07-24,Coker Unit,Baytown Refinery
+REF_003019,10.4.20.29,9b:bb:bb:fd:27:f2,UDP,2025-08-24,Reformer Unit,Texas City Complex
+REF_003279,10.4.30.89,5b:1e:ed:17:ee:e9,TCP,2025-07-24,Isomerization Unit,Gulf Coast Refinery
+REF_003477,10.4.228.87,dd:4a:dc:13:e9:c0,TCP,2025-09-24,Coker Unit,Gulf Coast Refinery
+REF_003594,10.3.95.204,8b:8c:15:d5:fd:b3,Modbus,2025-09-24,Hydrocracking Unit (HCU),Gulf Coast Refinery
+REF_003458,10.3.209.68,48:e1:63:ed:d8:7e,TCP,2025-08-24,Hydrocracking Unit (HCU),Baytown Refinery
+REF_003561,10.2.62.171,c3:4a:55:59:0a:d4,TCP,2025-09-24,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery
+REF_003148,10.4.149.158,bd:3e:51:bd:65:22,UDP,2025-09-24,Alkylation Unit,Texas City Complex
+REF_003558,10.4.59.168,88:55:0a:81:e3:6e,TCP,2025-07-24,Hydrotreater,Gulf Coast Refinery
+REF_004146,10.3.147.156,dd:d7:1b:a4:6e:1e,TCP,2025-08-24,Hydrocracking Unit (HCU),Gulf Coast Refinery
+REF_003151,10.4.152.161,c3:2b:d7:5c:b1:2f,TCP,2025-07-24,Isomerization Unit,Texas City Complex
+REF_003137,10.2.138.147,fd:0b:ea:3e:8e:e3,UDP,2025-09-24,Fluid Catalytic Cracking (FCC),Baytown Refinery
+NET_005060,10.4.61.70,7d:71:f3:4f:48:b5,UDP,2025-08-24,Alkylation Unit,Texas City Complex
+REF_003856,10.1.107.66,cd:5b:f1:65:f8:f9,UDP,2025-08-24,Crude Distillation Unit (CDU),Texas City Complex
+REF_003764,10.4.15.174,bb:23:71:f4:2b:84,UDP,2025-08-24,Alkylation Unit,Baytown Refinery
+REF_003184,10.1.185.194,34:97:3b:cd:4a:43,UDP,2025-09-24,Crude Distillation Unit (CDU),Texas City Complex
+REF_003082,10.3.83.92,e3:df:1f:87:dd:ea,TCP,2025-09-24,Hydrocracking Unit (HCU),Texas City Complex
+REF_004012,10.4.13.22,d3:eb:e6:04:b5:a2,TCP,2025-07-24,Alkylation Unit,Texas City Complex
+REF_003868,10.4.119.78,30:65:4f:e3:ce:78,Modbus,2025-09-24,Alkylation Unit,Texas City Complex
+REF_003464,10.1.215.74,52:0b:e5:f4:74:86,UDP,2025-08-24,Crude Distillation Unit (CDU),Baytown Refinery
+REF_004106,10.3.107.116,c9:32:c7:67:53:a1,UDP,2025-09-24,Hydrocracking Unit (HCU),Baytown Refinery
+REF_003676,10.4.177.86,3f:cd:33:cc:7a:1a,UDP,2025-08-24,Alkylation Unit,Texas City Complex
+NET_004416,10.1.167.26,2f:fa:db:e5:3e:d4,TCP,2025-08-24,Crude Distillation Unit (CDU),Baytown Refinery
+REF_003304,10.1.55.114,55:4d:43:93:0e:89,Modbus,2025-08-24,Crude Distillation Unit (CDU),Texas City Complex
+NET_004227,10.4.228.37,0e:d4:f7:ff:b7:0f,TCP,2025-07-24,Reformer Unit,Baytown Refinery
+REF_003744,10.1.245.154,82:f0:1c:e7:cc:46,TCP,2025-09-24,Crude Distillation Unit (CDU),Gulf Coast Refinery
+REF_003375,10.4.126.185,05:60:a9:74:6b:52,Modbus,2025-07-24,Isomerization Unit,Gulf Coast Refinery
+NET_004637,10.4.138.47,6a:71:f7:e2:cd:3c,TCP,2025-08-24,Coker Unit,Texas City Complex
+NET_004520,10.1.21.130,15:63:b7:87:d7:46,Modbus,2025-07-24,Crude Distillation Unit (CDU),Texas City Complex
+REF_003018,10.3.19.28,31:0f:0b:b0:6e:7e,TCP,2025-07-24,Hydrocracking Unit (HCU),Gulf Coast Refinery
+REF_003110,10.4.111.120,8b:8e:0f:b9:74:c9,TCP,2025-07-24,Hydrotreater,Baytown Refinery
+NET_005196,10.4.197.206,ea:cb:aa:c3:fe:5e,TCP,2025-09-24,Alkylation Unit,Baytown Refinery
+REF_003370,10.3.121.180,66:c5:64:14:18:9b,TCP,2025-07-24,Hydrocracking Unit (HCU),Texas City Complex
+REF_003455,10.4.206.65,e1:87:1b:19:c3:26,UDP,2025-08-24,Isomerization Unit,Baytown Refinery
+REF_003215,10.4.216.25,eb:a1:64:0e:e8:18,TCP,2025-07-24,Isomerization Unit,Baytown Refinery
+REF_003408,10.1.159.18,a1:f3:08:7f:a1:7e,TCP,2025-09-24,Crude Distillation Unit (CDU),Gulf Coast Refinery
+NET_005039,10.4.40.49,f6:cd:8d:39:21:0a,UDP,2025-09-24,Isomerization Unit,Texas City Complex
+REF_003010,10.3.11.20,f6:8b:2a:c8:1e:12,TCP,2025-07-24,Hydrocracking Unit (HCU),Texas City Complex
+REF_003791,10.4.42.201,df:3b:71:74:35:72,UDP,2025-08-24,Isomerization Unit,Baytown Refinery
+REF_003524,10.4.25.134,56:9b:4a:34:c7:80,TCP,2025-07-24,Alkylation Unit,Baytown Refinery
+REF_003615,10.4.116.25,f9:3f:90:1a:7c:9b,TCP,2025-08-24,Isomerization Unit,Gulf Coast Refinery
+REF_003838,10.4.89.48,a2:99:10:d9:57:e9,UDP,2025-08-24,Hydrotreater,Texas City Complex
+REF_003857,10.2.108.67,64:d1:9a:02:19:ec,TCP,2025-07-24,Fluid Catalytic Cracking (FCC),Baytown Refinery
+NET_004769,10.2.20.179,36:2a:77:a4:5a:31,TCP,2025-07-24,Fluid Catalytic Cracking (FCC),Texas City Complex
+REF_004004,10.4.5.14,88:c6:7f:26:51:88,TCP,2025-08-24,Alkylation Unit,Baytown Refinery
+REF_003677,10.4.178.87,6f:9f:9b:9c:fd:5a,UDP,2025-08-24,Coker Unit,Baytown Refinery
+REF_003480,10.1.231.90,7a:ee:85:5c:b5:82,UDP,2025-08-24,Crude Distillation Unit (CDU),Gulf Coast Refinery
+REF_003181,10.4.182.191,1f:47:b9:51:6d:af,TCP,2025-09-24,Coker Unit,Texas City Complex
+REF_004183,10.4.184.193,3e:81:0e:6a:34:7f,UDP,2025-08-24,Isomerization Unit,Texas City Complex
+REF_003037,10.4.38.47,02:a3:52:ee:ce:72,Modbus,2025-07-24,Coker Unit,Texas City Complex
+REF_003177,10.2.178.187,a5:23:91:f2:78:81,TCP,2025-09-24,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery
+REF_003256,10.1.7.66,b7:63:c8:15:42:3b,Modbus,2025-09-24,Crude Distillation Unit (CDU),Texas City Complex
+REF_003015,10.4.16.25,43:3b:7a:4a:d4:66,TCP,2025-09-24,Isomerization Unit,Gulf Coast Refinery
+REF_004026,10.3.27.36,ab:c6:0f:70:0c:5c,UDP,2025-07-24,Hydrocracking Unit (HCU),Gulf Coast Refinery
+REF_003622,10.4.123.32,3a:b9:b6:5d:a0:9c,TCP,2025-08-24,Hydrotreater,Texas City Complex
+REF_003646,10.4.147.56,43:1f:92:e3:b6:42,UDP,2025-08-24,Hydrotreater,Texas City Complex
+REF_003606,10.4.107.16,11:48:ba:bc:0c:d3,TCP,2025-07-24,Hydrotreater,Gulf Coast Refinery
+REF_003522,10.3.23.132,47:4b:72:8c:24:15,TCP,2025-07-24,Hydrocracking Unit (HCU),Gulf Coast Refinery
+REF_003595,10.4.96.205,9b:d5:31:14:53:1c,UDP,2025-07-24,Reformer Unit,Texas City Complex
+NET_004701,10.4.202.111,54:36:08:94:a9:72,UDP,2025-07-24,Coker Unit,Baytown Refinery
+REF_004008,10.1.9.18,f9:0f:a0:1a:bb:df,TCP,2025-07-24,Crude Distillation Unit (CDU),Gulf Coast Refinery
+REF_003249,10.2.250.59,17:a8:94:01:2e:b5,Modbus,2025-09-24,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery
+NET_004619,10.4.120.29,a1:fe:65:b2:2b:36,TCP,2025-08-24,Reformer Unit,Texas City Complex
+REF_004030,10.4.31.40,60:ce:4b:3c:e0:90,UDP,2025-09-24,Hydrotreater,Texas City Complex
+REF_004130,10.3.131.140,a3:59:05:f9:35:fd,TCP,2025-09-24,Hydrocracking Unit (HCU),Baytown Refinery
+REF_004138,10.3.139.148,2a:e3:90:99:94:15,TCP,2025-07-24,Hydrocracking Unit (HCU),Texas City Complex
+REF_003060,10.4.61.70,18:c1:ea:03:a7:6c,TCP,2025-09-24,Alkylation Unit,Gulf Coast Refinery
+REF_003691,10.4.192.101,e2:81:1b:5c:f3:81,Modbus,2025-09-24,Reformer Unit,Texas City Complex
+REF_004000,10.1.1.10,b2:bd:42:f8:a3:a7,UDP,2025-09-24,Crude Distillation Unit (CDU),Texas City Complex
+REF_004113,10.2.114.123,fe:4c:75:c3:08:46,TCP,2025-08-24,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery
+REF_003549,10.4.50.159,1b:e8:59:3d:8b:1e,UDP,2025-07-24,Coker Unit,Gulf Coast Refinery
+REF_003454,10.4.205.64,85:99:e9:71:14:82,TCP,2025-09-24,Hydrotreater,Texas City Complex
+REF_003132,10.4.133.142,0e:b5:90:6b:62:7b,TCP,2025-07-24,Alkylation Unit,Gulf Coast Refinery
+NET_004106,10.3.107.116,8a:d2:ef:e3:d6:50,UDP,2025-07-24,Hydrocracking Unit (HCU),Texas City Complex
+REF_003322,10.3.73.132,cf:8b:84:bc:46:4d,TCP,2025-07-24,Hydrocracking Unit (HCU),Texas City Complex
+NET_004688,10.1.189.98,8f:91:48:aa:7a:e2,TCP,2025-07-24,Crude Distillation Unit (CDU),Texas City Complex
+NET_004789,10.4.40.199,c6:5e:43:88:33:6d,UDP,2025-09-24,Coker Unit,Gulf Coast Refinery
+REF_003049,10.2.50.59,4d:8d:77:f8:9c:31,TCP,2025-09-24,Fluid Catalytic Cracking (FCC),Texas City Complex
+REF_004136,10.1.137.146,7a:33:b6:9e:53:8f,Modbus,2025-09-24,Crude Distillation Unit (CDU),Baytown Refinery
+REF_003445,10.4.196.55,e3:d6:d4:b4:f3:2f,TCP,2025-09-24,Coker Unit,Texas City Complex
+REF_003591,10.4.92.201,98:33:d8:46:fe:2f,UDP,2025-07-24,Isomerization Unit,Gulf Coast Refinery
+REF_003264,10.1.15.74,80:0e:a9:f4:19:7f,Modbus,2025-09-24,Crude Distillation Unit (CDU),Gulf Coast Refinery
+REF_003388,10.4.139.198,1f:12:c4:9a:60:77,TCP,2025-08-24,Alkylation Unit,Texas City Complex
+NET_004737,10.2.238.147,9d:52:02:a5:0c:ce,TCP,2025-09-24,Fluid Catalytic Cracking (FCC),Baytown Refinery
+REF_003233,10.2.234.43,e7:0e:26:f4:5f:bd,TCP,2025-07-24,Fluid Catalytic Cracking (FCC),Baytown Refinery
+REF_003016,10.1.17.26,aa:da:fc:96:d9:5d,UDP,2025-09-24,Crude Distillation Unit (CDU),Texas City Complex
+REF_003750,10.4.1.160,2b:bc:08:bd:04:6a,TCP,2025-08-24,Hydrotreater,Gulf Coast Refinery
+REF_003349,10.4.100.159,96:e6:54:dc:72:81,UDP,2025-08-24,Coker Unit,Texas City Complex
+REF_003241,10.2.242.51,75:34:ac:d9:f9:1a,TCP,2025-08-24,Fluid Catalytic Cracking (FCC),Texas City Complex
+REF_003758,10.4.9.168,9c:27:19:98:c9:ce,TCP,2025-09-24,Hydrotreater,Baytown Refinery
+REF_003086,10.4.87.96,c3:98:ba:a6:96:07,UDP,2025-09-24,Hydrotreater,Baytown Refinery
+REF_003770,10.3.21.180,16:0e:ce:46:9b:ae,UDP,2025-07-24,Hydrocracking Unit (HCU),Baytown Refinery
+REF_003131,10.4.132.141,7b:79:82:75:a5:b6,Modbus,2025-07-24,Reformer Unit,Baytown Refinery
+NET_004822,10.4.73.32,6e:df:bd:af:00:96,Modbus,2025-09-24,Hydrotreater,Gulf Coast Refinery
+REF_004015,10.4.16.25,b1:5d:2c:40:5f:5c,TCP,2025-09-24,Isomerization Unit,Texas City Complex
+NET_004718,10.4.219.128,c2:ab:74:97:d1:45,TCP,2025-09-24,Hydrotreater,Texas City Complex
+REF_003553,10.2.54.163,35:c3:e6:d9:5d:d8,UDP,2025-07-24,Fluid Catalytic Cracking (FCC),Texas City Complex
+NET_004597,10.4.98.207,51:6e:c7:26:78:ab,TCP,2025-07-24,Coker Unit,Gulf Coast Refinery
+NET_004331,10.4.82.141,ad:55:bd:d5:f1:50,TCP,2025-07-24,Reformer Unit,Texas City Complex
+REF_003344,10.1.95.154,5c:71:ec:fa:62:74,UDP,2025-07-24,Crude Distillation Unit (CDU),Baytown Refinery
+NET_004592,10.1.93.202,9e:4f:4c:12:0c:96,TCP,2025-08-24,Crude Distillation Unit (CDU),Texas City Complex
+REF_003266,10.3.17.76,bb:bc:39:b2:24:78,UDP,2025-09-24,Hydrocracking Unit (HCU),Baytown Refinery
+REF_003719,10.4.220.129,bc:cb:ec:30:26:e2,TCP,2025-07-24,Isomerization Unit,Baytown Refinery
+REF_003421,10.4.172.31,0d:24:3e:ec:b1:61,TCP,2025-07-24,Coker Unit,Texas City Complex
+REF_003296,10.1.47.106,8d:85:f6:87:59:48,Modbus,2025-07-24,Crude Distillation Unit (CDU),Baytown Refinery
+REF_004110,10.4.111.120,50:db:14:0d:38:1a,TCP,2025-07-24,Hydrotreater,Gulf Coast Refinery
+REF_003133,10.4.134.143,c2:9b:dc:d9:46:e7,TCP,2025-09-24,Coker Unit,Texas City Complex
+REF_003397,10.4.148.207,46:b3:90:d2:da:f3,Modbus,2025-09-24,Coker Unit,Texas City Complex
+REF_003836,10.4.87.46,ca:3b:54:a4:95:e6,TCP,2025-09-24,Alkylation Unit,Baytown Refinery
+REF_003733,10.4.234.143,b3:fd:5a:2b:28:d8,TCP,2025-09-24,Coker Unit,Texas City Complex
+REF_004150,10.4.151.160,3f:8b:d7:a3:00:95,UDP,2025-07-24,Hydrotreater,Texas City Complex
+REF_004132,10.4.133.142,7c:8b:92:43:10:29,UDP,2025-09-24,Alkylation Unit,Texas City Complex
+REF_003641,10.2.142.51,59:2a:49:55:88:81,TCP,2025-09-24,Fluid Catalytic Cracking (FCC),Baytown Refinery
+REF_003579,10.4.80.189,a0:f0:58:13:f2:c6,TCP,2025-08-24,Reformer Unit,Gulf Coast Refinery
+NET_004588,10.4.89.198,99:45:9f:34:e5:ce,TCP,2025-09-24,Alkylation Unit,Gulf Coast Refinery
+NET_005099,10.4.100.109,f7:fc:33:bb:49:d8,TCP,2025-08-24,Reformer Unit,Texas City Complex
+REF_003839,10.4.90.49,c3:c0:93:10:a9:0d,TCP,2025-08-24,Isomerization Unit,Baytown Refinery
+REF_003099,10.4.100.109,5f:0c:22:a0:93:ff,TCP,2025-08-24,Reformer Unit,Gulf Coast Refinery
+REF_004153,10.2.154.163,01:08:12:a6:cf:2c,TCP,2025-07-24,Fluid Catalytic Cracking (FCC),Texas City Complex
+REF_003379,10.4.130.189,bd:e0:8b:3a:3c:9e,UDP,2025-07-24,Reformer Unit,Texas City Complex
+REF_003330,10.3.81.140,06:63:3c:6d:4e:12,TCP,2025-07-24,Hydrocracking Unit (HCU),Gulf Coast Refinery
+NET_004626,10.3.127.36,e8:bd:11:0d:5f:77,UDP,2025-09-24,Hydrocracking Unit (HCU),Baytown Refinery
+NET_004386,10.3.137.196,cf:10:a8:48:93:38,UDP,2025-09-24,Hydrocracking Unit (HCU),Baytown Refinery
+REF_003276,10.4.27.86,07:6f:40:0c:67:26,UDP,2025-09-24,Alkylation Unit,Gulf Coast Refinery
+REF_003255,10.4.6.65,1d:ea:c0:66:e5:65,UDP,2025-08-24,Isomerization Unit,Gulf Coast Refinery
+REF_003970,10.3.221.180,79:1c:b2:fa:23:63,TCP,2025-09-24,Hydrocracking Unit (HCU),Texas City Complex
+REF_003425,10.2.176.35,85:95:12:01:56:fa,UDP,2025-08-24,Fluid Catalytic Cracking (FCC),Baytown Refinery
+REF_003664,10.1.165.74,33:13:e1:7b:c9:96,TCP,2025-09-24,Crude Distillation Unit (CDU),Texas City Complex
+REF_003384,10.1.135.194,04:d7:2d:bc:de:91,UDP,2025-09-24,Crude Distillation Unit (CDU),Gulf Coast Refinery
+REF_003348,10.4.99.158,52:23:9d:95:da:94,TCP,2025-09-24,Alkylation Unit,Gulf Coast Refinery
+REF_003961,10.2.212.171,0b:e5:42:21:14:03,TCP,2025-08-24,Fluid Catalytic Cracking (FCC),Texas City Complex
+REF_003983,10.4.234.193,8a:f6:5b:b9:fd:e2,UDP,2025-08-24,Isomerization Unit,Baytown Refinery
+NET_004508,10.4.9.118,6d:1c:52:ed:7a:9e,UDP,2025-07-24,Alkylation Unit,Texas City Complex
+REF_003212,10.4.213.22,15:fd:d5:7b:4d:65,UDP,2025-08-24,Alkylation Unit,Baytown Refinery
+NET_004484,10.4.235.94,2f:1c:0a:ea:33:3e,TCP,2025-09-24,Alkylation Unit,Texas City Complex
+REF_003293,10.4.44.103,25:d2:41:e6:7f:5c,TCP,2025-09-24,Coker Unit,Baytown Refinery
+REF_003129,10.2.130.139,53:60:e8:50:5b:b3,UDP,2025-08-24,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery
+REF_003269,10.4.20.79,d1:40:1f:f2:e4:8f,TCP,2025-07-24,Coker Unit,Baytown Refinery
+REF_003402,10.3.153.12,0e:2b:99:a5:fe:0c,TCP,2025-07-24,Hydrocracking Unit (HCU),Gulf Coast Refinery
+REF_003214,10.4.215.24,7e:a0:5c:50:ac:70,TCP,2025-08-24,Hydrotreater,Texas City Complex
+NET_004411,10.4.162.21,4e:df:3b:34:fd:42,UDP,2025-08-24,Reformer Unit,Gulf Coast Refinery
+REF_003452,10.4.203.62,c8:22:49:01:67:6d,TCP,2025-09-24,Alkylation Unit,Baytown Refinery
+REF_003660,10.4.161.70,d0:7f:fc:84:fe:bd,Modbus,2025-07-24,Alkylation Unit,Gulf Coast Refinery
+REF_003643,10.4.144.53,2d:f2:b4:85:6e:52,UDP,2025-07-24,Reformer Unit,Texas City Complex
+REF_003908,10.4.159.118,ce:b8:b5:9e:c2:26,TCP,2025-07-24,Alkylation Unit,Baytown Refinery
+NET_004966,10.4.217.176,cd:58:01:f9:08:63,UDP,2025-09-24,Hydrotreater,Gulf Coast Refinery
+REF_003417,10.2.168.27,af:74:c8:22:6a:c6,TCP,2025-08-24,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery
+REF_003085,10.4.86.95,04:d6:c9:2f:7e:ee,Modbus,2025-09-24,Coker Unit,Texas City Complex
+REF_004109,10.4.110.119,af:d7:8b:04:6c:6c,TCP,2025-09-24,Coker Unit,Baytown Refinery
+REF_003992,10.1.243.202,3d:ac:5c:76:b7:75,UDP,2025-07-24,Crude Distillation Unit (CDU),Baytown Refinery
+REF_003232,10.1.233.42,b8:23:a8:08:36:f8,TCP,2025-09-24,Crude Distillation Unit (CDU),Texas City Complex
+REF_004104,10.1.105.114,4f:1a:5f:08:8d:2f,UDP,2025-08-24,Crude Distillation Unit (CDU),Gulf Coast Refinery
+REF_003401,10.2.152.11,8a:77:f4:be:8f:21,UDP,2025-08-24,Fluid Catalytic Cracking (FCC),Baytown Refinery
+REF_003367,10.4.118.177,72:c0:75:83:1d:c3,TCP,2025-09-24,Isomerization Unit,Texas City Complex
+NET_004875,10.4.126.85,41:d8:f5:74:f5:d3,TCP,2025-07-24,Reformer Unit,Baytown Refinery
+NET_004257,10.2.8.67,01:91:60:3a:01:aa,UDP,2025-09-24,Fluid Catalytic Cracking (FCC),Baytown Refinery
+REF_003728,10.1.229.138,5b:89:67:ae:ba:04,Modbus,2025-09-24,Crude Distillation Unit (CDU),Baytown Refinery
+NET_004380,10.4.131.190,d8:45:33:b0:ae:43,TCP,2025-08-24,Alkylation Unit,Baytown Refinery
+NET_004557,10.4.58.167,af:31:d1:b5:73:3e,TCP,2025-08-24,Coker Unit,Baytown Refinery
+REF_004191,10.4.192.201,c2:4e:c3:e7:d9:ce,TCP,2025-07-24,Isomerization Unit,Gulf Coast Refinery
+REF_003678,10.4.179.88,ae:cd:ce:fb:da:b2,TCP,2025-07-24,Hydrotreater,Gulf Coast Refinery
+REF_004114,10.3.115.124,b8:3a:b1:f0:91:4d,TCP,2025-09-24,Hydrocracking Unit (HCU),Texas City Complex
+NET_004780,10.4.31.190,da:9b:07:d8:6e:34,TCP,2025-07-24,Alkylation Unit,Gulf Coast Refinery
+REF_004047,10.4.48.57,e0:2d:44:74:20:d8,UDP,2025-07-24,Isomerization Unit,Gulf Coast Refinery
+REF_004148,10.4.149.158,a8:03:6b:0d:2e:30,UDP,2025-09-24,Alkylation Unit,Baytown Refinery
+REF_003995,10.4.246.205,95:53:0f:59:3d:e2,UDP,2025-08-24,Reformer Unit,Baytown Refinery
+REF_003448,10.1.199.58,1a:9c:f6:1f:dd:1e,TCP,2025-08-24,Crude Distillation Unit (CDU),Texas City Complex
+REF_003339,10.4.90.149,66:4b:8d:c4:54:a3,UDP,2025-09-24,Reformer Unit,Gulf Coast Refinery
+REF_003844,10.4.95.54,3e:28:15:3b:82:a8,TCP,2025-07-24,Alkylation Unit,Texas City Complex
+REF_004063,10.4.64.73,dd:fc:2b:92:b6:14,TCP,2025-09-24,Isomerization Unit,Texas City Complex
+REF_003443,10.4.194.53,d8:22:b6:41:7d:90,TCP,2025-09-24,Reformer Unit,Baytown Refinery
+REF_003662,10.4.163.72,90:50:8f:fa:a4:7f,UDP,2025-08-24,Hydrotreater,Baytown Refinery
+REF_003853,10.4.104.63,b1:d4:c9:4a:7f:49,UDP,2025-09-24,Coker Unit,Texas City Complex
+REF_004029,10.4.30.39,fa:af:df:f4:f9:36,TCP,2025-07-24,Coker Unit,Gulf Coast Refinery
+NET_004559,10.4.60.169,20:7d:85:ec:5b:a2,TCP,2025-07-24,Isomerization Unit,Texas City Complex
+REF_004192,10.1.193.202,52:b0:10:38:f8:a5,UDP,2025-07-24,Crude Distillation Unit (CDU),Texas City Complex
+REF_003120,10.1.121.130,2b:03:cd:e3:47:89,UDP,2025-08-24,Crude Distillation Unit (CDU),Gulf Coast Refinery
+REF_003814,10.4.65.24,a1:d3:e6:0b:b1:c4,TCP,2025-08-24,Hydrotreater,Texas City Complex
+REF_003506,10.3.7.116,58:19:88:f9:1e:e4,TCP,2025-08-24,Hydrocracking Unit (HCU),Baytown Refinery
+REF_003598,10.4.99.208,03:c4:c5:c3:c6:2a,TCP,2025-07-24,Hydrotreater,Texas City Complex
+REF_003127,10.4.128.137,94:01:e5:8f:d0:36,UDP,2025-07-24,Isomerization Unit,Texas City Complex
+REF_003118,10.4.119.128,fd:00:f0:c2:fc:b9,UDP,2025-07-24,Hydrotreater,Texas City Complex
+REF_003130,10.3.131.140,d3:4c:76:a0:40:5d,TCP,2025-08-24,Hydrocracking Unit (HCU),Texas City Complex
+REF_003681,10.2.182.91,f8:8f:13:d3:14:f1,TCP,2025-08-24,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery
+REF_003878,10.4.129.88,95:81:33:eb:9f:69,TCP,2025-08-24,Hydrotreater,Baytown Refinery
+REF_003596,10.4.97.206,98:b9:69:49:d8:9d,TCP,2025-08-24,Alkylation Unit,Baytown Refinery
+REF_003924,10.4.175.134,b9:ed:69:a2:58:19,TCP,2025-07-24,Alkylation Unit,Gulf Coast Refinery
+REF_004087,10.4.88.97,86:dd:f7:79:15:29,UDP,2025-09-24,Isomerization Unit,Texas City Complex
+REF_003115,10.4.116.125,a3:95:89:81:30:17,UDP,2025-07-24,Reformer Unit,Texas City Complex
+REF_003413,10.4.164.23,d1:d0:25:89:27:ab,TCP,2025-07-24,Coker Unit,Baytown Refinery
+REF_003160,10.1.161.170,29:e7:7d:55:10:24,TCP,2025-08-24,Crude Distillation Unit (CDU),Texas City Complex
+REF_003140,10.4.141.150,dc:9d:0c:5a:87:50,TCP,2025-09-24,Alkylation Unit,Baytown Refinery
+REF_003874,10.3.125.84,29:91:d8:65:51:a0,UDP,2025-09-24,Hydrocracking Unit (HCU),Texas City Complex
+REF_003460,10.4.211.70,6a:d0:9b:2a:8a:50,TCP,2025-08-24,Alkylation Unit,Texas City Complex
+REF_003051,10.4.52.61,00:8a:f7:42:c3:fe,UDP,2025-07-24,Reformer Unit,Gulf Coast Refinery
+REF_003973,10.4.224.183,90:98:ab:f5:32:d8,UDP,2025-08-24,Coker Unit,Texas City Complex
+REF_003052,10.4.53.62,cf:2e:9a:b9:3e:21,TCP,2025-08-24,Alkylation Unit,Texas City Complex
+REF_004044,10.4.45.54,e7:81:d7:cd:e0:24,TCP,2025-07-24,Alkylation Unit,Gulf Coast Refinery
+REF_003146,10.3.147.156,49:98:6b:ea:dd:e0,TCP,2025-07-24,Hydrocracking Unit (HCU),Baytown Refinery
+REF_003190,10.4.191.200,a0:ec:bb:ce:5d:3b,TCP,2025-08-24,Hydrotreater,Texas City Complex
+REF_003173,10.4.174.183,35:de:8c:7f:06:1c,Modbus,2025-09-24,Coker Unit,Baytown Refinery
+REF_003490,10.3.241.100,8a:c1:a9:34:78:a9,UDP,2025-07-24,Hydrocracking Unit (HCU),Texas City Complex
+REF_003439,10.4.190.49,d3:d3:67:52:99:b3,UDP,2025-07-24,Isomerization Unit,Texas City Complex
+REF_003457,10.2.208.67,54:fd:62:a9:41:ef,UDP,2025-08-24,Fluid Catalytic Cracking (FCC),Texas City Complex
+REF_003208,10.1.209.18,0b:29:f0:bb:c4:0d,UDP,2025-09-24,Crude Distillation Unit (CDU),Texas City Complex
+REF_003504,10.1.5.114,5c:b5:f5:47:c6:29,TCP,2025-07-24,Crude Distillation Unit (CDU),Gulf Coast Refinery
+NET_004938,10.3.189.148,cc:84:dc:12:73:8e,UDP,2025-07-24,Hydrocracking Unit (HCU),Baytown Refinery
+REF_003032,10.1.33.42,82:80:55:00:12:f3,TCP,2025-09-24,Crude Distillation Unit (CDU),Baytown Refinery
+REF_003672,10.1.173.82,11:22:fd:67:bd:41,UDP,2025-09-24,Crude Distillation Unit (CDU),Gulf Coast Refinery
+REF_003985,10.2.236.195,c3:bf:8b:06:51:a5,TCP,2025-08-24,Fluid Catalytic Cracking (FCC),Texas City Complex
+REF_004158,10.4.159.168,ff:ec:cd:18:f4:d3,UDP,2025-07-24,Hydrotreater,Gulf Coast Refinery
+REF_003880,10.1.131.90,87:0c:d3:a6:cb:94,UDP,2025-07-24,Crude Distillation Unit (CDU),Texas City Complex
+REF_003294,10.4.45.104,1d:bb:a0:7f:bd:42,TCP,2025-07-24,Hydrotreater,Gulf Coast Refinery
+REF_003893,10.4.144.103,8e:ad:43:2a:2e:7e,TCP,2025-07-24,Coker Unit,Baytown Refinery
+REF_003149,10.4.150.159,0a:e6:e8:d7:82:f5,UDP,2025-08-24,Coker Unit,Baytown Refinery
+NET_004395,10.4.146.205,c2:eb:60:82:79:b9,UDP,2025-07-24,Reformer Unit,Baytown Refinery
+REF_004147,10.4.148.157,e7:ce:94:3e:e9:62,TCP,2025-09-24,Reformer Unit,Texas City Complex
+REF_003745,10.2.246.155,a5:d6:4d:76:9a:44,TCP,2025-08-24,Fluid Catalytic Cracking (FCC),Texas City Complex
+REF_003785,10.2.36.195,ad:03:78:76:ab:dc,UDP,2025-07-24,Fluid Catalytic Cracking (FCC),Baytown Refinery
+REF_004131,10.4.132.141,65:4e:fb:0a:0b:af,UDP,2025-09-24,Reformer Unit,Gulf Coast Refinery
+REF_003794,10.3.45.204,dd:39:1e:fb:6a:81,TCP,2025-09-24,Hydrocracking Unit (HCU),Baytown Refinery
+REF_004064,10.1.65.74,3e:ad:06:a4:45:49,TCP,2025-08-24,Crude Distillation Unit (CDU),Baytown Refinery
+REF_003809,10.2.60.19,2b:a3:16:72:2c:9d,TCP,2025-08-24,Fluid Catalytic Cracking (FCC),Baytown Refinery
+NET_004583,10.4.84.193,64:6e:61:e4:f4:d3,UDP,2025-07-24,Isomerization Unit,Texas City Complex
+REF_003638,10.4.139.48,de:80:cd:3c:73:47,TCP,2025-09-24,Hydrotreater,Baytown Refinery
+REF_003729,10.2.230.139,9b:90:10:a7:d7:fe,TCP,2025-07-24,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery
+REF_003864,10.1.115.74,c8:d0:1a:0b:06:af,TCP,2025-08-24,Crude Distillation Unit (CDU),Gulf Coast Refinery
+REF_003461,10.4.212.71,73:e6:ff:62:41:3c,UDP,2025-09-24,Coker Unit,Baytown Refinery
+REF_003008,10.1.9.18,0e:22:26:92:17:c0,Modbus,2025-08-24,Crude Distillation Unit (CDU),Baytown Refinery
+REF_003613,10.4.114.23,1a:a1:66:48:a3:2c,TCP,2025-09-24,Coker Unit,Texas City Complex
+REF_003308,10.4.59.118,2f:fe:7a:c5:d0:1b,TCP,2025-09-24,Alkylation Unit,Baytown Refinery
+REF_003090,10.3.91.100,fb:e9:02:a0:ac:0a,UDP,2025-08-24,Hydrocracking Unit (HCU),Gulf Coast Refinery
+REF_003540,10.4.41.150,45:79:96:cd:a3:84,TCP,2025-08-24,Alkylation Unit,Gulf Coast Refinery
+REF_003100,10.4.101.110,c3:8b:df:72:32:93,UDP,2025-07-24,Alkylation Unit,Texas City Complex
+REF_003022,10.4.23.32,c2:e6:7f:61:4e:6f,TCP,2025-08-24,Hydrotreater,Texas City Complex
+NET_004687,10.4.188.97,53:c6:67:08:26:cd,UDP,2025-07-24,Isomerization Unit,Gulf Coast Refinery
+REF_003829,10.4.80.39,f0:6a:72:64:6c:16,TCP,2025-07-24,Coker Unit,Texas City Complex
+REF_003061,10.4.62.71,88:94:6e:ac:81:de,UDP,2025-07-24,Coker Unit,Texas City Complex
+REF_003326,10.4.77.136,42:23:f4:90:18:0a,UDP,2025-09-24,Hydrotreater,Baytown Refinery
+REF_003273,10.2.24.83,63:e2:3f:c9:7a:91,TCP,2025-07-24,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery
+REF_003126,10.4.127.136,12:99:bb:77:ec:23,TCP,2025-07-24,Hydrotreater,Gulf Coast Refinery
+REF_003409,10.2.160.19,e2:b6:a8:35:82:99,TCP,2025-09-24,Fluid Catalytic Cracking (FCC),Texas City Complex
+REF_003849,10.2.100.59,2b:47:66:78:35:90,TCP,2025-08-24,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery
+REF_003001,10.2.2.11,1b:6b:5e:99:2d:fe,UDP,2025-07-24,Fluid Catalytic Cracking (FCC),Texas City Complex
+REF_003725,10.4.226.135,49:59:1a:26:fb:36,TCP,2025-07-24,Coker Unit,Baytown Refinery
+REF_003802,10.3.53.12,18:29:22:3e:e6:9b,TCP,2025-09-24,Hydrocracking Unit (HCU),Texas City Complex
+REF_003513,10.2.14.123,21:cd:17:34:68:90,UDP,2025-08-24,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery
+NET_004058,10.3.59.68,ef:0b:9c:84:4d:a3,UDP,2025-09-24,Hydrocracking Unit (HCU),Texas City Complex
+REF_003260,10.4.11.70,c3:f3:e6:56:71:53,Modbus,2025-07-24,Alkylation Unit,Baytown Refinery
+REF_003710,10.4.211.120,af:18:36:3e:91:99,TCP,2025-09-24,Hydrotreater,Baytown Refinery
+NET_004783,10.4.34.193,e8:80:6b:7e:01:d1,UDP,2025-09-24,Isomerization Unit,Gulf Coast Refinery
+REF_003776,10.1.27.186,c3:97:83:25:ec:c8,TCP,2025-08-24,Crude Distillation Unit (CDU),Baytown Refinery
+REF_003527,10.4.28.137,33:f0:3d:21:fc:ae,UDP,2025-07-24,Isomerization Unit,Baytown Refinery
+REF_003624,10.1.125.34,87:c8:95:df:0b:05,TCP,2025-09-24,Crude Distillation Unit (CDU),Gulf Coast Refinery
+REF_003881,10.2.132.91,06:77:b8:45:1e:f6,UDP,2025-08-24,Fluid Catalytic Cracking (FCC),Baytown Refinery
+NET_004406,10.4.157.16,6e:9c:65:de:45:3b,TCP,2025-08-24,Hydrotreater,Texas City Complex
+REF_003726,10.4.227.136,dd:a1:af:11:dd:2c,TCP,2025-09-24,Hydrotreater,Gulf Coast Refinery
+REF_003639,10.4.140.49,18:0c:44:4c:77:3d,UDP,2025-08-24,Isomerization Unit,Gulf Coast Refinery
+REF_003077,10.4.78.87,af:32:ea:c6:60:6f,TCP,2025-09-24,Coker Unit,Baytown Refinery
+NET_004337,10.2.88.147,51:f3:11:ca:e6:8b,TCP,2025-09-24,Fluid Catalytic Cracking (FCC),Texas City Complex
+REF_003715,10.4.216.125,80:e0:02:f5:f7:c0,TCP,2025-07-24,Reformer Unit,Texas City Complex
+REF_004167,10.4.168.177,6d:84:71:87:b2:dd,UDP,2025-09-24,Isomerization Unit,Gulf Coast Refinery
+REF_003282,10.3.33.92,ab:9c:57:e0:08:88,UDP,2025-08-24,Hydrocracking Unit (HCU),Gulf Coast Refinery
+REF_004075,10.4.76.85,c7:6f:48:26:82:d5,TCP,2025-07-24,Reformer Unit,Texas City Complex
+REF_003693,10.4.194.103,35:6d:1a:e0:6f:b1,UDP,2025-08-24,Coker Unit,Gulf Coast Refinery
+REF_003805,10.4.56.15,9f:48:b0:d4:13:6b,UDP,2025-08-24,Coker Unit,Texas City Complex
+REF_004169,10.2.170.179,15:ef:02:90:cf:02,TCP,2025-09-24,Fluid Catalytic Cracking (FCC),Baytown Refinery
+REF_004061,10.4.62.71,3b:86:3d:c0:61:29,UDP,2025-07-24,Coker Unit,Baytown Refinery
+REF_003472,10.1.223.82,51:8c:47:0d:44:b6,TCP,2025-09-24,Crude Distillation Unit (CDU),Texas City Complex
+REF_003905,10.2.156.115,0c:b2:ff:e5:38:61,TCP,2025-09-24,Fluid Catalytic Cracking (FCC),Baytown Refinery
+REF_004038,10.4.39.48,fe:27:4e:8b:68:3d,Modbus,2025-09-24,Hydrotreater,Gulf Coast Refinery
+REF_004134,10.4.135.144,6b:a0:d9:1c:a3:fe,TCP,2025-07-24,Hydrotreater,Gulf Coast Refinery
+NET_004942,10.4.193.152,9a:cc:7e:bc:75:d9,TCP,2025-08-24,Hydrotreater,Gulf Coast Refinery
+REF_003926,10.4.177.136,3c:01:23:38:a9:e1,TCP,2025-09-24,Hydrotreater,Baytown Refinery
+REF_003391,10.4.142.201,86:b3:45:73:75:f7,UDP,2025-07-24,Isomerization Unit,Texas City Complex
+NET_004026,10.3.27.36,72:26:16:93:6f:21,UDP,2025-09-24,Hydrocracking Unit (HCU),Baytown Refinery
+REF_003161,10.2.162.171,cf:66:4f:e8:41:f9,TCP,2025-09-24,Fluid Catalytic Cracking (FCC),Baytown Refinery
+REF_003516,10.4.17.126,c9:a7:a8:83:08:ff,TCP,2025-09-24,Alkylation Unit,Gulf Coast Refinery
+REF_003656,10.1.157.66,bf:b5:3b:fd:66:c1,TCP,2025-07-24,Crude Distillation Unit (CDU),Baytown Refinery
+REF_003042,10.3.43.52,96:d1:45:c7:c3:20,Modbus,2025-08-24,Hydrocracking Unit (HCU),Gulf Coast Refinery
+REF_003135,10.4.136.145,6f:22:fd:01:d3:5b,Modbus,2025-07-24,Isomerization Unit,Gulf Coast Refinery
+NET_004163,10.4.164.173,02:3c:19:fd:f5:d0,UDP,2025-07-24,Reformer Unit,Texas City Complex
+REF_003823,10.4.74.33,0f:39:2f:70:98:72,Modbus,2025-07-24,Isomerization Unit,Texas City Complex
+REF_004140,10.4.141.150,3a:fd:fb:0c:7e:07,TCP,2025-08-24,Alkylation Unit,Gulf Coast Refinery
+REF_003449,10.2.200.59,08:69:4b:86:6a:f0,TCP,2025-07-24,Fluid Catalytic Cracking (FCC),Baytown Refinery
+REF_003470,10.4.221.80,4b:4b:d1:a0:0e:15,UDP,2025-09-24,Hydrotreater,Baytown Refinery
+REF_003590,10.4.91.200,a3:e9:57:85:e9:58,UDP,2025-09-24,Hydrotreater,Baytown Refinery
+REF_003759,10.4.10.169,11:1a:a8:15:2c:ce,TCP,2025-08-24,Isomerization Unit,Gulf Coast Refinery
+REF_003722,10.3.223.132,35:8c:47:46:49:6f,UDP,2025-08-24,Hydrocracking Unit (HCU),Baytown Refinery
+REF_003697,10.2.198.107,56:b0:59:82:9b:81,UDP,2025-08-24,Fluid Catalytic Cracking (FCC),Texas City Complex
+REF_003640,10.1.141.50,09:f2:7f:a3:e2:ef,TCP,2025-08-24,Crude Distillation Unit (CDU),Texas City Complex
+REF_003960,10.1.211.170,b7:42:d3:39:19:27,UDP,2025-07-24,Crude Distillation Unit (CDU),Gulf Coast Refinery
+NET_004265,10.2.16.75,ee:70:06:6c:58:4f,UDP,2025-09-24,Fluid Catalytic Cracking (FCC),Texas City Complex
+REF_003303,10.4.54.113,ee:9e:45:af:30:3f,UDP,2025-08-24,Isomerization Unit,Gulf Coast Refinery
+REF_004065,10.2.66.75,86:28:27:77:6d:84,UDP,2025-09-24,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery
+REF_003323,10.4.74.133,c6:2e:7e:26:7e:42,TCP,2025-07-24,Reformer Unit,Baytown Refinery
+REF_003195,10.4.196.205,5f:39:57:9f:95:fd,TCP,2025-09-24,Reformer Unit,Gulf Coast Refinery
+REF_003441,10.2.192.51,8a:dc:a6:0a:9b:e5,Modbus,2025-08-24,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery
+REF_003772,10.4.23.182,81:bb:13:8e:ee:1d,TCP,2025-09-24,Alkylation Unit,Texas City Complex
+REF_003577,10.2.78.187,96:7c:7a:c0:2f:fd,UDP,2025-08-24,Fluid Catalytic Cracking (FCC),Texas City Complex
+REF_003523,10.4.24.133,f5:d8:6e:36:79:82,UDP,2025-08-24,Reformer Unit,Texas City Complex
+NET_004899,10.4.150.109,19:cd:12:ae:13:ad,TCP,2025-08-24,Reformer Unit,Baytown Refinery
+REF_003442,10.3.193.52,93:44:97:a7:81:fd,TCP,2025-08-24,Hydrocracking Unit (HCU),Texas City Complex
+NET_004056,10.1.57.66,c5:99:d2:03:4f:68,TCP,2025-07-24,Crude Distillation Unit (CDU),Baytown Refinery
+REF_004188,10.4.189.198,87:aa:a2:ea:3a:ac,TCP,2025-09-24,Alkylation Unit,Gulf Coast Refinery
+REF_004096,10.1.97.106,ee:b7:b1:09:83:f3,TCP,2025-08-24,Crude Distillation Unit (CDU),Texas City Complex
+REF_003488,10.1.239.98,18:ae:b1:fe:c6:c2,TCP,2025-08-24,Crude Distillation Unit (CDU),Baytown Refinery
+REF_003993,10.2.244.203,67:d9:81:ea:af:55,TCP,2025-09-24,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery
+NET_004080,10.1.81.90,55:f5:03:12:c0:42,UDP,2025-07-24,Crude Distillation Unit (CDU),Baytown Refinery
+REF_003072,10.1.73.82,09:d1:60:f1:ff:bd,UDP,2025-08-24,Crude Distillation Unit (CDU),Gulf Coast Refinery
+REF_003320,10.1.71.130,29:c6:d6:6d:bf:92,UDP,2025-08-24,Crude Distillation Unit (CDU),Baytown Refinery
+REF_004173,10.4.174.183,6a:7c:e0:68:20:fc,UDP,2025-07-24,Coker Unit,Gulf Coast Refinery
+REF_003748,10.4.249.158,fd:f4:07:1a:52:f3,Modbus,2025-09-24,Alkylation Unit,Texas City Complex
+REF_003170,10.3.171.180,08:ff:9d:5c:c8:05,UDP,2025-09-24,Hydrocracking Unit (HCU),Baytown Refinery
+REF_004050,10.3.51.60,b4:40:a5:62:e4:02,Modbus,2025-08-24,Hydrocracking Unit (HCU),Gulf Coast Refinery
+REF_003556,10.4.57.166,e4:90:e7:89:78:84,UDP,2025-08-24,Alkylation Unit,Texas City Complex
+REF_003459,10.4.210.69,29:9d:91:5b:7b:cd,UDP,2025-08-24,Reformer Unit,Gulf Coast Refinery
+REF_004129,10.2.130.139,e6:cc:97:3d:9b:fd,TCP,2025-09-24,Fluid Catalytic Cracking (FCC),Texas City Complex
+REF_003346,10.3.97.156,41:83:b2:e4:bf:c2,TCP,2025-09-24,Hydrocracking Unit (HCU),Texas City Complex
+REF_003315,10.4.66.125,e7:35:29:bd:8d:a4,UDP,2025-08-24,Reformer Unit,Gulf Coast Refinery
+REF_003752,10.1.3.162,66:79:62:e2:42:1f,TCP,2025-07-24,Crude Distillation Unit (CDU),Baytown Refinery
+REF_003775,10.4.26.185,01:be:e0:33:56:13,TCP,2025-08-24,Isomerization Unit,Texas City Complex
+REF_003683,10.4.184.93,7e:91:b9:c5:8a:0e,TCP,2025-09-24,Reformer Unit,Baytown Refinery
+REF_003302,10.4.53.112,05:8c:35:41:95:c0,TCP,2025-08-24,Hydrotreater,Baytown Refinery
+NET_004444,10.4.195.54,65:72:5e:07:e8:fa,UDP,2025-08-24,Alkylation Unit,Gulf Coast Refinery
+REF_003666,10.3.167.76,d4:95:10:47:c4:97,TCP,2025-08-24,Hydrocracking Unit (HCU),Gulf Coast Refinery
+REF_003187,10.4.188.197,c3:0e:ec:6c:8f:f0,TCP,2025-09-24,Reformer Unit,Texas City Complex
+REF_003854,10.4.105.64,29:3e:25:cb:a0:24,TCP,2025-09-24,Hydrotreater,Baytown Refinery
+REF_004116,10.4.117.126,87:cc:2a:06:d1:5b,TCP,2025-08-24,Alkylation Unit,Gulf Coast Refinery
+REF_003189,10.4.190.199,a9:3e:9c:7d:6f:e8,TCP,2025-07-24,Coker Unit,Gulf Coast Refinery
+REF_003584,10.1.85.194,28:6e:da:9a:05:ec,UDP,2025-09-24,Crude Distillation Unit (CDU),Baytown Refinery
+REF_004089,10.2.90.99,4c:73:ef:c5:b7:29,TCP,2025-09-24,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery
+REF_003698,10.3.199.108,45:27:bc:22:61:c3,TCP,2025-09-24,Hydrocracking Unit (HCU),Baytown Refinery
+REF_003611,10.4.112.21,a8:d0:30:60:9e:78,TCP,2025-07-24,Reformer Unit,Baytown Refinery
+NET_004975,10.4.226.185,82:e2:3b:62:08:36,TCP,2025-09-24,Isomerization Unit,Gulf Coast Refinery
+REF_003332,10.4.83.142,98:12:a0:c4:a0:2d,TCP,2025-07-24,Alkylation Unit,Baytown Refinery
+REF_004001,10.2.2.11,e4:5f:5c:95:d4:ae,UDP,2025-09-24,Fluid Catalytic Cracking (FCC),Baytown Refinery
+REF_003295,10.4.46.105,f1:e6:d9:36:87:60,Modbus,2025-09-24,Isomerization Unit,Texas City Complex
+REF_004049,10.2.50.59,84:19:86:11:2c:fa,UDP,2025-09-24,Fluid Catalytic Cracking (FCC),Baytown Refinery
+REF_003500,10.4.1.110,75:03:be:a5:01:20,TCP,2025-07-24,Alkylation Unit,Baytown Refinery
+NET_004494,10.4.245.104,30:e8:b5:80:dd:37,TCP,2025-07-24,Hydrotreater,Baytown Refinery
+REF_004071,10.4.72.81,42:75:97:25:51:ef,UDP,2025-08-24,Isomerization Unit,Gulf Coast Refinery
+REF_003154,10.3.155.164,54:77:9c:05:80:08,TCP,2025-09-24,Hydrocracking Unit (HCU),Texas City Complex
+REF_003896,10.1.147.106,4a:72:c1:b3:0c:1c,UDP,2025-07-24,Crude Distillation Unit (CDU),Baytown Refinery
+REF_003779,10.4.30.189,73:2c:6a:0c:07:be,UDP,2025-08-24,Reformer Unit,Baytown Refinery
+REF_003084,10.4.85.94,94:1c:45:24:09:17,TCP,2025-07-24,Alkylation Unit,Gulf Coast Refinery
+REF_003432,10.1.183.42,2e:f9:a0:2d:77:a8,TCP,2025-09-24,Crude Distillation Unit (CDU),Gulf Coast Refinery
+REF_003144,10.1.145.154,2b:61:ff:e8:9b:0a,TCP,2025-08-24,Crude Distillation Unit (CDU),Gulf Coast Refinery
+NET_005084,10.4.85.94,79:34:98:f6:e4:1c,TCP,2025-07-24,Alkylation Unit,Texas City Complex
+NET_004645,10.4.146.55,90:71:93:e3:a4:4f,TCP,2025-08-24,Coker Unit,Gulf Coast Refinery
+REF_003424,10.1.175.34,e2:ea:26:db:bc:cb,UDP,2025-08-24,Crude Distillation Unit (CDU),Texas City Complex
+REF_004151,10.4.152.161,13:27:25:56:f4:d4,TCP,2025-08-24,Isomerization Unit,Baytown Refinery
+REF_003768,10.1.19.178,f3:d6:25:13:69:d7,UDP,2025-07-24,Crude Distillation Unit (CDU),Gulf Coast Refinery
+REF_004036,10.4.37.46,9c:85:38:60:14:9d,UDP,2025-08-24,Alkylation Unit,Texas City Complex
+NET_004321,10.2.72.131,68:07:63:bd:6e:73,Modbus,2025-08-24,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery
+REF_003283,10.4.34.93,7b:46:19:0b:5c:09,Modbus,2025-09-24,Reformer Unit,Texas City Complex
+REF_003044,10.4.45.54,40:7c:e1:d6:da:6f,TCP,2025-07-24,Alkylation Unit,Baytown Refinery
+REF_003202,10.3.203.12,2f:65:0d:05:07:15,TCP,2025-07-24,Hydrocracking Unit (HCU),Texas City Complex
+REF_004051,10.4.52.61,03:61:8c:99:a9:9d,UDP,2025-07-24,Reformer Unit,Texas City Complex
+REF_003220,10.4.221.30,6a:1a:50:93:fc:36,TCP,2025-09-24,Alkylation Unit,Texas City Complex
+REF_003612,10.4.113.22,2f:d1:03:45:ea:35,TCP,2025-09-24,Alkylation Unit,Gulf Coast Refinery
+REF_003057,10.2.58.67,18:3b:8f:d1:e4:83,UDP,2025-08-24,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery
+REF_003040,10.1.41.50,ca:ec:6a:44:ca:bc,Modbus,2025-09-24,Crude Distillation Unit (CDU),Texas City Complex
+REF_003360,10.1.111.170,f7:3f:70:3d:1f:b7,UDP,2025-09-24,Crude Distillation Unit (CDU),Gulf Coast Refinery
+NET_004859,10.4.110.69,f8:e6:d6:fa:c3:ce,TCP,2025-07-24,Reformer Unit,Texas City Complex
+NET_004237,10.4.238.47,54:84:f5:0f:00:03,TCP,2025-07-24,Coker Unit,Gulf Coast Refinery
+REF_003936,10.1.187.146,ab:e0:08:f0:95:6f,Modbus,2025-09-24,Crude Distillation Unit (CDU),Gulf Coast Refinery
+REF_003988,10.4.239.198,c8:4a:79:f2:54:3b,UDP,2025-07-24,Alkylation Unit,Texas City Complex
+REF_004179,10.4.180.189,1b:ed:0f:15:af:03,UDP,2025-08-24,Reformer Unit,Gulf Coast Refinery
+NET_004699,10.4.200.109,aa:36:32:b3:48:9b,TCP,2025-09-24,Reformer Unit,Gulf Coast Refinery
+REF_003940,10.4.191.150,43:b5:d0:35:f1:ae,TCP,2025-07-24,Alkylation Unit,Texas City Complex
+REF_003478,10.4.229.88,90:b2:64:f1:f1:a9,TCP,2025-07-24,Hydrotreater,Texas City Complex
+REF_003582,10.4.83.192,0f:36:2d:3b:88:f8,TCP,2025-08-24,Hydrotreater,Gulf Coast Refinery
+REF_003250,10.3.1.60,5c:e1:b1:17:fb:b1,UDP,2025-07-24,Hydrocracking Unit (HCU),Texas City Complex
+NET_004999,10.4.250.209,31:dc:17:11:a9:37,TCP,2025-08-24,Isomerization Unit,Gulf Coast Refinery
+NET_004700,10.4.201.110,3c:90:19:bf:27:69,TCP,2025-07-24,Alkylation Unit,Texas City Complex
+NET_004723,10.4.224.133,f5:e8:a9:19:e4:37,UDP,2025-08-24,Reformer Unit,Gulf Coast Refinery
+REF_003398,10.4.149.208,54:e3:b7:38:29:85,TCP,2025-07-24,Hydrotreater,Baytown Refinery
+REF_004184,10.1.185.194,3e:eb:58:14:0c:cb,UDP,2025-08-24,Crude Distillation Unit (CDU),Baytown Refinery
+REF_003095,10.4.96.105,56:22:94:d4:75:ab,TCP,2025-07-24,Isomerization Unit,Baytown Refinery
+REF_003862,10.4.113.72,c4:77:7d:ae:b0:8e,UDP,2025-08-24,Hydrotreater,Texas City Complex
+REF_003867,10.4.118.77,bd:a0:e4:39:14:95,TCP,2025-07-24,Reformer Unit,Gulf Coast Refinery
+REF_003338,10.3.89.148,eb:28:69:a7:87:11,UDP,2025-07-24,Hydrocracking Unit (HCU),Baytown Refinery
+REF_003545,10.2.46.155,ea:93:5e:6b:f2:d1,UDP,2025-09-24,Fluid Catalytic Cracking (FCC),Baytown Refinery
+NET_005111,10.4.112.121,05:58:40:28:4a:c9,Modbus,2025-08-24,Isomerization Unit,Texas City Complex
+REF_003716,10.4.217.126,3d:a9:24:4d:83:26,TCP,2025-07-24,Alkylation Unit,Baytown Refinery
+REF_003933,10.4.184.143,00:c1:2e:cf:96:52,TCP,2025-09-24,Coker Unit,Gulf Coast Refinery
+REF_003358,10.4.109.168,6e:af:1a:79:0b:4a,TCP,2025-07-24,Hydrotreater,Texas City Complex
+NET_004888,10.1.139.98,e5:8b:c5:0d:01:ea,UDP,2025-08-24,Crude Distillation Unit (CDU),Gulf Coast Refinery
+REF_003447,10.4.198.57,6d:ee:e6:ae:1a:22,TCP,2025-08-24,Isomerization Unit,Gulf Coast Refinery
+REF_003081,10.2.82.91,74:49:a1:fa:67:4b,UDP,2025-07-24,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery
+REF_003222,10.4.223.32,b2:ea:73:19:46:c1,UDP,2025-09-24,Hydrotreater,Gulf Coast Refinery
+REF_003818,10.3.69.28,2c:45:f5:1e:a2:bc,TCP,2025-07-24,Hydrocracking Unit (HCU),Baytown Refinery
+REF_003301,10.4.52.111,2e:a7:dd:04:bf:5f,UDP,2025-08-24,Coker Unit,Texas City Complex
+REF_003014,10.4.15.24,44:a4:20:71:e4:45,UDP,2025-08-24,Hydrotreater,Baytown Refinery
+REF_003696,10.1.197.106,ff:ce:8e:a9:b0:98,TCP,2025-08-24,Crude Distillation Unit (CDU),Gulf Coast Refinery
+REF_004002,10.3.3.12,d0:5f:ad:4e:dd:90,UDP,2025-08-24,Hydrocracking Unit (HCU),Gulf Coast Refinery
+NET_004564,10.4.65.174,dd:2d:33:5c:4f:b0,UDP,2025-09-24,Alkylation Unit,Gulf Coast Refinery
+REF_003034,10.3.35.44,c3:a2:67:8a:27:78,UDP,2025-08-24,Hydrocracking Unit (HCU),Texas City Complex
+REF_003636,10.4.137.46,2f:fe:85:7a:05:80,UDP,2025-09-24,Alkylation Unit,Gulf Coast Refinery
+REF_003608,10.1.109.18,0d:a7:e0:43:ff:52,TCP,2025-08-24,Crude Distillation Unit (CDU),Baytown Refinery
+REF_003544,10.1.45.154,36:6e:34:c1:a8:c1,TCP,2025-07-24,Crude Distillation Unit (CDU),Texas City Complex
+NET_004430,10.4.181.40,9d:cb:93:41:d4:2a,TCP,2025-08-24,Hydrotreater,Texas City Complex
+REF_003964,10.4.215.174,0c:bd:b0:38:75:8e,Modbus,2025-08-24,Alkylation Unit,Texas City Complex
+REF_004059,10.4.60.69,e3:10:2d:53:c5:40,TCP,2025-08-24,Reformer Unit,Gulf Coast Refinery
+REF_003511,10.4.12.121,d7:fb:2a:3f:4d:ee,TCP,2025-09-24,Isomerization Unit,Texas City Complex
+REF_003143,10.4.144.153,d0:a0:6d:e7:4c:69,TCP,2025-09-24,Isomerization Unit,Baytown Refinery
+REF_003828,10.4.79.38,49:21:0b:01:c2:ef,UDP,2025-08-24,Alkylation Unit,Gulf Coast Refinery
+REF_003886,10.4.137.96,48:5f:7d:6b:f3:db,TCP,2025-09-24,Hydrotreater,Texas City Complex
+REF_003164,10.4.165.174,62:7c:75:c8:63:5f,UDP,2025-08-24,Alkylation Unit,Baytown Refinery
+REF_003371,10.4.122.181,db:e7:65:69:52:d4,TCP,2025-08-24,Reformer Unit,Baytown Refinery
+REF_003858,10.3.109.68,96:6a:40:01:28:85,TCP,2025-08-24,Hydrocracking Unit (HCU),Gulf Coast Refinery
+REF_003248,10.1.249.58,6e:8e:35:cf:6a:1c,TCP,2025-09-24,Crude Distillation Unit (CDU),Baytown Refinery
+REF_003203,10.4.204.13,6d:f5:31:ac:0e:e7,Modbus,2025-07-24,Reformer Unit,Baytown Refinery
+REF_003318,10.4.69.128,37:ef:04:77:2f:4c,TCP,2025-08-24,Hydrotreater,Gulf Coast Refinery
+REF_003765,10.4.16.175,0b:80:d7:0a:4b:73,TCP,2025-09-24,Coker Unit,Gulf Coast Refinery
+REF_003679,10.4.180.89,9d:66:5a:55:70:29,UDP,2025-08-24,Isomerization Unit,Texas City Complex
+REF_004121,10.2.122.131,02:f6:ff:d2:6b:b0,UDP,2025-09-24,Fluid Catalytic Cracking (FCC),Baytown Refinery
+REF_003450,10.3.201.60,21:a9:4e:62:b3:b4,TCP,2025-07-24,Hydrocracking Unit (HCU),Gulf Coast Refinery
+NET_005103,10.4.104.113,93:fe:c5:b9:74:46,UDP,2025-07-24,Isomerization Unit,Baytown Refinery
+REF_003270,10.4.21.80,b9:db:84:c1:73:60,TCP,2025-09-24,Hydrotreater,Gulf Coast Refinery
+REF_003751,10.4.2.161,33:29:51:b3:89:76,Modbus,2025-07-24,Isomerization Unit,Texas City Complex
+REF_003625,10.2.126.35,7d:90:18:5a:43:5a,TCP,2025-07-24,Fluid Catalytic Cracking (FCC),Texas City Complex
+REF_003537,10.2.38.147,eb:fe:9c:b7:af:5e,UDP,2025-07-24,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery
+REF_003209,10.2.210.19,d3:9c:27:8e:99:77,TCP,2025-08-24,Fluid Catalytic Cracking (FCC),Baytown Refinery
+REF_004195,10.4.196.205,a6:e6:1b:27:ef:a4,TCP,2025-07-24,Reformer Unit,Texas City Complex
+NET_005152,10.1.153.162,3f:db:cd:dd:68:06,UDP,2025-09-24,Crude Distillation Unit (CDU),Gulf Coast Refinery
+REF_003039,10.4.40.49,8e:7d:d7:7d:2b:24,TCP,2025-08-24,Isomerization Unit,Gulf Coast Refinery
+REF_003433,10.2.184.43,8d:0a:5e:66:ba:5d,Modbus,2025-09-24,Fluid Catalytic Cracking (FCC),Texas City Complex
+REF_003850,10.3.101.60,69:e5:4e:96:36:f8,UDP,2025-09-24,Hydrocracking Unit (HCU),Texas City Complex
+NET_004977,10.2.228.187,d2:b7:29:40:92:b4,UDP,2025-08-24,Fluid Catalytic Cracking (FCC),Baytown Refinery
+REF_003747,10.4.248.157,ab:47:e0:c6:ff:b1,UDP,2025-09-24,Reformer Unit,Gulf Coast Refinery
+REF_003548,10.4.49.158,f2:b6:e3:65:62:41,UDP,2025-08-24,Alkylation Unit,Baytown Refinery
+REF_003357,10.4.108.167,b2:b2:34:d7:6a:d6,UDP,2025-09-24,Coker Unit,Gulf Coast Refinery
+REF_004171,10.4.172.181,53:4f:b8:b6:95:1a,UDP,2025-07-24,Reformer Unit,Texas City Complex
+REF_004074,10.3.75.84,5d:92:ac:ae:a1:6c,TCP,2025-08-24,Hydrocracking Unit (HCU),Gulf Coast Refinery
+REF_003354,10.3.105.164,e2:9a:dc:82:05:da,UDP,2025-07-24,Hydrocracking Unit (HCU),Gulf Coast Refinery
+NET_004947,10.4.198.157,6c:90:41:df:a7:c4,TCP,2025-08-24,Reformer Unit,Baytown Refinery
+REF_003285,10.4.36.95,b6:af:d2:80:21:cc,TCP,2025-09-24,Coker Unit,Gulf Coast Refinery
+REF_003521,10.2.22.131,0d:cf:d3:a3:61:23,TCP,2025-09-24,Fluid Catalytic Cracking (FCC),Baytown Refinery
+REF_003393,10.2.144.203,fc:b7:19:e9:35:32,TCP,2025-09-24,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery
+NET_004731,10.4.232.141,dd:c8:f4:82:73:40,TCP,2025-07-24,Reformer Unit,Baytown Refinery
+REF_003009,10.2.10.19,0e:67:8f:17:bd:af,TCP,2025-09-24,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery
+NET_004345,10.2.96.155,51:b9:06:e4:2c:5d,TCP,2025-09-24,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery
+REF_003334,10.4.85.144,36:f9:09:8a:fd:e8,TCP,2025-09-24,Hydrotreater,Texas City Complex
+REF_003377,10.2.128.187,8d:95:c9:ec:47:72,TCP,2025-09-24,Fluid Catalytic Cracking (FCC),Baytown Refinery
+NET_004773,10.4.24.183,4d:4b:c5:d4:d3:20,TCP,2025-09-24,Coker Unit,Baytown Refinery
+REF_003555,10.4.56.165,79:07:29:91:3a:b1,UDP,2025-07-24,Reformer Unit,Gulf Coast Refinery
+REF_003419,10.4.170.29,a1:a8:41:27:fb:9c,TCP,2025-09-24,Reformer Unit,Baytown Refinery
+REF_003068,10.4.69.78,3b:8a:87:bb:64:d7,TCP,2025-08-24,Alkylation Unit,Baytown Refinery
+NET_005193,10.2.194.203,1a:53:2e:2f:88:01,TCP,2025-08-24,Fluid Catalytic Cracking (FCC),Baytown Refinery
+REF_003957,10.4.208.167,f1:32:dd:7c:e6:cc,TCP,2025-08-24,Coker Unit,Gulf Coast Refinery
+NET_004420,10.4.171.30,39:04:95:33:64:6b,TCP,2025-07-24,Alkylation Unit,Gulf Coast Refinery
+REF_003861,10.4.112.71,54:0c:9f:a0:78:82,UDP,2025-07-24,Coker Unit,Gulf Coast Refinery
+NET_004492,10.4.243.102,34:07:5b:75:52:40,TCP,2025-09-24,Alkylation Unit,Gulf Coast Refinery
+REF_003958,10.4.209.168,a4:dd:ba:a3:07:eb,TCP,2025-09-24,Hydrotreater,Texas City Complex
+REF_004072,10.1.73.82,83:ef:cb:31:17:92,UDP,2025-09-24,Crude Distillation Unit (CDU),Texas City Complex
+NET_004200,10.1.201.10,5e:8a:65:d2:e7:d3,TCP,2025-07-24,Crude Distillation Unit (CDU),Baytown Refinery
+REF_004019,10.4.20.29,f5:97:ae:16:1f:52,UDP,2025-08-24,Reformer Unit,Baytown Refinery
+REF_003695,10.4.196.105,81:5f:ac:64:f5:1e,TCP,2025-07-24,Isomerization Unit,Baytown Refinery
+REF_003243,10.4.244.53,e4:2b:01:1c:1a:98,TCP,2025-09-24,Reformer Unit,Gulf Coast Refinery
+REF_003253,10.4.4.63,5d:29:28:3a:f3:e2,Modbus,2025-09-24,Coker Unit,Texas City Complex
+REF_003956,10.4.207.166,74:a9:23:0f:36:b4,Modbus,2025-07-24,Alkylation Unit,Baytown Refinery
+NET_004552,10.1.53.162,2d:e8:5d:c3:63:c0,Modbus,2025-09-24,Crude Distillation Unit (CDU),Gulf Coast Refinery
+REF_003982,10.4.233.192,52:74:b4:7d:ee:62,TCP,2025-08-24,Hydrotreater,Texas City Complex
+REF_003704,10.1.205.114,20:a8:3f:97:24:47,UDP,2025-07-24,Crude Distillation Unit (CDU),Baytown Refinery
+NET_004191,10.4.192.201,a4:c6:40:6f:25:55,TCP,2025-08-24,Isomerization Unit,Baytown Refinery
+REF_003593,10.2.94.203,bc:55:36:7d:a7:ef,UDP,2025-08-24,Fluid Catalytic Cracking (FCC),Baytown Refinery
+REF_003702,10.4.203.112,b9:7f:9f:3d:05:58,TCP,2025-09-24,Hydrotreater,Gulf Coast Refinery
+REF_003289,10.2.40.99,f6:10:34:64:4a:f8,TCP,2025-08-24,Fluid Catalytic Cracking (FCC),Texas City Complex
+REF_003811,10.4.62.21,d1:3c:f4:15:75:ac,TCP,2025-08-24,Reformer Unit,Texas City Complex
+REF_003734,10.4.235.144,81:7b:21:a4:95:6b,TCP,2025-09-24,Hydrotreater,Baytown Refinery
+REF_003272,10.1.23.82,a2:e7:fd:5f:17:c0,Modbus,2025-07-24,Crude Distillation Unit (CDU),Baytown Refinery
+NET_004324,10.4.75.134,39:af:fd:9a:bf:92,TCP,2025-09-24,Alkylation Unit,Gulf Coast Refinery
+REF_003551,10.4.52.161,88:09:dc:8f:54:c0,UDP,2025-09-24,Isomerization Unit,Baytown Refinery
+REF_003476,10.4.227.86,86:86:9a:fc:3c:7f,TCP,2025-08-24,Alkylation Unit,Baytown Refinery
+REF_003901,10.4.152.111,57:b6:2b:15:c4:26,TCP,2025-07-24,Coker Unit,Texas City Complex
+REF_003732,10.4.233.142,a8:3c:f2:da:2b:51,TCP,2025-08-24,Alkylation Unit,Gulf Coast Refinery
+NET_005086,10.4.87.96,f7:15:4d:8d:3e:a5,TCP,2025-09-24,Hydrotreater,Gulf Coast Refinery
+REF_003150,10.4.151.160,8f:92:23:aa:84:15,TCP,2025-08-24,Hydrotreater,Gulf Coast Refinery
+REF_003054,10.4.55.64,69:75:79:00:0f:db,TCP,2025-07-24,Hydrotreater,Gulf Coast Refinery
+REF_003221,10.4.222.31,08:a5:e5:92:28:37,UDP,2025-07-24,Coker Unit,Baytown Refinery
+REF_003712,10.1.213.122,a6:87:bb:4e:a5:2d,UDP,2025-07-24,Crude Distillation Unit (CDU),Texas City Complex
+NET_005033,10.2.34.43,69:76:dc:3d:a3:b2,UDP,2025-09-24,Fluid Catalytic Cracking (FCC),Texas City Complex
+REF_003897,10.2.148.107,cf:c8:9f:30:ea:eb,TCP,2025-09-24,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery
+REF_004037,10.4.38.47,08:1d:1d:7d:42:b3,TCP,2025-09-24,Coker Unit,Baytown Refinery
+REF_003788,10.4.39.198,c3:df:b5:3f:ca:5e,TCP,2025-07-24,Alkylation Unit,Baytown Refinery
+REF_003609,10.2.110.19,fa:d1:4b:af:5d:0b,Modbus,2025-09-24,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery
+REF_003240,10.1.241.50,a6:36:c9:a2:df:09,TCP,2025-07-24,Crude Distillation Unit (CDU),Gulf Coast Refinery
+REF_003787,10.4.38.197,72:e1:f3:df:cf:b2,TCP,2025-07-24,Reformer Unit,Texas City Complex
+REF_003620,10.4.121.30,ce:90:8a:a3:37:5d,TCP,2025-09-24,Alkylation Unit,Baytown Refinery
+REF_003981,10.4.232.191,39:33:aa:4e:6b:29,Modbus,2025-07-24,Coker Unit,Gulf Coast Refinery
+REF_003743,10.4.244.153,70:a2:df:45:2f:b9,TCP,2025-08-24,Isomerization Unit,Baytown Refinery
+REF_004107,10.4.108.117,4b:5d:26:fa:9c:eb,UDP,2025-09-24,Reformer Unit,Gulf Coast Refinery
+REF_003753,10.2.4.163,05:15:96:2e:3b:c8,Modbus,2025-07-24,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery
+REF_003359,10.4.110.169,29:53:1c:be:b3:5f,TCP,2025-09-24,Isomerization Unit,Baytown Refinery
+NET_004909,10.4.160.119,46:2a:0e:0e:bf:8b,TCP,2025-09-24,Coker Unit,Gulf Coast Refinery
+REF_003614,10.4.115.24,4f:f1:c9:23:74:c7,TCP,2025-07-24,Hydrotreater,Baytown Refinery
+REF_004123,10.4.124.133,a8:80:16:f4:7c:fc,TCP,2025-07-24,Reformer Unit,Texas City Complex
+REF_003793,10.2.44.203,cb:37:28:19:53:14,TCP,2025-07-24,Fluid Catalytic Cracking (FCC),Texas City Complex
+REF_003525,10.4.26.135,38:27:3f:3f:1c:75,UDP,2025-09-24,Coker Unit,Gulf Coast Refinery
+REF_003436,10.4.187.46,85:0a:17:5b:c9:68,Modbus,2025-08-24,Alkylation Unit,Texas City Complex
+NET_004300,10.4.51.110,4e:4a:dd:c3:4e:ff,TCP,2025-07-24,Alkylation Unit,Gulf Coast Refinery
+REF_003246,10.4.247.56,fa:a4:e4:a7:dc:04,UDP,2025-09-24,Hydrotreater,Gulf Coast Refinery
+REF_003218,10.3.219.28,cf:94:20:e2:e9:6f,TCP,2025-07-24,Hydrocracking Unit (HCU),Baytown Refinery
+REF_003083,10.4.84.93,0e:31:c0:a6:10:10,TCP,2025-09-24,Reformer Unit,Baytown Refinery
+REF_003550,10.4.51.160,b0:0b:cb:07:19:0f,UDP,2025-07-24,Hydrotreater,Texas City Complex
+REF_003030,10.4.31.40,ca:f7:44:6e:55:bd,TCP,2025-08-24,Hydrotreater,Gulf Coast Refinery
+NET_004139,10.4.140.149,30:2f:48:a0:9d:fa,TCP,2025-07-24,Reformer Unit,Texas City Complex
+NET_004568,10.1.69.178,54:2c:e9:3d:69:ee,UDP,2025-09-24,Crude Distillation Unit (CDU),Texas City Complex
+REF_003892,10.4.143.102,b6:ae:0d:2e:54:66,TCP,2025-07-24,Alkylation Unit,Texas City Complex
+REF_003919,10.4.170.129,03:c5:85:04:aa:6f,TCP,2025-09-24,Isomerization Unit,Texas City Complex
+REF_003519,10.4.20.129,93:bb:98:c8:47:fa,TCP,2025-07-24,Isomerization Unit,Gulf Coast Refinery
+REF_004168,10.1.169.178,59:6c:40:36:de:00,UDP,2025-08-24,Crude Distillation Unit (CDU),Texas City Complex
+NET_004483,10.4.234.93,0b:e9:36:71:70:13,TCP,2025-07-24,Reformer Unit,Gulf Coast Refinery
+REF_003890,10.3.141.100,ee:c2:54:ce:d9:be,TCP,2025-07-24,Hydrocracking Unit (HCU),Baytown Refinery
+REF_004199,10.4.200.209,f1:52:71:eb:a3:6a,Modbus,2025-08-24,Isomerization Unit,Baytown Refinery
+REF_003670,10.4.171.80,a2:9b:33:5c:c4:0d,UDP,2025-07-24,Hydrotreater,Texas City Complex
+REF_003396,10.4.147.206,68:df:16:dd:6f:c0,UDP,2025-09-24,Alkylation Unit,Gulf Coast Refinery
+NET_004581,10.4.82.191,4d:5f:d1:54:cd:a3,UDP,2025-07-24,Coker Unit,Baytown Refinery
+REF_003451,10.4.202.61,60:3b:5b:a2:4b:73,TCP,2025-07-24,Reformer Unit,Texas City Complex
+REF_003870,10.4.121.80,11:26:26:69:f9:78,TCP,2025-09-24,Hydrotreater,Gulf Coast Refinery
+REF_003114,10.3.115.124,07:5e:d9:b4:77:08,TCP,2025-09-24,Hydrocracking Unit (HCU),Gulf Coast Refinery
+REF_004093,10.4.94.103,bc:bf:e2:5f:c1:d2,TCP,2025-08-24,Coker Unit,Texas City Complex
+REF_003123,10.4.124.133,17:be:0e:86:2d:80,UDP,2025-08-24,Reformer Unit,Gulf Coast Refinery
+REF_004083,10.4.84.93,2c:0d:56:98:11:66,UDP,2025-07-24,Reformer Unit,Gulf Coast Refinery
+REF_003292,10.4.43.102,04:eb:87:6d:6a:7c,TCP,2025-07-24,Alkylation Unit,Texas City Complex
+REF_003206,10.4.207.16,80:2e:80:8b:93:99,UDP,2025-08-24,Hydrotreater,Baytown Refinery
+NET_004179,10.4.180.189,cd:0f:fb:af:37:fc,TCP,2025-08-24,Reformer Unit,Baytown Refinery
+NET_005098,10.3.99.108,cd:59:6f:89:a5:bf,TCP,2025-09-24,Hydrocracking Unit (HCU),Gulf Coast Refinery
+REF_003974,10.4.225.184,b7:3c:d0:65:30:36,TCP,2025-09-24,Hydrotreater,Baytown Refinery
+REF_003971,10.4.222.181,a8:0c:91:2a:c5:28,TCP,2025-09-24,Reformer Unit,Baytown Refinery
+REF_003941,10.4.192.151,41:b3:5f:b0:19:f7,TCP,2025-07-24,Coker Unit,Baytown Refinery
+REF_003112,10.1.113.122,5d:ba:3f:3b:54:80,TCP,2025-09-24,Crude Distillation Unit (CDU),Texas City Complex
+REF_004031,10.4.32.41,30:28:e9:ef:4e:dc,TCP,2025-09-24,Isomerization Unit,Baytown Refinery
+REF_004124,10.4.125.134,69:a0:09:b2:8c:67,TCP,2025-07-24,Alkylation Unit,Baytown Refinery
+REF_004118,10.4.119.128,f7:1b:95:67:de:fb,UDP,2025-07-24,Hydrotreater,Baytown Refinery
+REF_003668,10.4.169.78,58:3b:8c:6c:a7:ce,TCP,2025-09-24,Alkylation Unit,Baytown Refinery
+REF_003804,10.4.55.14,0c:6a:b3:e8:35:b2,UDP,2025-09-24,Alkylation Unit,Gulf Coast Refinery
+REF_003171,10.4.172.181,62:b8:0f:d0:bc:b2,TCP,2025-07-24,Reformer Unit,Gulf Coast Refinery
+REF_003998,10.4.249.208,35:b0:45:94:22:1f,Modbus,2025-09-24,Hydrotreater,Baytown Refinery
+REF_003703,10.4.204.113,6d:f9:fe:da:6c:3e,TCP,2025-07-24,Isomerization Unit,Texas City Complex
+REF_003262,10.4.13.72,87:fc:64:03:9e:fc,UDP,2025-09-24,Hydrotreater,Texas City Complex
+REF_003475,10.4.226.85,13:62:b5:14:c4:4c,TCP,2025-07-24,Reformer Unit,Texas City Complex
+REF_003845,10.4.96.55,5f:53:5d:ab:c9:5a,TCP,2025-09-24,Coker Unit,Baytown Refinery
+REF_004197,10.4.198.207,a6:35:1b:41:aa:1e,TCP,2025-08-24,Coker Unit,Gulf Coast Refinery
+REF_003258,10.3.9.68,7a:f2:e0:0f:b7:78,TCP,2025-09-24,Hydrocracking Unit (HCU),Gulf Coast Refinery
+REF_003400,10.1.151.10,40:c6:9b:4c:ad:cb,TCP,2025-08-24,Crude Distillation Unit (CDU),Texas City Complex
+REF_003686,10.4.187.96,6e:63:68:6a:45:b7,TCP,2025-09-24,Hydrotreater,Baytown Refinery
+NET_004362,10.3.113.172,a3:36:19:88:d3:90,TCP,2025-07-24,Hydrocracking Unit (HCU),Baytown Refinery
+NET_004373,10.4.124.183,a2:28:e8:b2:a6:cb,UDP,2025-08-24,Coker Unit,Texas City Complex
+REF_003754,10.3.5.164,07:83:81:b8:ec:ae,TCP,2025-07-24,Hydrocracking Unit (HCU),Texas City Complex
+REF_004005,10.4.6.15,ff:d9:87:b5:30:c9,UDP,2025-09-24,Coker Unit,Gulf Coast Refinery
+REF_004177,10.2.178.187,b5:ab:dc:61:c7:0f,TCP,2025-09-24,Fluid Catalytic Cracking (FCC),Texas City Complex
+REF_003000,10.1.1.10,db:b2:3c:c0:ca:d8,UDP,2025-08-24,Crude Distillation Unit (CDU),Gulf Coast Refinery
+REF_003906,10.3.157.116,ef:ce:f7:04:f9:99,UDP,2025-08-24,Hydrocracking Unit (HCU),Gulf Coast Refinery
+REF_003153,10.2.154.163,0e:87:4f:e4:c3:23,TCP,2025-09-24,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery
+REF_003991,10.4.242.201,74:9d:8b:8e:61:83,UDP,2025-07-24,Isomerization Unit,Texas City Complex
+REF_003064,10.1.65.74,a9:84:f2:e4:2a:4a,UDP,2025-08-24,Crude Distillation Unit (CDU),Texas City Complex
+REF_003463,10.4.214.73,b4:83:84:5d:59:57,Modbus,2025-09-24,Isomerization Unit,Texas City Complex
+NET_004762,10.3.13.172,a5:2d:0f:28:98:7d,TCP,2025-09-24,Hydrocracking Unit (HCU),Gulf Coast Refinery
+REF_004094,10.4.95.104,c6:0e:10:8b:ef:f2,TCP,2025-09-24,Hydrotreater,Baytown Refinery
+NET_005122,10.3.123.132,46:d9:55:a1:47:8b,TCP,2025-07-24,Hydrocracking Unit (HCU),Gulf Coast Refinery
+NET_004224,10.1.225.34,84:3a:28:f7:be:73,Modbus,2025-09-24,Crude Distillation Unit (CDU),Baytown Refinery
+REF_003912,10.1.163.122,cc:7e:a2:d9:ac:60,TCP,2025-09-24,Crude Distillation Unit (CDU),Gulf Coast Refinery
+REF_003799,10.4.50.209,8b:6e:05:bf:de:42,TCP,2025-07-24,Isomerization Unit,Texas City Complex
+REF_003580,10.4.81.190,7f:b7:ee:3e:e2:ca,TCP,2025-08-24,Alkylation Unit,Texas City Complex
+REF_003531,10.4.32.141,29:67:fe:74:93:fd,TCP,2025-09-24,Reformer Unit,Gulf Coast Refinery
+REF_003169,10.2.170.179,fc:53:ac:72:c7:7d,TCP,2025-09-24,Fluid Catalytic Cracking (FCC),Texas City Complex
+REF_003426,10.3.177.36,a5:d7:7a:d9:e8:fe,TCP,2025-08-24,Hydrocracking Unit (HCU),Gulf Coast Refinery
+REF_003336,10.1.87.146,27:43:9c:66:ee:2a,TCP,2025-08-24,Crude Distillation Unit (CDU),Gulf Coast Refinery
+REF_004056,10.1.57.66,ce:45:56:a4:b0:9a,TCP,2025-09-24,Crude Distillation Unit (CDU),Gulf Coast Refinery
+NET_004529,10.2.30.139,6f:23:b8:bc:c7:5a,TCP,2025-07-24,Fluid Catalytic Cracking (FCC),Texas City Complex
+REF_003238,10.4.239.48,7e:d6:db:e9:b9:e9,TCP,2025-08-24,Hydrotreater,Texas City Complex
+REF_003213,10.4.214.23,dc:18:37:62:15:c3,TCP,2025-09-24,Coker Unit,Gulf Coast Refinery
+REF_003374,10.4.125.184,f6:38:63:34:c4:9f,TCP,2025-09-24,Hydrotreater,Baytown Refinery
+REF_003694,10.4.195.104,16:14:b8:67:6f:a7,UDP,2025-08-24,Hydrotreater,Texas City Complex
+REF_003138,10.3.139.148,cf:8d:7b:aa:d4:33,TCP,2025-09-24,Hydrocracking Unit (HCU),Gulf Coast Refinery
+REF_004022,10.4.23.32,39:52:22:b4:33:fe,TCP,2025-08-24,Hydrotreater,Baytown Refinery
+REF_003043,10.4.44.53,19:85:25:68:b1:24,UDP,2025-09-24,Reformer Unit,Texas City Complex
+REF_004095,10.4.96.105,d6:0e:5e:f1:e7:fa,TCP,2025-07-24,Isomerization Unit,Gulf Coast Refinery
+REF_003297,10.2.48.107,a1:a0:ae:45:cc:40,Modbus,2025-09-24,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery
+NET_004560,10.1.61.170,d1:2f:a6:1d:45:d1,Modbus,2025-08-24,Crude Distillation Unit (CDU),Baytown Refinery
+REF_003351,10.4.102.161,1e:b9:e2:3c:31:04,TCP,2025-09-24,Isomerization Unit,Gulf Coast Refinery
+REF_003020,10.4.21.30,5b:98:9e:9b:08:ab,TCP,2025-09-24,Alkylation Unit,Baytown Refinery
+REF_003546,10.3.47.156,02:a0:9b:73:b3:c6,Modbus,2025-08-24,Hydrocracking Unit (HCU),Gulf Coast Refinery
+REF_003713,10.2.214.123,45:0a:00:c5:2d:d0,UDP,2025-09-24,Fluid Catalytic Cracking (FCC),Baytown Refinery
+REF_004085,10.4.86.95,27:c4:72:5d:17:47,TCP,2025-07-24,Coker Unit,Baytown Refinery
+REF_003623,10.4.124.33,10:ff:bb:04:a6:5f,UDP,2025-09-24,Isomerization Unit,Baytown Refinery
+REF_003387,10.4.138.197,67:e0:5c:c3:4e:24,TCP,2025-09-24,Reformer Unit,Gulf Coast Refinery
+REF_003094,10.4.95.104,e9:8e:b0:e5:ee:f8,UDP,2025-07-24,Hydrotreater,Texas City Complex
+NET_005023,10.4.24.33,f8:cd:50:9b:74:ba,TCP,2025-07-24,Isomerization Unit,Gulf Coast Refinery
+REF_003648,10.1.149.58,90:fb:86:54:09:33,TCP,2025-09-24,Crude Distillation Unit (CDU),Gulf Coast Refinery
+NET_005021,10.4.22.31,73:9c:cf:a5:99:ff,TCP,2025-07-24,Coker Unit,Texas City Complex
+REF_003902,10.4.153.112,79:42:5c:f9:60:04,TCP,2025-07-24,Hydrotreater,Baytown Refinery
+REF_003984,10.1.235.194,42:cb:1b:ae:f5:09,Modbus,2025-08-24,Crude Distillation Unit (CDU),Gulf Coast Refinery
+REF_003211,10.4.212.21,9d:fe:79:5a:80:22,TCP,2025-07-24,Reformer Unit,Texas City Complex
+REF_003263,10.4.14.73,29:d0:43:6b:2d:72,TCP,2025-08-24,Isomerization Unit,Baytown Refinery
+REF_003104,10.1.105.114,82:bd:3c:00:bc:ba,UDP,2025-08-24,Crude Distillation Unit (CDU),Baytown Refinery
+REF_004041,10.2.42.51,ef:18:7c:5d:bc:8b,UDP,2025-09-24,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery
+REF_003004,10.4.5.14,2c:7a:7d:be:d5:77,Modbus,2025-07-24,Alkylation Unit,Texas City Complex
+REF_003199,10.4.200.209,d2:c2:0f:c4:9a:58,TCP,2025-09-24,Isomerization Unit,Texas City Complex
+REF_003067,10.4.68.77,45:09:35:3b:ac:e4,TCP,2025-09-24,Reformer Unit,Texas City Complex
+REF_003376,10.1.127.186,4d:48:99:54:00:fd,TCP,2025-08-24,Crude Distillation Unit (CDU),Texas City Complex
+REF_003819,10.4.70.29,2b:35:50:97:0a:3a,UDP,2025-08-24,Reformer Unit,Gulf Coast Refinery
+REF_003724,10.4.225.134,b9:c6:90:c8:80:61,TCP,2025-07-24,Alkylation Unit,Texas City Complex
+REF_004117,10.4.118.127,5e:ab:09:fc:1b:f5,TCP,2025-09-24,Coker Unit,Texas City Complex
+REF_003996,10.4.247.206,41:cc:7d:52:a0:38,UDP,2025-09-24,Alkylation Unit,Gulf Coast Refinery
+REF_003383,10.4.134.193,76:21:51:36:ae:f3,Modbus,2025-07-24,Isomerization Unit,Baytown Refinery
+REF_003431,10.4.182.41,e6:5c:8f:25:c0:6c,TCP,2025-09-24,Isomerization Unit,Baytown Refinery
+REF_004027,10.4.28.37,be:81:85:d2:25:2d,TCP,2025-09-24,Reformer Unit,Texas City Complex
+REF_004159,10.4.160.169,69:58:cd:7b:6b:8d,Modbus,2025-07-24,Isomerization Unit,Texas City Complex
+REF_003871,10.4.122.81,56:f3:5e:dd:4d:52,TCP,2025-08-24,Isomerization Unit,Texas City Complex
+REF_003730,10.3.231.140,65:46:cb:13:23:4b,TCP,2025-08-24,Hydrocracking Unit (HCU),Texas City Complex
+REF_003563,10.4.64.173,3d:93:3f:13:13:dc,TCP,2025-09-24,Reformer Unit,Baytown Refinery
+NET_004465,10.2.216.75,0e:90:61:3c:6b:09,TCP,2025-07-24,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery
+REF_003366,10.4.117.176,c1:be:0d:64:3d:97,UDP,2025-09-24,Hydrotreater,Gulf Coast Refinery
+REF_003707,10.4.208.117,a5:22:a7:49:8b:fa,UDP,2025-07-24,Reformer Unit,Baytown Refinery
+REF_003071,10.4.72.81,29:78:06:da:ab:79,TCP,2025-08-24,Isomerization Unit,Baytown Refinery
+REF_003035,10.4.36.45,e2:4d:64:c5:e0:c0,UDP,2025-07-24,Reformer Unit,Baytown Refinery
+REF_003706,10.3.207.116,20:0e:36:8e:86:3f,TCP,2025-09-24,Hydrocracking Unit (HCU),Texas City Complex
+REF_003234,10.3.235.44,2c:0b:72:c2:e2:12,TCP,2025-08-24,Hydrocracking Unit (HCU),Gulf Coast Refinery
+REF_003045,10.4.46.55,10:8b:18:54:c0:3a,UDP,2025-09-24,Coker Unit,Gulf Coast Refinery
+REF_004149,10.4.150.159,f5:c4:27:d7:d6:f2,TCP,2025-09-24,Coker Unit,Gulf Coast Refinery
+REF_003749,10.4.250.159,48:50:2c:58:88:4e,TCP,2025-09-24,Coker Unit,Baytown Refinery
+REF_003047,10.4.48.57,08:35:0f:71:f5:ad,TCP,2025-07-24,Isomerization Unit,Baytown Refinery
+NET_004570,10.3.71.180,71:72:f8:d5:57:87,TCP,2025-09-24,Hydrocracking Unit (HCU),Gulf Coast Refinery
+REF_003147,10.4.148.157,a9:7b:73:c5:7e:9d,UDP,2025-07-24,Reformer Unit,Gulf Coast Refinery
+REF_003254,10.4.5.64,8c:50:99:08:b7:39,UDP,2025-07-24,Hydrotreater,Baytown Refinery
+REF_003103,10.4.104.113,48:d6:92:69:fb:25,UDP,2025-08-24,Isomerization Unit,Texas City Complex
+REF_003601,10.2.102.11,f1:59:4e:b4:d5:49,TCP,2025-07-24,Fluid Catalytic Cracking (FCC),Texas City Complex
+NET_004934,10.4.185.144,6c:b1:34:08:f0:83,TCP,2025-07-24,Hydrotreater,Texas City Complex
+REF_003210,10.3.211.20,15:2f:35:25:e1:d8,Modbus,2025-08-24,Hydrocracking Unit (HCU),Gulf Coast Refinery
+REF_003403,10.4.154.13,ac:49:f2:af:b0:cd,TCP,2025-09-24,Reformer Unit,Texas City Complex
+REF_003491,10.4.242.101,a3:62:9b:aa:4f:97,TCP,2025-07-24,Reformer Unit,Baytown Refinery
+REF_003267,10.4.18.77,8f:5a:f6:c3:c4:80,Modbus,2025-08-24,Reformer Unit,Gulf Coast Refinery
+NET_005091,10.4.92.101,b4:e0:c2:47:ed:64,Modbus,2025-09-24,Reformer Unit,Baytown Refinery
+REF_003350,10.4.101.160,80:19:d5:41:ae:51,TCP,2025-08-24,Hydrotreater,Baytown Refinery
+REF_003244,10.4.245.54,8d:5f:fd:35:f7:7f,UDP,2025-07-24,Alkylation Unit,Texas City Complex
+REF_003937,10.2.188.147,ec:58:d3:e5:75:33,TCP,2025-07-24,Fluid Catalytic Cracking (FCC),Texas City Complex
+REF_003855,10.4.106.65,b6:a3:cc:24:24:45,TCP,2025-08-24,Isomerization Unit,Gulf Coast Refinery
+REF_003767,10.4.18.177,ab:a8:36:85:dc:78,TCP,2025-08-24,Isomerization Unit,Baytown Refinery
+REF_004079,10.4.80.89,2b:41:06:54:b8:74,TCP,2025-09-24,Isomerization Unit,Baytown Refinery
+REF_003652,10.4.153.62,53:32:b8:b6:21:20,Modbus,2025-07-24,Alkylation Unit,Texas City Complex
+REF_003216,10.1.217.26,5b:4f:22:65:18:07,UDP,2025-07-24,Crude Distillation Unit (CDU),Gulf Coast Refinery
+REF_004155,10.4.156.165,9c:f4:fd:9d:2b:bd,TCP,2025-08-24,Reformer Unit,Gulf Coast Refinery
+REF_003954,10.3.205.164,1f:7c:dc:0e:ab:13,TCP,2025-09-24,Hydrocracking Unit (HCU),Gulf Coast Refinery
+REF_004078,10.4.79.88,e0:5c:92:30:10:c7,TCP,2025-07-24,Hydrotreater,Texas City Complex
+REF_004160,10.1.161.170,0c:97:28:cb:93:10,TCP,2025-09-24,Crude Distillation Unit (CDU),Baytown Refinery
+NET_004340,10.4.91.150,c4:24:9c:6e:92:d9,UDP,2025-07-24,Alkylation Unit,Texas City Complex
+NET_004632,10.1.133.42,97:3d:a9:a2:4e:b4,UDP,2025-07-24,Crude Distillation Unit (CDU),Baytown Refinery
+REF_003288,10.1.39.98,b3:a0:6d:9c:a2:1b,TCP,2025-09-24,Crude Distillation Unit (CDU),Gulf Coast Refinery
+REF_003566,10.4.67.176,fc:a3:bb:e1:a8:82,UDP,2025-09-24,Hydrotreater,Baytown Refinery
+REF_003526,10.4.27.136,75:a9:a7:42:56:91,UDP,2025-08-24,Hydrotreater,Texas City Complex
+REF_003830,10.4.81.40,0f:59:75:91:db:92,UDP,2025-07-24,Hydrotreater,Baytown Refinery
+REF_003381,10.4.132.191,1b:3d:83:18:cc:97,TCP,2025-07-24,Coker Unit,Gulf Coast Refinery
+REF_003327,10.4.78.137,1e:53:ad:2a:03:7b,TCP,2025-09-24,Isomerization Unit,Gulf Coast Refinery
+REF_003879,10.4.130.89,31:ba:13:4c:23:39,TCP,2025-09-24,Isomerization Unit,Gulf Coast Refinery
+REF_003261,10.4.12.71,e0:b3:8c:8e:e8:df,UDP,2025-07-24,Coker Unit,Gulf Coast Refinery
+REF_004007,10.4.8.17,41:0c:6a:fe:e9:c2,UDP,2025-07-24,Isomerization Unit,Baytown Refinery
+REF_004156,10.4.157.166,a8:89:6c:01:2d:b8,TCP,2025-08-24,Alkylation Unit,Texas City Complex
+REF_003736,10.1.237.146,88:84:11:d0:2b:5d,TCP,2025-08-24,Crude Distillation Unit (CDU),Texas City Complex
+REF_003427,10.4.178.37,c7:ea:6b:df:1b:6f,Modbus,2025-07-24,Reformer Unit,Texas City Complex
+REF_003078,10.4.79.88,fa:06:79:50:43:d3,TCP,2025-09-24,Hydrotreater,Gulf Coast Refinery
+REF_003063,10.4.64.73,f5:2d:9e:5b:f8:8e,Modbus,2025-08-24,Isomerization Unit,Gulf Coast Refinery
+REF_003654,10.4.155.64,fa:00:7e:7f:f4:1d,TCP,2025-07-24,Hydrotreater,Gulf Coast Refinery
+REF_003928,10.1.179.138,8a:e7:e0:69:18:61,UDP,2025-09-24,Crude Distillation Unit (CDU),Texas City Complex
+REF_003429,10.4.180.39,9c:0c:ce:04:7b:f2,UDP,2025-09-24,Coker Unit,Gulf Coast Refinery
+REF_003079,10.4.80.89,2c:2c:0f:82:34:aa,TCP,2025-08-24,Isomerization Unit,Texas City Complex
+REF_003848,10.1.99.58,4d:52:31:d4:a4:6c,UDP,2025-07-24,Crude Distillation Unit (CDU),Baytown Refinery
+REF_003837,10.4.88.47,e7:24:0a:ab:03:f2,TCP,2025-08-24,Coker Unit,Gulf Coast Refinery
+REF_003107,10.4.108.117,dc:46:54:c1:8a:d9,TCP,2025-08-24,Reformer Unit,Baytown Refinery
+REF_004105,10.2.106.115,b6:37:c3:10:55:8a,TCP,2025-08-24,Fluid Catalytic Cracking (FCC),Texas City Complex
+REF_003801,10.2.52.11,0b:00:a4:a5:34:10,TCP,2025-08-24,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery
+REF_003365,10.4.116.175,5b:23:c0:53:52:8c,TCP,2025-09-24,Coker Unit,Baytown Refinery
+REF_003739,10.4.240.149,59:a9:49:0b:db:e1,TCP,2025-09-24,Reformer Unit,Texas City Complex
+REF_003684,10.4.185.94,db:16:77:ed:dd:9c,UDP,2025-07-24,Alkylation Unit,Gulf Coast Refinery
+NET_004847,10.4.98.57,ff:13:27:be:c5:95,TCP,2025-08-24,Isomerization Unit,Texas City Complex
+REF_003486,10.4.237.96,4b:43:be:cd:7f:d4,TCP,2025-09-24,Hydrotreater,Gulf Coast Refinery
+NET_004528,10.1.29.138,fb:1d:ee:44:a6:38,TCP,2025-08-24,Crude Distillation Unit (CDU),Gulf Coast Refinery
+REF_003152,10.1.153.162,b9:45:03:2e:71:03,TCP,2025-09-24,Crude Distillation Unit (CDU),Baytown Refinery
+NET_004183,10.4.184.193,aa:d0:68:40:e8:c9,UDP,2025-08-24,Isomerization Unit,Gulf Coast Refinery
+REF_004090,10.3.91.100,f7:24:7d:aa:52:51,TCP,2025-08-24,Hydrocracking Unit (HCU),Texas City Complex
+REF_003172,10.4.173.182,70:9e:76:b7:5b:a9,TCP,2025-07-24,Alkylation Unit,Texas City Complex
+REF_004040,10.1.41.50,1e:7a:b9:59:3d:d0,TCP,2025-07-24,Crude Distillation Unit (CDU),Baytown Refinery
+REF_003219,10.4.220.29,f7:ce:d9:33:46:d5,Modbus,2025-08-24,Reformer Unit,Gulf Coast Refinery
+REF_003119,10.4.120.129,65:05:e8:6b:93:13,TCP,2025-08-24,Isomerization Unit,Baytown Refinery
+REF_003904,10.1.155.114,d4:41:b4:79:34:bb,TCP,2025-08-24,Crude Distillation Unit (CDU),Texas City Complex
+NET_004157,10.4.158.167,22:8c:2f:ae:61:22,Modbus,2025-07-24,Coker Unit,Texas City Complex
+REF_003005,10.4.6.15,2c:7d:4c:ec:d4:0f,TCP,2025-09-24,Coker Unit,Baytown Refinery
+REF_003435,10.4.186.45,9f:f1:e7:44:f8:94,Modbus,2025-07-24,Reformer Unit,Gulf Coast Refinery
+NET_004535,10.4.36.145,ff:eb:a4:b5:fe:3b,UDP,2025-09-24,Isomerization Unit,Texas City Complex
+REF_003415,10.4.166.25,4b:ab:62:cc:7e:19,Modbus,2025-07-24,Isomerization Unit,Texas City Complex
+NET_005190,10.4.191.200,cd:5d:9b:2c:20:dc,UDP,2025-09-24,Hydrotreater,Baytown Refinery
+NET_004781,10.4.32.191,eb:71:5c:e8:21:3b,TCP,2025-09-24,Coker Unit,Texas City Complex
+REF_003916,10.4.167.126,49:12:c1:85:e0:b2,TCP,2025-09-24,Alkylation Unit,Texas City Complex
+REF_003343,10.4.94.153,ea:de:cc:20:3f:18,UDP,2025-07-24,Isomerization Unit,Texas City Complex
+NET_004226,10.3.227.36,29:14:58:40:6b:db,TCP,2025-09-24,Hydrocracking Unit (HCU),Texas City Complex
+REF_003136,10.1.137.146,cd:0a:79:c8:90:1b,UDP,2025-09-24,Crude Distillation Unit (CDU),Texas City Complex
+REF_003048,10.1.49.58,ce:6d:1d:24:6b:01,UDP,2025-07-24,Crude Distillation Unit (CDU),Gulf Coast Refinery
+REF_003891,10.4.142.101,cb:94:6e:a3:dd:12,TCP,2025-07-24,Reformer Unit,Gulf Coast Refinery
+REF_003497,10.2.248.107,7e:3f:7e:1a:79:55,TCP,2025-08-24,Fluid Catalytic Cracking (FCC),Baytown Refinery
+REF_003287,10.4.38.97,ab:78:ed:f7:f3:9a,TCP,2025-08-24,Isomerization Unit,Baytown Refinery
+REF_003466,10.3.217.76,6c:16:f0:eb:57:c5,TCP,2025-07-24,Hydrocracking Unit (HCU),Texas City Complex
+REF_003673,10.2.174.83,fb:9a:30:ec:cc:33,TCP,2025-08-24,Fluid Catalytic Cracking (FCC),Texas City Complex
+REF_003229,10.4.230.39,5c:d7:d7:f1:13:de,UDP,2025-09-24,Coker Unit,Texas City Complex
+REF_003851,10.4.102.61,15:57:d3:a6:6a:0c,TCP,2025-08-24,Reformer Unit,Baytown Refinery
+REF_003939,10.4.190.149,dc:5f:80:82:0a:94,Modbus,2025-07-24,Reformer Unit,Gulf Coast Refinery
+REF_003949,10.4.200.159,29:ba:03:1e:c0:c6,TCP,2025-09-24,Coker Unit,Texas City Complex
+REF_003935,10.4.186.145,b6:f6:1f:97:62:d8,TCP,2025-07-24,Isomerization Unit,Baytown Refinery
+REF_003228,10.4.229.38,c9:9a:a0:64:02:96,TCP,2025-07-24,Alkylation Unit,Gulf Coast Refinery
+REF_004032,10.1.33.42,05:fb:fd:4c:37:1c,TCP,2025-07-24,Crude Distillation Unit (CDU),Gulf Coast Refinery
+REF_003412,10.4.163.22,87:64:8a:12:19:0a,TCP,2025-07-24,Alkylation Unit,Texas City Complex
+REF_003055,10.4.56.65,b8:60:f5:8b:b1:96,UDP,2025-08-24,Isomerization Unit,Texas City Complex
+REF_003986,10.3.237.196,46:e8:ce:d2:00:93,UDP,2025-08-24,Hydrocracking Unit (HCU),Baytown Refinery
+REF_003821,10.4.72.31,1b:32:2e:df:c5:8a,UDP,2025-08-24,Coker Unit,Baytown Refinery
+REF_003028,10.4.29.38,d8:0f:c7:c1:73:64,TCP,2025-08-24,Alkylation Unit,Texas City Complex
+NET_004259,10.4.10.69,88:d0:1f:34:5b:10,TCP,2025-09-24,Reformer Unit,Texas City Complex
+REF_003186,10.3.187.196,d5:a8:f3:82:b8:67,TCP,2025-08-24,Hydrocracking Unit (HCU),Gulf Coast Refinery
+REF_004145,10.2.146.155,27:57:ee:c8:57:90,TCP,2025-09-24,Fluid Catalytic Cracking (FCC),Baytown Refinery
+REF_003792,10.1.43.202,a1:c9:4c:13:38:a9,UDP,2025-07-24,Crude Distillation Unit (CDU),Gulf Coast Refinery
+REF_003027,10.4.28.37,c9:e2:3e:ee:1e:70,UDP,2025-08-24,Reformer Unit,Gulf Coast Refinery
+REF_004189,10.4.190.199,5b:2c:de:e6:29:fe,UDP,2025-07-24,Coker Unit,Texas City Complex
+REF_004194,10.3.195.204,c8:9d:9e:c1:63:cc,UDP,2025-08-24,Hydrocracking Unit (HCU),Gulf Coast Refinery
+NET_004453,10.4.204.63,ae:a0:21:11:b3:b4,TCP,2025-09-24,Coker Unit,Gulf Coast Refinery
+REF_003813,10.4.64.23,d8:65:ef:b5:c1:f2,TCP,2025-08-24,Coker Unit,Gulf Coast Refinery
+REF_003930,10.3.181.140,df:cc:bb:f0:83:87,UDP,2025-09-24,Hydrocracking Unit (HCU),Gulf Coast Refinery
+REF_003586,10.3.87.196,e5:c0:52:72:81:ea,TCP,2025-09-24,Hydrocracking Unit (HCU),Texas City Complex
+REF_003498,10.3.249.108,f9:f3:88:8b:9e:c7,UDP,2025-09-24,Hydrocracking Unit (HCU),Gulf Coast Refinery
+REF_003117,10.4.118.127,1f:93:dc:56:77:6a,UDP,2025-08-24,Coker Unit,Gulf Coast Refinery
+REF_003846,10.4.97.56,38:ac:bb:c8:9a:9f,UDP,2025-07-24,Hydrotreater,Gulf Coast Refinery
+REF_003013,10.4.14.23,66:99:60:93:2d:01,UDP,2025-08-24,Coker Unit,Texas City Complex
+NET_004382,10.4.133.192,e5:d2:0b:8e:49:c0,TCP,2025-08-24,Hydrotreater,Texas City Complex
+REF_003798,10.4.49.208,9c:e0:93:6d:02:6f,Modbus,2025-07-24,Hydrotreater,Gulf Coast Refinery
+REF_003959,10.4.210.169,ec:64:af:16:17:8e,TCP,2025-07-24,Isomerization Unit,Baytown Refinery
+REF_003884,10.4.135.94,c1:15:15:10:b9:59,UDP,2025-07-24,Alkylation Unit,Baytown Refinery
+REF_003422,10.4.173.32,3f:02:03:0d:06:9b,TCP,2025-09-24,Hydrotreater,Baytown Refinery
+REF_003325,10.4.76.135,02:fa:bb:56:c3:9c,UDP,2025-09-24,Coker Unit,Texas City Complex
+NET_004806,10.4.57.16,65:7f:20:dd:dc:7d,UDP,2025-09-24,Hydrotreater,Baytown Refinery
+REF_003627,10.4.128.37,a6:ac:63:88:c8:f8,TCP,2025-09-24,Reformer Unit,Gulf Coast Refinery
+REF_003760,10.1.11.170,63:ab:98:48:ee:0b,UDP,2025-09-24,Crude Distillation Unit (CDU),Texas City Complex
+REF_003245,10.4.246.55,cc:92:b2:9f:07:84,TCP,2025-08-24,Coker Unit,Baytown Refinery
+REF_003392,10.1.143.202,06:71:1c:e1:c0:43,TCP,2025-07-24,Crude Distillation Unit (CDU),Baytown Refinery
+REF_003328,10.1.79.138,fb:de:63:62:3a:67,TCP,2025-09-24,Crude Distillation Unit (CDU),Texas City Complex
+REF_004052,10.4.53.62,29:d8:52:f6:96:75,TCP,2025-08-24,Alkylation Unit,Baytown Refinery
+REF_004127,10.4.128.137,84:ab:5e:55:39:8a,TCP,2025-08-24,Isomerization Unit,Baytown Refinery
+REF_003011,10.4.12.21,ad:d2:d2:f7:2a:2f,TCP,2025-08-24,Reformer Unit,Baytown Refinery
+REF_004057,10.2.58.67,39:92:3a:70:4f:61,UDP,2025-09-24,Fluid Catalytic Cracking (FCC),Texas City Complex
+REF_004175,10.4.176.185,78:89:af:9f:4b:b6,UDP,2025-08-24,Isomerization Unit,Baytown Refinery
+REF_003507,10.4.8.117,c2:16:9f:cf:b3:39,TCP,2025-07-24,Reformer Unit,Gulf Coast Refinery
+NET_004543,10.4.44.153,76:4d:90:fa:64:99,TCP,2025-09-24,Isomerization Unit,Gulf Coast Refinery
+REF_003023,10.4.24.33,3c:ca:fd:39:71:63,UDP,2025-08-24,Isomerization Unit,Baytown Refinery
+REF_004062,10.4.63.72,5e:68:00:9c:fe:4b,TCP,2025-08-24,Hydrotreater,Gulf Coast Refinery
+REF_004025,10.2.26.35,c7:d1:48:9c:e7:51,Modbus,2025-09-24,Fluid Catalytic Cracking (FCC),Baytown Refinery
+REF_003312,10.1.63.122,6c:54:12:e5:5f:05,TCP,2025-09-24,Crude Distillation Unit (CDU),Gulf Coast Refinery
+NET_005055,10.4.56.65,94:23:f2:cf:60:8a,UDP,2025-09-24,Isomerization Unit,Baytown Refinery
+REF_003827,10.4.78.37,80:3d:55:d2:36:56,UDP,2025-08-24,Reformer Unit,Baytown Refinery
+REF_003797,10.4.48.207,b8:f4:dc:c0:d6:3f,TCP,2025-09-24,Coker Unit,Baytown Refinery
+REF_003976,10.1.227.186,33:22:d2:55:c8:11,TCP,2025-07-24,Crude Distillation Unit (CDU),Texas City Complex
+ORPH_008000,10.99.1.10,b4:38:dc:a2:90:c3,TCP,2025-09-24,Crude Distillation Unit (CDU),Gulf Coast Refinery
+ORPH_008001,10.99.2.11,46:f1:15:59:ec:97,TCP,2025-09-24,Fluid Catalytic Cracking (FCC),Texas City Complex
+ORPH_008002,10.99.3.12,93:65:43:c9:26:c7,TCP,2025-09-24,Hydrocracking Unit (HCU),Baytown Refinery
+ORPH_008003,10.99.4.13,a1:da:c6:31:0c:fc,UDP,2025-09-24,Reformer Unit,Gulf Coast Refinery
+ORPH_008004,10.99.5.14,9e:ca:64:db:a1:ad,UDP,2025-08-24,Alkylation Unit,Texas City Complex
+ORPH_008005,10.99.6.15,f6:30:62:ad:14:e2,TCP,2025-08-24,Coker Unit,Baytown Refinery
+ORPH_008006,10.99.7.16,f7:8b:69:cd:65:26,TCP,2025-09-24,Hydrotreater,Gulf Coast Refinery
+ORPH_008007,10.99.8.17,e2:99:c4:8f:ae:a4,TCP,2025-09-24,Isomerization Unit,Texas City Complex
+ORPH_008008,10.99.9.18,47:91:f6:ac:d4:e5,TCP,2025-09-24,Crude Distillation Unit (CDU),Baytown Refinery
+ORPH_008009,10.99.10.19,ca:f2:78:fa:86:9f,TCP,2025-08-24,Fluid Catalytic Cracking (FCC),Gulf Coast Refinery
+ORPH_008010,10.99.11.20,e5:46:cc:05:66:0a,UDP,2025-08-24,Hydrocracking Unit (HCU),Texas City Complex
+ORPH_008011,10.99.12.21,8f:d9:b7:a5:f7:dd,TCP,2025-09-24,Reformer Unit,Baytown Refinery
+ORPH_008012,10.99.13.22,fe:84:25:1a:6c:9f,TCP,2025-08-24,Alkylation Unit,Gulf Coast Refinery
+ORPH_008013,10.99.14.23,9c:c5:34:34:14:2c,UDP,2025-09-24,Coker Unit,Texas City Complex
+ORPH_008014,10.99.15.24,55:08:be:1d:93:68,UDP,2025-08-24,Hydrotreater,Baytown Refinery
+ORPH_008015,10.99.16.25,af:d8:ad:d7:ce:ca,TCP,2025-09-24,Isomerization Unit,Gulf Coast Refinery
+ORPH_008016,10.99.17.26,31:d9:9f:27:01:24,TCP,2025-09-24,Crude Distillation Unit (CDU),Texas City Complex
+ORPH_008017,10.99.18.27,74:1f:7e:78:ad:fd,TCP,2025-08-24,Fluid Catalytic Cracking (FCC),Baytown Refinery
+ORPH_008018,10.99.19.28,bc:1d:3c:ca:6a:71,TCP,2025-09-24,Hydrocracking Unit (HCU),Gulf Coast Refinery
+ORPH_008019,10.99.20.29,63:af:86:ef:f8:3d,TCP,2025-09-24,Reformer Unit,Texas City Complex
+ORPH_008020,10.99.21.30,5b:84:7b:9b:14:8f,TCP,2025-08-24,Alkylation Unit,Baytown Refinery
+ORPH_008021,10.99.22.31,4d:2d:07:91:c0:67,TCP,2025-08-24,Coker Unit,Gulf Coast Refinery
+ORPH_008022,10.99.23.32,9e:2e:24:7d:6a:eb,TCP,2025-08-24,Hydrotreater,Texas City Complex
+ORPH_008023,10.99.24.33,05:d9:7a:78:18:21,TCP,2025-08-24,Isomerization Unit,Baytown Refinery
+ORPH_008024,10.99.25.34,d0:ca:07:05:41:82,TCP,2025-08-24,Crude Distillation Unit (CDU),Gulf Coast Refinery
