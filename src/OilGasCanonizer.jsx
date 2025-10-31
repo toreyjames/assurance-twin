@@ -344,8 +344,12 @@ export default function OilGasCanonizer() {
                 </div>
               </div>
 
-              {/* Step 2: Security Management */}
-              {result.otDiscoveryAnalysis.managedPercentage !== undefined && (
+              {/* Step 2: Security Management - ONLY show if we have data */}
+              {result.otDiscoveryAnalysis.managedPercentage !== undefined && 
+               (result.otDiscoveryAnalysis.managedPercentage > 0 || 
+                result.otDiscoveryAnalysis.patchedPercentage > 0 ||
+                result.otDiscoveryAnalysis.encryptionPercentage > 0 ||
+                result.otDiscoveryAnalysis.authenticationPercentage > 0) && (
                 <div style={{ marginBottom: 20 }}>
                   <h5 style={{ fontSize: '14px', color: '#059669', marginBottom: 10 }}>
                     🛡️ Step 2: Security Management Coverage
