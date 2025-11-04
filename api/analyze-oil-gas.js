@@ -196,7 +196,7 @@ function performOtDiscoveryAnalysis(engineering, discovered) {
     // Legacy compliance gaps (to be removed)
     complianceGaps: complianceGaps.length,
     
-    summary: `OT Discovery: ${discoveredAssets} assets found, ${matchedAssets.length} matched (${coveragePercentage}%), ${securityManaged} managed (${managedPercentage}%), ${securityPatched} patched (${patchedPercentage}%)`,
+    summary: `OT Discovery: ${discoveredAssets} assets found, ${matchedAssets.length} matched (${coveragePercentage}%). ${blindSpots.length} blind spots identified. Discovery tool provides network visibility and security posture for discovered assets.`,
     blindSpotDetails: blindSpots.slice(0, 10),
     orphanDetails: orphanAssets.slice(0, 10),
     complianceGapDetails: complianceGaps.slice(0, 10)
