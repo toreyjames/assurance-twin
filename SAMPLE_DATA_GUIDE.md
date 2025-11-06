@@ -15,17 +15,17 @@ We provide three realistic sample datasets that match actual refinery scales:
 ### **Files:**
 ```
 engineering_baseline_demo.csv    (500 assets)
-ot_discovery_demo.csv            (39 devices discovered)
+ot_discovery_demo.csv            (60 devices discovered)
 ```
 
 ### **Statistics:**
 - **Total Assets:** 500
-- **Tier 1 (Critical PLCs/DCS/HMI):** 20 (4%)
-- **Tier 2 (Smart/Networkable):** 115 (23%)
-- **Tier 3 (Passive/Analog):** 365 (73%)
-- **Discovered:** 39 devices (70% of networkable with IPs)
-- **Coverage:** ~29% overall (realistic - most analog devices have no IP)
-- **Orphans:** ~3 mystery devices
+- **Tier 1 (Critical PLCs/DCS/HMI):** 25 (5%)
+- **Tier 2 (Smart/Networkable):** 150 (30%)
+- **Tier 3 (Passive/Analog):** 325 (65%)
+- **Discovered:** 60 devices (71% of networkable with IPs)
+- **Coverage:** ~35% overall (realistic - most analog devices have no IP)
+- **Orphans:** ~5 mystery devices
 - **Plants:** 1 (Gulf Coast Refinery)
 
 ### **Best for:**
@@ -45,17 +45,17 @@ ot_discovery_demo.csv            (39 devices discovered)
 ### **Files:**
 ```
 engineering_baseline_medium.csv  (8,000 assets)
-ot_discovery_medium.csv          (678 devices discovered)
+ot_discovery_medium.csv          (897 devices discovered)
 ```
 
 ### **Statistics:**
 - **Total Assets:** 8,000
-- **Tier 1 (Critical PLCs/DCS/HMI):** 320 (4%)
-- **Tier 2 (Smart/Networkable):** 1,840 (23%)
-- **Tier 3 (Passive/Analog):** 5,840 (73%)
-- **Discovered:** 678 devices (72% of networkable with IPs)
-- **Coverage:** ~31% overall
-- **Orphans:** ~54 mystery devices (shadow IT, contractors)
+- **Tier 1 (Critical PLCs/DCS/HMI):** 400 (5%)
+- **Tier 2 (Smart/Networkable):** 2,400 (30%)
+- **Tier 3 (Passive/Analog):** 5,200 (65%)
+- **Discovered:** 897 devices (72% of networkable with IPs)
+- **Coverage:** ~35% overall
+- **Orphans:** ~72 mystery devices (shadow IT, contractors)
 - **Plants:** 2 (Gulf Coast + Midwest)
 
 ### **Breakdown by Process Unit:**
@@ -89,26 +89,26 @@ Control Room:                      ~200 assets
 ### **Files:**
 ```
 engineering_baseline_enterprise.csv  (25,000 assets)
-ot_discovery_enterprise.csv          (2,133 devices discovered)
+ot_discovery_enterprise.csv          (2,743 devices discovered)
 ```
 
 ### **Statistics:**
 - **Total Assets:** 25,000
-- **Tier 1 (Critical PLCs/DCS/HMI):** 1,000 (4%)
-- **Tier 2 (Smart/Networkable):** 5,750 (23%)
-- **Tier 3 (Passive/Analog):** 18,250 (73%)
-- **Discovered:** 2,133 devices (72% of networkable with IPs)
-- **Coverage:** ~31% overall
-- **Orphans:** ~170 mystery devices
+- **Tier 1 (Critical PLCs/DCS/HMI):** 1,250 (5%)
+- **Tier 2 (Smart/Networkable):** 7,500 (30%)
+- **Tier 3 (Passive/Analog):** 16,250 (65%)
+- **Discovered:** 2,743 devices (72% of networkable with IPs)
+- **Coverage:** ~35% overall
+- **Orphans:** ~220 mystery devices
 - **Plants:** 3 (Gulf Coast + Midwest + West Coast)
 
 ### **Enterprise Complexity:**
 ```
 Multiple Sites: 3 refineries
 Process Units: 36 total (12 per site)
-Critical Assets: 1,000 PLCs/DCS/HMI systems
-Smart Devices: 5,750 networked instruments
-Analog Devices: 18,250 4-20mA transmitters/valves
+Critical Assets: 1,250 PLCs/DCS/HMI systems
+Smart Devices: 7,500 networked instruments
+Analog Devices: 16,250 4-20mA transmitters/valves
 Management Challenge: Coordinating security across 3 sites
 ```
 
@@ -125,23 +125,23 @@ Management Challenge: Coordinating security across 3 sites
 
 ### **Realistic Tier Distribution:**
 
-Based on actual refinery data:
-- **4% Tier 1:** PLCs, DCS, HMI, SCADA (programmable, must secure)
-- **23% Tier 2:** Smart transmitters, IP devices (networkable, should secure)
-- **73% Tier 3:** 4-20mA transmitters, analog valves (inventory only)
+Based on actual refinery data (modern refineries 2024):
+- **5% Tier 1:** PLCs, DCS, HMI, SCADA (programmable, must secure)
+- **30% Tier 2:** Smart transmitters, IP devices (networkable, should secure)
+- **65% Tier 3:** 4-20mA transmitters, analog valves (inventory only)
 
 ### **Realistic Coverage:**
 
-Why only 31% overall coverage?
+Why only 35% overall coverage?
 ```
 Engineering has: 8,000 total assets
-├─ 2,160 networkable (Tier 1 + Tier 2)
-│  ├─ 940 have IP addresses (44%) ← incomplete engineering data!
-│  └─ 678 discovered (72% of those with IPs)
-└─ 5,840 passive (no IP/MAC, can't be discovered)
+├─ 2,800 networkable (Tier 1 + Tier 2)
+│  ├─ 1,250 have IP addresses (45%) ← incomplete engineering data!
+│  └─ 897 discovered (72% of those with IPs)
+└─ 5,200 passive (no IP/MAC, can't be discovered)
 
-Result: 678 / 8,000 = 8.5% discovered
-But: 678 / 940 = 72% of networkable with IPs ← GOOD!
+Result: 897 / 8,000 = 11.2% discovered
+But: 897 / 1,250 = 72% of networkable with IPs ← GOOD!
 ```
 
 **This is realistic!** Most engineering baselines lack IP addresses for many devices.
@@ -224,10 +224,10 @@ Result: Impressive scale, multi-site complexity
 > with 8,000 total assets. Let's see what we find..."
 
 **Then point out:**
-- ✅ "Only 31% overall coverage - but that's expected! 73% are analog 4-20mA devices with no network connectivity"
+- ✅ "Only 35% overall coverage - but that's expected! 65% are analog 4-20mA devices with no network connectivity"
 - ✅ "72% of networkable assets discovered - that's actually good!"
-- ✅ "Found 54 orphan devices not in your asset register - possible shadow IT"
-- ✅ "320 critical Tier 1 assets - only 64% secured - here's your gap"
+- ✅ "Found 72 orphan devices not in your asset register - possible shadow IT"
+- ✅ "400 critical Tier 1 assets - only 64% secured - here's your gap"
 
 ### **Use Enterprise for Wow Factor:**
 
@@ -247,24 +247,24 @@ Result: Impressive scale, multi-site complexity
 🛡️ Complete Asset Inventory & Security Posture
 
 Total Asset Inventory: 8,000        ✅ Complete visibility
-Networkable Assets: 2,160           ⚠️ Require security
+Networkable Assets: 2,800           ⚠️ Require security
 Security Coverage: ~45%             ⚠️ Gap to address
-Passive/Analog: 5,840               ℹ️ Inventory only
+Passive/Analog: 5,200               ℹ️ Inventory only
 
-🔴 Tier 1: 320 critical assets
-   Secured: ~205 (64%) ⚠️ Gap!
+🔴 Tier 1: 400 critical assets
+   Secured: ~256 (64%) ⚠️ Gap!
 
-🟡 Tier 2: 1,840 smart devices
-   Secured: ~735 (40%) ⚠️ Bigger gap!
+🟡 Tier 2: 2,400 smart devices
+   Secured: ~960 (40%) ⚠️ Bigger gap!
 
-🔵 Tier 3: 5,840 passive devices
-   Inventoried: ~490 (8%)
+🔵 Tier 3: 5,200 passive devices
+   Inventoried: ~416 (8%)
    ✅ No security needed
 
 🧠 AI Insights:
-   - 🔴 CRITICAL: 54 orphan devices found (shadow IT)
+   - 🔴 CRITICAL: 72 orphan devices found (shadow IT)
    - 🔴 CRITICAL: Only 64% Tier 1 secured
-   - 🟡 HIGH: 44% missing IP addresses in engineering baseline
+   - 🟡 HIGH: 45% missing IP addresses in engineering baseline
 ```
 
 ---
@@ -279,13 +279,13 @@ Passive/Analog: 5,840               ℹ️ Inventory only
    - Large: 25-50K assets
 
 2. **Tier distribution matches reality**
-   - 4% critical programmable
-   - 23% smart/networkable
-   - 73% passive/analog
+   - 5% critical programmable
+   - 30% smart/networkable
+   - 65% passive/analog
 
 3. **Coverage is believable**
    - 70-75% of networkable assets discovered
-   - Overall ~30% due to passive devices
+   - Overall ~35% due to passive devices
    - Gaps in engineering data (no IPs)
 
 4. **Problems are actionable**
@@ -302,11 +302,11 @@ Passive/Analog: 5,840               ℹ️ Inventory only
 ```
 public/samples/demo/oil-gas/
 ├── engineering_baseline_demo.csv         (500 assets)
-├── ot_discovery_demo.csv                 (39 devices)
+├── ot_discovery_demo.csv                 (60 devices)
 ├── engineering_baseline_medium.csv       (8,000 assets)
-├── ot_discovery_medium.csv               (678 devices)
+├── ot_discovery_medium.csv               (897 devices)
 ├── engineering_baseline_enterprise.csv   (25,000 assets)
-└── ot_discovery_enterprise.csv           (2,133 devices)
+└── ot_discovery_enterprise.csv           (2,743 devices)
 ```
 
 ---
