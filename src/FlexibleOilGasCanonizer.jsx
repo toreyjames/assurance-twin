@@ -285,54 +285,91 @@ export default function FlexibleOilGasCanonizer() {
             </div>
           </div>
 
-          {/* KPIs */}
+          {/* KPIs - Clear messaging */}
           <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-            gap: '1rem',
+            padding: '1.5rem',
+            background: 'white',
+            border: '2px solid #3b82f6',
+            borderRadius: '0.75rem',
             marginBottom: '2rem'
           }}>
+            <h3 style={{ margin: '0 0 1rem 0', fontSize: '1.125rem' }}>📊 Asset Inventory Summary</h3>
+            
             <div style={{
-              padding: '1rem',
-              background: 'white',
-              border: '2px solid #e2e8f0',
-              borderRadius: '0.5rem'
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+              gap: '1rem'
             }}>
-              <div style={{ fontSize: '0.75rem', color: '#64748b', marginBottom: '0.25rem' }}>Total Assets</div>
-              <div style={{ fontSize: '1.75rem', fontWeight: '700' }}>{result.kpis?.total_assets || 0}</div>
-            </div>
-            <div style={{
-              padding: '1rem',
-              background: 'white',
-              border: '2px solid #10b981',
-              borderRadius: '0.5rem'
-            }}>
-              <div style={{ fontSize: '0.75rem', color: '#64748b', marginBottom: '0.25rem' }}>Matched Assets</div>
-              <div style={{ fontSize: '1.75rem', fontWeight: '700', color: '#10b981' }}>
-                {result.kpis?.matched_assets || 0}
+              <div style={{
+                padding: '1rem',
+                background: '#f8fafc',
+                borderRadius: '0.5rem',
+                border: '2px solid #10b981'
+              }}>
+                <div style={{ fontSize: '0.75rem', color: '#64748b', marginBottom: '0.25rem' }}>Total Asset Inventory</div>
+                <div style={{ fontSize: '1.75rem', fontWeight: '700' }}>{result.kpis?.total_assets || 0}</div>
+                <div style={{ fontSize: '0.75rem', color: '#10b981', marginTop: '0.25rem' }}>✓ Complete visibility</div>
               </div>
+              
+              {result.learningInsights?.deviceClassification && (
+                <>
+                  <div style={{
+                    padding: '1rem',
+                    background: '#fffbeb',
+                    borderRadius: '0.5rem',
+                    border: '2px solid #f59e0b'
+                  }}>
+                    <div style={{ fontSize: '0.75rem', color: '#64748b', marginBottom: '0.25rem' }}>Networkable Assets</div>
+                    <div style={{ fontSize: '1.75rem', fontWeight: '700', color: '#f59e0b' }}>
+                      {result.learningInsights.deviceClassification.networkableAssets}
+                    </div>
+                    <div style={{ fontSize: '0.75rem', color: '#92400e', marginTop: '0.25rem' }}>
+                      Require security management
+                    </div>
+                  </div>
+                  
+                  <div style={{
+                    padding: '1rem',
+                    background: result.learningInsights.deviceClassification.securityPosture.networkableMatched / result.learningInsights.deviceClassification.networkableAssets >= 0.5 ? '#f0fdf4' : '#fef2f2',
+                    borderRadius: '0.5rem',
+                    border: `2px solid ${result.learningInsights.deviceClassification.securityPosture.networkableMatched / result.learningInsights.deviceClassification.networkableAssets >= 0.5 ? '#10b981' : '#ef4444'}`
+                  }}>
+                    <div style={{ fontSize: '0.75rem', color: '#64748b', marginBottom: '0.25rem' }}>Networkable Discovered</div>
+                    <div style={{ fontSize: '1.75rem', fontWeight: '700', color: result.learningInsights.deviceClassification.securityPosture.networkableMatched / result.learningInsights.deviceClassification.networkableAssets >= 0.5 ? '#10b981' : '#ef4444' }}>
+                      {result.learningInsights.deviceClassification.securityPosture.networkableMatched}
+                    </div>
+                    <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '0.25rem' }}>
+                      {Math.round((result.learningInsights.deviceClassification.securityPosture.networkableMatched / result.learningInsights.deviceClassification.networkableAssets) * 100)}% of networkable found
+                    </div>
+                  </div>
+                  
+                  <div style={{
+                    padding: '1rem',
+                    background: '#eff6ff',
+                    borderRadius: '0.5rem',
+                    border: '2px solid #6366f1'
+                  }}>
+                    <div style={{ fontSize: '0.75rem', color: '#64748b', marginBottom: '0.25rem' }}>Passive/Analog Devices</div>
+                    <div style={{ fontSize: '1.75rem', fontWeight: '700', color: '#6366f1' }}>
+                      {result.learningInsights.deviceClassification.passiveAssets}
+                    </div>
+                    <div style={{ fontSize: '0.75rem', color: '#4338ca', marginTop: '0.25rem' }}>
+                      Inventory only (no network)
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
+            
             <div style={{
+              marginTop: '1rem',
               padding: '1rem',
-              background: 'white',
-              border: '2px solid #3b82f6',
-              borderRadius: '0.5rem'
+              background: '#f8fafc',
+              borderRadius: '0.5rem',
+              fontSize: '0.875rem',
+              color: '#475569'
             }}>
-              <div style={{ fontSize: '0.75rem', color: '#64748b', marginBottom: '0.25rem' }}>Discovery Coverage</div>
-              <div style={{ fontSize: '1.75rem', fontWeight: '700', color: '#3b82f6' }}>
-                {result.kpis?.discovery_coverage_percentage || 0}%
-              </div>
-            </div>
-            <div style={{
-              padding: '1rem',
-              background: 'white',
-              border: '2px solid #ef4444',
-              borderRadius: '0.5rem'
-            }}>
-              <div style={{ fontSize: '0.75rem', color: '#64748b', marginBottom: '0.25rem' }}>Blind Spots</div>
-              <div style={{ fontSize: '1.75rem', fontWeight: '700', color: '#ef4444' }}>
-                {result.kpis?.blind_spots || 0}
-              </div>
+              <strong>Why overall coverage looks low:</strong> {result.learningInsights?.deviceClassification?.passiveAssets || 0} assets are passive analog devices (4-20mA transmitters, valves) with no network connectivity. These cannot be discovered by network scans but are tracked in your inventory.
             </div>
           </div>
 
