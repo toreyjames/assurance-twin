@@ -1,0 +1,17 @@
+tag_id,plant,unit,device_type,manufacturer,model,ip_address,hostname
+PLC-CDU-001,Refinery A,Crude Distillation Unit (CDU),PLC,Siemens,S7-1500,192.168.10.10,PLC-CDU-001
+PLC-CDU-002,Refinery A,Crude Distillation Unit (CDU),PLC,Siemens,S7-1500,192.168.10.11,PLC-CDU-002
+HMI-CDU-001,Refinery A,Crude Distillation Unit (CDU),HMI,Siemens,WinCC,192.168.10.20,HMI-CDU-001
+XMTR-CDU-T001,Refinery A,Crude Distillation Unit (CDU),Smart_Transmitter,Rosemount,3051,192.168.10.101,XMTR-CDU-T001
+XMTR-CDU-P001,Refinery A,Crude Distillation Unit (CDU),Smart_Transmitter,Rosemount,3051,192.168.10.102,XMTR-CDU-P001
+VFD-CDU-P001,Refinery A,Crude Distillation Unit (CDU),VFD,ABB,ACS880,192.168.10.50,VFD-CDU-P001
+PLC-FCC-001,Refinery A,Fluid Catalytic Cracking (FCC),PLC,Allen Bradley,ControlLogix,192.168.11.10,PLC-FCC-001
+PLC-FCC-002,Refinery A,Fluid Catalytic Cracking (FCC),PLC,Allen Bradley,ControlLogix,192.168.11.11,PLC-FCC-002
+HMI-FCC-001,Refinery A,Fluid Catalytic Cracking (FCC),HMI,Rockwell,FactoryTalk,192.168.11.20,HMI-FCC-001
+SIS-FCC-001,Refinery A,Fluid Catalytic Cracking (FCC),Safety_System,Honeywell,FSC,192.168.11.200,SIS-FCC-001
+XMTR-FCC-T001,Refinery A,Fluid Catalytic Cracking (FCC),Smart_Transmitter,Yokogawa,EJA,192.168.11.101,XMTR-FCC-T001
+PLC-HCU-001,Refinery A,Hydrocracking Unit (HCU),PLC,Siemens,S7-400,192.168.12.10,PLC-HCU-001
+HMI-HCU-001,Refinery A,Hydrocracking Unit (HCU),HMI,Siemens,WinCC,192.168.12.20,HMI-HCU-001
+SIS-HCU-001,Refinery A,Hydrocracking Unit (HCU),Safety_System,Schneider,Triconex,192.168.12.200,SIS-HCU-001
+XMTR-HCU-T001,Refinery A,Hydrocracking Unit (HCU),Smart_Transmitter,Emerson,Rosemount,192.168.12.101,XMTR-HCU-T001
+

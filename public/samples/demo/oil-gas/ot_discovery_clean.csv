@@ -1,0 +1,17 @@
+tag_id,ip_address,hostname,mac_address,device_type,manufacturer,model,is_managed,has_security_patches,encryption_enabled,authentication_required,firewall_protected,access_control,vulnerabilities,cve_count,last_seen,confidence_level
+,192.168.10.10,PLC-CDU-001,00:1A:2B:3C:4D:01,PLC,Siemens,S7-1500,true,true,false,true,true,Role-Based,0,0,2024-11-05,100
+,192.168.10.11,PLC-CDU-002,00:1A:2B:3C:4D:02,PLC,Siemens,S7-1500,true,true,false,true,true,Role-Based,0,0,2024-11-05,100
+,192.168.10.20,HMI-CDU-001,00:1A:2B:3C:4D:03,HMI,Siemens,WinCC,true,true,true,true,true,Role-Based,2,2,2024-11-05,95
+,192.168.10.101,XMTR-CDU-T001,00:1A:2B:3C:4D:04,Smart_Transmitter,Rosemount,3051,false,false,false,false,true,None,0,0,2024-11-05,90
+,192.168.10.102,XMTR-CDU-P001,00:1A:2B:3C:4D:05,Smart_Transmitter,Rosemount,3051,false,false,false,false,true,None,0,0,2024-11-05,90
+,192.168.10.50,VFD-CDU-P001,00:1A:2B:3C:4D:06,VFD,ABB,ACS880,true,true,false,true,true,Password,0,0,2024-11-05,95
+,192.168.11.10,PLC-FCC-001,00:1A:2B:3C:4D:07,PLC,Allen Bradley,ControlLogix,true,true,false,true,true,Role-Based,0,0,2024-11-05,100
+,192.168.11.11,PLC-FCC-002,00:1A:2B:3C:4D:08,PLC,Allen Bradley,ControlLogix,true,false,false,true,true,Role-Based,3,1,2024-11-05,100
+,192.168.11.20,HMI-FCC-001,00:1A:2B:3C:4D:09,HMI,Rockwell,FactoryTalk,true,true,true,true,true,Role-Based,0,0,2024-11-05,95
+,192.168.11.200,SIS-FCC-001,00:1A:2B:3C:4D:10,Safety_System,Honeywell,FSC,true,true,false,true,true,Restricted,0,0,2024-11-05,100
+,192.168.11.101,XMTR-FCC-T001,00:1A:2B:3C:4D:11,Smart_Transmitter,Yokogawa,EJA,false,false,false,false,true,None,0,0,2024-11-05,85
+,192.168.12.10,PLC-HCU-001,00:1A:2B:3C:4D:12,PLC,Siemens,S7-400,true,true,false,true,true,Role-Based,0,0,2024-11-05,100
+,192.168.12.20,HMI-HCU-001,00:1A:2B:3C:4D:13,HMI,Siemens,WinCC,true,true,true,true,true,Role-Based,1,1,2024-11-05,95
+,192.168.12.200,SIS-HCU-001,00:1A:2B:3C:4D:14,Safety_System,Schneider,Triconex,true,true,false,true,true,Restricted,0,0,2024-11-05,100
+,192.168.12.101,XMTR-HCU-T001,00:1A:2B:3C:4D:15,Smart_Transmitter,Emerson,Rosemount,false,false,false,false,true,None,0,0,2024-11-05,85
+

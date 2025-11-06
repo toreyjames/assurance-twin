@@ -39,7 +39,7 @@ export default function OilGasCanonizer() {
       if (otDiscoveryFile) payload.otDiscoveryCsv = await readFileText(otDiscoveryFile)
 
       console.log('Sending payload:', payload)
-      const res = await fetch('/api/analyze-oil-gas', {
+      const res = await fetch('/api/analyze-oil-gas-v2', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
@@ -258,35 +258,40 @@ export default function OilGasCanonizer() {
             </div>
           )}
 
-          {/* Oil & Gas KPIs */}
+          {/* Oil & Gas KPIs - OBJECTIVE METRICS ONLY */}
           <div className="kpis">
             <div className="kpi">
               <div className="label">Total Assets</div>
-              <div className="value">{filteredKPIs.total_assets}</div>
+              <div className="value">{result.kpis.total_assets}</div>
             </div>
             <div className="kpi">
-              <div className="label">Critical Assets</div>
+              <div className="label">Discovery Coverage</div>
+              <div className="value" style={{ 
+                color: result.kpis.coverage_percentage >= 80 ? '#10B981' : 
+                       result.kpis.coverage_percentage >= 60 ? '#F59E0B' : '#EF4444'
+              }}>
+                {result.kpis.coverage_percentage}%
+              </div>
+            </div>
+            <div className="kpi">
+              <div className="label">Matched Assets</div>
+              <div className="value" style={{ color: '#10B981' }}>
+                {result.kpis.matched_assets}
+              </div>
+            </div>
+            <div className="kpi">
+              <div className="label">Blind Spots</div>
               <div className="value" style={{ color: '#EF4444' }}>
-                {filteredKPIs.critical_assets}
+                {result.kpis.blind_spots}
               </div>
             </div>
             <div className="kpi">
-              <div className="label">Crown Jewels</div>
-              <div className="value" style={{ color: '#DC2626' }}>
-                {filteredKPIs.crown_jewel_assets}
-              </div>
+              <div className="label">Process Units</div>
+              <div className="value">{Object.keys(result.processUnitDistribution || {}).length}</div>
             </div>
             <div className="kpi">
-              <div className="label">Critical Path</div>
-              <div className="value" style={{ color: '#F59E0B' }}>
-                {filteredKPIs.critical_path_assets}
-              </div>
-            </div>
-            <div className="kpi">
-              <div className="label">SIS Assets</div>
-              <div className="value" style={{ color: '#8B5CF6' }}>
-                {filteredKPIs.sis_assets}
-              </div>
+              <div className="label">Device Types</div>
+              <div className="value">{Object.keys(result.deviceTypeDistribution || {}).length}</div>
             </div>
           </div>
 
@@ -440,266 +445,162 @@ export default function OilGasCanonizer() {
             </div>
           )}
 
-          {/* Plant Mapping */}
-          {filteredPlantMapping && filteredPlantMapping.units.length > 0 && (
+          {/* Process Unit Distribution - OBJECTIVE */}
+          {result.processUnitDistribution && Object.keys(result.processUnitDistribution).length > 0 && (
             <div className="card" style={{ marginTop: 20 }}>
-              <h4>🏭 Plant Mapping & Critical Paths</h4>
+              <h4>🏭 Process Unit Distribution</h4>
+              <p className="subtle">Objective asset counts by process unit from engineering baseline</p>
               
-              {/* Process Units */}
-              <div style={{ marginBottom: 20 }}>
-                <h5>Process Units</h5>
-                <div className="table-wrap">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>Unit</th>
-                        <th>Function</th>
-                        <th>Criticality</th>
-                        <th>Crown Jewel</th>
-                        <th>Critical Path</th>
-                        <th>Assets</th>
-                        <th>Network %</th>
-                        <th>Blind Spots</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {filteredPlantMapping.units.map(unit => (
-                        <tr key={unit.name}>
-                          <td>{unit.name}</td>
-                          <td>{unit.function}</td>
-                          <td>
-                            <span style={{ 
-                              color: unit.criticality === 'Critical' ? '#EF4444' : 
-                                     unit.criticality === 'High' ? '#F59E0B' : '#3B82F6'
-                            }}>
-                              {unit.criticality}
-                            </span>
-                          </td>
-                          <td>{unit.crownJewel ? '👑' : '✗'}</td>
-                          <td>{unit.criticalPath ? '⚡' : '✗'}</td>
-                          <td>{unit.assetCount}</td>
-                          <td>
-                            <span style={{ 
-                              color: unit.networkCoverage >= 80 ? '#10B981' : 
-                                     unit.networkCoverage >= 60 ? '#F59E0B' : '#EF4444'
-                            }}>
-                              {unit.networkCoverage}%
-                            </span>
-                          </td>
-                          <td>
-                            <span style={{ 
-                              color: unit.blindSpots > 0 ? '#EF4444' : '#10B981'
-                            }}>
-                              {unit.blindSpots}
-                            </span>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-
-              {/* Critical Paths */}
-              <div style={{ marginBottom: 20 }}>
-                <h5>Critical Paths</h5>
-                {filteredPlantMapping.criticalPaths.map((path, index) => (
-                  <div key={index} style={{ 
-                    marginBottom: 10, 
-                    padding: 10, 
-                    backgroundColor: '#F3F4F6', 
-                    borderRadius: 8 
-                  }}>
-                    <strong>{path.name}</strong>
-                    <div style={{ fontSize: '12px', color: '#6B7280' }}>
-                      {path.description}
-                    </div>
-                    <div style={{ fontSize: '12px', marginTop: 4 }}>
-                      Units: {path.units.join(' → ')}
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* Material Flows */}
-              <div>
-                <h5>Material Flows</h5>
-                {filteredPlantMapping.materialFlows.map((flow, index) => (
-                  <div key={index} style={{ 
-                    marginBottom: 8, 
-                    padding: 8, 
-                    backgroundColor: '#F9FAFB', 
-                    borderRadius: 6 
-                  }}>
-                    <span style={{ 
-                      color: flow.criticality === 'Critical' ? '#EF4444' : '#F59E0B'
-                    }}>
-                      {flow.from} → {flow.to}: {flow.material}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Crown Jewels */}
-          {filteredCrownJewels && filteredCrownJewels.length > 0 && (
-            <div className="card" style={{ marginTop: 20 }}>
-              <h4>👑 Crown Jewels ({filteredCrownJewels.length})</h4>
               <div className="table-wrap">
                 <table>
                   <thead>
                     <tr>
-                      <th>Tag ID</th>
-                      <th>Unit</th>
-                      <th>Type</th>
-                      <th>Criticality</th>
-                      <th>Network</th>
-                      <th>Risk Score</th>
+                      <th>Process Unit</th>
+                      <th>Total Assets</th>
+                      <th>Percentage</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {filteredCrownJewels.map(asset => (
-                      <tr key={asset.canon_id}>
-                        <td>{asset.tag_id}</td>
-                        <td>{asset.unit}</td>
-                        <td>{asset.instrument_type}</td>
-                        <td>
-                          <span style={{ 
-                            color: asset.criticality === 'Critical' ? '#EF4444' : '#F59E0B'
-                          }}>
-                            {asset.criticality}
-                          </span>
-                        </td>
-                        <td>
-                          <span style={{ 
-                            color: asset.network_status === 'ON_NETWORK' ? '#10B981' : '#EF4444'
-                          }}>
-                            {asset.network_status}
-                          </span>
-                        </td>
-                        <td>{asset.risk_score}</td>
-                      </tr>
-                    ))}
+                    {Object.entries(result.processUnitDistribution)
+                      .sort((a, b) => b[1] - a[1])
+                      .map(([unit, count]) => (
+                        <tr key={unit}>
+                          <td>{unit}</td>
+                          <td>{count}</td>
+                          <td>
+                            {Math.round((count / result.kpis.total_assets) * 100)}%
+                          </td>
+                        </tr>
+                      ))}
                   </tbody>
                 </table>
               </div>
             </div>
           )}
 
-          {/* Security Level Distribution */}
-          <div className="card" style={{ marginTop: 20 }}>
-            <h4>ISA/IEC 62443 Security Level Distribution</h4>
-            <div className="kpis">
-              <div className="kpi">
-                <div className="label">SL-4 (Critical)</div>
-                <div className="value" style={{ color: '#EF4444' }}>
-                  {filteredKPIs.security_level_4}
-                </div>
-              </div>
-              <div className="kpi">
-                <div className="label">SL-3 (High)</div>
-                <div className="value" style={{ color: '#F59E0B' }}>
-                  {filteredKPIs.security_level_3}
-                </div>
-              </div>
-              <div className="kpi">
-                <div className="label">SL-2 (Medium)</div>
-                <div className="value" style={{ color: '#3B82F6' }}>
-                  {filteredKPIs.security_level_2}
-                </div>
-              </div>
-              <div className="kpi">
-                <div className="label">SL-1 (Low)</div>
-                <div className="value" style={{ color: '#10B981' }}>
-                  {filteredKPIs.security_level_1}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Control System Hierarchy */}
-          <div className="card" style={{ marginTop: 20 }}>
-            <h4>Control System Hierarchy Distribution</h4>
-            <div className="kpis">
-              <div className="kpi">
-                <div className="label">Field Level</div>
-                <div className="value">{filteredKPIs.field_level_assets}</div>
-              </div>
-              <div className="kpi">
-                <div className="label">Control Level</div>
-                <div className="value">{filteredKPIs.control_level_assets}</div>
-              </div>
-              <div className="kpi">
-                <div className="label">Supervisory Level</div>
-                <div className="value">{filteredKPIs.supervisory_level_assets}</div>
-              </div>
-              <div className="kpi">
-                <div className="label">Safety Level</div>
-                <div className="value" style={{ color: '#8B5CF6' }}>
-                  {filteredKPIs.safety_level_assets}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Asset Table */}
-          <div className="card" style={{ marginTop: 20 }}>
-            <h4>Canonical Asset Model ({filteredAssets.length} assets)</h4>
-            <div className="table-wrap">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Tag ID</th>
-                    <th>Unit</th>
-                    <th>Type</th>
-                    <th>Control Level</th>
-                    <th>Criticality</th>
-                    <th>Security Level</th>
-                    <th>SIS</th>
-                    <th>Network</th>
-                    <th>Firmware</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredAssets.map(asset => (
-                    <tr key={asset.canon_id}>
-                      <td>{asset.tag_id}</td>
-                      <td>{asset.unit}</td>
-                      <td>{asset.instrument_type}</td>
-                      <td>{asset.control_level}</td>
-                      <td>
-                        <span style={{ 
-                          color: asset.criticality === 'Critical' ? '#EF4444' : 
-                                 asset.criticality === 'High' ? '#F59E0B' : 
-                                 asset.criticality === 'Medium' ? '#3B82F6' : '#10B981'
-                        }}>
-                          {asset.criticality}
-                        </span>
-                      </td>
-                      <td>SL-{asset.security_level}</td>
-                      <td>{asset.is_sis ? '✓' : '✗'}</td>
-                      <td>
-                        <span style={{ 
-                          color: asset.network_status === 'ON_NETWORK' ? '#10B981' : '#EF4444'
-                        }}>
-                          {asset.network_status}
-                        </span>
-                      </td>
-                      <td>
-                        <span style={{ 
-                          color: asset.firmware_status === 'CURRENT' ? '#10B981' : 
-                                 asset.firmware_status === 'OUTDATED' ? '#F59E0B' : '#6B7280'
-                        }}>
-                          {asset.firmware_status}
-                        </span>
-                      </td>
+          {/* Device Type Distribution - OBJECTIVE */}
+          {result.deviceTypeDistribution && Object.keys(result.deviceTypeDistribution).length > 0 && (
+            <div className="card" style={{ marginTop: 20 }}>
+              <h4>🔧 Device Type Distribution</h4>
+              <p className="subtle">Asset inventory by device type</p>
+              
+              <div className="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Device Type</th>
+                      <th>Total Assets</th>
+                      <th>Percentage</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {Object.entries(result.deviceTypeDistribution)
+                      .sort((a, b) => b[1] - a[1])
+                      .map(([type, count]) => (
+                        <tr key={type}>
+                          <td>{type}</td>
+                          <td>{count}</td>
+                          <td>
+                            {Math.round((count / result.kpis.total_assets) * 100)}%
+                          </td>
+                        </tr>
+                      ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
-          </div>
+          )}
+
+          {/* Manufacturer Distribution - OBJECTIVE */}
+          {result.manufacturerDistribution && Object.keys(result.manufacturerDistribution).length > 0 && (
+            <div className="card" style={{ marginTop: 20 }}>
+              <h4>🏢 Manufacturer Distribution</h4>
+              <p className="subtle">Asset inventory by manufacturer/vendor</p>
+              
+              <div className="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Manufacturer</th>
+                      <th>Total Assets</th>
+                      <th>Percentage</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {Object.entries(result.manufacturerDistribution)
+                      .sort((a, b) => b[1] - a[1])
+                      .map(([mfr, count]) => (
+                        <tr key={mfr}>
+                          <td>{mfr}</td>
+                          <td>{count}</td>
+                          <td>
+                            {Math.round((count / result.kpis.total_assets) * 100)}%
+                          </td>
+                        </tr>
+                      ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* Suggested Manual Matches - FOR CLIENT ENRICHMENT */}
+          {result.suggestedMatches && result.suggestedMatches.length > 0 && (
+            <div className="card" style={{ marginTop: 20, backgroundColor: '#FEF3C7', borderColor: '#F59E0B' }}>
+              <h4>🔗 Suggested Asset Matches (Manual Review Required)</h4>
+              <p className="subtle">
+                These assets couldn't be automatically matched. Review suggested matches below and contact your OT team to verify.
+              </p>
+              
+              {result.suggestedMatches.slice(0, 10).map((suggestion, idx) => (
+                <div key={idx} style={{ 
+                  marginBottom: 15, 
+                  padding: 15, 
+                  backgroundColor: '#FFFBEB', 
+                  borderRadius: 8,
+                  borderLeft: '4px solid #F59E0B'
+                }}>
+                  <div style={{ marginBottom: 10 }}>
+                    <strong>Engineering Asset:</strong> {suggestion.engineering.tag_id}
+                    <br/>
+                    <span style={{ fontSize: '13px', color: '#6B7280' }}>
+                      {suggestion.engineering.unit} • {suggestion.engineering.device_type}
+                    </span>
+                  </div>
+                  
+                  {suggestion.potentialMatches && suggestion.potentialMatches.length > 0 ? (
+                    <div style={{ marginLeft: 20 }}>
+                      <strong style={{ fontSize: '13px', color: '#92400E' }}>Potential Matches:</strong>
+                      {suggestion.potentialMatches.map((match, midx) => (
+                        <div key={midx} style={{ 
+                          marginTop: 8,
+                          padding: 10,
+                          backgroundColor: '#FFFFFF',
+                          borderRadius: 6,
+                          fontSize: '13px'
+                        }}>
+                          → <strong>{match.discovered.hostname || match.discovered.ip_address}</strong>
+                          {match.discovered.ip_address && ` (${match.discovered.ip_address})`}
+                          <br/>
+                          <span style={{ color: '#059669' }}>
+                            {match.confidence}% confidence
+                          </span>
+                          {' • '}
+                          <span style={{ color: '#6B7280' }}>
+                            {match.reason}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div style={{ marginLeft: 20, fontSize: '13px', color: '#6B7280', fontStyle: 'italic' }}>
+                      No automatic suggestions. Manual investigation required.
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
 
           {/* Evidence Trail */}
           <div className="card" style={{ marginTop: 20 }}>
