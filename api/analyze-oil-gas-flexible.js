@@ -415,77 +415,7 @@ function generateLearningInsights(engineering, discovered, matchResults, dataSou
   
   insights.columnUsage = columnSuccess
   
-  // 3. Smart Recommendations - TOP 3 ONLY (prioritized)
-  const allRecommendations = []
-  
-  // Priority 1: Security gaps (highest business risk)
-  if (securityCoveragePercent < 70 && networkableAssets.length > 0) {
-    const unmanagedNetworkable = networkableAssets.length - networkableManaged
-    allRecommendations.push({
-      priority: 1,
-      type: 'security_gap',
-      severity: 'critical',
-      message: `${unmanagedNetworkable} networkable devices are unmanaged`,
-      detail: `Only ${securityCoveragePercent}% of networkable assets have security management. ${unmanagedNetworkable} devices with network connectivity are unmonitored - these are direct attack vectors.`,
-      action: `Onboard ${unmanagedNetworkable} devices to security platform (Claroty, Nozomi, or similar)`,
-      impact: 'High - reduces attack surface'
-    })
-  }
-  
-  // Priority 2: Critical asset gaps
-  if (tier1Assets.length > 0) {
-    const tier1Managed = networkableMatched.filter(m => 
-      classifyDeviceBySecurity(m.engineering).tier === 1 && isTruthy(m.discovered?.is_managed)
-    ).length
-    const tier1Coverage = Math.round((tier1Managed / tier1Assets.length) * 100)
-    
-    if (tier1Coverage < 90) {
-      allRecommendations.push({
-        priority: 2,
-        type: 'critical_asset_gap',
-        severity: 'critical',
-        message: `${tier1Assets.length - tier1Managed} critical PLCs/DCS/HMIs unsecured`,
-        detail: `Only ${tier1Coverage}% of Tier 1 critical assets (PLCs, DCS, HMIs, SCADA) are secured. These are your highest-risk programmable devices.`,
-        action: `Immediately secure ${tier1Assets.length - tier1Managed} critical network assets`,
-        impact: 'Critical - prevents ransomware/disruption'
-      })
-    }
-  }
-  
-  // Priority 3: Data quality (enables better coverage)
-  if (engWithIP < engineering.length * 0.5 && discWithIP > discovered.length * 0.8) {
-    allRecommendations.push({
-      priority: 3,
-      type: 'quick_win',
-      severity: 'high',
-      message: `Add IP addresses to ${Math.floor(engineering.length * 0.5 - engWithIP)} engineering assets`,
-      detail: `Discovery data is ${Math.round((discWithIP / discovered.length) * 100)}% IP-complete but engineering baseline is only ${Math.round((engWithIP / engineering.length) * 100)}%. Adding IPs is a quick win that could improve matching significantly.`,
-      action: `Enrich engineering baseline with IP addresses from network scans or IPAM`,
-      impact: `Medium - could improve coverage from current to ~${Math.min(95, matchResults.coveragePercentage + 30)}%`
-    })
-  }
-  
-  // Priority 4: Orphan devices (shadow IT risk)
-  if (matchResults.orphanCount > discovered.length * 0.1) {
-    allRecommendations.push({
-      priority: 4,
-      type: 'orphan_assets',
-      severity: 'medium',
-      message: `${matchResults.orphanCount} orphan devices found on network`,
-      detail: `${matchResults.orphanCount} discovered devices (${Math.round((matchResults.orphanCount / discovered.length) * 100)}%) have no engineering baseline match. These may be shadow IT, contractor equipment, or missing from asset register.`,
-      action: `Review orphan assets for unauthorized devices or missing documentation`,
-      impact: 'Medium - identifies shadow IT and compliance gaps'
-    })
-  }
-  
-  // Sort by priority and take top 3
-  const recommendations = allRecommendations
-    .sort((a, b) => a.priority - b.priority)
-    .slice(0, 3)
-  
-  insights.recommendations = recommendations
-  
-  // 4. Pattern Detection - What's working well?
+  // 3. Pattern Detection - What's working well?
   const patterns = {
     bestMatchStrategy: Object.entries(columnSuccess).sort((a, b) => b[1] - a[1])[0],
     avgMatchConfidence: Math.round(
@@ -595,16 +525,90 @@ function generateLearningInsights(engineering, discovered, matchResults, dataSou
     }
   }
   
-  if (passiveAssets.length > engineering.length * 0.3) {
-    recommendations.push({
-      type: 'inventory_insight',
-      severity: 'info',
-      message: `${passiveAssets.length} passive/analog devices identified (${Math.round((passiveAssets.length / engineering.length) * 100)}%). These don't require security management but are important for complete asset visibility.`,
-      action: `Good: Passive devices inventoried for operational visibility. Focus security efforts on ${networkableAssets.length} networkable assets.`
+  // 6. Smart Recommendations - TOP 3 ONLY (prioritized)
+  const allRecommendations = []
+  
+  // Priority 1: Security gaps (highest business risk)
+  if (securityCoveragePercent < 70 && networkableAssets.length > 0) {
+    const unmanagedNetworkable = networkableAssets.length - networkableManaged
+    allRecommendations.push({
+      priority: 1,
+      type: 'security_gap',
+      severity: 'critical',
+      message: `${unmanagedNetworkable} networkable devices are unmanaged`,
+      detail: `Only ${securityCoveragePercent}% of networkable assets have security management. ${unmanagedNetworkable} devices with network connectivity are unmonitored - these are direct attack vectors.`,
+      action: `Onboard ${unmanagedNetworkable} devices to security platform (Claroty, Nozomi, or similar)`,
+      impact: 'High - reduces attack surface'
     })
   }
   
-  // 6. Learning: Detected Column Names (for future auto-mapping)
+  // Priority 2: Critical asset gaps
+  if (tier1Assets.length > 0) {
+    const tier1Managed = networkableMatched.filter(m => 
+      classifyDeviceBySecurity(m.engineering).tier === 1 && isTruthy(m.discovered?.is_managed)
+    ).length
+    const tier1Coverage = Math.round((tier1Managed / tier1Assets.length) * 100)
+    
+    if (tier1Coverage < 90) {
+      allRecommendations.push({
+        priority: 2,
+        type: 'critical_asset_gap',
+        severity: 'critical',
+        message: `${tier1Assets.length - tier1Managed} critical PLCs/DCS/HMIs unsecured`,
+        detail: `Only ${tier1Coverage}% of Tier 1 critical assets (PLCs, DCS, HMIs, SCADA) are secured. These are your highest-risk programmable devices.`,
+        action: `Immediately secure ${tier1Assets.length - tier1Managed} critical network assets`,
+        impact: 'Critical - prevents ransomware/disruption'
+      })
+    }
+  }
+  
+  // Priority 3: Data quality (enables better coverage)
+  if (engWithIP < engineering.length * 0.5 && discWithIP > discovered.length * 0.8) {
+    allRecommendations.push({
+      priority: 3,
+      type: 'quick_win',
+      severity: 'high',
+      message: `Add IP addresses to ${Math.floor(engineering.length * 0.5 - engWithIP)} engineering assets`,
+      detail: `Discovery data is ${Math.round((discWithIP / discovered.length) * 100)}% IP-complete but engineering baseline is only ${Math.round((engWithIP / engineering.length) * 100)}%. Adding IPs is a quick win that could improve matching significantly.`,
+      action: `Enrich engineering baseline with IP addresses from network scans or IPAM`,
+      impact: `Medium - could improve coverage from current to ~${Math.min(95, matchResults.coveragePercentage + 30)}%`
+    })
+  }
+  
+  // Priority 4: Orphan devices (shadow IT risk)
+  if (matchResults.orphanCount > discovered.length * 0.1) {
+    allRecommendations.push({
+      priority: 4,
+      type: 'orphan_assets',
+      severity: 'medium',
+      message: `${matchResults.orphanCount} orphan devices found on network`,
+      detail: `${matchResults.orphanCount} discovered devices (${Math.round((matchResults.orphanCount / discovered.length) * 100)}%) have no engineering baseline match. These may be shadow IT, contractor equipment, or missing from asset register.`,
+      action: `Review orphan assets for unauthorized devices or missing documentation`,
+      impact: 'Medium - identifies shadow IT and compliance gaps'
+    })
+  }
+  
+  // Passive device insight (informational only)
+  if (passiveAssets.length > engineering.length * 0.3) {
+    allRecommendations.push({
+      priority: 5,
+      type: 'inventory_insight',
+      severity: 'info',
+      message: `${passiveAssets.length} passive/analog devices inventoried`,
+      detail: `${Math.round((passiveAssets.length / engineering.length) * 100)}% of assets are passive analog devices (4-20mA transmitters, valves). These don't require security management but are important for complete asset visibility.`,
+      action: `Good: Focus security efforts on ${networkableAssets.length} networkable assets, not passive devices`,
+      impact: 'Info - confirms proper device classification'
+    })
+  }
+  
+  // Sort by priority and take top 3
+  const recommendations = allRecommendations
+    .sort((a, b) => a.priority - b.priority)
+    .slice(0, 3)
+  
+  insights.recommendations = recommendations
+  
+  // 7. Learning: Detected Column Names (for future auto-mapping)
   const detectedColumns = {
     engineering: Object.keys(dataSources.engineering?.[0]?.content ? 
       Papa.parse(dataSources.engineering[0].content, { header: true, preview: 1 }).data[0] || {} : {}
