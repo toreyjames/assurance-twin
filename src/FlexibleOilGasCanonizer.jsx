@@ -376,75 +376,82 @@ export default function FlexibleOilGasCanonizer() {
           {/* 🧠 LEARNING INSIGHTS */}
           {result.learningInsights && (
             <>
-              {/* Smart Recommendations */}
+              {/* Top 3 Recommendations - Simple & Scannable */}
               {result.learningInsights.recommendations?.length > 0 && (
                 <div style={{
                   padding: '1.5rem',
-                  background: '#fffbeb',
+                  background: 'white',
                   border: '2px solid #fbbf24',
-                  borderRadius: '0.5rem',
+                  borderRadius: '0.75rem',
                   marginBottom: '2rem'
                 }}>
-                  <h3 style={{ margin: '0 0 1rem 0', fontSize: '1.125rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    🧠 AI Insights & Recommendations
+                  <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1.125rem', fontWeight: '700' }}>
+                    🎯 Top 3 Actions
                   </h3>
+                  <p style={{ margin: '0 0 1.5rem 0', fontSize: '0.875rem', color: '#64748b' }}>
+                    Prioritized recommendations based on your data
+                  </p>
                   
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                     {result.learningInsights.recommendations.map((rec, idx) => {
-                      const severityColors = {
-                        critical: { bg: '#fee2e2', border: '#ef4444', text: '#991b1b' },
-                        high: { bg: '#fef3c7', border: '#f59e0b', text: '#92400e' },
-                        medium: { bg: '#dbeafe', border: '#3b82f6', text: '#1e3a8a' }
+                      const severityIcons = {
+                        critical: '🔴',
+                        high: '🟡',
+                        medium: '🔵'
                       }
-                      const colors = severityColors[rec.severity] || severityColors.medium
+                      const icon = severityIcons[rec.severity] || '🔵'
 
                       return (
                         <div key={idx} style={{
-                          padding: '1rem',
-                          background: colors.bg,
-                          border: `1px solid ${colors.border}`,
-                          borderRadius: '0.375rem'
+                          padding: '1.25rem',
+                          background: '#f8fafc',
+                          border: '1px solid #e2e8f0',
+                          borderRadius: '0.5rem',
+                          borderLeft: `4px solid ${rec.severity === 'critical' ? '#ef4444' : rec.severity === 'high' ? '#f59e0b' : '#3b82f6'}`
                         }}>
                           <div style={{ 
                             display: 'flex', 
-                            gap: '0.5rem', 
-                            alignItems: 'flex-start',
-                            marginBottom: '0.5rem'
+                            alignItems: 'center',
+                            gap: '0.75rem',
+                            marginBottom: '0.75rem'
                           }}>
-                            <span style={{
-                              fontSize: '0.625rem',
-                              fontWeight: '700',
-                              textTransform: 'uppercase',
-                              color: colors.text,
-                              padding: '0.125rem 0.5rem',
-                              background: 'white',
-                              borderRadius: '0.25rem'
-                            }}>
-                              {rec.severity}
-                            </span>
-                            <span style={{
-                              fontSize: '0.75rem',
-                              color: '#64748b',
-                              fontWeight: '500'
-                            }}>
-                              {rec.type.replace(/_/g, ' ')}
-                            </span>
-                          </div>
-                          <div style={{ 
-                            fontSize: '0.9375rem', 
-                            color: colors.text, 
-                            fontWeight: '500',
-                            marginBottom: '0.5rem'
-                          }}>
-                            {rec.message}
+                            <span style={{ fontSize: '1.5rem' }}>{icon}</span>
+                            <div>
+                              <div style={{ 
+                                fontSize: '1rem', 
+                                fontWeight: '600',
+                                color: '#0f172a'
+                              }}>
+                                {rec.message}
+                              </div>
+                              <div style={{ 
+                                fontSize: '0.75rem', 
+                                color: '#64748b',
+                                marginTop: '0.25rem'
+                              }}>
+                                Impact: {rec.impact}
+                              </div>
+                            </div>
                           </div>
                           <div style={{ 
                             fontSize: '0.875rem', 
                             color: '#475569',
-                            fontWeight: '400',
-                            fontStyle: 'italic'
+                            marginBottom: '0.75rem',
+                            paddingLeft: '2.25rem'
                           }}>
-                            💡 {rec.action}
+                            {rec.detail}
+                          </div>
+                          <div style={{ 
+                            fontSize: '0.875rem', 
+                            color: '#0f172a',
+                            fontWeight: '500',
+                            paddingLeft: '2.25rem',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '0.5rem'
+                          }}>
+                            <span style={{ fontSize: '1rem' }}>→</span>
+                            {rec.action}
                           </div>
                         </div>
                       )

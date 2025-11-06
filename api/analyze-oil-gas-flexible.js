@@ -415,62 +415,73 @@ function generateLearningInsights(engineering, discovered, matchResults, dataSou
   
   insights.columnUsage = columnSuccess
   
-  // 3. Smart Recommendations based on data patterns
-  const recommendations = []
+  // 3. Smart Recommendations - TOP 3 ONLY (prioritized)
+  const allRecommendations = []
   
-  if (engWithIP < engineering.length * 0.5) {
-    recommendations.push({
-      type: 'data_enrichment',
-      severity: 'high',
-      message: `Only ${Math.round((engWithIP / engineering.length) * 100)}% of engineering assets have IP addresses. Adding IPs would improve matching from ${matchResults.coveragePercentage}% to potentially ${Math.min(95, matchResults.coveragePercentage + 30)}%.`,
-      action: 'Enrich engineering baseline with IP addresses from network scans or IPAM systems'
+  // Priority 1: Security gaps (highest business risk)
+  if (securityCoveragePercent < 70 && networkableAssets.length > 0) {
+    const unmanagedNetworkable = networkableAssets.length - networkableManaged
+    allRecommendations.push({
+      priority: 1,
+      type: 'security_gap',
+      severity: 'critical',
+      message: `${unmanagedNetworkable} networkable devices are unmanaged`,
+      detail: `Only ${securityCoveragePercent}% of networkable assets have security management. ${unmanagedNetworkable} devices with network connectivity are unmonitored - these are direct attack vectors.`,
+      action: `Onboard ${unmanagedNetworkable} devices to security platform (Claroty, Nozomi, or similar)`,
+      impact: 'High - reduces attack surface'
     })
   }
   
-  if (engWithHostname < engineering.length * 0.3) {
-    recommendations.push({
-      type: 'data_enrichment',
-      severity: 'medium',
-      message: `Only ${Math.round((engWithHostname / engineering.length) * 100)}% of engineering assets have hostnames. This limits hostname-based matching.`,
-      action: 'Add hostname/DNS name column to engineering baseline'
-    })
+  // Priority 2: Critical asset gaps
+  if (tier1Assets.length > 0) {
+    const tier1Managed = networkableMatched.filter(m => 
+      classifyDeviceBySecurity(m.engineering).tier === 1 && isTruthy(m.discovered?.is_managed)
+    ).length
+    const tier1Coverage = Math.round((tier1Managed / tier1Assets.length) * 100)
+    
+    if (tier1Coverage < 90) {
+      allRecommendations.push({
+        priority: 2,
+        type: 'critical_asset_gap',
+        severity: 'critical',
+        message: `${tier1Assets.length - tier1Managed} critical PLCs/DCS/HMIs unsecured`,
+        detail: `Only ${tier1Coverage}% of Tier 1 critical assets (PLCs, DCS, HMIs, SCADA) are secured. These are your highest-risk programmable devices.`,
+        action: `Immediately secure ${tier1Assets.length - tier1Managed} critical network assets`,
+        impact: 'Critical - prevents ransomware/disruption'
+      })
+    }
   }
   
-  if (discWithIP > discovered.length * 0.8 && engWithIP < engineering.length * 0.5) {
-    recommendations.push({
+  // Priority 3: Data quality (enables better coverage)
+  if (engWithIP < engineering.length * 0.5 && discWithIP > discovered.length * 0.8) {
+    allRecommendations.push({
+      priority: 3,
       type: 'quick_win',
       severity: 'high',
-      message: `Discovery data is ${Math.round((discWithIP / discovered.length) * 100)}% IP-complete but engineering is only ${Math.round((engWithIP / engineering.length) * 100)}%. IP enrichment is a quick win!`,
-      action: 'Priority: Add IP addresses to engineering baseline'
+      message: `Add IP addresses to ${Math.floor(engineering.length * 0.5 - engWithIP)} engineering assets`,
+      detail: `Discovery data is ${Math.round((discWithIP / discovered.length) * 100)}% IP-complete but engineering baseline is only ${Math.round((engWithIP / engineering.length) * 100)}%. Adding IPs is a quick win that could improve matching significantly.`,
+      action: `Enrich engineering baseline with IP addresses from network scans or IPAM`,
+      impact: `Medium - could improve coverage from current to ~${Math.min(95, matchResults.coveragePercentage + 30)}%`
     })
   }
   
-  if (columnSuccess.fuzzy > matchResults.matchedCount * 0.3) {
-    recommendations.push({
-      type: 'validation_needed',
-      severity: 'medium',
-      message: `${Math.round((columnSuccess.fuzzy / matchResults.matchedCount) * 100)}% of matches were fuzzy (device type + manufacturer). These have lower confidence (60%) and should be manually reviewed.`,
-      action: 'Review fuzzy matches in canonical output and validate correctness'
-    })
-  }
-  
-  if (matchResults.coveragePercentage < 50) {
-    recommendations.push({
-      type: 'coverage_low',
-      severity: 'critical',
-      message: `Coverage is ${matchResults.coveragePercentage}%. This indicates significant gaps between what you know you have (engineering) and what you can see (discovery).`,
-      action: 'Consider: 1) Additional discovery scans, 2) Engineering baseline completeness review, 3) Network access issues'
-    })
-  }
-  
-  if (matchResults.orphanCount > discovered.length * 0.2) {
-    recommendations.push({
+  // Priority 4: Orphan devices (shadow IT risk)
+  if (matchResults.orphanCount > discovered.length * 0.1) {
+    allRecommendations.push({
+      priority: 4,
       type: 'orphan_assets',
       severity: 'medium',
-      message: `${matchResults.orphanCount} discovered devices (${Math.round((matchResults.orphanCount / discovered.length) * 100)}%) have no engineering baseline match. These may be shadow IT, contractor devices, or missing from asset register.`,
-      action: 'Review orphan assets for: unauthorized devices, missing documentation, or temporary equipment'
+      message: `${matchResults.orphanCount} orphan devices found on network`,
+      detail: `${matchResults.orphanCount} discovered devices (${Math.round((matchResults.orphanCount / discovered.length) * 100)}%) have no engineering baseline match. These may be shadow IT, contractor equipment, or missing from asset register.`,
+      action: `Review orphan assets for unauthorized devices or missing documentation`,
+      impact: 'Medium - identifies shadow IT and compliance gaps'
     })
   }
+  
+  // Sort by priority and take top 3
+  const recommendations = allRecommendations
+    .sort((a, b) => a.priority - b.priority)
+    .slice(0, 3)
   
   insights.recommendations = recommendations
   
