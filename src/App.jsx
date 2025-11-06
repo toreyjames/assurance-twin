@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import OilGasCanonizer from './OilGasCanonizer.jsx'
+import FlexibleOilGasCanonizer from './FlexibleOilGasCanonizer.jsx'
 // import AutomotiveCanonizer from './AutomotiveCanonizer.jsx'
 import PharmaCanonizer from './PharmaCanonizer.jsx'
 import UtilitiesCanonizer from './UtilitiesCanonizer.jsx'
@@ -41,11 +41,11 @@ export default function App() {
 
   const renderCanonizer = () => {
     switch(industry) {
-      case 'oil-gas': return <OilGasCanonizer />
+      case 'oil-gas': return <FlexibleOilGasCanonizer />
       // case 'automotive': return <AutomotiveCanonizer />
       case 'pharma': return <PharmaCanonizer />
       case 'utilities': return <UtilitiesCanonizer />
-      default: return <OilGasCanonizer />
+      default: return <FlexibleOilGasCanonizer />
     }
   }
 

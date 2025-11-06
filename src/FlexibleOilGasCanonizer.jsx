@@ -292,13 +292,289 @@ export default function FlexibleOilGasCanonizer() {
             </div>
           </div>
 
-          {/* Rest of the results display (reuse existing components) */}
-          <div style={{ color: '#64748b', marginTop: '2rem' }}>
-            Total Assets: {result.kpis?.total_assets || 0}
+          {/* KPIs */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+            gap: '1rem',
+            marginBottom: '2rem'
+          }}>
+            <div style={{
+              padding: '1rem',
+              background: 'white',
+              border: '2px solid #e2e8f0',
+              borderRadius: '0.5rem'
+            }}>
+              <div style={{ fontSize: '0.75rem', color: '#64748b', marginBottom: '0.25rem' }}>Total Assets</div>
+              <div style={{ fontSize: '1.75rem', fontWeight: '700' }}>{result.kpis?.total_assets || 0}</div>
+            </div>
+            <div style={{
+              padding: '1rem',
+              background: 'white',
+              border: '2px solid #10b981',
+              borderRadius: '0.5rem'
+            }}>
+              <div style={{ fontSize: '0.75rem', color: '#64748b', marginBottom: '0.25rem' }}>Matched Assets</div>
+              <div style={{ fontSize: '1.75rem', fontWeight: '700', color: '#10b981' }}>
+                {result.kpis?.matched_assets || 0}
+              </div>
+            </div>
+            <div style={{
+              padding: '1rem',
+              background: 'white',
+              border: '2px solid #3b82f6',
+              borderRadius: '0.5rem'
+            }}>
+              <div style={{ fontSize: '0.75rem', color: '#64748b', marginBottom: '0.25rem' }}>Discovery Coverage</div>
+              <div style={{ fontSize: '1.75rem', fontWeight: '700', color: '#3b82f6' }}>
+                {result.kpis?.discovery_coverage_percentage || 0}%
+              </div>
+            </div>
+            <div style={{
+              padding: '1rem',
+              background: 'white',
+              border: '2px solid #ef4444',
+              borderRadius: '0.5rem'
+            }}>
+              <div style={{ fontSize: '0.75rem', color: '#64748b', marginBottom: '0.25rem' }}>Blind Spots</div>
+              <div style={{ fontSize: '1.75rem', fontWeight: '700', color: '#ef4444' }}>
+                {result.kpis?.blind_spots || 0}
+              </div>
+            </div>
           </div>
-          <div style={{ color: '#64748b' }}>
-            Discovery Coverage: {result.kpis?.discovery_coverage_percentage || 0}%
-          </div>
+
+          {/* 🧠 LEARNING INSIGHTS */}
+          {result.learningInsights && (
+            <>
+              {/* Smart Recommendations */}
+              {result.learningInsights.recommendations?.length > 0 && (
+                <div style={{
+                  padding: '1.5rem',
+                  background: '#fffbeb',
+                  border: '2px solid #fbbf24',
+                  borderRadius: '0.5rem',
+                  marginBottom: '2rem'
+                }}>
+                  <h3 style={{ margin: '0 0 1rem 0', fontSize: '1.125rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    🧠 AI Insights & Recommendations
+                  </h3>
+                  
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                    {result.learningInsights.recommendations.map((rec, idx) => {
+                      const severityColors = {
+                        critical: { bg: '#fee2e2', border: '#ef4444', text: '#991b1b' },
+                        high: { bg: '#fef3c7', border: '#f59e0b', text: '#92400e' },
+                        medium: { bg: '#dbeafe', border: '#3b82f6', text: '#1e3a8a' }
+                      }
+                      const colors = severityColors[rec.severity] || severityColors.medium
+
+                      return (
+                        <div key={idx} style={{
+                          padding: '1rem',
+                          background: colors.bg,
+                          border: `1px solid ${colors.border}`,
+                          borderRadius: '0.375rem'
+                        }}>
+                          <div style={{ 
+                            display: 'flex', 
+                            gap: '0.5rem', 
+                            alignItems: 'flex-start',
+                            marginBottom: '0.5rem'
+                          }}>
+                            <span style={{
+                              fontSize: '0.625rem',
+                              fontWeight: '700',
+                              textTransform: 'uppercase',
+                              color: colors.text,
+                              padding: '0.125rem 0.5rem',
+                              background: 'white',
+                              borderRadius: '0.25rem'
+                            }}>
+                              {rec.severity}
+                            </span>
+                            <span style={{
+                              fontSize: '0.75rem',
+                              color: '#64748b',
+                              fontWeight: '500'
+                            }}>
+                              {rec.type.replace(/_/g, ' ')}
+                            </span>
+                          </div>
+                          <div style={{ 
+                            fontSize: '0.9375rem', 
+                            color: colors.text, 
+                            fontWeight: '500',
+                            marginBottom: '0.5rem'
+                          }}>
+                            {rec.message}
+                          </div>
+                          <div style={{ 
+                            fontSize: '0.875rem', 
+                            color: '#475569',
+                            fontWeight: '400',
+                            fontStyle: 'italic'
+                          }}>
+                            💡 {rec.action}
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {/* Data Quality Analysis */}
+              <div style={{
+                padding: '1.5rem',
+                background: 'white',
+                border: '1px solid #e2e8f0',
+                borderRadius: '0.5rem',
+                marginBottom: '2rem'
+              }}>
+                <h3 style={{ margin: '0 0 1rem 0', fontSize: '1rem' }}>📈 Data Quality Analysis</h3>
+                
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem' }}>
+                  {/* Engineering Data Quality */}
+                  <div>
+                    <h4 style={{ fontSize: '0.875rem', color: '#64748b', marginBottom: '0.75rem' }}>
+                      Engineering Baseline
+                    </h4>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.875rem' }}>
+                        <span>With IP Address:</span>
+                        <strong>{result.learningInsights.dataQuality?.engineering?.withIP || 0} / {result.learningInsights.dataQuality?.engineering?.totalAssets || 0}</strong>
+                      </div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.875rem' }}>
+                        <span>With Hostname:</span>
+                        <strong>{result.learningInsights.dataQuality?.engineering?.withHostname || 0} / {result.learningInsights.dataQuality?.engineering?.totalAssets || 0}</strong>
+                      </div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.875rem' }}>
+                        <span>With MAC Address:</span>
+                        <strong>{result.learningInsights.dataQuality?.engineering?.withMAC || 0} / {result.learningInsights.dataQuality?.engineering?.totalAssets || 0}</strong>
+                      </div>
+                      <div style={{ 
+                        marginTop: '0.5rem', 
+                        padding: '0.5rem', 
+                        background: '#f1f5f9', 
+                        borderRadius: '0.25rem',
+                        textAlign: 'center'
+                      }}>
+                        <div style={{ fontSize: '0.75rem', color: '#64748b' }}>Overall Completeness</div>
+                        <div style={{ fontSize: '1.5rem', fontWeight: '700', color: '#3b82f6' }}>
+                          {result.learningInsights.dataQuality?.engineering?.completeness || 0}%
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Discovery Data Quality */}
+                  <div>
+                    <h4 style={{ fontSize: '0.875rem', color: '#64748b', marginBottom: '0.75rem' }}>
+                      OT Discovery Data
+                    </h4>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.875rem' }}>
+                        <span>With IP Address:</span>
+                        <strong>{result.learningInsights.dataQuality?.discovery?.withIP || 0} / {result.learningInsights.dataQuality?.discovery?.totalAssets || 0}</strong>
+                      </div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.875rem' }}>
+                        <span>With Hostname:</span>
+                        <strong>{result.learningInsights.dataQuality?.discovery?.withHostname || 0} / {result.learningInsights.dataQuality?.discovery?.totalAssets || 0}</strong>
+                      </div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.875rem' }}>
+                        <span>With MAC Address:</span>
+                        <strong>{result.learningInsights.dataQuality?.discovery?.withMAC || 0} / {result.learningInsights.dataQuality?.discovery?.totalAssets || 0}</strong>
+                      </div>
+                      <div style={{ 
+                        marginTop: '0.5rem', 
+                        padding: '0.5rem', 
+                        background: '#f1f5f9', 
+                        borderRadius: '0.25rem',
+                        textAlign: 'center'
+                      }}>
+                        <div style={{ fontSize: '0.75rem', color: '#64748b' }}>Overall Completeness</div>
+                        <div style={{ fontSize: '1.5rem', fontWeight: '700', color: '#10b981' }}>
+                          {result.learningInsights.dataQuality?.discovery?.completeness || 0}%
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Match Strategy Performance */}
+              <div style={{
+                padding: '1.5rem',
+                background: 'white',
+                border: '1px solid #e2e8f0',
+                borderRadius: '0.5rem',
+                marginBottom: '2rem'
+              }}>
+                <h3 style={{ margin: '0 0 1rem 0', fontSize: '1rem' }}>🎯 Match Strategy Performance</h3>
+                
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                  {result.learningInsights.columnUsage && Object.entries(result.learningInsights.columnUsage)
+                    .sort((a, b) => b[1] - a[1])
+                    .map(([strategy, count]) => {
+                      const total = result.kpis?.matched_assets || 1
+                      const percentage = Math.round((count / total) * 100)
+                      
+                      return (
+                        <div key={strategy} style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                          <div style={{ 
+                            minWidth: '120px', 
+                            fontSize: '0.875rem', 
+                            fontWeight: '500',
+                            textTransform: 'capitalize'
+                          }}>
+                            {strategy.replace(/_/g, ' ')}
+                          </div>
+                          <div style={{ 
+                            flex: 1, 
+                            height: '24px', 
+                            background: '#f1f5f9', 
+                            borderRadius: '0.25rem',
+                            overflow: 'hidden',
+                            position: 'relative'
+                          }}>
+                            <div style={{
+                              height: '100%',
+                              width: `${percentage}%`,
+                              background: 'linear-gradient(90deg, #3b82f6, #60a5fa)',
+                              transition: 'width 0.3s ease'
+                            }} />
+                            <span style={{
+                              position: 'absolute',
+                              right: '0.5rem',
+                              top: '50%',
+                              transform: 'translateY(-50%)',
+                              fontSize: '0.75rem',
+                              fontWeight: '600',
+                              color: percentage > 50 ? 'white' : '#64748b'
+                            }}>
+                              {count} ({percentage}%)
+                            </span>
+                          </div>
+                        </div>
+                      )
+                    })}
+                </div>
+
+                {result.learningInsights.patterns?.bestMatchStrategy && (
+                  <div style={{
+                    marginTop: '1rem',
+                    padding: '0.75rem',
+                    background: '#f0fdf4',
+                    border: '1px solid #86efac',
+                    borderRadius: '0.375rem',
+                    fontSize: '0.875rem'
+                  }}>
+                    ✅ <strong>Best Strategy:</strong> {result.learningInsights.patterns.bestMatchStrategy[0].replace(/_/g, ' ')} with {result.learningInsights.patterns.bestMatchStrategy[1]} matches
+                  </div>
+                )}
+              </div>
+            </>
+          )}
         </div>
       )}
     </div>

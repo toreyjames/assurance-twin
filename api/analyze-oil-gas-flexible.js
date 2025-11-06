@@ -301,6 +301,149 @@ function performFlexibleMatching(engineering, discovered, options = {}) {
   }
 }
 
+// LEARNING ENGINE: Generate insights from the data
+function generateLearningInsights(engineering, discovered, matchResults, dataSources) {
+  const insights = {
+    dataQuality: {},
+    columnUsage: {},
+    recommendations: [],
+    patterns: {}
+  }
+  
+  // 1. Data Quality Analysis
+  const engWithIP = engineering.filter(e => e.ip_address).length
+  const engWithHostname = engineering.filter(e => e.hostname).length
+  const engWithMAC = engineering.filter(e => e.mac_address).length
+  const engWithManuf = engineering.filter(e => e.manufacturer).length
+  
+  const discWithIP = discovered.filter(d => d.ip_address).length
+  const discWithHostname = discovered.filter(d => d.hostname).length
+  const discWithMAC = discovered.filter(d => d.mac_address).length
+  
+  insights.dataQuality = {
+    engineering: {
+      totalAssets: engineering.length,
+      withIP: engWithIP,
+      withHostname: engWithHostname,
+      withMAC: engWithMAC,
+      withManufacturer: engWithManuf,
+      completeness: Math.round(((engWithIP + engWithHostname + engWithMAC) / (engineering.length * 3)) * 100)
+    },
+    discovery: {
+      totalAssets: discovered.length,
+      withIP: discWithIP,
+      withHostname: discWithHostname,
+      withMAC: discWithMAC,
+      completeness: Math.round(((discWithIP + discWithHostname + discWithMAC) / (discovered.length * 3)) * 100)
+    }
+  }
+  
+  // 2. Column Usage - Which columns led to successful matches?
+  const columnSuccess = {
+    tag_id: 0,
+    ip_address: 0,
+    hostname: 0,
+    mac_address: 0,
+    fuzzy: 0
+  }
+  
+  matchResults.matched.forEach(m => {
+    if (m.matchType === 'exact_tag_id') columnSuccess.tag_id++
+    else if (m.matchType === 'ip_match') columnSuccess.ip_address++
+    else if (m.matchType === 'hostname_match') columnSuccess.hostname++
+    else if (m.matchType === 'mac_match') columnSuccess.mac_address++
+    else if (m.matchType.includes('fuzzy')) columnSuccess.fuzzy++
+  })
+  
+  insights.columnUsage = columnSuccess
+  
+  // 3. Smart Recommendations based on data patterns
+  const recommendations = []
+  
+  if (engWithIP < engineering.length * 0.5) {
+    recommendations.push({
+      type: 'data_enrichment',
+      severity: 'high',
+      message: `Only ${Math.round((engWithIP / engineering.length) * 100)}% of engineering assets have IP addresses. Adding IPs would improve matching from ${matchResults.coveragePercentage}% to potentially ${Math.min(95, matchResults.coveragePercentage + 30)}%.`,
+      action: 'Enrich engineering baseline with IP addresses from network scans or IPAM systems'
+    })
+  }
+  
+  if (engWithHostname < engineering.length * 0.3) {
+    recommendations.push({
+      type: 'data_enrichment',
+      severity: 'medium',
+      message: `Only ${Math.round((engWithHostname / engineering.length) * 100)}% of engineering assets have hostnames. This limits hostname-based matching.`,
+      action: 'Add hostname/DNS name column to engineering baseline'
+    })
+  }
+  
+  if (discWithIP > discovered.length * 0.8 && engWithIP < engineering.length * 0.5) {
+    recommendations.push({
+      type: 'quick_win',
+      severity: 'high',
+      message: `Discovery data is ${Math.round((discWithIP / discovered.length) * 100)}% IP-complete but engineering is only ${Math.round((engWithIP / engineering.length) * 100)}%. IP enrichment is a quick win!`,
+      action: 'Priority: Add IP addresses to engineering baseline'
+    })
+  }
+  
+  if (columnSuccess.fuzzy > matchResults.matchedCount * 0.3) {
+    recommendations.push({
+      type: 'validation_needed',
+      severity: 'medium',
+      message: `${Math.round((columnSuccess.fuzzy / matchResults.matchedCount) * 100)}% of matches were fuzzy (device type + manufacturer). These have lower confidence (60%) and should be manually reviewed.`,
+      action: 'Review fuzzy matches in canonical output and validate correctness'
+    })
+  }
+  
+  if (matchResults.coveragePercentage < 50) {
+    recommendations.push({
+      type: 'coverage_low',
+      severity: 'critical',
+      message: `Coverage is ${matchResults.coveragePercentage}%. This indicates significant gaps between what you know you have (engineering) and what you can see (discovery).`,
+      action: 'Consider: 1) Additional discovery scans, 2) Engineering baseline completeness review, 3) Network access issues'
+    })
+  }
+  
+  if (matchResults.orphanCount > discovered.length * 0.2) {
+    recommendations.push({
+      type: 'orphan_assets',
+      severity: 'medium',
+      message: `${matchResults.orphanCount} discovered devices (${Math.round((matchResults.orphanCount / discovered.length) * 100)}%) have no engineering baseline match. These may be shadow IT, contractor devices, or missing from asset register.`,
+      action: 'Review orphan assets for: unauthorized devices, missing documentation, or temporary equipment'
+    })
+  }
+  
+  insights.recommendations = recommendations
+  
+  // 4. Pattern Detection - What's working well?
+  const patterns = {
+    bestMatchStrategy: Object.entries(columnSuccess).sort((a, b) => b[1] - a[1])[0],
+    avgMatchConfidence: Math.round(
+      matchResults.matched.reduce((sum, m) => sum + m.matchConfidence, 0) / matchResults.matchedCount
+    ),
+    manufacturerVariety: new Set(engineering.map(e => e.manufacturer).filter(Boolean)).size,
+    deviceTypeVariety: new Set(engineering.map(e => e.device_type).filter(Boolean)).size,
+    plantVariety: new Set(engineering.map(e => e.plant).filter(Boolean)).size
+  }
+  
+  insights.patterns = patterns
+  
+  // 5. Learning: Detected Column Names (for future auto-mapping)
+  const detectedColumns = {
+    engineering: Object.keys(dataSources.engineering?.[0]?.content ? 
+      Papa.parse(dataSources.engineering[0].content, { header: true, preview: 1 }).data[0] || {} : {}
+    ),
+    discovery: Object.keys(dataSources.otDiscovery?.[0]?.content ? 
+      Papa.parse(dataSources.otDiscovery[0].content, { header: true, preview: 1 }).data[0] || {} : {}
+    )
+  }
+  
+  insights.detectedColumns = detectedColumns
+  
+  return insights
+}
+
 // MAIN API HANDLER
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -421,6 +564,14 @@ export default async function handler(req, res) {
       blind_spot_percentage: 100 - matchResults.coveragePercentage
     }
     
+    // LEARNING: Analyze column usage and data quality
+    const learningInsights = generateLearningInsights(
+      allEngineering, 
+      allOtDiscovery, 
+      matchResults,
+      dataSources
+    )
+    
     console.log('[FLEXIBLE API] Returning results:', kpis)
     
     return res.status(200).json({
@@ -435,7 +586,8 @@ export default async function handler(req, res) {
           acc[m.matchType] = (acc[m.matchType] || 0) + 1
           return acc
         }, {})
-      }
+      },
+      learningInsights
     })
     
   } catch (error) {
