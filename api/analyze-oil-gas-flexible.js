@@ -498,33 +498,6 @@ function generateLearningInsights(engineering, discovered, matchResults, dataSou
     }
   }
   
-  // Enhanced recommendations based on classification
-  if (securityCoveragePercent < 70 && networkableAssets.length > 0) {
-    const unmanagedNetworkable = networkableAssets.length - networkableManaged
-    recommendations.push({
-      type: 'security_gap',
-      severity: 'critical',
-      message: `Only ${securityCoveragePercent}% of networkable assets are secured (${networkableManaged}/${networkableAssets.length}). ${unmanagedNetworkable} network-connected devices are unmanaged - direct attack vectors!`,
-      action: `Priority: Onboard ${unmanagedNetworkable} networkable devices to security management (Claroty, Nozomi, CrowdStrike, etc.)`
-    })
-  }
-  
-  if (tier1Assets.length > 0) {
-    const tier1Managed = networkableMatched.filter(m => 
-      classifyDeviceBySecurity(m.engineering).tier === 1 && isTruthy(m.discovered?.is_managed)
-    ).length
-    const tier1Coverage = Math.round((tier1Managed / tier1Assets.length) * 100)
-    
-    if (tier1Coverage < 90) {
-      recommendations.push({
-        type: 'critical_asset_gap',
-        severity: 'critical',
-        message: `Only ${tier1Coverage}% of Tier 1 critical assets (PLCs, DCS, HMIs) are secured. These are your highest-risk devices!`,
-        action: `URGENT: Secure ${tier1Assets.length - tier1Managed} critical network assets immediately`
-      })
-    }
-  }
-  
   // 6. Smart Recommendations - TOP 3 ONLY (prioritized)
   const allRecommendations = []
   
