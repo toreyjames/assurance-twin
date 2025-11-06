@@ -502,6 +502,225 @@ export default function FlexibleOilGasCanonizer() {
                 </div>
               </div>
 
+              {/* Device Classification & Security Posture */}
+              {result.learningInsights.deviceClassification && (
+                <div style={{
+                  padding: '1.5rem',
+                  background: 'white',
+                  border: '2px solid #3b82f6',
+                  borderRadius: '0.5rem',
+                  marginBottom: '2rem'
+                }}>
+                  <h3 style={{ margin: '0 0 1rem 0', fontSize: '1.125rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    🛡️ Complete Asset Inventory & Security Posture
+                  </h3>
+                  
+                  {/* Overview Summary */}
+                  <div style={{
+                    padding: '1rem',
+                    background: '#f8fafc',
+                    borderRadius: '0.375rem',
+                    marginBottom: '1.5rem',
+                    border: '1px solid #e2e8f0'
+                  }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
+                      <div>
+                        <div style={{ fontSize: '0.75rem', color: '#64748b', marginBottom: '0.25rem' }}>Total Asset Inventory</div>
+                        <div style={{ fontSize: '1.5rem', fontWeight: '700' }}>
+                          {result.learningInsights.deviceClassification.totalAssets}
+                        </div>
+                        <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '0.25rem' }}>
+                          Complete visibility ✅
+                        </div>
+                      </div>
+                      <div>
+                        <div style={{ fontSize: '0.75rem', color: '#64748b', marginBottom: '0.25rem' }}>Networkable Assets</div>
+                        <div style={{ fontSize: '1.5rem', fontWeight: '700', color: '#f59e0b' }}>
+                          {result.learningInsights.deviceClassification.networkableAssets}
+                        </div>
+                        <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '0.25rem' }}>
+                          Require security management
+                        </div>
+                      </div>
+                      <div>
+                        <div style={{ fontSize: '0.75rem', color: '#64748b', marginBottom: '0.25rem' }}>Security Coverage</div>
+                        <div style={{ fontSize: '1.5rem', fontWeight: '700', color: result.learningInsights.deviceClassification.securityPosture.securityCoveragePercent >= 80 ? '#10b981' : '#ef4444' }}>
+                          {result.learningInsights.deviceClassification.securityPosture.securityCoveragePercent}%
+                        </div>
+                        <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '0.25rem' }}>
+                          {result.learningInsights.deviceClassification.securityPosture.networkableManaged} / {result.learningInsights.deviceClassification.networkableAssets} secured
+                        </div>
+                      </div>
+                      <div>
+                        <div style={{ fontSize: '0.75rem', color: '#64748b', marginBottom: '0.25rem' }}>Passive/Analog Devices</div>
+                        <div style={{ fontSize: '1.5rem', fontWeight: '700', color: '#6366f1' }}>
+                          {result.learningInsights.deviceClassification.passiveAssets}
+                        </div>
+                        <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '0.25rem' }}>
+                          Inventory only (no security needed)
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* 3-Tier Breakdown */}
+                  <h4 style={{ fontSize: '0.9375rem', fontWeight: '600', marginBottom: '1rem' }}>
+                    Device Classification by Security Requirement
+                  </h4>
+                  
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                    {/* Tier 1: Critical Network Assets */}
+                    <div style={{
+                      padding: '1rem',
+                      background: '#fef2f2',
+                      border: '2px solid #ef4444',
+                      borderRadius: '0.5rem'
+                    }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.75rem' }}>
+                        <div>
+                          <div style={{ fontSize: '0.875rem', fontWeight: '600', color: '#991b1b' }}>
+                            🔴 Tier 1: {result.learningInsights.deviceClassification.tier1.label}
+                          </div>
+                          <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '0.25rem' }}>
+                            PLCs, DCS, HMIs, SCADA, RTUs - <strong style={{ color: '#991b1b' }}>MUST secure</strong>
+                          </div>
+                        </div>
+                        <div style={{ textAlign: 'right' }}>
+                          <div style={{ fontSize: '1.25rem', fontWeight: '700', color: '#991b1b' }}>
+                            {result.learningInsights.deviceClassification.tier1.count}
+                          </div>
+                          <div style={{ fontSize: '0.75rem', color: '#64748b' }}>assets</div>
+                        </div>
+                      </div>
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem', fontSize: '0.875rem' }}>
+                        <div>
+                          <span style={{ color: '#64748b' }}>Matched:</span>{' '}
+                          <strong>{result.learningInsights.deviceClassification.tier1.matched}</strong>
+                        </div>
+                        <div>
+                          <span style={{ color: '#64748b' }}>Secured:</span>{' '}
+                          <strong style={{ color: result.learningInsights.deviceClassification.tier1.managed >= result.learningInsights.deviceClassification.tier1.count * 0.9 ? '#10b981' : '#ef4444' }}>
+                            {result.learningInsights.deviceClassification.tier1.managed}
+                          </strong>
+                          {result.learningInsights.deviceClassification.tier1.count > 0 && (
+                            <span style={{ color: '#64748b', fontSize: '0.75rem' }}>
+                              {' '}({Math.round((result.learningInsights.deviceClassification.tier1.managed / result.learningInsights.deviceClassification.tier1.count) * 100)}%)
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Tier 2: Smart/Networkable */}
+                    <div style={{
+                      padding: '1rem',
+                      background: '#fffbeb',
+                      border: '2px solid #f59e0b',
+                      borderRadius: '0.5rem'
+                    }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.75rem' }}>
+                        <div>
+                          <div style={{ fontSize: '0.875rem', fontWeight: '600', color: '#92400e' }}>
+                            🟡 Tier 2: {result.learningInsights.deviceClassification.tier2.label}
+                          </div>
+                          <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '0.25rem' }}>
+                            Smart transmitters, IP devices, analyzers - <strong style={{ color: '#92400e' }}>SHOULD secure</strong>
+                          </div>
+                        </div>
+                        <div style={{ textAlign: 'right' }}>
+                          <div style={{ fontSize: '1.25rem', fontWeight: '700', color: '#92400e' }}>
+                            {result.learningInsights.deviceClassification.tier2.count}
+                          </div>
+                          <div style={{ fontSize: '0.75rem', color: '#64748b' }}>assets</div>
+                        </div>
+                      </div>
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem', fontSize: '0.875rem' }}>
+                        <div>
+                          <span style={{ color: '#64748b' }}>Matched:</span>{' '}
+                          <strong>{result.learningInsights.deviceClassification.tier2.matched}</strong>
+                        </div>
+                        <div>
+                          <span style={{ color: '#64748b' }}>Secured:</span>{' '}
+                          <strong style={{ color: result.learningInsights.deviceClassification.tier2.managed >= result.learningInsights.deviceClassification.tier2.count * 0.7 ? '#10b981' : '#f59e0b' }}>
+                            {result.learningInsights.deviceClassification.tier2.managed}
+                          </strong>
+                          {result.learningInsights.deviceClassification.tier2.count > 0 && (
+                            <span style={{ color: '#64748b', fontSize: '0.75rem' }}>
+                              {' '}({Math.round((result.learningInsights.deviceClassification.tier2.managed / result.learningInsights.deviceClassification.tier2.count) * 100)}%)
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Tier 3: Passive/Analog */}
+                    <div style={{
+                      padding: '1rem',
+                      background: '#eff6ff',
+                      border: '2px solid #6366f1',
+                      borderRadius: '0.5rem'
+                    }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.75rem' }}>
+                        <div>
+                          <div style={{ fontSize: '0.875rem', fontWeight: '600', color: '#4338ca' }}>
+                            🔵 Tier 3: {result.learningInsights.deviceClassification.tier3.label}
+                          </div>
+                          <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '0.25rem' }}>
+                            4-20mA, analog valves, pressure/temperature sensors - <strong style={{ color: '#4338ca' }}>Inventory only</strong>
+                          </div>
+                        </div>
+                        <div style={{ textAlign: 'right' }}>
+                          <div style={{ fontSize: '1.25rem', fontWeight: '700', color: '#4338ca' }}>
+                            {result.learningInsights.deviceClassification.tier3.count}
+                          </div>
+                          <div style={{ fontSize: '0.75rem', color: '#64748b' }}>assets</div>
+                        </div>
+                      </div>
+                      <div style={{ fontSize: '0.875rem' }}>
+                        <span style={{ color: '#64748b' }}>Inventoried:</span>{' '}
+                        <strong>{result.learningInsights.deviceClassification.tier3.matched}</strong>
+                        <span style={{ color: '#4338ca', fontSize: '0.75rem', marginLeft: '0.5rem' }}>
+                          ✅ No security management needed
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Security Posture Details */}
+                  <div style={{
+                    marginTop: '1.5rem',
+                    padding: '1rem',
+                    background: '#f0fdf4',
+                    border: '1px solid #86efac',
+                    borderRadius: '0.5rem'
+                  }}>
+                    <h4 style={{ fontSize: '0.875rem', fontWeight: '600', marginBottom: '0.75rem' }}>
+                      📊 Networkable Assets Security Posture
+                    </h4>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem', fontSize: '0.875rem' }}>
+                      <div>
+                        <div style={{ color: '#64748b' }}>Matched & Visible</div>
+                        <div style={{ fontSize: '1.25rem', fontWeight: '700' }}>
+                          {result.learningInsights.deviceClassification.securityPosture.networkableMatched} / {result.learningInsights.deviceClassification.securityPosture.networkableTotal}
+                        </div>
+                      </div>
+                      <div>
+                        <div style={{ color: '#64748b' }}>Managed by Security Tool</div>
+                        <div style={{ fontSize: '1.25rem', fontWeight: '700', color: '#10b981' }}>
+                          {result.learningInsights.deviceClassification.securityPosture.managedPercent}%
+                        </div>
+                      </div>
+                      <div>
+                        <div style={{ color: '#64748b' }}>Patched</div>
+                        <div style={{ fontSize: '1.25rem', fontWeight: '700', color: '#3b82f6' }}>
+                          {result.learningInsights.deviceClassification.securityPosture.patchedPercent}%
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {/* Match Strategy Performance */}
               <div style={{
                 padding: '1.5rem',

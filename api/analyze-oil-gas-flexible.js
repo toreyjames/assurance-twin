@@ -301,6 +301,64 @@ function performFlexibleMatching(engineering, discovered, options = {}) {
   }
 }
 
+// DEVICE CLASSIFICATION: Categorize by security necessity
+function classifyDeviceBySecurity(asset) {
+  const deviceType = String(asset.device_type || '').toLowerCase()
+  const hasIP = Boolean(asset.ip_address)
+  const hasMAC = Boolean(asset.mac_address)
+  const isNetworkable = hasIP || hasMAC
+  
+  // Tier 1: Critical Network Assets (MUST secure)
+  const tier1Keywords = ['plc', 'dcs', 'hmi', 'scada', 'rtu', 'controller', 'server', 'workstation', 'historian', 'switch', 'router', 'firewall']
+  if (tier1Keywords.some(kw => deviceType.includes(kw))) {
+    return {
+      tier: 1,
+      classification: 'Critical Network Asset',
+      securityRequired: 'MUST',
+      rationale: 'Programmable/network infrastructure - direct attack vector'
+    }
+  }
+  
+  // Tier 2: Smart/Networkable Devices (SHOULD secure)
+  const tier2Keywords = ['smart', 'ip', 'ethernet', 'profinet', 'modbus', 'dnp3', 'bacnet', 'camera', 'analyzer', 'vfd', 'drive']
+  if (isNetworkable || tier2Keywords.some(kw => deviceType.includes(kw))) {
+    return {
+      tier: 2,
+      classification: 'Smart/Networkable Device',
+      securityRequired: 'SHOULD',
+      rationale: 'Network-connected - potential attack surface'
+    }
+  }
+  
+  // Tier 3: Passive/Analog Devices (Inventory only)
+  const tier3Keywords = ['4-20', '4-20ma', 'analog', 'transmitter', 'pressure', 'temperature', 'flow', 'level', 'valve', 'sensor', 'gauge', 'switch', 'instrument']
+  if (tier3Keywords.some(kw => deviceType.includes(kw)) && !isNetworkable) {
+    return {
+      tier: 3,
+      classification: 'Passive/Analog Device',
+      securityRequired: 'NONE',
+      rationale: 'Analog signal only - no attack surface'
+    }
+  }
+  
+  // Default: If has IP/MAC, treat as Tier 2, otherwise Tier 3
+  if (isNetworkable) {
+    return {
+      tier: 2,
+      classification: 'Networkable Device',
+      securityRequired: 'SHOULD',
+      rationale: 'Has network presence'
+    }
+  }
+  
+  return {
+    tier: 3,
+    classification: 'Non-Networkable Device',
+    securityRequired: 'NONE',
+    rationale: 'No network connectivity'
+  }
+}
+
 // LEARNING ENGINE: Generate insights from the data
 function generateLearningInsights(engineering, discovered, matchResults, dataSources) {
   const insights = {
@@ -429,7 +487,113 @@ function generateLearningInsights(engineering, discovered, matchResults, dataSou
   
   insights.patterns = patterns
   
-  // 5. Learning: Detected Column Names (for future auto-mapping)
+  // 5. Device Classification & Security Posture Analysis
+  const engineeringClassified = engineering.map(e => ({
+    ...e,
+    securityClass: classifyDeviceBySecurity(e)
+  }))
+  
+  const tier1Assets = engineeringClassified.filter(e => e.securityClass.tier === 1)
+  const tier2Assets = engineeringClassified.filter(e => e.securityClass.tier === 2)
+  const tier3Assets = engineeringClassified.filter(e => e.securityClass.tier === 3)
+  
+  const networkableAssets = [...tier1Assets, ...tier2Assets]
+  const passiveAssets = tier3Assets
+  
+  // Security coverage: Only count networkable assets
+  const networkableMatched = matchResults.matched.filter(m => {
+    const classification = classifyDeviceBySecurity(m.engineering)
+    return classification.tier === 1 || classification.tier === 2
+  })
+  
+  const networkableManaged = networkableMatched.filter(m => 
+    isTruthy(m.discovered?.is_managed)
+  ).length
+  
+  const networkablePatched = networkableMatched.filter(m => 
+    isTruthy(m.discovered?.has_security_patches)
+  ).length
+  
+  const securityCoveragePercent = networkableAssets.length > 0 
+    ? Math.round((networkableManaged / networkableAssets.length) * 100) 
+    : 0
+  
+  insights.deviceClassification = {
+    totalAssets: engineering.length,
+    networkableAssets: networkableAssets.length,
+    passiveAssets: passiveAssets.length,
+    tier1: {
+      count: tier1Assets.length,
+      label: 'Critical Network Assets',
+      requirement: 'MUST secure',
+      matched: matchResults.matched.filter(m => classifyDeviceBySecurity(m.engineering).tier === 1).length,
+      managed: networkableMatched.filter(m => 
+        classifyDeviceBySecurity(m.engineering).tier === 1 && isTruthy(m.discovered?.is_managed)
+      ).length
+    },
+    tier2: {
+      count: tier2Assets.length,
+      label: 'Smart/Networkable Devices',
+      requirement: 'SHOULD secure',
+      matched: matchResults.matched.filter(m => classifyDeviceBySecurity(m.engineering).tier === 2).length,
+      managed: networkableMatched.filter(m => 
+        classifyDeviceBySecurity(m.engineering).tier === 2 && isTruthy(m.discovered?.is_managed)
+      ).length
+    },
+    tier3: {
+      count: tier3Assets.length,
+      label: 'Passive/Analog Devices',
+      requirement: 'Inventory only',
+      matched: matchResults.matched.filter(m => classifyDeviceBySecurity(m.engineering).tier === 3).length
+    },
+    securityPosture: {
+      networkableTotal: networkableAssets.length,
+      networkableMatched: networkableMatched.length,
+      networkableManaged: networkableManaged,
+      networkablePatched: networkablePatched,
+      securityCoveragePercent: securityCoveragePercent,
+      managedPercent: networkableMatched.length > 0 ? Math.round((networkableManaged / networkableMatched.length) * 100) : 0,
+      patchedPercent: networkableMatched.length > 0 ? Math.round((networkablePatched / networkableMatched.length) * 100) : 0
+    }
+  }
+  
+  // Enhanced recommendations based on classification
+  if (securityCoveragePercent < 70 && networkableAssets.length > 0) {
+    const unmanagedNetworkable = networkableAssets.length - networkableManaged
+    recommendations.push({
+      type: 'security_gap',
+      severity: 'critical',
+      message: `Only ${securityCoveragePercent}% of networkable assets are secured (${networkableManaged}/${networkableAssets.length}). ${unmanagedNetworkable} network-connected devices are unmanaged - direct attack vectors!`,
+      action: `Priority: Onboard ${unmanagedNetworkable} networkable devices to security management (Claroty, Nozomi, CrowdStrike, etc.)`
+    })
+  }
+  
+  if (tier1Assets.length > 0) {
+    const tier1Managed = networkableMatched.filter(m => 
+      classifyDeviceBySecurity(m.engineering).tier === 1 && isTruthy(m.discovered?.is_managed)
+    ).length
+    const tier1Coverage = Math.round((tier1Managed / tier1Assets.length) * 100)
+    
+    if (tier1Coverage < 90) {
+      recommendations.push({
+        type: 'critical_asset_gap',
+        severity: 'critical',
+        message: `Only ${tier1Coverage}% of Tier 1 critical assets (PLCs, DCS, HMIs) are secured. These are your highest-risk devices!`,
+        action: `URGENT: Secure ${tier1Assets.length - tier1Managed} critical network assets immediately`
+      })
+    }
+  }
+  
+  if (passiveAssets.length > engineering.length * 0.3) {
+    recommendations.push({
+      type: 'inventory_insight',
+      severity: 'info',
+      message: `${passiveAssets.length} passive/analog devices identified (${Math.round((passiveAssets.length / engineering.length) * 100)}%). These don't require security management but are important for complete asset visibility.`,
+      action: `Good: Passive devices inventoried for operational visibility. Focus security efforts on ${networkableAssets.length} networkable assets.`
+    })
+  }
+  
+  // 6. Learning: Detected Column Names (for future auto-mapping)
   const detectedColumns = {
     engineering: Object.keys(dataSources.engineering?.[0]?.content ? 
       Papa.parse(dataSources.engineering[0].content, { header: true, preview: 1 }).data[0] || {} : {}
