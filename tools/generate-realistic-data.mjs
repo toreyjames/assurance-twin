@@ -47,9 +47,9 @@ function generateEngineering(count, siteCount = 1) {
   const assets = [];
   const plantsToUse = plants.slice(0, siteCount);
   
-  // Calculate tier distribution (4% Tier 1, 23% Tier 2, 73% Tier 3)
-  const tier1Count = Math.floor(count * 0.04);
-  const tier2Count = Math.floor(count * 0.23);
+  // Calculate tier distribution (5% Tier 1, 30% Tier 2, 65% Tier 3)
+  const tier1Count = Math.floor(count * 0.05);
+  const tier2Count = Math.floor(count * 0.30);
   const tier3Count = count - tier1Count - tier2Count;
   
   let id = 1;
