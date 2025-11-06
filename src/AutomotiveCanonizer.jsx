@@ -30,7 +30,7 @@ export default function AutomotiveCanonizer() {
       payload.otDiscoveryCsv = await readFileText(otDiscoveryFile)
 
       console.log('Sending automotive payload:', payload)
-      const res = await fetch('/api/analyze-automotive', {
+      const res = await fetch('/api/analyze-automotive-v2', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
@@ -108,81 +108,66 @@ export default function AutomotiveCanonizer() {
         <section className="results">
           <h3>OT Assurance Assessment Results</h3>
 
-          {/* Executive Summary */}
+          {/* Executive Summary - OBJECTIVE METRICS ONLY */}
           <div className="card" style={{ marginTop: 20, backgroundColor: '#F8FAFC' }}>
-            <h4>📊 Executive Summary - Two-Step OT Assurance Process</h4>
+            <h4>📊 Executive Summary - Production-Ready OT Assessment</h4>
             <p className="subtle">
               <strong>Step 1:</strong> What assets does the plant have? | <strong>Step 2:</strong> What percentage are secured?
             </p>
             <div className="kpis" style={{ marginTop: 15 }}>
               <div className="kpi" style={{ borderLeft: '4px solid #3B82F6' }}>
-                <div className="label">STEP 1: What Plant Has</div>
+                <div className="label">Total Assets</div>
                 <div className="value" style={{ fontSize: '24px', fontWeight: 'bold', color: '#1E40AF' }}>
-                  {result.inventory.totalAssets}
+                  {result.kpis.total_assets}
                 </div>
                 <div style={{ fontSize: '12px', color: '#6B7280', marginTop: '4px' }}>
-                  Total Assets (Engineering Baseline)
+                  Engineering Baseline
                 </div>
               </div>
               <div className="kpi" style={{ borderLeft: '4px solid #10B981' }}>
-                <div className="label">STEP 2: Discovery Coverage</div>
+                <div className="label">Discovery Coverage</div>
                 <div className="value" style={{ 
                   fontSize: '24px',
                   fontWeight: 'bold',
-                  color: result.security.coveragePercentage >= 80 ? '#10B981' : 
-                         result.security.coveragePercentage >= 60 ? '#F59E0B' : '#EF4444'
+                  color: result.kpis.coverage_percentage >= 80 ? '#10B981' : 
+                         result.kpis.coverage_percentage >= 60 ? '#F59E0B' : '#EF4444'
                 }}>
-                  {result.security.coveragePercentage}%
+                  {result.kpis.coverage_percentage}%
                 </div>
                 <div style={{ fontSize: '12px', color: '#6B7280', marginTop: '4px' }}>
-                  Of {result.inventory.totalAssets} assets discovered & verified
-                </div>
-              </div>
-              <div className="kpi" style={{ borderLeft: '4px solid #F59E0B' }}>
-                <div className="label">STEP 2: Security Managed</div>
-                <div className="value" style={{ 
-                  fontSize: '24px',
-                  fontWeight: 'bold',
-                  color: result.security.securityMetrics.securityManagedPercentage >= 70 ? '#10B981' : '#EF4444'
-                }}>
-                  {result.security.securityMetrics.securityManagedPercentage}%
-                </div>
-                <div style={{ fontSize: '12px', color: '#6B7280', marginTop: '4px' }}>
-                  Of discovered assets meet 4/5 security controls
-                </div>
-              </div>
-              <div className="kpi" style={{ borderLeft: '4px solid #EF4444' }}>
-                <div className="label">Critical Assets Coverage</div>
-                <div className="value" style={{ 
-                  fontSize: '24px',
-                  fontWeight: 'bold',
-                  color: result.security.criticalAssetsCoverage >= 80 ? '#10B981' : 
-                         result.security.criticalAssetsCoverage >= 60 ? '#F59E0B' : '#EF4444'
-                }}>
-                  {result.security.criticalAssetsCoverage}%
-                </div>
-                <div style={{ fontSize: '12px', color: '#6B7280', marginTop: '4px' }}>
-                  Of critical assets discovered & secured
+                  {result.kpis.matched_assets} assets matched
                 </div>
               </div>
               <div className="kpi" style={{ borderLeft: '4px solid #8B5CF6' }}>
-                <div className="label">Blind Spots (Risk)</div>
+                <div className="label">Blind Spots</div>
                 <div className="value" style={{ 
                   fontSize: '24px',
                   fontWeight: 'bold',
-                  color: result.security.blindSpots <= 50 ? '#10B981' : 
-                         result.security.blindSpots <= 100 ? '#F59E0B' : '#EF4444'
+                  color: result.kpis.blind_spots <= 20 ? '#10B981' : 
+                         result.kpis.blind_spots <= 50 ? '#F59E0B' : '#EF4444'
                 }}>
-                  {result.security.blindSpots}
+                  {result.kpis.blind_spots}
                 </div>
                 <div style={{ fontSize: '12px', color: '#6B7280', marginTop: '4px' }}>
-                  Assets in baseline but not discovered
+                  Not discovered
                 </div>
               </div>
-              <div className="kpi">
-                <div className="label">Evidence Hash</div>
-                <div className="value" style={{ fontSize: '10px', overflowWrap: 'break-word' }}>
-                  {result.evidenceHash.substring(0, 16)}...
+              <div className="kpi" style={{ borderLeft: '4px solid #F59E0B' }}>
+                <div className="label">Production Lines</div>
+                <div className="value" style={{ fontSize: '24px', fontWeight: 'bold', color: '#F59E0B' }}>
+                  {Object.keys(result.productionLineDistribution || {}).length}
+                </div>
+                <div style={{ fontSize: '12px', color: '#6B7280', marginTop: '4px' }}>
+                  Different areas
+                </div>
+              </div>
+              <div className="kpi" style={{ borderLeft: '4px solid #6366F1' }}>
+                <div className="label">Device Types</div>
+                <div className="value" style={{ fontSize: '24px', fontWeight: 'bold', color: '#6366F1' }}>
+                  {Object.keys(result.deviceTypeDistribution || {}).length}
+                </div>
+                <div style={{ fontSize: '12px', color: '#6B7280', marginTop: '4px' }}>
+                  Asset categories
                 </div>
               </div>
             </div>
@@ -230,133 +215,155 @@ export default function AutomotiveCanonizer() {
             </div>
           </div>
 
-          {/* STEP 1: ASSET INVENTORY */}
-          <div className="card" style={{ marginTop: 20, borderLeft: '4px solid #6366F1' }}>
-            <h4>📦 Step 1: What Assets Does the Plant Have?</h4>
-            <p className="subtle" style={{ marginBottom: 15 }}>
-              <strong>Source:</strong> Engineering Baseline (P&IDs, asset registers, maintenance records)<br/>
-              <strong>Purpose:</strong> Establish the complete inventory of expected assets and their criticality
-            </p>
-            <div style={{ marginTop: 10, padding: 12, backgroundColor: '#FEF3C7', borderLeft: '3px solid #F59E0B', borderRadius: 6 }}>
-              <div style={{ fontSize: '13px', color: '#92400E' }}>
-                <strong>Key Point:</strong> This is our "source of truth" - what assets SHOULD exist based on engineering documentation. 
-                Asset criticality, process function, and business impact come from ENGINEERING BASELINE, not the OT discovery tool.
-              </div>
-            </div>
-            <p style={{ fontSize: '14px', color: '#6B7280', marginBottom: 15 }}>
-              {result.inventory.summary}
-            </p>
-            
-            <div className="kpis">
-              <div className="kpi" style={{ borderLeft: '4px solid #3B82F6' }}>
-                <div className="label">Total Assets (What Plant Has)</div>
-                <div className="value" style={{ fontSize: '20px', fontWeight: 'bold', color: '#1E40AF' }}>
-                  {result.inventory.totalAssets}
-                </div>
-                <div style={{ fontSize: '12px', color: '#6B7280', marginTop: '4px' }}>
-                  From engineering baseline
-                </div>
-              </div>
-              <div className="kpi" style={{ borderLeft: '4px solid #EF4444' }}>
-                <div className="label">Critical Assets</div>
-                <div className="value" style={{ fontSize: '20px', fontWeight: 'bold', color: '#EF4444' }}>
-                  {result.inventory.byCriticality.Critical}
-                </div>
-                <div style={{ fontSize: '12px', color: '#6B7280', marginTop: '4px' }}>
-                  Must be secured
-                </div>
-              </div>
-              <div className="kpi" style={{ borderLeft: '4px solid #F59E0B' }}>
-                <div className="label">Crown Jewels</div>
-                <div className="value" style={{ fontSize: '20px', fontWeight: 'bold', color: '#F59E0B' }}>
-                  {result.inventory.crownJewels}
-                </div>
-                <div style={{ fontSize: '12px', color: '#6B7280', marginTop: '4px' }}>
-                  Highest business impact
-                </div>
-              </div>
-              <div className="kpi" style={{ borderLeft: '4px solid #8B5CF6' }}>
-                <div className="label">ASIL-D Safety Systems</div>
-                <div className="value" style={{ fontSize: '20px', fontWeight: 'bold', color: '#8B5CF6' }}>
-                  {result.inventory.asilDistribution['ASIL-D'] || 0}
-                </div>
-                <div style={{ fontSize: '12px', color: '#6B7280', marginTop: '4px' }}>
-                  Highest safety integrity
-                </div>
-              </div>
-              <div className="kpi" style={{ borderLeft: '4px solid #10B981' }}>
-                <div className="label">Production Units</div>
-                <div className="value" style={{ fontSize: '20px', fontWeight: 'bold', color: '#10B981' }}>
-                  {Object.keys(result.inventory.byUnit).length}
-                </div>
-                <div style={{ fontSize: '12px', color: '#6B7280', marginTop: '4px' }}>
-                  Different areas
-                </div>
-              </div>
-            </div>
-
-            {/* Criticality Distribution */}
-            <div style={{ marginTop: 20 }}>
-              <h5>Asset Criticality Distribution</h5>
-              <div className="kpis">
-                {Object.entries(result.inventory.byCriticality).map(([level, count]) => (
-                  <div className="kpi" key={level}>
-                    <div className="label">{level}</div>
-                    <div className="value" style={{ 
-                      color: level === 'Critical' ? '#EF4444' : 
-                             level === 'High' ? '#F59E0B' : 
-                             level === 'Medium' ? '#3B82F6' : '#10B981'
-                    }}>
-                      {count}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* ISO 26262 ASIL Distribution */}
-            <div style={{ marginTop: 20 }}>
-              <h5>ISO 26262 ASIL Level Distribution</h5>
-              <div className="kpis">
-                {Object.entries(result.inventory.asilDistribution).map(([level, count]) => (
-                  <div className="kpi" key={level}>
-                    <div className="label">{level}</div>
-                    <div className="value" style={{ 
-                      color: level === 'ASIL-D' ? '#EF4444' : 
-                             level === 'ASIL-C' ? '#F59E0B' : '#3B82F6'
-                    }}>
-                      {count}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* By Production Unit */}
-            <div style={{ marginTop: 20 }}>
-              <h5>Assets by Production Unit</h5>
+          {/* Production Line Distribution - OBJECTIVE */}
+          {result.productionLineDistribution && Object.keys(result.productionLineDistribution).length > 0 && (
+            <div className="card" style={{ marginTop: 20 }}>
+              <h4>🏭 Production Line Distribution</h4>
+              <p className="subtle">Objective asset counts by production line from engineering baseline</p>
+              
               <div className="table-wrap">
                 <table>
                   <thead>
                     <tr>
-                      <th>Production Unit</th>
+                      <th>Production Line</th>
                       <th>Total Assets</th>
+                      <th>Percentage</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {Object.entries(result.inventory.byUnit)
+                    {Object.entries(result.productionLineDistribution)
                       .sort((a, b) => b[1] - a[1])
-                      .map(([unit, count]) => (
-                        <tr key={unit}>
-                          <td>{unit}</td>
+                      .map(([line, count]) => (
+                        <tr key={line}>
+                          <td>{line}</td>
                           <td>{count}</td>
+                          <td>
+                            {Math.round((count / result.kpis.total_assets) * 100)}%
+                          </td>
                         </tr>
                       ))}
                   </tbody>
                 </table>
               </div>
             </div>
-          </div>
+          )}
+
+          {/* Device Type Distribution - OBJECTIVE */}
+          {result.deviceTypeDistribution && Object.keys(result.deviceTypeDistribution).length > 0 && (
+            <div className="card" style={{ marginTop: 20 }}>
+              <h4>🤖 Device Type Distribution</h4>
+              <p className="subtle">Asset inventory by device type (robots, PLCs, HMIs, etc.)</p>
+              
+              <div className="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Device Type</th>
+                      <th>Total Assets</th>
+                      <th>Percentage</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {Object.entries(result.deviceTypeDistribution)
+                      .sort((a, b) => b[1] - a[1])
+                      .map(([type, count]) => (
+                        <tr key={type}>
+                          <td>{type}</td>
+                          <td>{count}</td>
+                          <td>
+                            {Math.round((count / result.kpis.total_assets) * 100)}%
+                          </td>
+                        </tr>
+                      ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* Manufacturer Distribution - OBJECTIVE */}
+          {result.manufacturerDistribution && Object.keys(result.manufacturerDistribution).length > 0 && (
+            <div className="card" style={{ marginTop: 20 }}>
+              <h4>🏢 Manufacturer Distribution</h4>
+              <p className="subtle">Asset inventory by manufacturer/vendor</p>
+              
+              <div className="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Manufacturer</th>
+                      <th>Total Assets</th>
+                      <th>Percentage</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {Object.entries(result.manufacturerDistribution)
+                      .sort((a, b) => b[1] - a[1])
+                      .map(([mfr, count]) => (
+                        <tr key={mfr}>
+                          <td>{mfr}</td>
+                          <td>{count}</td>
+                          <td>
+                            {Math.round((count / result.kpis.total_assets) * 100)}%
+                          </td>
+                        </tr>
+                      ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* ISO 26262 ASIL Distribution - OBJECTIVE (Standard-based) */}
+          {result.asilDistribution && Object.keys(result.asilDistribution).length > 0 && (
+            <div className="card" style={{ marginTop: 20 }}>
+              <h4>🛡️ ISO 26262 ASIL Level Distribution</h4>
+              <p className="subtle">Safety integrity levels per ISO 26262 automotive standard (OBJECTIVE metric)</p>
+              
+              <div className="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>ASIL Level</th>
+                      <th>Total Assets</th>
+                      <th>Percentage</th>
+                      <th>Safety Requirement</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {Object.entries(result.asilDistribution)
+                      .sort((a, b) => {
+                        const order = {'ASIL-D': 0, 'ASIL-C': 1, 'ASIL-B': 2, 'ASIL-A': 3, 'QM': 4}
+                        return (order[a[0]] || 99) - (order[b[0]] || 99)
+                      })
+                      .map(([level, count]) => (
+                        <tr key={level}>
+                          <td style={{ 
+                            color: level === 'ASIL-D' ? '#EF4444' : 
+                                   level === 'ASIL-C' ? '#F59E0B' : 
+                                   level === 'ASIL-B' ? '#3B82F6' : '#6B7280'
+                          }}>
+                            <strong>{level}</strong>
+                          </td>
+                          <td>{count}</td>
+                          <td>
+                            {Math.round((count / result.kpis.total_assets) * 100)}%
+                          </td>
+                          <td style={{ fontSize: '12px', color: '#6B7280' }}>
+                            {level === 'ASIL-D' && 'Highest - severe injury/life-threatening'}
+                            {level === 'ASIL-C' && 'High - severe/life-threatening injury'}
+                            {level === 'ASIL-B' && 'Medium - moderate injury'}
+                            {level === 'ASIL-A' && 'Low - light injury'}
+                            {level === 'QM' && 'Quality Management - no safety risk'}
+                            {!['ASIL-D', 'ASIL-C', 'ASIL-B', 'ASIL-A', 'QM'].includes(level) && 'Not specified'}
+                          </td>
+                        </tr>
+                      ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
 
           {/* STEP 2: SECURITY COVERAGE */}
           <div className="card" style={{ marginTop: 20, borderLeft: '4px solid #10B981', backgroundColor: '#F0FDF4' }}>

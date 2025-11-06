@@ -1,0 +1,10 @@
+tag_id,ip_address,hostname,mac_address,device_type,manufacturer,model,is_managed,has_security_patches,encryption_enabled,authentication_required,firewall_protected,access_control,vulnerabilities,cve_count,last_seen,confidence_level
+,192.168.20.10,PLC-BODY-001,00:1B:2C:3D:4E:01,PLC,Siemens,S7-1500,true,false,false,true,true,Role-Based,7,3,2024-11-05,100
+,192.168.20.100,ROBOT-BODY-001,00:1B:2C:3D:4E:03,Industrial_Robot,FANUC,R-2000iC,false,false,false,false,false,None,12,5,2024-10-20,95
+,192.168.20.20,HMI-BODY-001,00:1B:2C:3D:4E:05,HMI,Siemens,WinCC,true,false,false,false,true,None,8,4,2024-10-15,100
+,192.168.21.10,PLC-PAINT-001,00:1B:2C:3D:4E:06,PLC,Allen Bradley,ControlLogix,true,false,false,true,true,Role-Based,5,2,2024-11-05,100
+,192.168.21.100,ROBOT-PAINT-001,00:1B:2C:3D:4E:08,Paint_Robot,ABB,IRB 5500,false,false,false,false,false,None,3,1,2024-11-05,90
+,192.168.22.10,PLC-ASSY-001,00:1B:2C:3D:4E:11,PLC,Siemens,S7-1500,true,false,false,true,true,Role-Based,6,2,2024-11-05,100
+,192.168.22.100,ROBOT-ASSY-001,00:1B:2C:3D:4E:12,Collaborative_Robot,Universal Robots,UR10,true,true,false,true,true,Role-Based,0,0,2024-11-05,100
+,192.168.50.200,UNKNOWN-DEVICE,00:1B:2C:3D:4E:99,Unknown,Unknown,Unknown,false,false,false,false,false,None,0,0,2024-11-05,50
+

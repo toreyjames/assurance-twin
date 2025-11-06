@@ -1,0 +1,17 @@
+tag_id,plant,unit,device_type,manufacturer,model,ip_address,hostname,asil_level
+PLC-BODY-001,Plant A,Body Shop,PLC,Siemens,S7-1500,192.168.20.10,PLC-BODY-001,ASIL-B
+PLC-BODY-002,Plant A,Body Shop,PLC,Siemens,S7-1500,192.168.20.11,PLC-BODY-002,ASIL-B
+ROBOT-BODY-001,Plant A,Body Shop,Industrial_Robot,FANUC,R-2000iC,192.168.20.100,ROBOT-BODY-001,ASIL-C
+ROBOT-BODY-002,Plant A,Body Shop,Industrial_Robot,FANUC,R-2000iC,192.168.20.101,ROBOT-BODY-002,ASIL-C
+HMI-BODY-001,Plant A,Body Shop,HMI,Siemens,WinCC,192.168.20.20,HMI-BODY-001,QM
+PLC-PAINT-001,Plant A,Paint Shop,PLC,Allen Bradley,ControlLogix,192.168.21.10,PLC-PAINT-001,ASIL-B
+PLC-PAINT-002,Plant A,Paint Shop,PLC,Allen Bradley,ControlLogix,192.168.21.11,PLC-PAINT-002,ASIL-B
+ROBOT-PAINT-001,Plant A,Paint Shop,Paint_Robot,ABB,IRB 5500,192.168.21.100,ROBOT-PAINT-001,ASIL-C
+ROBOT-PAINT-002,Plant A,Paint Shop,Paint_Robot,ABB,IRB 5500,192.168.21.101,ROBOT-PAINT-002,ASIL-C
+HMI-PAINT-001,Plant A,Paint Shop,HMI,Rockwell,FactoryTalk,192.168.21.20,HMI-PAINT-001,QM
+PLC-ASSY-001,Plant A,Assembly Line,PLC,Siemens,S7-1500,192.168.22.10,PLC-ASSY-001,ASIL-B
+ROBOT-ASSY-001,Plant A,Assembly Line,Collaborative_Robot,Universal Robots,UR10,192.168.22.100,ROBOT-ASSY-001,ASIL-D
+ROBOT-ASSY-002,Plant A,Assembly Line,Collaborative_Robot,Universal Robots,UR10,192.168.22.101,ROBOT-ASSY-002,ASIL-D
+SCADA-ASSY-001,Plant A,Assembly Line,SCADA,Wonderware,InTouch,192.168.22.30,SCADA-ASSY-001,QM
+VISION-ASSY-001,Plant A,Assembly Line,Vision_System,Cognex,In-Sight,192.168.22.200,VISION-ASSY-001,ASIL-C
+
