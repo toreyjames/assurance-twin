@@ -68,8 +68,7 @@ function MultiFileUpload({ label, description, files, setFiles, accept = ".csv" 
 export default function FlexibleOilGasCanonizer() {
   // Multi-file state for each data source type
   const [engineeringFiles, setEngineeringFiles] = useState([])
-  const [otDiscoveryFiles, setOtDiscoveryFiles] = useState([])
-  const [securityFiles, setSecurityFiles] = useState([])
+  const [otToolFiles, setOtToolFiles] = useState([])
   const [otherFiles, setOtherFiles] = useState([])
   
   const [threshold, setThreshold] = useState(18)
@@ -80,7 +79,7 @@ export default function FlexibleOilGasCanonizer() {
 
   const analyze = async () => {
     setError(null)
-    const totalFiles = engineeringFiles.length + otDiscoveryFiles.length + securityFiles.length + otherFiles.length
+    const totalFiles = engineeringFiles.length + otToolFiles.length + otherFiles.length
     
     if (totalFiles === 0) {
       setError('Upload at least one file to begin canonization.')
@@ -95,7 +94,6 @@ export default function FlexibleOilGasCanonizer() {
         dataSources: {
           engineering: [],
           otDiscovery: [],
-          security: [],
           other: []
         }
       }
@@ -109,19 +107,10 @@ export default function FlexibleOilGasCanonizer() {
         })
       }
 
-      // Read OT discovery files
-      for (const file of otDiscoveryFiles) {
+      // Read OT tool files (includes discovery + security data)
+      for (const file of otToolFiles) {
         const content = await readFileText(file)
         payload.dataSources.otDiscovery.push({
-          filename: file.name,
-          content: content
-        })
-      }
-
-      // Read security files
-      for (const file of securityFiles) {
-        const content = await readFileText(file)
-        payload.dataSources.security.push({
           filename: file.name,
           content: content
         })
@@ -140,8 +129,7 @@ export default function FlexibleOilGasCanonizer() {
         ...payload,
         dataSources: {
           engineering: payload.dataSources.engineering.length + ' files',
-          otDiscovery: payload.dataSources.otDiscovery.length + ' files',
-          security: payload.dataSources.security.length + ' files',
+          otTool: payload.dataSources.otDiscovery.length + ' files',
           other: payload.dataSources.other.length + ' files'
         }
       })
@@ -180,41 +168,46 @@ export default function FlexibleOilGasCanonizer() {
 
   return (
     <div style={{ padding: '2rem', maxWidth: '1400px', margin: '0 auto' }}>
-      <h1>🛢️ Oil & Gas OT Canonizer (Flexible Upload)</h1>
-      <p style={{ color: '#64748b', marginBottom: '2rem' }}>
+      <h1>🛢️ Oil & Gas OT Canonizer</h1>
+      <p style={{ color: '#64748b', marginBottom: '1rem' }}>
         Upload multiple files from any data source. The canonizer will automatically merge and match assets.
       </p>
+      <div style={{
+        padding: '1rem',
+        background: '#eff6ff',
+        border: '1px solid #3b82f6',
+        borderRadius: '0.5rem',
+        marginBottom: '2rem',
+        fontSize: '0.875rem',
+        color: '#1e40af'
+      }}>
+        💡 <strong>Tip:</strong> Your OT platform (Claroty, Nozomi) already pulls security data from tools like Tenable or Qualys via API.
+        Just export from your OT tool - it will include both discovery and security information in one file.
+      </div>
 
       <div style={{ 
         display: 'grid', 
-        gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
         gap: '1.5rem',
         marginBottom: '2rem'
       }}>
         <MultiFileUpload
           label="📋 Engineering Baseline"
-          description="Asset registers, P&IDs, engineering databases (any format)"
+          description="Your asset data: P&IDs, asset registers, CMMS exports, spreadsheets"
           files={engineeringFiles}
           setFiles={setEngineeringFiles}
         />
 
         <MultiFileUpload
-          label="🔍 OT Discovery"
-          description="Network scans (Claroty, Nozomi, Armis, Tenable.ot, etc.)"
-          files={otDiscoveryFiles}
-          setFiles={setOtDiscoveryFiles}
+          label="🔍 OT Tool Export"
+          description="Claroty, Nozomi, Armis, Tenable.ot - includes device discovery, vulnerabilities, and security posture (security tools like Tenable/Nessus integrate with your OT platform)"
+          files={otToolFiles}
+          setFiles={setOtToolFiles}
         />
 
         <MultiFileUpload
-          label="🔒 Security Management"
-          description="Vulnerability scans, patch data, firewall configs"
-          files={securityFiles}
-          setFiles={setSecurityFiles}
-        />
-
-        <MultiFileUpload
-          label="📦 Other Data Sources"
-          description="CMMS, historian, compliance, or any other asset data"
+          label="📦 Additional Data (Optional)"
+          description="Supplemental data: compliance reports, manual inventories, or other asset sources"
           files={otherFiles}
           setFiles={setOtherFiles}
         />
@@ -244,7 +237,7 @@ export default function FlexibleOilGasCanonizer() {
         </button>
 
         <div style={{ color: '#64748b', fontSize: '0.875rem' }}>
-          Total files: {engineeringFiles.length + otDiscoveryFiles.length + securityFiles.length + otherFiles.length}
+          Total files: {engineeringFiles.length + otToolFiles.length + otherFiles.length}
         </div>
       </div>
 
