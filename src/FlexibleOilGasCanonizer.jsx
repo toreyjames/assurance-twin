@@ -154,6 +154,23 @@ export default function FlexibleOilGasCanonizer() {
       <p style={{ color: '#64748b', marginBottom: '1rem' }}>
         Upload multiple files from any data source. The canonizer will automatically merge and match assets.
       </p>
+      
+      <div style={{
+        padding: '1rem',
+        background: '#fef3c7',
+        border: '2px solid #f59e0b',
+        borderRadius: '0.5rem',
+        marginBottom: '1rem',
+        fontSize: '0.875rem',
+        color: '#92400e'
+      }}>
+        ⚠️ <strong>Demo Recommendation:</strong> Use the <strong>Medium dataset (8,000 assets)</strong> for best results. 
+        The Enterprise dataset (25,000 assets) may exceed upload limits. Find sample files in: 
+        <code style={{ background: '#fff', padding: '0.125rem 0.375rem', borderRadius: '0.25rem', marginLeft: '0.25rem' }}>
+          public/samples/demo/oil-gas/
+        </code>
+      </div>
+      
       <div style={{
         padding: '1rem',
         background: '#eff6ff',

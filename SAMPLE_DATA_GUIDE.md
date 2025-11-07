@@ -4,6 +4,8 @@
 
 We provide three realistic sample datasets that match actual refinery scales:
 
+⚠️ **For Live Demos:** Use **Demo (500)** or **Medium (8,000)** datasets. The Enterprise dataset may exceed Vercel upload limits.
+
 ---
 
 ## 1️⃣ **Quick Demo (500 assets)**
@@ -85,6 +87,8 @@ Control Room:                      ~200 assets
 **Use case:** Enterprise sales, stress testing, impressive scale  
 **Processing time:** 30-45 seconds  
 **Scenario:** Large 400,000+ bpd enterprise across 3 refineries
+
+⚠️ **Note:** This dataset may exceed Vercel's serverless function limits (413 error). Use the Medium dataset for demos, or download and run locally for enterprise-scale testing.
 
 ### **Files:**
 ```
