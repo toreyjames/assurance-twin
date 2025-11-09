@@ -157,18 +157,22 @@ export default function FlexibleOilGasCanonizer() {
       
       <div style={{
         padding: '1rem',
-        background: '#fef3c7',
-        border: '2px solid #f59e0b',
+        background: '#dcfce7',
+        border: '2px solid #16a34a',
         borderRadius: '0.5rem',
         marginBottom: '1rem',
         fontSize: '0.875rem',
-        color: '#92400e'
+        color: '#166534'
       }}>
-        ⚠️ <strong>Demo Recommendation:</strong> Use the <strong>Medium dataset (8,000 assets)</strong> for best results. 
-        The Enterprise dataset (25,000 assets) may exceed upload limits. Find sample files in: 
-        <code style={{ background: '#fff', padding: '0.125rem 0.375rem', borderRadius: '0.25rem', marginLeft: '0.25rem' }}>
+        ✅ <strong>Recommended Datasets:</strong> Use <strong>Demo (200 assets)</strong> for quick demos or <strong>Medium (1,500 assets)</strong> for client presentations. 
+        Find sample files in: 
+        <code style={{ background: '#fff', padding: '0.125rem 0.375rem', borderRadius: '0.25rem', margin: '0 0.25rem' }}>
           public/samples/demo/oil-gas/
         </code>
+        <br />
+        <span style={{ fontSize: '0.8rem', marginTop: '0.5rem', display: 'inline-block' }}>
+          ❌ Enterprise (25,000 assets) is too large for hosted demos - use locally only.
+        </span>
       </div>
       
       <div style={{

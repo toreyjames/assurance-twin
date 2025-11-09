@@ -235,7 +235,7 @@ function generateDataset(name, engineeringCount, siteCount = 1) {
   console.log(`  Discovered devices: ${discovery.length}`);
   console.log(`  Coverage: ${Math.round((discovery.length / engineering.filter(a => a.ip_address).length) * 100)}%`);
   
-  const dir = path.join(process.cwd(), 'public', 'samples', 'demo', 'oil-gas');
+  const dir = path.join(process.cwd(), '..', 'public', 'samples', 'demo', 'oil-gas');
   
   // Write engineering baseline
   const engHeaders = ['tag_id', 'plant', 'unit', 'device_type', 'manufacturer', 'model', 'ip_address', 'hostname'];
@@ -256,9 +256,9 @@ function generateDataset(name, engineeringCount, siteCount = 1) {
 // Generate all three datasets
 console.log('Generating realistic OT datasets...\n');
 
-generateDataset('demo', 500, 1);           // Quick demo - 500 assets, 1 site
-generateDataset('medium', 8000, 2);        // Medium refinery - 8,000 assets, 2 sites
-generateDataset('enterprise', 25000, 3);   // Large enterprise - 25,000 assets, 3 sites
+generateDataset('demo', 200, 1);           // Quick demo - 200 assets, 1 site (fits Vercel limits)
+generateDataset('medium', 1500, 1);        // Medium refinery - 1,500 assets, 1 site (fits Vercel limits)
+generateDataset('enterprise', 25000, 3);   // Large enterprise - 25,000 assets, 3 sites (local only)
 
 console.log('✓ All datasets generated successfully!');
 
