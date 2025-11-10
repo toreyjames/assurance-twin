@@ -11,13 +11,37 @@ const readFileText = (file) => new Promise((resolve, reject) => {
 
 // FLEXIBLE Multi-File Upload Component
 function MultiFileUpload({ label, description, files, setFiles, accept = ".csv" }) {
+  const MAX_FILE_SIZE = 512 * 1024 // 512 KB per file (safe for Vercel)
+  
+  const formatFileSize = (bytes) => {
+    if (bytes < 1024) return bytes + ' B'
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB'
+    return (bytes / (1024 * 1024)).toFixed(1) + ' MB'
+  }
+  
   const handleFileChange = (e) => {
     const newFiles = Array.from(e.target.files)
-    setFiles([...files, ...newFiles])
+    
+    // Check for oversized files
+    const oversizedFiles = newFiles.filter(f => f.size > MAX_FILE_SIZE)
+    const validFiles = newFiles.filter(f => f.size <= MAX_FILE_SIZE)
+    
+    if (oversizedFiles.length > 0) {
+      const fileNames = oversizedFiles.map(f => `${f.name} (${formatFileSize(f.size)})`).join('\n')
+      alert(`⚠️ The following files are too large for hosted demos:\n\n${fileNames}\n\nMaximum file size: ${formatFileSize(MAX_FILE_SIZE)}\n\nPlease use the Demo or Medium datasets instead.\n\nEnterprise datasets (25K assets) only work locally - run "npm run dev" on your machine.`)
+    }
+    
+    if (validFiles.length > 0) {
+      setFiles([...files, ...validFiles])
+    }
   }
 
   const removeFile = (index) => {
     setFiles(files.filter((_, i) => i !== index))
+  }
+  
+  const getTotalSize = () => {
+    return files.reduce((sum, f) => sum + f.size, 0)
   }
 
   return (
@@ -32,7 +56,12 @@ function MultiFileUpload({ label, description, files, setFiles, accept = ".csv" 
         <div className="file-list">
           {files.map((file, idx) => (
             <div key={idx} className="file-item">
-              <span className="file-name">📄 {file.name}</span>
+              <span className="file-name">
+                📄 {file.name} 
+                <span style={{ color: '#64748b', fontSize: '0.85rem', marginLeft: '0.5rem' }}>
+                  ({formatFileSize(file.size)})
+                </span>
+              </span>
               <button 
                 type="button"
                 className="remove-file-btn"
