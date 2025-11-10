@@ -1,0 +1,10 @@
+asset_tag,unit,work_order_id,work_order_type,status,priority,due_date,assigned_to,last_completed
+DEV-LOA-001,Loading,WO-9001,Preventive,Open,High,2025-01-20,Field Services Team,2024-09-15
+DEV-ISO-002,Isomerization,WO-9002,Corrective,Open,High,2024-12-28,Maintenance Crew B,2024-06-10
+DCS-HYD-003,Hydrotreater,WO-9003,Preventive,Completed,Medium,2024-11-15,Maintenance Crew A,2024-10-01
+DEV-FLU-004,Fluid Catalytic Cracking,WO-9004,Inspection,Open,Medium,2025-03-01,Contractor Team,2024-08-19
+DEV-COK-005,Coker Unit,WO-9005,Corrective,In Progress,High,2025-01-05,Maintenance Crew C,2024-05-30
+PLC-HYD-007,Hydrotreater,WO-9006,Calibration,Open,Medium,2025-02-10,Instrumentation Shop,2024-04-12
+RTU-HYD-008,Hydrocracker,WO-9007,Corrective,Open,High,2024-12-22,Maintenance Crew D,2024-09-14
+DEV-LOA-009,Loading,WO-9008,Preventive,Open,Low,2025-04-01,Maintenance Crew E,2024-07-01
+

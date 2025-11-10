@@ -1,0 +1,10 @@
+asset_tag,ip_address,expected_zone,actual_zone,policy_status,last_audit
+DEV-LOA-001,192.168.88.204,Process_Network,Process_Network,Enforced,2024-12-15
+DEV-ISO-002,192.168.42.135,Process_Network,Business_DMZ,Open,2024-08-22
+DCS-HYD-003,,Safety_Network,,Missing Policy,2024-05-10
+DEV-FLU-004,,Process_Network,Process_Network,Enforced,2024-11-01
+DEV-COK-005,192.168.138.72,Process_Network,Process_Network,Monitor,2024-06-20
+PLC-HYD-007,192.168.150.115,Process_Network,Process_Network,Enforced,2024-09-12
+RTU-HYD-008,192.168.115.13,Field_IO,Field_IO,Enforced,2024-10-05
+DEV-LOA-009,192.168.137.143,Process_Network,Unassigned,Not Enforced,2023-12-01
+

@@ -1,0 +1,9 @@
+asset_tag,incident_id,category,state,priority,opened_at,owner
+DEV-LOA-001,INC-2025-102,Security Alert,Open,High,2025-01-10,OT SOC
+DEV-ISO-002,INC-2025-076,Performance,In Progress,Medium,2024-12-28,Process Control
+DCS-HYD-003,INC-2024-442,Access Control,Closed,Low,2024-11-15,OT SOC
+DEV-FLU-004,INC-2025-033,Network Anomaly,Open,Medium,2025-01-05,Network Team
+DEV-COK-005,INC-2024-998,Patch Exception,Resolved,High,2024-10-22,Maintenance Manager
+PLC-HYD-007,INC-2025-044,Safety Alarm,Open,High,2025-01-12,SIS Engineering
+DEV-LOA-009,INC-2024-771,Unauthorized Change,Open,Low,2024-12-30,Operations Lead
+

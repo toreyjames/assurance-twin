@@ -102,6 +102,7 @@ export default function FlexibleOilGasCanonizer() {
   
   const [threshold, setThreshold] = useState(18)
   const [loading, setLoading] = useState(false)
+  const [loadingSample, setLoadingSample] = useState(false)
   const [result, setResult] = useState(null)
   const [error, setError] = useState(null)
   const [selectedPlant, setSelectedPlant] = useState('all')
@@ -174,6 +175,60 @@ export default function FlexibleOilGasCanonizer() {
     }
   }
 
+  const loadSampleSet = async (variant = 'medium') => {
+    try {
+      setError(null)
+      setResult(null)
+      setSelectedPlant('all')
+      setLoadingSample(true)
+      
+      const basePath = `/samples/demo/oil-gas`
+      const engineeringNames = [`engineering_baseline_${variant}.csv`]
+      const otNames = [`ot_discovery_${variant}.csv`]
+      const otherNames = [
+        `cmms_work_orders_${variant}.csv`,
+        `security_findings_${variant}.csv`,
+        `firewall_segments_${variant}.csv`,
+        `incidents_${variant}.csv`
+      ]
+      
+      const fetchCsvFile = async (name) => {
+        const resp = await fetch(`${basePath}/${name}`)
+        if (!resp.ok) throw new Error(`Failed to load ${name}`)
+        const text = await resp.text()
+        return new File([text], name, { type: 'text/csv' })
+      }
+      
+      const engineeringLoaded = await Promise.all(engineeringNames.map(fetchCsvFile))
+      const otLoaded = await Promise.all(otNames.map(fetchCsvFile))
+      
+      const otherLoaded = []
+      for (const name of otherNames) {
+        try {
+          const file = await fetchCsvFile(name)
+          otherLoaded.push(file)
+        } catch (err) {
+          console.warn(`[Samples] Skipping optional file ${name}:`, err.message)
+        }
+      }
+      
+      setEngineeringFiles(engineeringLoaded)
+      setOtToolFiles(otLoaded)
+      setOtherFiles(otherLoaded)
+    } catch (err) {
+      console.error(err)
+      setError(`Failed to load sample dataset: ${err.message}`)
+    } finally {
+      setLoadingSample(false)
+    }
+  }
+
+  const insights = result?.assuranceInsights || {}
+  const maintenanceInsights = insights.maintenance
+  const vulnerabilityInsights = insights.vulnerability
+  const segmentationInsights = insights.segmentation
+  const incidentInsights = insights.incidents
+
   return (
     <div style={{ padding: '2rem', maxWidth: '1400px', margin: '0 auto' }}>
       <h1>🛢️ Oil & Gas OT Canonizer</h1>
@@ -215,6 +270,37 @@ export default function FlexibleOilGasCanonizer() {
       </div>
 
       <div style={{ 
+        marginBottom: '1.5rem', 
+        display: 'flex', 
+        alignItems: 'center', 
+        gap: '1rem',
+        flexWrap: 'wrap'
+      }}>
+        <button
+          onClick={() => loadSampleSet('medium')}
+          disabled={loading || loadingSample}
+          style={{
+            padding: '0.65rem 1.5rem',
+            fontSize: '0.95rem',
+            fontWeight: '600',
+            background: loadingSample ? '#94a3b8' : '#2563eb',
+            color: 'white',
+            border: 'none',
+            borderRadius: '0.5rem',
+            cursor: (loading || loadingSample) ? 'not-allowed' : 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.5rem'
+          }}
+        >
+          {loadingSample ? '⏳ Loading enhanced demo…' : '⚡ Load Enhanced Demo Dataset'}
+        </button>
+        <span style={{ color: '#475569', fontSize: '0.85rem' }}>
+          Preloads engineering, OT discovery, CMMS, vulnerability, and firewall data for a full-stack demo.
+        </span>
+      </div>
+
+      <div style={{ 
         display: 'grid', 
         gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
         gap: '1.5rem',
@@ -250,19 +336,19 @@ export default function FlexibleOilGasCanonizer() {
       }}>
         <button
           onClick={analyze}
-          disabled={loading}
+          disabled={loading || loadingSample}
           style={{
             padding: '0.75rem 2rem',
             fontSize: '1rem',
             fontWeight: '600',
-            background: loading ? '#94a3b8' : '#0f172a',
+            background: (loading || loadingSample) ? '#94a3b8' : '#0f172a',
             color: 'white',
             border: 'none',
             borderRadius: '0.5rem',
-            cursor: loading ? 'not-allowed' : 'pointer'
+            cursor: (loading || loadingSample) ? 'not-allowed' : 'pointer'
           }}
         >
-          {loading ? '⚙️ Canonizing Assets...' : '🚀 Canonize Assets'}
+          {loading ? '⚙️ Canonizing Assets...' : loadingSample ? '⏳ Loading Demo Files…' : '🚀 Canonize Assets'}
         </button>
 
         <div style={{ color: '#64748b', fontSize: '0.875rem' }}>
@@ -296,21 +382,24 @@ export default function FlexibleOilGasCanonizer() {
           }}>
             <h3 style={{ margin: '0 0 1rem 0', fontSize: '1rem' }}>📊 Data Sources Processed</h3>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
-              {result.metadata?.dataSources && Object.entries(result.metadata.dataSources).map(([type, info]) => (
-                <div key={type} style={{
-                  padding: '0.75rem',
-                  background: 'white',
-                  borderRadius: '0.375rem',
-                  border: '1px solid #e2e8f0'
-                }}>
-                  <div style={{ fontWeight: '600', textTransform: 'capitalize', marginBottom: '0.25rem' }}>
-                    {type}
+              {result.metadata?.dataSources && Object.entries(result.metadata.dataSources).map(([type, info]) => {
+                const friendlyLabel = info.label || type.replace(/([A-Z])/g, ' $1').replace(/^\w/, (c) => c.toUpperCase())
+                return (
+                  <div key={type} style={{
+                    padding: '0.75rem',
+                    background: 'white',
+                    borderRadius: '0.375rem',
+                    border: '1px solid #e2e8f0'
+                  }}>
+                    <div style={{ fontWeight: '600', marginBottom: '0.25rem' }}>
+                      {friendlyLabel}
+                    </div>
+                    <div style={{ fontSize: '0.875rem', color: '#64748b' }}>
+                      {info.files} file{info.files !== 1 ? 's' : ''}, {info.rows} rows
+                    </div>
                   </div>
-                  <div style={{ fontSize: '0.875rem', color: '#64748b' }}>
-                    {info.files} file{info.files !== 1 ? 's' : ''}, {info.rows} rows
-                  </div>
-                </div>
-              ))}
+                )
+              })}
             </div>
           </div>
 
@@ -944,6 +1033,498 @@ export default function FlexibleOilGasCanonizer() {
                       🚨 Export Suspicious Classifications ({result.classificationVerification.suspiciousPassive.length})
                     </button>
                   )}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* 🛠 Maintenance & Reliability Insights */}
+          {result.assuranceInsights?.maintenance?.total > 0 && (
+            <div style={{
+              padding: '2rem',
+              background: 'white',
+              border: '3px solid #16a34a',
+              borderRadius: '0.75rem',
+              marginBottom: '2rem'
+            }}>
+              <h3 style={{ margin: '0 0 0.75rem 0', fontSize: '1.25rem', fontWeight: '700', color: '#0f172a' }}>
+                🛠 Maintenance & Reliability Insights
+              </h3>
+              <p style={{ margin: '0 0 1.5rem 0', fontSize: '0.875rem', color: '#64748b' }}>
+                Using CMMS data to spotlight maintenance backlog on critical assets.
+              </p>
+
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem', marginBottom: '1.5rem' }}>
+                <div style={{ padding: '1rem', background: '#f0fdf4', border: '2px solid #10b981', borderRadius: '0.5rem' }}>
+                  <div style={{ fontSize: '0.75rem', color: '#047857', fontWeight: '600' }}>Total Work Orders</div>
+                  <div style={{ fontSize: '2rem', fontWeight: '700', color: '#047857' }}>{result.assuranceInsights.maintenance.total.toLocaleString()}</div>
+                </div>
+                <div style={{ padding: '1rem', background: '#eff6ff', border: '2px solid #1d4ed8', borderRadius: '0.5rem' }}>
+                  <div style={{ fontSize: '0.75rem', color: '#1e3a8a', fontWeight: '600' }}>Open Work Orders</div>
+                  <div style={{ fontSize: '2rem', fontWeight: '700', color: '#1e3a8a' }}>{result.assuranceInsights.maintenance.open.toLocaleString()}</div>
+                </div>
+                <div style={{ padding: '1rem', background: '#fef2f2', border: '2px solid #ef4444', borderRadius: '0.5rem' }}>
+                  <div style={{ fontSize: '0.75rem', color: '#991b1b', fontWeight: '600' }}>Overdue / Critical</div>
+                  <div style={{ fontSize: '1.75rem', fontWeight: '700', color: '#b91c1c' }}>
+                    {result.assuranceInsights.maintenance.overdue.toLocaleString()} / {result.assuranceInsights.maintenance.criticalOverdue.toLocaleString()}
+                  </div>
+                  <div style={{ fontSize: '0.7rem', color: '#991b1b' }}>Overdue / critical overdue</div>
+                </div>
+                <div style={{ padding: '1rem', background: '#f8fafc', border: '2px solid #475569', borderRadius: '0.5rem' }}>
+                  <div style={{ fontSize: '0.75rem', color: '#334155', fontWeight: '600' }}>Linked to Canon</div>
+                  <div style={{ fontSize: '2rem', fontWeight: '700', color: '#334155' }}>{result.assuranceInsights.maintenance.linkedToAssets.toLocaleString()}</div>
+                </div>
+              </div>
+
+              {result.assuranceInsights.maintenance.topUnits?.length > 0 && (
+                <div style={{ marginBottom: '1.5rem' }}>
+                  <h4 style={{ margin: '0 0 0.5rem 0', fontSize: '0.95rem', fontWeight: '600', color: '#0f172a' }}>Units Feeling the Pain</h4>
+                  <ul style={{ margin: 0, paddingLeft: '1.25rem', color: '#475569', fontSize: '0.9rem', lineHeight: '1.6' }}>
+                    {result.assuranceInsights.maintenance.topUnits.map((unit) => (
+                      <li key={unit.unit}>
+                        <strong>{unit.unit}</strong>: {unit.open} open, {unit.overdue} overdue ({unit.critical} critical)
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {result.assuranceInsights.maintenance.sampleWorkOrders?.length > 0 && (
+                <div>
+                  <h4 style={{ margin: '0 0 0.5rem 0', fontSize: '0.95rem', fontWeight: '600', color: '#0f172a' }}>Top Work Orders to Review</h4>
+                  <div style={{ display: 'grid', gap: '0.75rem' }}>
+                    {result.assuranceInsights.maintenance.sampleWorkOrders.map((wo, idx) => (
+                      <div key={idx} style={{ padding: '0.75rem', background: '#f9fafb', borderRadius: '0.5rem', border: '1px solid #e2e8f0' }}>
+                        <div style={{ fontWeight: '600', color: '#0f172a' }}>WO {wo.work_order_id} • {wo.tag_id}</div>
+                        <div style={{ fontSize: '0.8rem', color: '#475569' }}>{wo.description}</div>
+                        <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '0.35rem' }}>Due {wo.due_date} • {wo.priority} • {wo.status}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* 🧪 Patch & Vulnerability Readiness */}
+          {result.assuranceInsights?.vulnerability?.totalFindings > 0 && (
+            <div style={{
+              padding: '2rem',
+              background: 'white',
+              border: '3px solid #ef4444',
+              borderRadius: '0.75rem',
+              marginBottom: '2rem'
+            }}>
+              <h3 style={{ margin: '0 0 0.75rem 0', fontSize: '1.25rem', fontWeight: '700', color: '#0f172a' }}>
+                🧪 Patch & Vulnerability Readiness
+              </h3>
+              <p style={{ margin: '0 0 1.5rem 0', fontSize: '0.875rem', color: '#64748b' }}>
+                Highlights critical findings requiring action across OT assets.
+              </p>
+
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem', marginBottom: '1.5rem' }}>
+                <div style={{ padding: '1rem', background: '#fef2f2', border: '2px solid #ef4444', borderRadius: '0.5rem' }}>
+                  <div style={{ fontSize: '0.75rem', color: '#991b1b', fontWeight: '600' }}>Total Findings</div>
+                  <div style={{ fontSize: '2rem', fontWeight: '700', color: '#991b1b' }}>{result.assuranceInsights.vulnerability.totalFindings.toLocaleString()}</div>
+                </div>
+                <div style={{ padding: '1rem', background: '#fff7ed', border: '2px solid #f97316', borderRadius: '0.5rem' }}>
+                  <div style={{ fontSize: '0.75rem', color: '#9a3412', fontWeight: '600' }}>Open Findings</div>
+                  <div style={{ fontSize: '2rem', fontWeight: '700', color: '#c2410c' }}>{result.assuranceInsights.vulnerability.openFindings.toLocaleString()}</div>
+                </div>
+                <div style={{ padding: '1rem', background: '#fff1f2', border: '2px solid #be123c', borderRadius: '0.5rem' }}>
+                  <div style={{ fontSize: '0.75rem', color: '#9f1239', fontWeight: '600' }}>Critical Unpatched</div>
+                  <div style={{ fontSize: '1.75rem', fontWeight: '700', color: '#be123c' }}>{result.assuranceInsights.vulnerability.criticalUnpatched.toLocaleString()}</div>
+                  <div style={{ fontSize: '0.7rem', color: '#9f1239' }}>Includes CVSS ≥ 7.5</div>
+                </div>
+                <div style={{ padding: '1rem', background: '#eff6ff', border: '2px solid #2563eb', borderRadius: '0.5rem' }}>
+                  <div style={{ fontSize: '0.75rem', color: '#1d4ed8', fontWeight: '600' }}>Assets with Critical Findings</div>
+                  <div style={{ fontSize: '2rem', fontWeight: '700', color: '#1d4ed8' }}>{result.assuranceInsights.vulnerability.assetsWithCritical.toLocaleString()}</div>
+                </div>
+              </div>
+
+              {result.assuranceInsights.vulnerability.topCriticalAssets?.length > 0 && (
+                <div style={{ marginBottom: '1.5rem' }}>
+                  <h4 style={{ margin: '0 0 0.5rem 0', fontSize: '0.95rem', fontWeight: '600', color: '#0f172a' }}>Assets with the Most Critical Exposure</h4>
+                  <ul style={{ margin: 0, paddingLeft: '1.25rem', color: '#475569', fontSize: '0.9rem', lineHeight: '1.6' }}>
+                    {result.assuranceInsights.vulnerability.topCriticalAssets.map((asset) => (
+                      <li key={asset.tag_id}>
+                        <strong>{asset.tag_id}</strong> • {asset.unit} • {asset.manufacturer} — {asset.count} critical findings
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {result.assuranceInsights.vulnerability.topVendors?.length > 0 && (
+                <div>
+                  <h4 style={{ margin: '0 0 0.5rem 0', fontSize: '0.95rem', fontWeight: '600', color: '#0f172a' }}>Vendors Driving the Risk</h4>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
+                    {result.assuranceInsights.vulnerability.topVendors.map((vendor) => (
+                      <div key={vendor.vendor} style={{ padding: '0.65rem 0.9rem', background: '#f8fafc', borderRadius: '0.5rem', border: '1px solid #e2e8f0', fontSize: '0.85rem', color: '#475569' }}>
+                        {vendor.vendor}: {vendor.count} findings
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* 🔐 Network Segmentation & Access Control */}
+          {result.assuranceInsights?.network?.total > 0 && (
+            <div style={{
+              padding: '2rem',
+              background: 'white',
+              border: '3px solid #0ea5e9',
+              borderRadius: '0.75rem',
+              marginBottom: '2rem'
+            }}>
+              <h3 style={{ margin: '0 0 0.75rem 0', fontSize: '1.25rem', fontWeight: '700', color: '#0f172a' }}>
+                🔐 Network Segmentation & Access Control
+              </h3>
+              <p style={{ margin: '0 0 1.5rem 0', fontSize: '0.875rem', color: '#64748b' }}>
+                Highlights assets that fall outside expected zones or firewall policies.
+              </p>
+
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem', marginBottom: '1.5rem' }}>
+                <div style={{ padding: '1rem', background: '#ecfeff', border: '2px solid #06b6d4', borderRadius: '0.5rem' }}>
+                  <div style={{ fontSize: '0.75rem', color: '#0f766e', fontWeight: '600' }}>Devices Evaluated</div>
+                  <div style={{ fontSize: '2rem', fontWeight: '700', color: '#0f766e' }}>{result.assuranceInsights.network.total.toLocaleString()}</div>
+                </div>
+                <div style={{ padding: '1rem', background: '#f0fdf4', border: '2px solid #16a34a', borderRadius: '0.5rem' }}>
+                  <div style={{ fontSize: '0.75rem', color: '#15803d', fontWeight: '600' }}>Compliant</div>
+                  <div style={{ fontSize: '2rem', fontWeight: '700', color: '#15803d' }}>{result.assuranceInsights.network.compliant.toLocaleString()}</div>
+                </div>
+                <div style={{ padding: '1rem', background: '#fef2f2', border: '2px solid #ef4444', borderRadius: '0.5rem' }}>
+                  <div style={{ fontSize: '0.75rem', color: '#991b1b', fontWeight: '600' }}>Out of Policy</div>
+                  <div style={{ fontSize: '2rem', fontWeight: '700', color: '#b91c1c' }}>{result.assuranceInsights.network.outOfPolicy.toLocaleString()}</div>
+                </div>
+                <div style={{ padding: '1rem', background: '#fff7ed', border: '2px solid #f97316', borderRadius: '0.5rem' }}>
+                  <div style={{ fontSize: '0.75rem', color: '#9a3412', fontWeight: '600' }}>Missing Expected Zone</div>
+                  <div style={{ fontSize: '2rem', fontWeight: '700', color: '#c2410c' }}>{result.assuranceInsights.network.missingExpectedZone.toLocaleString()}</div>
+                </div>
+              </div>
+
+              {result.assuranceInsights.network.topOutOfPolicy?.length > 0 && (
+                <div>
+                  <h4 style={{ margin: '0 0 0.5rem 0', fontSize: '0.95rem', fontWeight: '600', color: '#0f172a' }}>Assets to Re-Segment</h4>
+                  <div style={{ display: 'grid', gap: '0.75rem' }}>
+                    {result.assuranceInsights.network.topOutOfPolicy.map((asset, idx) => (
+                      <div key={`${asset.tag_id}-${idx}`} style={{ padding: '0.75rem', background: '#f9fafb', borderRadius: '0.5rem', border: '1px solid #e2e8f0', fontSize: '0.85rem', color: '#475569' }}>
+                        <strong>{asset.tag_id}</strong> • {asset.unit}<br />Current: {asset.current_zone} • Expected: {asset.expected_zone}<br />Status: {asset.status}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* 🚨 Incident & Ticket Snapshot */}
+          {result.assuranceInsights?.incidents?.total > 0 && (
+            <div style={{
+              padding: '2rem',
+              background: 'white',
+              border: '3px solid #f97316',
+              borderRadius: '0.75rem',
+              marginBottom: '2rem'
+            }}>
+              <h3 style={{ margin: '0 0 0.75rem 0', fontSize: '1.25rem', fontWeight: '700', color: '#0f172a' }}>
+                🚨 Incident & Ticket Snapshot
+              </h3>
+              <p style={{ margin: '0 0 1.5rem 0', fontSize: '0.875rem', color: '#64748b' }}>
+                ServiceNow / ticket data aligned to the asset canon for rapid response.
+              </p>
+
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem', marginBottom: '1.5rem' }}>
+                <div style={{ padding: '1rem', background: '#fff7ed', border: '2px solid #f97316', borderRadius: '0.5rem' }}>
+                  <div style={{ fontSize: '0.75rem', color: '#c2410c', fontWeight: '600' }}>Total Incidents</div>
+                  <div style={{ fontSize: '2rem', fontWeight: '700', color: '#c2410c' }}>{result.assuranceInsights.incidents.total.toLocaleString()}</div>
+                </div>
+                <div style={{ padding: '1rem', background: '#f0fdf4', border: '2px solid #16a34a', borderRadius: '0.5rem' }}>
+                  <div style={{ fontSize: '0.75rem', color: '#15803d', fontWeight: '600' }}>Open Tickets</div>
+                  <div style={{ fontSize: '2rem', fontWeight: '700', color: '#15803d' }}>{result.assuranceInsights.incidents.open.toLocaleString()}</div>
+                </div>
+                <div style={{ padding: '1rem', background: '#fef2f2', border: '2px solid #ef4444', borderRadius: '0.5rem' }}>
+                  <div style={{ fontSize: '0.75rem', color: '#b91c1c', fontWeight: '600' }}>Critical Open</div>
+                  <div style={{ fontSize: '2rem', fontWeight: '700', color: '#b91c1c' }}>{result.assuranceInsights.incidents.criticalOpen.toLocaleString()}</div>
+                </div>
+                <div style={{ padding: '1rem', background: '#eff6ff', border: '2px solid #2563eb', borderRadius: '0.5rem' }}>
+                  <div style={{ fontSize: '0.75rem', color: '#1d4ed8', fontWeight: '600' }}>Linked to Canon</div>
+                  <div style={{ fontSize: '2rem', fontWeight: '700', color: '#1d4ed8' }}>{result.assuranceInsights.incidents.linkedToAssets.toLocaleString()}</div>
+                </div>
+              </div>
+
+              {result.assuranceInsights.incidents.recentIncidents?.length > 0 && (
+                <div>
+                  <h4 style={{ margin: '0 0 0.5rem 0', fontSize: '0.95rem', fontWeight: '600', color: '#0f172a' }}>Recent Tickets</h4>
+                  <div style={{ display: 'grid', gap: '0.75rem' }}>
+                    {result.assuranceInsights.incidents.recentIncidents.map((incident) => (
+                      <div key={incident.incident_id} style={{ padding: '0.75rem', background: '#f9fafb', borderRadius: '0.5rem', border: '1px solid #e2e8f0', fontSize: '0.85rem', color: '#475569' }}>
+                        <strong>{incident.incident_id}</strong> • {incident.tag_id}<br />Severity: {incident.severity} • Status: {incident.status}<br />Opened: {incident.opened_at} • Owner: {incident.owner}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {maintenanceInsights && maintenanceInsights.totalWorkOrders > 0 && (
+            <div style={{
+              padding: '2rem',
+              background: 'white',
+              border: '3px solid #10b981',
+              borderRadius: '0.75rem',
+              marginBottom: '2rem'
+            }}>
+              <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1.25rem', fontWeight: '700', color: '#0f172a' }}>
+                🛠️ Maintenance & Reliability Snapshot
+              </h3>
+              <p style={{ margin: '0 0 1.25rem 0', fontSize: '0.875rem', color: '#64748b' }}>
+                Aligns CMMS work orders with the canon. Highlights overdue maintenance on networkable assets.
+              </p>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1rem', marginBottom: '1.25rem' }}>
+                <div style={{ padding: '1rem', background: '#f0fdf4', border: '1px solid #10b981', borderRadius: '0.5rem' }}>
+                  <div style={{ fontSize: '0.75rem', color: '#047857', textTransform: 'uppercase', fontWeight: '600', marginBottom: '0.25rem' }}>
+                    Total Work Orders
+                  </div>
+                  <div style={{ fontSize: '2rem', fontWeight: '700', color: '#047857' }}>
+                    {maintenanceInsights.totalWorkOrders.toLocaleString()}
+                  </div>
+                </div>
+                <div style={{ padding: '1rem', background: '#fefce8', border: '1px solid #f59e0b', borderRadius: '0.5rem' }}>
+                  <div style={{ fontSize: '0.75rem', color: '#92400e', textTransform: 'uppercase', fontWeight: '600', marginBottom: '0.25rem' }}>
+                    Open Work Orders
+                  </div>
+                  <div style={{ fontSize: '2rem', fontWeight: '700', color: '#d97706' }}>
+                    {maintenanceInsights.openWorkOrders.toLocaleString()}
+                  </div>
+                </div>
+                <div style={{ padding: '1rem', background: '#fef2f2', border: '1px solid #ef4444', borderRadius: '0.5rem' }}>
+                  <div style={{ fontSize: '0.75rem', color: '#b91c1c', textTransform: 'uppercase', fontWeight: '600', marginBottom: '0.25rem' }}>
+                    Overdue Work Orders
+                  </div>
+                  <div style={{ fontSize: '2rem', fontWeight: '700', color: '#b91c1c' }}>
+                    {maintenanceInsights.overdueWorkOrders.toLocaleString()}
+                  </div>
+                  <div style={{ fontSize: '0.75rem', color: '#b91c1c' }}>
+                    Avg {maintenanceInsights.averageDaysOverdue} days overdue
+                  </div>
+                </div>
+                <div style={{ padding: '1rem', background: '#eef2ff', border: '1px solid #6366f1', borderRadius: '0.5rem' }}>
+                  <div style={{ fontSize: '0.75rem', color: '#4338ca', textTransform: 'uppercase', fontWeight: '600', marginBottom: '0.25rem' }}>
+                    Linked to Assets
+                  </div>
+                  <div style={{ fontSize: '2rem', fontWeight: '700', color: '#4338ca' }}>
+                    {maintenanceInsights.linkedRecords.toLocaleString()}
+                  </div>
+                  {maintenanceInsights.unlinkedRecords > 0 && (
+                    <div style={{ fontSize: '0.75rem', color: '#b91c1c' }}>
+                      ⚠️ {maintenanceInsights.unlinkedRecords.toLocaleString()} records need asset mapping
+                    </div>
+                  )}
+                </div>
+              </div>
+              {maintenanceInsights.sampleOverdue?.length > 0 && (
+                <div>
+                  <h4 style={{ fontSize: '0.95rem', fontWeight: '600', color: '#475569', marginBottom: '0.75rem' }}>
+                    Top Overdue Work Orders
+                  </h4>
+                  <ul style={{ margin: 0, paddingLeft: '1.25rem', color: '#475569', fontSize: '0.85rem', lineHeight: '1.6' }}>
+                    {maintenanceInsights.sampleOverdue.map(item => (
+                      <li key={`${item.work_order_id}-${item.tag_id}`}>
+                        <strong>{item.work_order_id || 'WO'}</strong> on <strong>{item.tag_id || 'Unknown Asset'}</strong> ({item.unit || 'Unknown Unit'}) — {item.daysOverdue} days overdue, status: {item.status || 'open'}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          )}
+
+          {vulnerabilityInsights && vulnerabilityInsights.totalFindings > 0 && (
+            <div style={{
+              padding: '2rem',
+              background: 'white',
+              border: '3px solid #ef4444',
+              borderRadius: '0.75rem',
+              marginBottom: '2rem'
+            }}>
+              <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1.25rem', fontWeight: '700', color: '#0f172a' }}>
+                🛡️ Patch & Vulnerability Posture
+              </h3>
+              <p style={{ margin: '0 0 1.25rem 0', fontSize: '0.875rem', color: '#64748b' }}>
+                Highlights CVEs tied to canonized assets and surfaces unpatched critical findings.
+              </p>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1rem', marginBottom: '1.25rem' }}>
+                <div style={{ padding: '1rem', background: '#fef2f2', border: '1px solid #ef4444', borderRadius: '0.5rem' }}>
+                  <div style={{ fontSize: '0.75rem', color: '#b91c1c', textTransform: 'uppercase', fontWeight: '600', marginBottom: '0.25rem' }}>
+                    Total Findings
+                  </div>
+                  <div style={{ fontSize: '2rem', fontWeight: '700', color: '#b91c1c' }}>
+                    {vulnerabilityInsights.totalFindings.toLocaleString()}
+                  </div>
+                </div>
+                <div style={{ padding: '1rem', background: '#fee2e2', border: '1px solid #f87171', borderRadius: '0.5rem' }}>
+                  <div style={{ fontSize: '0.75rem', color: '#b91c1c', textTransform: 'uppercase', fontWeight: '600', marginBottom: '0.25rem' }}>
+                    Critical Findings
+                  </div>
+                  <div style={{ fontSize: '2rem', fontWeight: '700', color: '#b91c1c' }}>
+                    {vulnerabilityInsights.criticalFindings.toLocaleString()}
+                  </div>
+                </div>
+                <div style={{ padding: '1rem', background: '#fef3c7', border: '1px solid #f59e0b', borderRadius: '0.5rem' }}>
+                  <div style={{ fontSize: '0.75rem', color: '#92400e', textTransform: 'uppercase', fontWeight: '600', marginBottom: '0.25rem' }}>
+                    Unpatched Critical
+                  </div>
+                  <div style={{ fontSize: '2rem', fontWeight: '700', color: '#d97706' }}>
+                    {vulnerabilityInsights.unpatchedCritical.toLocaleString()}
+                  </div>
+                </div>
+                <div style={{ padding: '1rem', background: '#eef2ff', border: '1px solid #6366f1', borderRadius: '0.5rem' }}>
+                  <div style={{ fontSize: '0.75rem', color: '#4338ca', textTransform: 'uppercase', fontWeight: '600', marginBottom: '0.25rem' }}>
+                    Assets with Critical CVEs
+                  </div>
+                  <div style={{ fontSize: '2rem', fontWeight: '700', color: '#4338ca' }}>
+                    {vulnerabilityInsights.assetsWithCritical.toLocaleString()}
+                  </div>
+                </div>
+              </div>
+              {vulnerabilityInsights.sampleCritical?.length > 0 && (
+                <div>
+                  <h4 style={{ fontSize: '0.95rem', fontWeight: '600', color: '#475569', marginBottom: '0.75rem' }}>
+                    Critical Findings Requiring Action
+                  </h4>
+                  <ul style={{ margin: 0, paddingLeft: '1.25rem', color: '#475569', fontSize: '0.85rem', lineHeight: '1.6' }}>
+                    {vulnerabilityInsights.sampleCritical.map(item => (
+                      <li key={`${item.cve_id}-${item.tag_id}`}>
+                        <strong>{item.cve_id}</strong> on <strong>{item.tag_id || 'Unknown Asset'}</strong> — severity {item.severity || 'critical'}, patch available: {item.patch_available}. Last seen {item.last_seen || 'unknown'}.
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          )}
+
+          {segmentationInsights && segmentationInsights.totalRecords > 0 && (
+            <div style={{
+              padding: '2rem',
+              background: 'white',
+              border: '3px solid #0ea5e9',
+              borderRadius: '0.75rem',
+              marginBottom: '2rem'
+            }}>
+              <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1.25rem', fontWeight: '700', color: '#0f172a' }}>
+                🛰️ Network Segmentation & Access Control
+              </h3>
+              <p style={{ margin: '0 0 1.25rem 0', fontSize: '0.875rem', color: '#64748b' }}>
+                Compares expected vs. actual zones and firewall enforcement to surface segmentation gaps.
+              </p>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginBottom: '1.25rem' }}>
+                <div style={{ padding: '1rem', background: '#e0f2fe', border: '1px solid #0ea5e9', borderRadius: '0.5rem' }}>
+                  <div style={{ fontSize: '0.75rem', color: '#0369a1', textTransform: 'uppercase', fontWeight: '600', marginBottom: '0.25rem' }}>
+                    Records Reviewed
+                  </div>
+                  <div style={{ fontSize: '2rem', fontWeight: '700', color: '#0369a1' }}>
+                    {segmentationInsights.totalRecords.toLocaleString()}
+                  </div>
+                </div>
+                <div style={{ padding: '1rem', background: '#fee2e2', border: '1px solid #ef4444', borderRadius: '0.5rem' }}>
+                  <div style={{ fontSize: '0.75rem', color: '#b91c1c', textTransform: 'uppercase', fontWeight: '600', marginBottom: '0.25rem' }}>
+                    Unenforced Policies
+                  </div>
+                  <div style={{ fontSize: '2rem', fontWeight: '700', color: '#b91c1c' }}>
+                    {segmentationInsights.unenforcedPolicies.toLocaleString()}
+                  </div>
+                </div>
+                <div style={{ padding: '1rem', background: '#fef3c7', border: '1px solid #f59e0b', borderRadius: '0.5rem' }}>
+                  <div style={{ fontSize: '0.75rem', color: '#92400e', textTransform: 'uppercase', fontWeight: '600', marginBottom: '0.25rem' }}>
+                    Missing Zone Mapping
+                  </div>
+                  <div style={{ fontSize: '2rem', fontWeight: '700', color: '#d97706' }}>
+                    {segmentationInsights.missingZone.toLocaleString()}
+                  </div>
+                </div>
+                <div style={{ padding: '1rem', background: '#ede9fe', border: '1px solid #8b5cf6', borderRadius: '0.5rem' }}>
+                  <div style={{ fontSize: '0.75rem', color: '#4c1d95', textTransform: 'uppercase', fontWeight: '600', marginBottom: '0.25rem' }}>
+                    Stale Audits (&gt;180 days)
+                  </div>
+                  <div style={{ fontSize: '2rem', fontWeight: '700', color: '#4c1d95' }}>
+                    {segmentationInsights.staleAudits.toLocaleString()}
+                  </div>
+                </div>
+              </div>
+              {segmentationInsights.sampleIssues?.length > 0 && (
+                <div>
+                  <h4 style={{ fontSize: '0.95rem', fontWeight: '600', color: '#475569', marginBottom: '0.75rem' }}>
+                    Segmentation Issues Detected
+                  </h4>
+                  <ul style={{ margin: 0, paddingLeft: '1.25rem', color: '#475569', fontSize: '0.85rem', lineHeight: '1.6' }}>
+                    {segmentationInsights.sampleIssues.map((item, idx) => (
+                      <li key={`${item.tag_id || 'asset'}-${idx}`}>
+                        <strong>{item.tag_id || 'Unknown Asset'}</strong> expected zone <strong>{item.expected_zone}</strong>, found <strong>{item.actual_zone}</strong>; policy status {item.policy_status}; last audit {item.last_audit}.
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          )}
+
+          {incidentInsights && incidentInsights.totalIncidents > 0 && (
+            <div style={{
+              padding: '2rem',
+              background: 'white',
+              border: '3px solid #f97316',
+              borderRadius: '0.75rem',
+              marginBottom: '2rem'
+            }}>
+              <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1.25rem', fontWeight: '700', color: '#0f172a' }}>
+                🚨 Incident & Ticket Watch
+              </h3>
+              <p style={{ margin: '0 0 1.25rem 0', fontSize: '0.875rem', color: '#64748b' }}>
+                Connects ServiceNow / ticket feeds to the canon. Shows open incidents tied to critical assets.
+              </p>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginBottom: '1.25rem' }}>
+                <div style={{ padding: '1rem', background: '#fff7ed', border: '1px solid #f97316', borderRadius: '0.5rem' }}>
+                  <div style={{ fontSize: '0.75rem', color: '#c2410c', textTransform: 'uppercase', fontWeight: '600', marginBottom: '0.25rem' }}>
+                    Total Incidents
+                  </div>
+                  <div style={{ fontSize: '2rem', fontWeight: '700', color: '#c2410c' }}>
+                    {incidentInsights.totalIncidents.toLocaleString()}
+                  </div>
+                </div>
+                <div style={{ padding: '1rem', background: '#fee2e2', border: '1px solid #ef4444', borderRadius: '0.5rem' }}>
+                  <div style={{ fontSize: '0.75rem', color: '#b91c1c', textTransform: 'uppercase', fontWeight: '600', marginBottom: '0.25rem' }}>
+                    Open Incidents
+                  </div>
+                  <div style={{ fontSize: '2rem', fontWeight: '700', color: '#b91c1c' }}>
+                    {incidentInsights.openIncidents.toLocaleString()}
+                  </div>
+                </div>
+                <div style={{ padding: '1rem', background: '#fef3c7', border: '1px solid #f59e0b', borderRadius: '0.5rem' }}>
+                  <div style={{ fontSize: '0.75rem', color: '#92400e', textTransform: 'uppercase', fontWeight: '600', marginBottom: '0.25rem' }}>
+                    High Priority
+                  </div>
+                  <div style={{ fontSize: '2rem', fontWeight: '700', color: '#d97706' }}>
+                    {incidentInsights.highPriorityIncidents.toLocaleString()}
+                  </div>
+                </div>
+              </div>
+              {incidentInsights.sampleOpen?.length > 0 && (
+                <div>
+                  <h4 style={{ fontSize: '0.95rem', fontWeight: '600', color: '#475569', marginBottom: '0.75rem' }}>
+                    Open Incidents
+                  </h4>
+                  <ul style={{ margin: 0, paddingLeft: '1.25rem', color: '#475569', fontSize: '0.85rem', lineHeight: '1.6' }}>
+                    {incidentInsights.sampleOpen.map((item, idx) => (
+                      <li key={`${item.incident_id || 'incident'}-${idx}`}>
+                        <strong>{item.incident_id}</strong> on <strong>{item.tag_id || 'Unknown Asset'}</strong> — state {item.state || 'open'}, priority {item.priority || 'normal'}, owner {item.owner || 'unassigned'}.
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               )}
             </div>

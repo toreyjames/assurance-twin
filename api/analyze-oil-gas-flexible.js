@@ -192,8 +192,26 @@ function detectDataSourceType(csvText, filename) {
     return 'otDiscovery'
   }
   
-  // Security indicators
-  const securityIndicators = ['vulnerability', 'cve', 'patch', 'cvss', 'exploit', 'firewall']
+  // Maintenance / CMMS indicators
+  const maintenanceIndicators = ['work_order', 'wo_', 'maintenance', 'pm_', 'due_date', 'assignment']
+  if (headers.some(h => maintenanceIndicators.some(i => h.includes(i)))) {
+    return 'maintenance'
+  }
+  
+  // Network / Segmentation indicators
+  const networkIndicators = ['zone', 'segment', 'vlan', 'firewall', 'policy', 'acl', 'access_zone']
+  if (headers.some(h => networkIndicators.some(i => h.includes(i)))) {
+    return 'network'
+  }
+  
+  // Incident / ticket indicators
+  const incidentIndicators = ['incident', 'ticket', 'servicenow', 'case', 'alert_id']
+  if (headers.some(h => incidentIndicators.some(i => h.includes(i)))) {
+    return 'incident'
+  }
+  
+  // Security indicators (vulnerability, patch data)
+  const securityIndicators = ['vulnerability', 'cve', 'patch', 'cvss', 'exploit']
   if (headers.some(h => securityIndicators.some(i => h.includes(i)))) {
     return 'security'
   }
@@ -357,6 +375,20 @@ function performFlexibleMatching(engineering, discovered, options = {}) {
         usedDiscoveryAssets.add(fuzzyMatch.tag_id + fuzzyMatch.ip_address)
       }
     })
+    
+    // Build lookup tables for matched assets (by tag, IP, hostname)
+    const canonicalLookup = new Map()
+    const matchedLookup = new Map()
+    
+    const registerLookupKey = (prefix, value, index) => {
+      if (!value && value !== 0) return
+      let normalized = String(value)
+      if (prefix === 'TAG') normalized = normalized.toUpperCase()
+      if (prefix === 'HOST') normalized = normalized.toLowerCase()
+      const key = `${prefix}:${normalized}`
+      if (!matchedLookup.has(key)) matchedLookup.set(key, index)
+      if (!canonicalLookup.has(key)) canonicalLookup.set(key, canonicalAssets[index])
+    }
     
     console.log(`[FALLBACK] After fuzzy matching: ${matchedAssets.length} matches`)
   }
@@ -1096,41 +1128,64 @@ export default async function handler(req, res) {
     // AUTO-DETECT and MERGE data sources
     let allEngineering = []
     let allOtDiscovery = []
-    let allSecurity = []
+    let allVulnerability = []
+    let allMaintenance = []
+    let allNetwork = []
+    let allIncidents = []
     let allOther = []
     
     const metadata = {
       dataSources: {}
     }
     
+    const dataSourceLabels = {
+      engineering: 'Engineering Baseline',
+      otDiscovery: 'OT Discovery',
+      vulnerability: 'Security & Vulnerability',
+      maintenance: 'Maintenance & Reliability',
+      network: 'Network Segmentation',
+      incident: 'Incidents & Tickets',
+      other: 'Other'
+    }
+    
+    const bumpMetadata = (type, files, rows) => {
+      if (!metadata.dataSources[type]) {
+        metadata.dataSources[type] = {
+          label: dataSourceLabels[type] || type,
+          files: 0,
+          rows: 0
+        }
+      }
+      metadata.dataSources[type].files += files
+      metadata.dataSources[type].rows += rows
+    }
+    
     // Process engineering files
     if (dataSources.engineering?.length > 0) {
       allEngineering = mergeDataSources(dataSources.engineering, 'engineering')
-      metadata.dataSources.engineering = {
-        files: dataSources.engineering.length,
-        rows: allEngineering.length
-      }
+      bumpMetadata('engineering', dataSources.engineering.length, allEngineering.length)
     }
     
     // Process OT discovery files
     if (dataSources.otDiscovery?.length > 0) {
       allOtDiscovery = mergeDataSources(dataSources.otDiscovery, 'otDiscovery')
-      metadata.dataSources.otDiscovery = {
-        files: dataSources.otDiscovery.length,
-        rows: allOtDiscovery.length
-      }
+      bumpMetadata('otDiscovery', dataSources.otDiscovery.length, allOtDiscovery.length)
     }
     
-    // Process security files
+    // Process security files (treated as vulnerability findings)
     if (dataSources.security?.length > 0) {
-      allSecurity = mergeDataSources(dataSources.security, 'security')
-      metadata.dataSources.security = {
-        files: dataSources.security.length,
-        rows: allSecurity.length
-      }
+      let vulnerabilityRowCount = 0
+      dataSources.security.forEach(({ filename, content }) => {
+        const parsed = parseCsv(content)
+        const normalized = normalizeDataset(parsed, `vulnerability:${filename}`)
+        allVulnerability.push(...normalized)
+        vulnerabilityRowCount += normalized.length
+      })
+
+      bumpMetadata('vulnerability', dataSources.security.length, vulnerabilityRowCount)
     }
     
-    // Process other files - auto-detect their type
+    // Process other files - auto-detect their type and route accordingly
     if (dataSources.other?.length > 0) {
       dataSources.other.forEach(({ filename, content }) => {
         const detectedType = detectDataSourceType(content, filename)
@@ -1139,27 +1194,47 @@ export default async function handler(req, res) {
         const parsed = parseCsv(content)
         const normalized = normalizeDataset(parsed, `${detectedType}:${filename}`)
         
-        if (detectedType === 'engineering') {
-          allEngineering.push(...normalized)
-        } else if (detectedType === 'otDiscovery') {
-          allOtDiscovery.push(...normalized)
-        } else if (detectedType === 'security') {
-          allSecurity.push(...normalized)
-        } else {
-          allOther.push(...normalized)
+        switch (detectedType) {
+          case 'engineering':
+            allEngineering.push(...normalized)
+            bumpMetadata('engineering', 1, normalized.length)
+            break
+          case 'otDiscovery':
+            allOtDiscovery.push(...normalized)
+            bumpMetadata('otDiscovery', 1, normalized.length)
+            break
+          case 'security':
+          case 'vulnerability':
+            allVulnerability.push(...normalized)
+            bumpMetadata('vulnerability', 1, normalized.length)
+            break
+          case 'maintenance':
+            allMaintenance.push(...normalized)
+            bumpMetadata('maintenance', 1, normalized.length)
+            break
+          case 'network':
+            allNetwork.push(...normalized)
+            bumpMetadata('network', 1, normalized.length)
+            break
+          case 'incident':
+            allIncidents.push(...normalized)
+            bumpMetadata('incident', 1, normalized.length)
+            break
+          default:
+            allOther.push(...normalized)
+            bumpMetadata('other', 1, normalized.length)
+            break
         }
       })
-      
-      metadata.dataSources.other = {
-        files: dataSources.other.length,
-        rows: allOther.length
-      }
     }
     
     console.log('[MERGED TOTALS]', {
       engineering: allEngineering.length,
       otDiscovery: allOtDiscovery.length,
-      security: allSecurity.length,
+      vulnerability: allVulnerability.length,
+      maintenance: allMaintenance.length,
+      network: allNetwork.length,
+      incident: allIncidents.length,
       other: allOther.length
     })
     
@@ -1215,6 +1290,67 @@ export default async function handler(req, res) {
       }
     })
     
+    // Build lookup tables for matched assets (by tag, IP, hostname)
+    const canonicalLookup = new Map()
+    const matchedLookup = new Map()
+    
+    const registerLookupKey = (prefix, value, index) => {
+      if (!value && value !== 0) return
+      let normalized = String(value)
+      if (prefix === 'TAG') normalized = normalized.toUpperCase()
+      if (prefix === 'HOST') normalized = normalized.toLowerCase()
+      const key = `${prefix}:${normalized}`
+      if (!matchedLookup.has(key)) matchedLookup.set(key, index)
+      if (!canonicalLookup.has(key)) canonicalLookup.set(key, canonicalAssets[index])
+    }
+    
+    matchResults.matched.forEach(({ engineering, discovered }, idx) => {
+      const asset = canonicalAssets[idx]
+      if (!asset) return
+      asset.enrichments = asset.enrichments || {}
+      
+      registerLookupKey('TAG', engineering.tag_id, idx)
+      registerLookupKey('IP', engineering.ip_address, idx)
+      registerLookupKey('HOST', engineering.hostname, idx)
+      
+      if (discovered) {
+        registerLookupKey('TAG', discovered.tag_id, idx)
+        registerLookupKey('IP', discovered.ip_address, idx)
+        registerLookupKey('HOST', discovered.hostname, idx)
+      }
+    })
+    
+    const findMatchIndexForEngineering = (record) => {
+      if (!record) return null
+      if (record.tag_id && matchedLookup.has(`TAG:${String(record.tag_id).toUpperCase()}`)) {
+        return matchedLookup.get(`TAG:${String(record.tag_id).toUpperCase()}`)
+      }
+      if (record.ip_address && matchedLookup.has(`IP:${String(record.ip_address)}`)) {
+        return matchedLookup.get(`IP:${String(record.ip_address)}`)
+      }
+      if (record.hostname && matchedLookup.has(`HOST:${String(record.hostname).toLowerCase()}`)) {
+        return matchedLookup.get(`HOST:${String(record.hostname).toLowerCase()}`)
+      }
+      return null
+    }
+    
+    const findCanonicalAsset = (record) => {
+      if (!record) return null
+      const tagKey = record.tag_id || record.asset_tag || record.tag
+      if (tagKey && canonicalLookup.has(`TAG:${String(tagKey).toUpperCase()}`)) {
+        return canonicalLookup.get(`TAG:${String(tagKey).toUpperCase()}`)
+      }
+      const ipKey = record.ip_address || record.ip
+      if (ipKey && canonicalLookup.has(`IP:${String(ipKey)}`)) {
+        return canonicalLookup.get(`IP:${String(ipKey)}`)
+      }
+      const hostKey = record.hostname || record.device_name
+      if (hostKey && canonicalLookup.has(`HOST:${String(hostKey).toLowerCase()}`)) {
+        return canonicalLookup.get(`HOST:${String(hostKey).toLowerCase()}`)
+      }
+      return null
+    }
+    
     // Categorize matches by validation level for audit
     const validationSummary = {
       highConfidence: canonicalAssets.filter(a => a.validation.level === 'high').length,
@@ -1240,53 +1376,66 @@ export default async function handler(req, res) {
       const classification = classifyDeviceBySecurity(asset)
       const isNetworkable = classification.tier === 1 || classification.tier === 2
       const hasIPinBaseline = Boolean(asset.ip_address)
-      const wasDiscovered = matchResults.matched.find(m => m.engineering.tag_id === asset.tag_id)
+      
+      const matchIndex = findMatchIndexForEngineering(asset)
+      const matchedRecord = matchIndex !== null ? matchResults.matched[matchIndex] : null
+      const canonicalAsset = matchIndex !== null ? canonicalAssets[matchIndex] : null
       
       if (isNetworkable || hasIPinBaseline) {
-        // Engineering baseline says this device is networkable
-        if (wasDiscovered) {
-          // OT discovery confirmed it - VERIFIED!
+        if (matchedRecord) {
           classificationVerification.verified.push({
             tag_id: asset.tag_id,
             device_type: asset.device_type,
-            ip_address: asset.ip_address,
+            ip_address: asset.ip_address || matchedRecord.discovered?.ip_address || '',
             unit: asset.unit,
             tier: classification.tier,
             status: 'VERIFIED',
             confidence: 'HIGH',
             reason: 'Engineering baseline + OT discovery agree - device is networkable and was found on network'
           })
+          
+          if (canonicalAsset) {
+            canonicalAsset.verification = {
+              status: 'VERIFIED',
+              tier: classification.tier,
+              source: 'engineering+discovery'
+            }
+          }
         } else {
-          // OT discovery didn't find it - UNVERIFIED (suspicious!)
           classificationVerification.unverified.push({
             tag_id: asset.tag_id,
             device_type: asset.device_type,
-            ip_address: asset.ip_address,
+            ip_address: asset.ip_address || '',
             unit: asset.unit,
             tier: classification.tier,
             status: 'UNVERIFIED',
             confidence: 'LOW',
-            reason: 'Engineering says networkable but OT discovery didn\'t find it',
-            possibleCauses: ['Device is offline', 'Wrong IP address in baseline', 'Network segment not scanned', 'Stale engineering data', 'Device was replaced with analog version']
+            reason: 'Engineering says networkable but OT discovery did not observe it',
+            possibleCauses: ['Device is offline', 'Wrong IP address in baseline', 'Network segment not scanned', 'Stale engineering data', 'Device replaced with analog version']
           })
         }
       } else {
-        // Engineering baseline says this device is passive/analog
-        if (wasDiscovered) {
-          // OT discovery found it anyway - SUSPICIOUS! Likely misclassified
+        if (matchedRecord) {
           classificationVerification.suspiciousPassive.push({
             tag_id: asset.tag_id,
             device_type: asset.device_type,
-            ip_address: asset.ip_address || 'NONE_IN_BASELINE',
+            ip_address: matchedRecord.discovered?.ip_address || asset.ip_address || 'NONE_IN_BASELINE',
             unit: asset.unit,
             tier: classification.tier,
             status: 'SUSPICIOUS',
             confidence: 'LOW',
-            reason: 'Engineering says passive/analog but OT discovery found it on network - likely misclassified',
-            recommendation: 'Update engineering baseline with network information, re-classify as networkable'
+            reason: 'Engineering marks passive/analog but OT discovery observed it on the network',
+            recommendation: 'Update engineering baseline with network information and re-classify as networkable'
           })
+          
+          if (canonicalAsset) {
+            canonicalAsset.verification = {
+              status: 'SUSPICIOUS',
+              tier: classification.tier,
+              source: 'engineering+discovery'
+            }
+          }
         } else {
-          // OT discovery didn't find it - probably truly passive
           classificationVerification.verifiedPassive.push({
             tag_id: asset.tag_id,
             device_type: asset.device_type,
@@ -1294,7 +1443,7 @@ export default async function handler(req, res) {
             tier: classification.tier,
             status: 'VERIFIED_PASSIVE',
             confidence: 'MEDIUM',
-            reason: 'Engineering says passive and OT discovery didn\'t find it - probably analog/non-network device'
+            reason: 'Engineering says passive and OT discovery did not observe it - likely analog/non-network'
           })
         }
       }
@@ -1348,8 +1497,8 @@ export default async function handler(req, res) {
       orphans: classificationVerification.orphanAnalysis.length,
       
       // Key metrics for "How do we know?"
-      verificationRate: classificationVerification.verified.length > 0 
-        ? Math.round((classificationVerification.verified.length / (classificationVerification.verified.length + classificationVerification.unverified.length)) * 100)
+      verificationRate: (classificationVerification.verified.length + classificationVerification.unverified.length + classificationVerification.suspiciousPassive.length) > 0 
+        ? Math.round((classificationVerification.verified.length / (classificationVerification.verified.length + classificationVerification.unverified.length + classificationVerification.suspiciousPassive.length)) * 100)
         : 0,
       
       classificationAccuracy: allEngineering.length > 0
@@ -1368,6 +1517,266 @@ export default async function handler(req, res) {
       verificationSummary.confidenceLevel = 'MEDIUM'
     } else {
       verificationSummary.confidenceLevel = 'LOW'
+    }
+    
+    const today = dayjs()
+    const assuranceInsights = {}
+    
+    // Helper to pick first non-empty field
+    const pickField = (row, keys, fallback = '') => {
+      for (const key of keys) {
+        if (row[key] !== undefined && row[key] !== null) {
+          const value = String(row[key]).trim()
+          if (value.length > 0) return value
+        }
+      }
+      return fallback
+    }
+    
+    // Maintenance & Reliability
+    if (allMaintenance.length > 0) {
+      const maintenanceSummary = {
+        totalWorkOrders: allMaintenance.length,
+        openWorkOrders: 0,
+        overdueWorkOrders: 0,
+        linkedRecords: 0,
+        unlinkedRecords: 0,
+        averageDaysOverdue: 0,
+        sampleOverdue: []
+      }
+      
+      let overdueDayAccumulator = 0
+      const overdueSamples = []
+      
+      allMaintenance.forEach(row => {
+        const status = pickField(row, ['status', 'work_order_status', 'state', 'wo_status']).toLowerCase()
+        const isClosed = ['closed', 'complete', 'completed', 'done', 'resolved', 'cancel'].some(term => status.includes(term))
+        const dueRaw = pickField(row, ['due_date', 'target_date', 'required_by', 'planned_date'])
+        const dueDate = dueRaw ? dayjs(dueRaw) : null
+        const isOverdue = !isClosed && dueDate && dueDate.isValid() && dueDate.isBefore(today, 'day')
+        const daysOverdue = isOverdue ? today.diff(dueDate, 'day') : 0
+        if (!isClosed) maintenanceSummary.openWorkOrders++
+        if (isOverdue) {
+          maintenanceSummary.overdueWorkOrders++
+          overdueDayAccumulator += daysOverdue
+          overdueSamples.push({
+            tag_id: row.tag_id || pickField(row, ['asset_tag', 'equipment']),
+            work_order_id: pickField(row, ['work_order_id', 'work_order', 'wo_id', 'id']),
+            unit: row.unit || row.area || '',
+            due_date: dueRaw || '',
+            status: status || 'open',
+            priority: pickField(row, ['priority', 'criticality'], 'Normal'),
+            daysOverdue
+          })
+        }
+        
+        const canonicalAsset = findCanonicalAsset(row)
+        if (canonicalAsset) {
+          maintenanceSummary.linkedRecords++
+          canonicalAsset.enrichments.maintenance = canonicalAsset.enrichments.maintenance || []
+          canonicalAsset.enrichments.maintenance.push({
+            work_order_id: pickField(row, ['work_order_id', 'work_order', 'wo_id', 'id']),
+            type: pickField(row, ['work_order_type', 'category', 'pm_type']),
+            status: status || 'open',
+            priority: pickField(row, ['priority', 'criticality'], 'Normal'),
+            due_date: dueRaw || '',
+            overdue: isOverdue,
+            days_overdue: daysOverdue
+          })
+        }
+      })
+      
+      maintenanceSummary.unlinkedRecords = maintenanceSummary.totalWorkOrders - maintenanceSummary.linkedRecords
+      maintenanceSummary.averageDaysOverdue = maintenanceSummary.overdueWorkOrders > 0
+        ? Math.round(overdueDayAccumulator / maintenanceSummary.overdueWorkOrders)
+        : 0
+      maintenanceSummary.sampleOverdue = overdueSamples
+        .sort((a, b) => b.daysOverdue - a.daysOverdue)
+        .slice(0, 5)
+      
+      assuranceInsights.maintenance = maintenanceSummary
+    }
+    
+    // Vulnerability & Patch Posture
+    if (allVulnerability.length > 0) {
+      const vulnerabilitySummary = {
+        totalFindings: allVulnerability.length,
+        criticalFindings: 0,
+        highFindings: 0,
+        unpatchedCritical: 0,
+        linkedFindings: 0,
+        unlinkedFindings: 0,
+        assetsWithCritical: 0,
+        sampleCritical: []
+      }
+      
+      const assetsWithCritical = new Set()
+      const criticalSamples = []
+      
+      allVulnerability.forEach(row => {
+        const severityRaw = pickField(row, ['severity', 'risk'], 'unknown').toLowerCase()
+        const cvssScore = parseFloat(pickField(row, ['cvss', 'cvss_score', 'score'], '0')) || 0
+        const isCritical = severityRaw.includes('critical') || cvssScore >= 9
+        const isHigh = severityRaw.includes('high') || (cvssScore >= 7 && cvssScore < 9)
+        const patchAvailable = isTruthy(row.patch_available ?? row.patch ?? row.patchstatus)
+        const resolved = isTruthy(row.resolved ?? row.is_resolved ?? row.closed)
+        
+        if (isCritical) {
+          vulnerabilitySummary.criticalFindings++
+          if (!resolved) vulnerabilitySummary.unpatchedCritical++
+        }
+        if (isHigh || isCritical) {
+          vulnerabilitySummary.highFindings++
+        }
+        
+        const canonicalAsset = findCanonicalAsset(row)
+        if (canonicalAsset) {
+          vulnerabilitySummary.linkedFindings++
+          canonicalAsset.enrichments.vulnerabilities = canonicalAsset.enrichments.vulnerabilities || []
+          canonicalAsset.enrichments.vulnerabilities.push({
+            cve_id: pickField(row, ['cve_id', 'cve', 'vuln_id']),
+            severity: severityRaw || 'unknown',
+            cvss: cvssScore,
+            patch_available: patchAvailable,
+            resolved,
+            last_seen: pickField(row, ['last_seen', 'observed_at', 'scan_date'])
+          })
+          
+          if (isCritical) {
+            assetsWithCritical.add(canonicalAsset.tag_id || canonicalAsset.ip_address || canonicalAsset.hostname)
+          }
+        }
+        
+        if (isCritical) {
+          criticalSamples.push({
+            tag_id: row.tag_id || pickField(row, ['asset_tag', 'device']),
+            cve_id: pickField(row, ['cve_id', 'cve']),
+            severity: severityRaw || 'critical',
+            cvss: cvssScore,
+            patch_available: patchAvailable ? 'Yes' : 'No',
+            last_seen: pickField(row, ['last_seen', 'observed_at', 'scan_date'])
+          })
+        }
+      })
+      
+      vulnerabilitySummary.unlinkedFindings = vulnerabilitySummary.totalFindings - vulnerabilitySummary.linkedFindings
+      vulnerabilitySummary.assetsWithCritical = assetsWithCritical.size
+      vulnerabilitySummary.sampleCritical = criticalSamples.slice(0, 5)
+      
+      assuranceInsights.vulnerability = vulnerabilitySummary
+    }
+    
+    // Network Segmentation & Access Control
+    if (allNetwork.length > 0) {
+      const segmentationSummary = {
+        totalRecords: allNetwork.length,
+        unenforcedPolicies: 0,
+        missingZone: 0,
+        staleAudits: 0,
+        linkedRecords: 0,
+        unlinkedRecords: 0,
+        sampleIssues: []
+      }
+      
+      const issueSamples = []
+      
+      allNetwork.forEach(row => {
+        const expectedZone = pickField(row, ['expected_zone', 'expected_segment', 'target_zone', 'intended_zone'])
+        const actualZone = pickField(row, ['actual_zone', 'zone', 'segment', 'current_zone'])
+        const policyStatusRaw = pickField(row, ['policy_status', 'enforcement', 'firewall_policy', 'policy']).toLowerCase()
+        const lastAuditRaw = pickField(row, ['last_audit', 'audit_date', 'reviewed_at'])
+        const lastAudit = lastAuditRaw ? dayjs(lastAuditRaw) : null
+        
+        const hasZoneMismatch = expectedZone && actualZone && expectedZone.toLowerCase() !== actualZone.toLowerCase()
+        const missingZone = !expectedZone || !actualZone
+        const unenforcedPolicy = ['open', 'allow', 'not enforced', 'bypass', 'monitor'].some(term => policyStatusRaw.includes(term))
+        const auditStale = lastAudit && lastAudit.isValid() && lastAudit.isBefore(today.subtract(180, 'day'), 'day')
+        
+        if (missingZone) segmentationSummary.missingZone++
+        if (hasZoneMismatch || unenforcedPolicy) segmentationSummary.unenforcedPolicies++
+        if (auditStale) segmentationSummary.staleAudits++
+        
+        const canonicalAsset = findCanonicalAsset(row)
+        if (canonicalAsset) {
+          segmentationSummary.linkedRecords++
+          canonicalAsset.enrichments.segmentation = canonicalAsset.enrichments.segmentation || []
+          canonicalAsset.enrichments.segmentation.push({
+            expected_zone: expectedZone || actualZone || '',
+            actual_zone: actualZone || '',
+            policy_status: policyStatusRaw || 'unknown',
+            last_audit: lastAuditRaw || '',
+            issue: missingZone || hasZoneMismatch || unenforcedPolicy || auditStale
+          })
+        }
+        
+        if (missingZone || hasZoneMismatch || unenforcedPolicy || auditStale) {
+          issueSamples.push({
+            tag_id: row.tag_id || pickField(row, ['asset_tag', 'device']),
+            expected_zone: expectedZone || '(not set)',
+            actual_zone: actualZone || '(unknown)',
+            policy_status: policyStatusRaw || 'unknown',
+            last_audit: lastAuditRaw || 'unknown'
+          })
+        }
+      })
+      
+      segmentationSummary.unlinkedRecords = segmentationSummary.totalRecords - segmentationSummary.linkedRecords
+      segmentationSummary.sampleIssues = issueSamples.slice(0, 5)
+      
+      assuranceInsights.segmentation = segmentationSummary
+    }
+    
+    // Incidents & Tickets
+    if (allIncidents.length > 0) {
+      const incidentsSummary = {
+        totalIncidents: allIncidents.length,
+        openIncidents: 0,
+        highPriorityIncidents: 0,
+        linkedIncidents: 0,
+        unlinkedIncidents: 0,
+        sampleOpen: []
+      }
+      
+      const openSamples = []
+      
+      allIncidents.forEach(row => {
+        const stateRaw = pickField(row, ['state', 'status', 'incident_state']).toLowerCase()
+        const priorityRaw = pickField(row, ['priority', 'impact', 'urgency']).toLowerCase()
+        const isClosed = ['closed', 'resolved', 'cancelled', 'complete', 'remediated'].some(term => stateRaw.includes(term))
+        const isOpen = !isClosed
+        const isHighPriority = ['1', 'p1', 'critical', 'high'].some(term => priorityRaw.includes(term))
+        
+        if (isOpen) incidentsSummary.openIncidents++
+        if (isHighPriority) incidentsSummary.highPriorityIncidents++
+        
+        const canonicalAsset = findCanonicalAsset(row)
+        if (canonicalAsset) {
+          incidentsSummary.linkedIncidents++
+          canonicalAsset.enrichments.incidents = canonicalAsset.enrichments.incidents || []
+          canonicalAsset.enrichments.incidents.push({
+            incident_id: pickField(row, ['incident_id', 'ticket_id', 'case_id', 'id']),
+            category: pickField(row, ['category', 'type'], 'incident'),
+            state: stateRaw || 'open',
+            priority: priorityRaw || 'normal',
+            opened_at: pickField(row, ['opened_at', 'created_at', 'detected_at'])
+          })
+        }
+        
+        if (isOpen) {
+          openSamples.push({
+            tag_id: row.tag_id || pickField(row, ['asset_tag', 'device']),
+            incident_id: pickField(row, ['incident_id', 'ticket_id', 'case_id', 'id']),
+            state: stateRaw || 'open',
+            priority: priorityRaw || 'normal',
+            owner: pickField(row, ['owner', 'assignment_group', 'assigned_to'], 'Unassigned')
+          })
+        }
+      })
+      
+      incidentsSummary.unlinkedIncidents = incidentsSummary.totalIncidents - incidentsSummary.linkedIncidents
+      incidentsSummary.sampleOpen = openSamples.slice(0, 5)
+      
+      assuranceInsights.incidents = incidentsSummary
     }
     
     // Calculate KPIs
@@ -1545,6 +1954,7 @@ export default async function handler(req, res) {
       blindSpots: matchResults.blindSpots.slice(0, 100),  // Sample of blind spots
       orphans: matchResults.orphans.slice(0, 100),  // Sample of orphans
       learningInsights,
+      assuranceInsights,
       distributions,  // Plant Intelligence distributions
       plantCompleteness  // Operational Intelligence - plant completeness by unit
     })
