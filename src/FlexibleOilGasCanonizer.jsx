@@ -824,174 +824,6 @@ export default function FlexibleOilGasCanonizer() {
             </div>
           )}
 
-          {/* 🎯 HOW THE CANONIZER WORKS - Match Strategy Breakdown */}
-          {result.matchResults && (
-            <div style={{
-              padding: '2rem',
-              background: 'white',
-              border: '3px solid #8b5cf6',
-              borderRadius: '0.75rem',
-              marginBottom: '2rem'
-            }}>
-              <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1.25rem', fontWeight: '700', color: '#0f172a' }}>
-                🎯 How the Canonizer Matched Your Assets
-              </h3>
-              <p style={{ margin: '0 0 1.5rem 0', fontSize: '0.875rem', color: '#64748b' }}>
-                Even without perfect data, the Canonizer intelligently matched {result.kpis.matched_assets.toLocaleString()} assets using multiple strategies. This shows what data sources you have and where improvements can be made.
-              </p>
-
-              {/* Match Strategy Breakdown */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem', marginBottom: '1.5rem' }}>
-                {/* Tag ID matches - gold standard */}
-                <div style={{
-                  padding: '1rem',
-                  background: '#fef3c7',
-                  border: '2px solid #f59e0b',
-                  borderRadius: '0.5rem'
-                }}>
-                  <div style={{ fontSize: '0.75rem', color: '#92400e', marginBottom: '0.25rem', fontWeight: '600' }}>
-                    🥇 TAG ID MATCH
-                  </div>
-                  <div style={{ fontSize: '2rem', fontWeight: '700', color: '#d97706' }}>
-                    {(result.matchResults.strategyBreakdown?.tag_id || 0).toLocaleString()}
-                  </div>
-                  <div style={{ fontSize: '0.75rem', color: '#78350f' }}>
-                    Gold standard - exact match
-                  </div>
-                </div>
-
-                {/* IP Address matches */}
-                <div style={{
-                  padding: '1rem',
-                  background: '#e0e7ff',
-                  border: '2px solid #6366f1',
-                  borderRadius: '0.5rem'
-                }}>
-                  <div style={{ fontSize: '0.75rem', color: '#312e81', marginBottom: '0.25rem', fontWeight: '600' }}>
-                    🌐 IP ADDRESS MATCH
-                  </div>
-                  <div style={{ fontSize: '2rem', fontWeight: '700', color: '#4f46e5' }}>
-                    {(result.matchResults.strategyBreakdown?.ip_address || 0).toLocaleString()}
-                  </div>
-                  <div style={{ fontSize: '0.75rem', color: '#3730a3' }}>
-                    No tag_id, used IP
-                  </div>
-                </div>
-
-                {/* Hostname matches */}
-                <div style={{
-                  padding: '1rem',
-                  background: '#dbeafe',
-                  border: '2px solid #3b82f6',
-                  borderRadius: '0.5rem'
-                }}>
-                  <div style={{ fontSize: '0.75rem', color: '#1e3a8a', marginBottom: '0.25rem', fontWeight: '600' }}>
-                    💻 HOSTNAME MATCH
-                  </div>
-                  <div style={{ fontSize: '2rem', fontWeight: '700', color: '#2563eb' }}>
-                    {(result.matchResults.strategyBreakdown?.hostname || 0).toLocaleString()}
-                  </div>
-                  <div style={{ fontSize: '0.75rem', color: '#1e40af' }}>
-                    Matched by device name
-                  </div>
-                </div>
-
-                {/* MAC Address matches */}
-                <div style={{
-                  padding: '1rem',
-                  background: '#d1fae5',
-                  border: '2px solid #10b981',
-                  borderRadius: '0.5rem'
-                }}>
-                  <div style={{ fontSize: '0.75rem', color: '#064e3b', marginBottom: '0.25rem', fontWeight: '600' }}>
-                    🔌 MAC ADDRESS MATCH
-                  </div>
-                  <div style={{ fontSize: '2rem', fontWeight: '700', color: '#059669' }}>
-                    {(result.matchResults.strategyBreakdown?.mac_address || 0).toLocaleString()}
-                  </div>
-                  <div style={{ fontSize: '0.75rem', color: '#065f46' }}>
-                    Network hardware address
-                  </div>
-                </div>
-
-                {/* Fuzzy matches */}
-                <div style={{
-                  padding: '1rem',
-                  background: '#fce7f3',
-                  border: '2px solid #ec4899',
-                  borderRadius: '0.5rem'
-                }}>
-                  <div style={{ fontSize: '0.75rem', color: '#831843', marginBottom: '0.25rem', fontWeight: '600' }}>
-                    🧠 FUZZY LOGIC MATCH
-                  </div>
-                  <div style={{ fontSize: '2rem', fontWeight: '700', color: '#db2777' }}>
-                    {(result.matchResults.strategyBreakdown?.fuzzy || 0).toLocaleString()}
-                  </div>
-                  <div style={{ fontSize: '0.75rem', color: '#9f1239' }}>
-                    Device type + manufacturer
-                  </div>
-                </div>
-
-                {/* Intelligent pairing */}
-                <div style={{
-                  padding: '1rem',
-                  background: '#ede9fe',
-                  border: '2px solid #8b5cf6',
-                  borderRadius: '0.5rem'
-                }}>
-                  <div style={{ fontSize: '0.75rem', color: '#4c1d95', marginBottom: '0.25rem', fontWeight: '600' }}>
-                    🤖 INTELLIGENT PAIRING
-                  </div>
-                  <div style={{ fontSize: '2rem', fontWeight: '700', color: '#7c3aed' }}>
-                    {(result.matchResults.strategyBreakdown?.intelligent_pairing || 0).toLocaleString()}
-                  </div>
-                  <div style={{ fontSize: '0.75rem', color: '#5b21b6' }}>
-                    AI-inferred match
-                  </div>
-                </div>
-              </div>
-
-              {/* Data Quality Insights */}
-              <div style={{ 
-                padding: '1rem', 
-                background: '#f0fdf4', 
-                border: '1px solid #10b981',
-                borderRadius: '0.5rem',
-                marginBottom: '1rem'
-              }}>
-                <h4 style={{ margin: '0 0 0.5rem 0', fontSize: '0.875rem', fontWeight: '700', color: '#065f46' }}>
-                  📊 What This Tells Us About Your Data
-                </h4>
-                <div style={{ fontSize: '0.75rem', color: '#065f46', lineHeight: '1.6' }}>
-                  {result.matchResults.strategyBreakdown.tag_id > result.kpis.matched_assets * 0.5 ? (
-                    <>✅ <strong>Excellent:</strong> You have Tag IDs in both engineering & OT discovery - gold standard for asset management!</>
-                  ) : result.matchResults.strategyBreakdown.tag_id > 0 ? (
-                    <>⚠️ <strong>Good:</strong> Some Tag IDs present, but many matches fell back to IP/hostname. Consider adding Tag IDs to OT discovery data.</>
-                  ) : (
-                    <>🚨 <strong>Needs Improvement:</strong> No Tag ID matches - OT discovery lacks asset tags. Canonizer used IP/hostname fallback strategies.</>
-                  )}
-                  <br />
-                  {result.matchResults.strategyBreakdown.ip_address + result.matchResults.strategyBreakdown.hostname > result.kpis.matched_assets * 0.3 && (
-                    <>💡 <strong>Recommendation:</strong> Add asset tag fields to your OT discovery tool configuration for more accurate matching.</>
-                  )}
-                </div>
-              </div>
-
-              {/* Coverage Summary */}
-              <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', justifyContent: 'center', padding: '1rem', background: '#fef3c7', borderRadius: '0.5rem' }}>
-                <div style={{ fontSize: '0.875rem', color: '#92400e', textAlign: 'center' }}>
-                  <strong>✅ Matched:</strong> {result.kpis.matched_assets.toLocaleString()} assets
-                </div>
-                <div style={{ fontSize: '0.875rem', color: '#92400e', textAlign: 'center' }}>
-                  <strong>⚠️ Blind Spots:</strong> {result.kpis.blind_spots.toLocaleString()} (engineered but not discovered)
-                </div>
-                <div style={{ fontSize: '0.875rem', color: '#92400e', textAlign: 'center' }}>
-                  <strong>👁️ Orphans:</strong> {result.kpis.orphan_assets.toLocaleString()} (discovered but not in baseline)
-                </div>
-              </div>
-            </div>
-          )}
-
           {/* 🏭 PLANT COMPLETENESS & OPERATIONAL CONTEXT - The merged operational + cyber view */}
           {result.plantCompleteness && Object.keys(result.plantCompleteness).length > 0 && (
             <div style={{
@@ -1140,6 +972,253 @@ export default function FlexibleOilGasCanonizer() {
               </div>
             </div>
           )}
+
+          {/* 📥 DOWNLOAD YOUR CANONIZED DATA - Export Section (AT THE BOTTOM) */}
+          <div style={{
+            padding: '2rem',
+            background: 'white',
+            border: '3px solid #3b82f6',
+            borderRadius: '0.75rem',
+            marginBottom: '2rem'
+          }}>
+            <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1.25rem', fontWeight: '700', color: '#0f172a' }}>
+              📥 Download Your Canonized Asset Inventory
+            </h3>
+            <p style={{ margin: '0 0 1.5rem 0', fontSize: '0.875rem', color: '#64748b' }}>
+              Your matched asset data is ready for export. Each CSV contains the canonized view with engineering baseline data merged with OT discovery data, aligned to the Canonizer framework.
+            </p>
+
+            {/* Summary Stats */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1rem', marginBottom: '1.5rem' }}>
+              <div style={{ padding: '1rem', background: '#f0fdf4', border: '2px solid #10b981', borderRadius: '0.5rem' }}>
+                <div style={{ fontSize: '0.75rem', color: '#064e3b', marginBottom: '0.25rem', fontWeight: '600', textTransform: 'uppercase' }}>
+                  ✅ Matched Assets
+                </div>
+                <div style={{ fontSize: '2rem', fontWeight: '700', color: '#10b981' }}>
+                  {result.kpis.matched_assets.toLocaleString()}
+                </div>
+                <div style={{ fontSize: '0.75rem', color: '#064e3b', marginTop: '0.5rem' }}>
+                  Engineering baseline + OT discovery data merged
+                </div>
+              </div>
+
+              <div style={{ padding: '1rem', background: '#fffbeb', border: '2px solid #f59e0b', borderRadius: '0.5rem' }}>
+                <div style={{ fontSize: '0.75rem', color: '#78350f', marginBottom: '0.25rem', fontWeight: '600', textTransform: 'uppercase' }}>
+                  ⚠️ Blind Spots
+                </div>
+                <div style={{ fontSize: '2rem', fontWeight: '700', color: '#f59e0b' }}>
+                  {result.kpis.blind_spots.toLocaleString()}
+                </div>
+                <div style={{ fontSize: '0.75rem', color: '#78350f', marginTop: '0.5rem' }}>
+                  Engineered but not discovered (offline/passive devices)
+                </div>
+              </div>
+
+              <div style={{ padding: '1rem', background: '#ede9fe', border: '2px solid #8b5cf6', borderRadius: '0.5rem' }}>
+                <div style={{ fontSize: '0.75rem', color: '#4c1d95', marginBottom: '0.25rem', fontWeight: '600', textTransform: 'uppercase' }}>
+                  👁️ Orphan Devices
+                </div>
+                <div style={{ fontSize: '2rem', fontWeight: '700', color: '#8b5cf6' }}>
+                  {result.kpis.orphan_assets.toLocaleString()}
+                </div>
+                <div style={{ fontSize: '0.75rem', color: '#4c1d95', marginTop: '0.5rem' }}>
+                  Discovered but not in baseline (investigate!)
+                </div>
+              </div>
+            </div>
+
+            {/* Export Buttons */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              {/* Matched Assets Export */}
+              <div style={{ padding: '1.25rem', background: '#f0fdf4', border: '1px solid #10b981', borderRadius: '0.5rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+                  <div style={{ flex: '1', minWidth: '250px' }}>
+                    <h4 style={{ margin: '0 0 0.5rem 0', fontSize: '1rem', fontWeight: '700', color: '#065f46' }}>
+                      ✅ Matched Assets CSV
+                    </h4>
+                    <p style={{ margin: 0, fontSize: '0.75rem', color: '#064e3b', lineHeight: '1.6' }}>
+                      <strong>Full canonized inventory</strong> - Engineering data (tag_id, unit, device_type, manufacturer) merged with OT discovery data (IP address, security status, vulnerabilities, match type)
+                    </p>
+                    <div style={{ marginTop: '0.5rem', fontSize: '0.7rem', color: '#059669', fontStyle: 'italic' }}>
+                      💡 Use for: Security team prioritization, vulnerability management, asset tracking
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => {
+                      // Convert matched assets to CSV
+                      const headers = [
+                        'tag_id', 'plant', 'unit', 'device_type', 'manufacturer', 'model',
+                        'ip_address', 'hostname', 'mac_address',
+                        'tier', 'security_classification', 'security_required',
+                        'is_managed', 'has_security_patches', 'encryption_enabled', 'authentication_required',
+                        'vulnerabilities', 'cve_count',
+                        'match_type', 'match_confidence'
+                      ]
+                      
+                      const rows = result.assets.map(asset => [
+                        asset.tag_id || '',
+                        asset.plant || '',
+                        asset.unit || '',
+                        asset.device_type || '',
+                        asset.manufacturer || '',
+                        asset.model || '',
+                        asset.ip_address || '',
+                        asset.hostname || '',
+                        asset.mac_address || '',
+                        asset.securityClass?.tier || '',
+                        asset.securityClass?.classification || '',
+                        asset.securityClass?.securityRequired || '',
+                        asset.is_managed || '',
+                        asset.has_security_patches || '',
+                        asset.encryption_enabled || '',
+                        asset.authentication_required || '',
+                        asset.vulnerabilities || '',
+                        asset.cve_count || '',
+                        asset.sources?.matchType || '',
+                        asset.sources?.matchConfidence || ''
+                      ])
+                      
+                      const csv = [headers.join(','), ...rows.map(r => r.map(c => `"${c}"`).join(','))].join('\n')
+                      const blob = new Blob([csv], { type: 'text/csv' })
+                      const url = URL.createObjectURL(blob)
+                      const a = document.createElement('a')
+                      a.href = url
+                      a.download = `canonized_matched_assets_${new Date().toISOString().split('T')[0]}.csv`
+                      a.click()
+                      URL.revokeObjectURL(url)
+                    }}
+                    style={{
+                      padding: '0.75rem 1.5rem',
+                      background: '#10b981',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '0.5rem',
+                      fontSize: '0.875rem',
+                      fontWeight: '600',
+                      cursor: 'pointer',
+                      whiteSpace: 'nowrap'
+                    }}
+                  >
+                    📥 Download Matched Assets ({result.kpis.matched_assets.toLocaleString()})
+                  </button>
+                </div>
+              </div>
+
+              {/* Blind Spots Export */}
+              {result.blindSpots && result.blindSpots.length > 0 && (
+                <div style={{ padding: '1.25rem', background: '#fffbeb', border: '1px solid #f59e0b', borderRadius: '0.5rem' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+                    <div style={{ flex: '1', minWidth: '250px' }}>
+                      <h4 style={{ margin: '0 0 0.5rem 0', fontSize: '1rem', fontWeight: '700', color: '#92400e' }}>
+                        ⚠️ Blind Spots CSV
+                      </h4>
+                      <p style={{ margin: 0, fontSize: '0.75rem', color: '#78350f', lineHeight: '1.6' }}>
+                        <strong>Assets not discovered</strong> - Engineering baseline assets that have no corresponding OT discovery record (likely offline, passive/analog devices, or missing network data)
+                      </p>
+                      <div style={{ marginTop: '0.5rem', fontSize: '0.7rem', color: '#d97706', fontStyle: 'italic' }}>
+                        💡 Use for: Data quality review, identifying missing network data, passive device inventory
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => {
+                        const headers = ['tag_id', 'plant', 'unit', 'device_type', 'manufacturer', 'model', 'ip_address', 'hostname']
+                        const rows = result.blindSpots.slice(0, 10000).map(asset => [
+                          asset.tag_id || '',
+                          asset.plant || '',
+                          asset.unit || '',
+                          asset.device_type || '',
+                          asset.manufacturer || '',
+                          asset.model || '',
+                          asset.ip_address || '',
+                          asset.hostname || ''
+                        ])
+                        
+                        const csv = [headers.join(','), ...rows.map(r => r.map(c => `"${c}"`).join(','))].join('\n')
+                        const blob = new Blob([csv], { type: 'text/csv' })
+                        const url = URL.createObjectURL(blob)
+                        const a = document.createElement('a')
+                        a.href = url
+                        a.download = `canonizer_blind_spots_${new Date().toISOString().split('T')[0]}.csv`
+                        a.click()
+                        URL.revokeObjectURL(url)
+                      }}
+                      style={{
+                        padding: '0.75rem 1.5rem',
+                        background: '#f59e0b',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '0.5rem',
+                        fontSize: '0.875rem',
+                        fontWeight: '600',
+                        cursor: 'pointer',
+                        whiteSpace: 'nowrap'
+                      }}
+                    >
+                      📥 Download Blind Spots ({result.kpis.blind_spots.toLocaleString()})
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Orphans Export */}
+              {result.orphans && result.orphans.length > 0 && (
+                <div style={{ padding: '1.25rem', background: '#f5f3ff', border: '1px solid #8b5cf6', borderRadius: '0.5rem' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+                    <div style={{ flex: '1', minWidth: '250px' }}>
+                      <h4 style={{ margin: '0 0 0.5rem 0', fontSize: '1rem', fontWeight: '700', color: '#5b21b6' }}>
+                        👁️ Orphan Devices CSV
+                      </h4>
+                      <p style={{ margin: 0, fontSize: '0.75rem', color: '#4c1d95', lineHeight: '1.6' }}>
+                        <strong>Discovered but not in baseline</strong> - OT discovery found these devices on your network, but they have no engineering baseline record (could be: contractor laptops, rogue devices, shadow IT, or missing documentation)
+                      </p>
+                      <div style={{ marginTop: '0.5rem', fontSize: '0.7rem', color: '#7c3aed', fontStyle: 'italic' }}>
+                        💡 Use for: Security investigation, rogue device detection, baseline documentation updates
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => {
+                        const headers = ['ip_address', 'hostname', 'mac_address', 'device_type', 'manufacturer', 'model', 'is_managed', 'vulnerabilities', 'cve_count', 'last_seen']
+                        const rows = result.orphans.map(asset => [
+                          asset.ip_address || '',
+                          asset.hostname || '',
+                          asset.mac_address || '',
+                          asset.device_type || '',
+                          asset.manufacturer || '',
+                          asset.model || '',
+                          asset.is_managed || '',
+                          asset.vulnerabilities || '',
+                          asset.cve_count || '',
+                          asset.last_seen || ''
+                        ])
+                        
+                        const csv = [headers.join(','), ...rows.map(r => r.map(c => `"${c}"`).join(','))].join('\n')
+                        const blob = new Blob([csv], { type: 'text/csv' })
+                        const url = URL.createObjectURL(blob)
+                        const a = document.createElement('a')
+                        a.href = url
+                        a.download = `canonizer_orphan_devices_${new Date().toISOString().split('T')[0]}.csv`
+                        a.click()
+                        URL.revokeObjectURL(url)
+                      }}
+                      style={{
+                        padding: '0.75rem 1.5rem',
+                        background: '#8b5cf6',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '0.5rem',
+                        fontSize: '0.875rem',
+                        fontWeight: '600',
+                        cursor: 'pointer',
+                        whiteSpace: 'nowrap'
+                      }}
+                    >
+                      📥 Download Orphans ({result.kpis.orphan_assets.toLocaleString()})
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       )}
     </div>
