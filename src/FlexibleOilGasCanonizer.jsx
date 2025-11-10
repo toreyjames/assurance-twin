@@ -555,8 +555,8 @@ export default function FlexibleOilGasCanonizer() {
                 </p>
               </div>
 
-              {/* Process Unit Distribution WITH SECURITY STATUS */}
-              {result.distributions.processUnitDistribution && (
+              {/* Process Unit Distribution WITH SECURITY METRICS BY LOCATION */}
+              {result.distributions.processUnitSecurity && (
                 <div style={{ marginBottom: '2rem' }}>
                   <h4 style={{ 
                     fontSize: '1.125rem', 
@@ -568,31 +568,71 @@ export default function FlexibleOilGasCanonizer() {
                     borderRadius: '0.5rem',
                     border: '2px solid #10b981'
                   }}>
-                    📍 Assets by Process Unit / Area
+                    📍 Security Coverage by Process Unit / Area
                   </h4>
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1rem' }}>
-                    {Object.entries(result.distributions.processUnitDistribution)
-                      .sort(([, a], [, b]) => b - a)
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', gap: '1rem' }}>
+                    {Object.entries(result.distributions.processUnitSecurity)
+                      .sort(([, a], [, b]) => b.totalAssets - a.totalAssets)
                       .slice(0, 12)
-                      .map(([unit, count]) => (
-                        <div key={unit} style={{
-                          padding: '1rem',
-                          background: 'white',
-                          border: '2px solid #e2e8f0',
-                          borderRadius: '0.5rem',
-                          boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
-                        }}>
-                          <div style={{ fontSize: '0.875rem', fontWeight: '700', color: '#0f172a', marginBottom: '0.5rem' }}>
-                            {unit}
+                      .map(([unit, stats]) => {
+                        const securityPercent = stats.networkableAssets > 0 
+                          ? Math.round((stats.securedAssets / stats.networkableAssets) * 100) 
+                          : 0
+                        const discoveryPercent = stats.networkableAssets > 0 
+                          ? Math.round((stats.discoveredAssets / stats.networkableAssets) * 100) 
+                          : 0
+                        
+                        const securityColor = securityPercent >= 70 ? '#10b981' : 
+                                              securityPercent >= 40 ? '#f59e0b' : '#ef4444'
+                        
+                        return (
+                          <div key={unit} style={{
+                            padding: '1rem',
+                            background: 'white',
+                            border: `2px solid ${securityColor}`,
+                            borderRadius: '0.5rem',
+                            boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                          }}>
+                            <div style={{ fontSize: '0.875rem', fontWeight: '700', color: '#0f172a', marginBottom: '0.75rem' }}>
+                              {unit}
+                            </div>
+                            
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.5rem', marginBottom: '0.75rem' }}>
+                              <div>
+                                <div style={{ fontSize: '1.5rem', fontWeight: '700', color: '#10b981' }}>
+                                  {stats.totalAssets.toLocaleString()}
+                                </div>
+                                <div style={{ fontSize: '0.65rem', color: '#64748b' }}>total assets</div>
+                              </div>
+                              <div>
+                                <div style={{ fontSize: '1.5rem', fontWeight: '700', color: '#3b82f6' }}>
+                                  {stats.networkableAssets.toLocaleString()}
+                                </div>
+                                <div style={{ fontSize: '0.65rem', color: '#64748b' }}>networkable</div>
+                              </div>
+                              <div>
+                                <div style={{ fontSize: '1.5rem', fontWeight: '700', color: securityColor }}>
+                                  {stats.securedAssets.toLocaleString()}
+                                </div>
+                                <div style={{ fontSize: '0.65rem', color: '#64748b' }}>secured</div>
+                              </div>
+                            </div>
+                            
+                            <div style={{ 
+                              padding: '0.5rem', 
+                              background: securityPercent >= 70 ? '#f0fdf4' : 
+                                          securityPercent >= 40 ? '#fffbeb' : '#fef2f2',
+                              borderRadius: '0.375rem',
+                              fontSize: '0.75rem',
+                              fontWeight: '600'
+                            }}>
+                              🔒 Security: <span style={{ color: securityColor }}>{securityPercent}%</span>
+                              {' • '}
+                              🔍 Discovery: {discoveryPercent}%
+                            </div>
                           </div>
-                          <div style={{ fontSize: '1.75rem', fontWeight: '700', color: '#10b981', marginBottom: '0.25rem' }}>
-                            {count.toLocaleString()}
-                          </div>
-                          <div style={{ fontSize: '0.75rem', color: '#64748b' }}>
-                            total assets in this area
-                          </div>
-                        </div>
-                      ))}
+                        )
+                      })}
                   </div>
                   <div style={{ 
                     marginTop: '1rem', 

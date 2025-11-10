@@ -817,12 +817,31 @@ export default async function handler(req, res) {
     const distributions = {
       processUnitDistribution: {},
       deviceTypeDistribution: {},
-      manufacturerDistribution: {}
+      manufacturerDistribution: {},
+      processUnitSecurity: {} // NEW: Security metrics BY LOCATION
     }
     
+    // Build security metrics by process unit
     allEngineering.forEach(asset => {
-      // Process Unit (where in the plant)
       const unit = asset.unit || 'Unknown'
+      const classification = classifyDeviceBySecurity(asset)
+      const isNetworkable = classification.tier === 1 || classification.tier === 2
+      
+      if (!distributions.processUnitSecurity[unit]) {
+        distributions.processUnitSecurity[unit] = {
+          totalAssets: 0,
+          networkableAssets: 0,
+          discoveredAssets: 0,
+          securedAssets: 0
+        }
+      }
+      
+      distributions.processUnitSecurity[unit].totalAssets++
+      if (isNetworkable) {
+        distributions.processUnitSecurity[unit].networkableAssets++
+      }
+      
+      // Process Unit (where in the plant)
       distributions.processUnitDistribution[unit] = (distributions.processUnitDistribution[unit] || 0) + 1
       
       // Device Type (what kind of asset)
@@ -832,6 +851,18 @@ export default async function handler(req, res) {
       // Manufacturer (who made it)
       const mfr = asset.manufacturer || 'Unknown'
       distributions.manufacturerDistribution[mfr] = (distributions.manufacturerDistribution[mfr] || 0) + 1
+    })
+    
+    // Count discovered and secured assets by unit
+    matchResults.matched.forEach(match => {
+      const unit = match.engineering.unit || 'Unknown'
+      if (distributions.processUnitSecurity[unit]) {
+        distributions.processUnitSecurity[unit].discoveredAssets++
+        
+        if (isTruthy(match.discovered?.is_managed)) {
+          distributions.processUnitSecurity[unit].securedAssets++
+        }
+      }
     })
     
     console.log('[FLEXIBLE API] Returning results:', kpis)

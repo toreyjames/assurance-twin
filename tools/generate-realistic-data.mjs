@@ -146,8 +146,8 @@ function generateDiscovery(engineeringAssets, coveragePercent = 0.67) {
   // Generate discovery records
   toDiscover.forEach((asset, idx) => {
     const isTier1 = deviceTypes.tier1.includes(asset.device_type);
-    const isManaged = isTier1 ? randomBoolean(80) : randomBoolean(50); // Higher management rates for realism
-    const hasPatches = isManaged ? randomBoolean(85) : false;
+    const isManaged = isTier1 ? randomBoolean(90) : randomBoolean(65); // MUCH higher for realism (35-40% overall)
+    const hasPatches = isManaged ? randomBoolean(90) : false;
     const vulnCount = isManaged ? random(0, 3) : random(2, 12);
     const cveCount = vulnCount > 0 ? random(0, Math.floor(vulnCount * 0.6)) : 0;
     
