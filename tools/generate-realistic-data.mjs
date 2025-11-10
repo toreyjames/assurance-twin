@@ -146,8 +146,8 @@ function generateDiscovery(engineeringAssets, coveragePercent = 0.67) {
   // Generate discovery records
   toDiscover.forEach((asset, idx) => {
     const isTier1 = deviceTypes.tier1.includes(asset.device_type);
-    const isManaged = isTier1 ? randomBoolean(95) : randomBoolean(75); // VERY high for mature OT program (40-45% overall)
-    const hasPatches = isManaged ? randomBoolean(92) : false;
+    const isManaged = isTier1 ? randomBoolean(95) : randomBoolean(85); // Increased for 35-40% overall coverage
+    const hasPatches = isManaged ? randomBoolean(95) : false;
     const vulnCount = isManaged ? random(0, 3) : random(2, 12);
     const cveCount = vulnCount > 0 ? random(0, Math.floor(vulnCount * 0.6)) : 0;
     

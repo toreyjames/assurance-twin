@@ -650,10 +650,29 @@ function generateLearningInsights(engineering, discovered, matchResults, dataSou
     })
   }
   
-  // Priority 4: Orphan devices (always important for security)
-  if (matchResults.orphanCount > 10) {
+  // Priority 4: Unknown manufacturers (critical blind spot!)
+  const unknownMfrCount = engineering.filter(a => !a.manufacturer || a.manufacturer.toLowerCase().includes('unknown')).length
+  const unknownNetworkable = engineeringClassified.filter(a => {
+    const isUnknown = !a.manufacturer || a.manufacturer.toLowerCase().includes('unknown')
+    return isUnknown && (a.securityClass.tier === 1 || a.securityClass.tier === 2)
+  }).length
+  
+  if (unknownMfrCount > 50 || (unknownNetworkable > 20 && unknownNetworkable / networkableAssets.length > 0.1)) {
     allRecommendations.push({
       priority: 4,
+      type: 'unknown_manufacturers',
+      severity: 'high',
+      message: `Identify ${unknownMfrCount} assets with "Unknown" manufacturer`,
+      detail: `You have ${unknownMfrCount} assets (${Math.round((unknownMfrCount / engineering.length) * 100)}% of inventory) with no manufacturer data, including ${unknownNetworkable} network-connected devices. Without manufacturer information, you cannot: apply vendor-specific patches, assess CVE risk, plan end-of-life replacements, or calculate spare parts inventory.`,
+      action: `Conduct physical asset audit for "Unknown" devices. Check asset nameplates, review P&ID drawings, interview maintenance technicians. Update CMMS/engineering records with manufacturer details.`,
+      impact: `High - Enables vulnerability management, patch planning, and vendor lifecycle tracking for ${unknownMfrCount} assets`
+    })
+  }
+  
+  // Priority 5: Orphan devices (always important for security)
+  if (matchResults.orphanCount > 10) {
+    allRecommendations.push({
+      priority: 5,
       type: 'orphan_investigation',
       severity: 'medium',
       message: `Investigate ${matchResults.orphanCount} orphan devices on network`,
@@ -855,15 +874,18 @@ export default async function handler(req, res) {
       processUnitDistribution: {},
       deviceTypeDistribution: {},
       manufacturerDistribution: {},
-      processUnitSecurity: {} // NEW: Security metrics BY LOCATION
+      processUnitSecurity: {}, // Security metrics BY LOCATION
+      manufacturerSecurity: {}  // Security metrics BY MANUFACTURER
     }
     
-    // Build security metrics by process unit
+    // Build security metrics by process unit AND manufacturer
     allEngineering.forEach(asset => {
       const unit = asset.unit || 'Unknown'
+      const mfr = asset.manufacturer || 'Unknown'
       const classification = classifyDeviceBySecurity(asset)
       const isNetworkable = classification.tier === 1 || classification.tier === 2
       
+      // Process Unit Security
       if (!distributions.processUnitSecurity[unit]) {
         distributions.processUnitSecurity[unit] = {
           totalAssets: 0,
@@ -878,6 +900,21 @@ export default async function handler(req, res) {
         distributions.processUnitSecurity[unit].networkableAssets++
       }
       
+      // Manufacturer Security
+      if (!distributions.manufacturerSecurity[mfr]) {
+        distributions.manufacturerSecurity[mfr] = {
+          totalAssets: 0,
+          networkableAssets: 0,
+          discoveredAssets: 0,
+          securedAssets: 0
+        }
+      }
+      
+      distributions.manufacturerSecurity[mfr].totalAssets++
+      if (isNetworkable) {
+        distributions.manufacturerSecurity[mfr].networkableAssets++
+      }
+      
       // Process Unit (where in the plant)
       distributions.processUnitDistribution[unit] = (distributions.processUnitDistribution[unit] || 0) + 1
       
@@ -886,18 +923,29 @@ export default async function handler(req, res) {
       distributions.deviceTypeDistribution[type] = (distributions.deviceTypeDistribution[type] || 0) + 1
       
       // Manufacturer (who made it)
-      const mfr = asset.manufacturer || 'Unknown'
       distributions.manufacturerDistribution[mfr] = (distributions.manufacturerDistribution[mfr] || 0) + 1
     })
     
-    // Count discovered and secured assets by unit
+    // Count discovered and secured assets by unit AND manufacturer
     matchResults.matched.forEach(match => {
       const unit = match.engineering.unit || 'Unknown'
+      const mfr = match.engineering.manufacturer || 'Unknown'
+      
+      // By Unit
       if (distributions.processUnitSecurity[unit]) {
         distributions.processUnitSecurity[unit].discoveredAssets++
         
         if (isTruthy(match.discovered?.is_managed)) {
           distributions.processUnitSecurity[unit].securedAssets++
+        }
+      }
+      
+      // By Manufacturer
+      if (distributions.manufacturerSecurity[mfr]) {
+        distributions.manufacturerSecurity[mfr].discoveredAssets++
+        
+        if (isTruthy(match.discovered?.is_managed)) {
+          distributions.manufacturerSecurity[mfr].securedAssets++
         }
       }
     })

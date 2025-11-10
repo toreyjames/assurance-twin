@@ -703,26 +703,45 @@ export default function FlexibleOilGasCanonizer() {
                   }}>
                     🏢 Who Makes Our Equipment?
                   </h4>
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '0.75rem' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '0.75rem' }}>
                     {Object.entries(result.distributions.manufacturerDistribution)
                       .sort(([, a], [, b]) => b - a)
                       .slice(0, 10)
-                      .map(([mfr, count]) => (
-                        <div key={mfr} style={{
-                          padding: '0.75rem 1rem',
-                          background: 'white',
-                          border: '1px solid #cbd5e1',
-                          borderRadius: '0.375rem',
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          alignItems: 'center'
-                        }}>
-                          <span style={{ fontSize: '0.875rem', color: '#475569', fontWeight: '500' }}>
-                            {mfr || 'Unknown'}
-                          </span>
-                          <strong style={{ fontSize: '1.125rem', color: '#8b5cf6' }}>{count.toLocaleString()}</strong>
-                        </div>
-                      ))}
+                      .map(([mfr, count]) => {
+                        const securityStats = result.distributions.manufacturerSecurity[mfr] || { totalAssets: 0, networkableAssets: 0, securedAssets: 0 }
+                        const securityPercent = securityStats.networkableAssets > 0 
+                          ? Math.round((securityStats.securedAssets / securityStats.networkableAssets) * 100)
+                          : 0
+                        const isUnknown = !mfr || mfr.toLowerCase().includes('unknown')
+                        
+                        return (
+                          <div key={mfr} style={{
+                            padding: '0.875rem',
+                            background: isUnknown ? '#fef3c7' : 'white',
+                            border: isUnknown ? '2px solid #f59e0b' : '1px solid #cbd5e1',
+                            borderRadius: '0.375rem'
+                          }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                              <span style={{ fontSize: '0.875rem', color: '#475569', fontWeight: '600' }}>
+                                {mfr || 'Unknown'} {isUnknown && '⚠️'}
+                              </span>
+                              <strong style={{ fontSize: '1rem', color: '#8b5cf6' }}>{count.toLocaleString()}</strong>
+                            </div>
+                            <div style={{ fontSize: '0.75rem', color: '#64748b', display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
+                              <span>Networkable:</span>
+                              <strong>{securityStats.networkableAssets.toLocaleString()}</strong>
+                            </div>
+                            <div style={{ fontSize: '0.75rem', color: '#64748b', display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
+                              <span>Secured:</span>
+                              <strong style={{ 
+                                color: securityPercent >= 80 ? '#10b981' : securityPercent >= 50 ? '#f59e0b' : '#ef4444' 
+                              }}>
+                                {securityStats.securedAssets.toLocaleString()} ({securityPercent}%)
+                              </strong>
+                            </div>
+                          </div>
+                        )
+                      })}
                   </div>
                   <div style={{ 
                     marginTop: '1rem', 
