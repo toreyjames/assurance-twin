@@ -346,8 +346,8 @@ export default function FlexibleOilGasCanonizer() {
                   <div style={{ fontSize: '2.5rem', fontWeight: '700', color: '#059669' }}>
                     {result.learningInsights.deviceClassification.totalAssets.toLocaleString()}
                   </div>
-                  <div style={{ fontSize: '0.875rem', color: '#10b981', marginTop: '0.5rem' }}>
-                    ✓ Complete visibility
+                  <div style={{ fontSize: '0.875rem', color: '#064e3b', marginTop: '0.5rem' }}>
+                    From engineering baseline
                   </div>
                 </div>
 
@@ -824,7 +824,7 @@ export default function FlexibleOilGasCanonizer() {
             </div>
           )}
 
-          {/* 🏭 PLANT COMPLETENESS & OPERATIONAL CONTEXT - The merged operational + cyber view */}
+          {/* 🏭 PLANT SECURITY POSTURE BY UNIT - Clean view of what's secured per unit */}
           {result.plantCompleteness && Object.keys(result.plantCompleteness).length > 0 && (
             <div style={{
               padding: '2rem',
@@ -834,10 +834,10 @@ export default function FlexibleOilGasCanonizer() {
               marginBottom: '2rem'
             }}>
               <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1.25rem', fontWeight: '700', color: '#0f172a' }}>
-                🏭 Plant Completeness & Operational Context
+                🏭 Plant Security Posture by Unit
               </h3>
               <p style={{ margin: '0 0 1.5rem 0', fontSize: '0.875rem', color: '#64748b' }}>
-                Operational Intelligence + Cyber Security = Context-Aware Defense. For each process unit, we analyze: Is it complete for production? What's the attack surface? Where are the gaps?
+                Security status for each process unit. Shows total assets, networkable devices, and how many are secured.
               </p>
 
               {/* Process Unit Cards */}
@@ -845,25 +845,19 @@ export default function FlexibleOilGasCanonizer() {
                 {Object.entries(result.plantCompleteness)
                   .filter(([_, unit]) => unit.canAssess) // Only show units we can assess
                   .sort((a, b) => {
-                    // Sort by operational risk (HIGH first)
-                    const riskOrder = { HIGH: 0, MEDIUM: 1, LOW: 2, UNKNOWN: 3 }
-                    return riskOrder[a[1].operationalRisk] - riskOrder[b[1].operationalRisk]
+                    // Sort by security percentage (lowest first - needs attention)
+                    return a[1].securityMetrics.securityPercent - b[1].securityMetrics.securityPercent
                   })
                   .map(([unitName, unit]) => {
-                    const completenessColor = unit.completenessScore >= 85 ? '#10b981' :
-                                             unit.completenessScore >= 70 ? '#f59e0b' : '#ef4444'
-                    const opRiskColor = unit.operationalRisk === 'HIGH' ? '#ef4444' :
-                                        unit.operationalRisk === 'MEDIUM' ? '#f59e0b' : '#10b981'
-                    const cyberRiskColor = unit.cyberRisk === 'HIGH' ? '#ef4444' :
-                                          unit.cyberRisk === 'MEDIUM' ? '#f59e0b' : '#10b981'
-                    
-                    const criticalGaps = unit.analysis.gaps.filter(g => g.criticality === 'CRITICAL')
+                    const securityPercent = unit.securityMetrics.securityPercent
+                    const securityColor = securityPercent >= 70 ? '#10b981' :
+                                         securityPercent >= 40 ? '#f59e0b' : '#ef4444'
                     
                     return (
                       <div key={unitName} style={{
                         padding: '1.5rem',
-                        background: unit.operationalRisk === 'HIGH' || unit.cyberRisk === 'HIGH' ? '#fef2f2' : '#f8fafc',
-                        border: `2px solid ${unit.operationalRisk === 'HIGH' || unit.cyberRisk === 'HIGH' ? '#ef4444' : '#cbd5e1'}`,
+                        background: '#f8fafc',
+                        border: '1px solid #cbd5e1',
                         borderRadius: '0.5rem'
                       }}>
                         {/* Header */}
@@ -876,96 +870,47 @@ export default function FlexibleOilGasCanonizer() {
                           </div>
                         </div>
 
-                        {/* Metrics Grid */}
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1rem', marginBottom: '1rem' }}>
-                          {/* Operational Completeness */}
+                        {/* Security Metrics Grid */}
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
+                          {/* Total Assets */}
                           <div style={{ padding: '0.75rem', background: 'white', borderRadius: '0.375rem', border: '1px solid #e2e8f0' }}>
                             <div style={{ fontSize: '0.7rem', color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase', fontWeight: '600' }}>
-                              🏭 Operational Completeness
+                              📦 Total Assets
                             </div>
-                            <div style={{ fontSize: '1.5rem', fontWeight: '700', color: completenessColor }}>
-                              {unit.completenessScore}%
+                            <div style={{ fontSize: '1.5rem', fontWeight: '700', color: '#64748b' }}>
+                              {unit.totalAssets.toLocaleString()}
                             </div>
                             <div style={{ fontSize: '0.65rem', color: '#64748b' }}>
-                              {unit.totalAssets} assets vs {unit.totalExpected} expected
+                              In this process unit
                             </div>
                           </div>
 
-                          {/* Operational Risk */}
+                          {/* Networkable Assets */}
                           <div style={{ padding: '0.75rem', background: 'white', borderRadius: '0.375rem', border: '1px solid #e2e8f0' }}>
                             <div style={{ fontSize: '0.7rem', color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase', fontWeight: '600' }}>
-                              ⚠️ Operational Risk
+                              🌐 Networkable Assets
                             </div>
-                            <div style={{ fontSize: '1.5rem', fontWeight: '700', color: opRiskColor }}>
-                              {unit.operationalRisk}
+                            <div style={{ fontSize: '1.5rem', fontWeight: '700', color: '#3b82f6' }}>
+                              {unit.securityMetrics.networkableAssets.toLocaleString()}
                             </div>
                             <div style={{ fontSize: '0.65rem', color: '#64748b' }}>
-                              {criticalGaps.length > 0 ? `${criticalGaps.length} critical gap(s)` : 'No critical gaps'}
+                              Have IP addresses / network connectivity
                             </div>
                           </div>
 
-                          {/* Cyber Security Posture */}
+                          {/* Secured Assets */}
                           <div style={{ padding: '0.75rem', background: 'white', borderRadius: '0.375rem', border: '1px solid #e2e8f0' }}>
                             <div style={{ fontSize: '0.7rem', color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase', fontWeight: '600' }}>
-                              🔒 Security Posture
+                              🔒 Secured Assets
                             </div>
-                            <div style={{ fontSize: '1.5rem', fontWeight: '700', color: cyberRiskColor }}>
-                              {unit.securityMetrics.securityPercent}%
-                            </div>
-                            <div style={{ fontSize: '0.65rem', color: '#64748b' }}>
-                              {unit.securityMetrics.securedAssets} / {unit.securityMetrics.networkableAssets} networkable secured
-                            </div>
-                          </div>
-
-                          {/* Cyber Risk */}
-                          <div style={{ padding: '0.75rem', background: 'white', borderRadius: '0.375rem', border: '1px solid #e2e8f0' }}>
-                            <div style={{ fontSize: '0.7rem', color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase', fontWeight: '600' }}>
-                              🎯 Cyber Risk Level
-                            </div>
-                            <div style={{ fontSize: '1.5rem', fontWeight: '700', color: cyberRiskColor }}>
-                              {unit.cyberRisk}
+                            <div style={{ fontSize: '1.5rem', fontWeight: '700', color: securityColor }}>
+                              {unit.securityMetrics.securedAssets.toLocaleString()}
                             </div>
                             <div style={{ fontSize: '0.65rem', color: '#64748b' }}>
-                              {unit.cyberRisk === 'HIGH' ? 'Wide open to attack' : unit.cyberRisk === 'MEDIUM' ? 'Needs improvement' : 'Well protected'}
+                              {unit.securityMetrics.securityPercent}% of networkable are managed
                             </div>
                           </div>
                         </div>
-
-                        {/* Merged Recommendation */}
-                        {(unit.operationalRisk !== 'LOW' || unit.cyberRisk !== 'LOW') && (
-                          <div style={{ padding: '1rem', background: '#fff7ed', border: '1px solid #f59e0b', borderRadius: '0.375rem' }}>
-                            <div style={{ fontSize: '0.75rem', fontWeight: '700', color: '#92400e', marginBottom: '0.5rem' }}>
-                              🎯 MERGED RECOMMENDATION (Plant Manager + CISO):
-                            </div>
-                            <div style={{ fontSize: '0.75rem', color: '#78350f', lineHeight: '1.6' }}>
-                              {criticalGaps.length > 0 && (
-                                <>
-                                  <strong>Operations:</strong> Missing {criticalGaps.length} critical equipment type(s) ({criticalGaps.map(g => g.deviceType).join(', ')}). 
-                                  {criticalGaps.some(g => g.severity === 'CRITICAL') ? ' ⚠️ Cannot operate safely without these assets.' : ' Verify data completeness.'}
-                                  <br />
-                                </>
-                              )}
-                              {unit.cyberRisk === 'HIGH' && (
-                                <>
-                                  <strong>Cyber:</strong> Only {unit.securityMetrics.securityPercent}% of networkable devices are secured. 
-                                  {unit.completenessScore >= 85 
-                                    ? ` This unit is operational but vulnerable - ransomware could shut down production.`
-                                    : ` Data gaps + poor security = high risk of undetected compromise.`
-                                  }
-                                  <br />
-                                </>
-                              )}
-                              {unit.analysis.unknowns.length > 0 && (
-                                <>
-                                  <strong>Unknown Devices:</strong> {unit.analysis.unknowns.length} devices couldn't be classified. 
-                                  {unit.analysis.unknowns.filter(u => u.confidence !== 'LOW').length > 0 
-                                    ? ` AI suggests: ${unit.analysis.unknowns.filter(u => u.confidence !== 'LOW').slice(0, 2).map(u => u.inferredType).join(', ')}.`
-                                    : ' Conduct physical audit to identify these assets.'}
-                                </>
-                              )}
-                            </div>
-                          </div>
-                        )}
                       </div>
                     )
                   })}
