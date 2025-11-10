@@ -256,8 +256,8 @@ function generateDataset(name, engineeringCount, siteCount = 1) {
 // Generate all three datasets
 console.log('Generating realistic OT datasets...\n');
 
-generateDataset('demo', 200, 1);           // Quick demo - 200 assets, 1 site (fits Vercel limits)
-generateDataset('medium', 1500, 1);        // Medium refinery - 1,500 assets, 1 site (fits Vercel limits)
+generateDataset('demo', 500, 1);           // Quick demo - 500 assets, 1 site (for testing)
+generateDataset('medium', 6500, 1);        // REALISTIC medium refinery - 6,500 assets (150k bpd) - MAX SIZE for Vercel
 generateDataset('enterprise', 25000, 3);   // Large enterprise - 25,000 assets, 3 sites (local only)
 
 console.log('✓ All datasets generated successfully!');

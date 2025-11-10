@@ -11,7 +11,7 @@ const readFileText = (file) => new Promise((resolve, reject) => {
 
 // FLEXIBLE Multi-File Upload Component
 function MultiFileUpload({ label, description, files, setFiles, accept = ".csv" }) {
-  const MAX_FILE_SIZE = 512 * 1024 // 512 KB per file (safe for Vercel)
+  const MAX_FILE_SIZE = 600 * 1024 // 600 KB per file (allows 6,500 asset refinery)
   
   const formatFileSize = (bytes) => {
     if (bytes < 1024) return bytes + ' B'
@@ -190,14 +190,14 @@ export default function FlexibleOilGasCanonizer() {
         fontSize: '0.875rem',
         color: '#166534'
       }}>
-        ✅ <strong>Recommended Datasets:</strong> Use <strong>Demo (200 assets)</strong> for quick demos or <strong>Medium (1,500 assets)</strong> for client presentations. 
+        ✅ <strong>Demo-Ready:</strong> Use <strong>Medium (6,500 assets)</strong> - realistic 150,000 bpd refinery scale. 
         Find sample files in: 
         <code style={{ background: '#fff', padding: '0.125rem 0.375rem', borderRadius: '0.25rem', margin: '0 0.25rem' }}>
           public/samples/demo/oil-gas/
         </code>
         <br />
         <span style={{ fontSize: '0.8rem', marginTop: '0.5rem', display: 'inline-block' }}>
-          ❌ Enterprise (25,000 assets) is too large for hosted demos - use locally only.
+          💡 Demo (500): quick test | Medium (6,500): realistic refinery | Enterprise (25K): local only
         </span>
       </div>
       

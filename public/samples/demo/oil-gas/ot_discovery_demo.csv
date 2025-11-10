@@ -1,25 +1,55 @@
 ip_address,hostname,mac_address,device_type,manufacturer,model,is_managed,has_security_patches,encryption_enabled,authentication_required,firewall_protected,access_control,vulnerabilities,cve_count,last_seen,confidence_level,firmware_version,protocol
-192.168.62.128,DEVICE-192-168-62-128,4E:25:38:4B:21:24,Safety_Controller,Siemens,Safety_Controller-292,false,false,false,false,false,None,5,1,2025-11-06,78,R4.03,Unknown
-192.168.156.96,VFD-0045,30:29:16:32:4B:3A,VFD,ABB,VFD-683,true,true,false,false,false,Role-Based,0,0,2025-11-05,64,v2.8.3,BACnet
-192.168.112.166,,40:62:31:26:3D:4B,Smart_Transmitter,Rosemount,Smart_Transmitter-354,false,false,false,false,true,None,11,1,2025-11-08,99,v2.8.1,Unknown
-192.168.89.192,VFD-0070,4E:1D:40:24:12:45,VFD,Siemens,VFD-969,false,false,false,true,false,None,5,2,2025-11-04,60,Unknown,HART-IP
-192.168.125.171,Prot-0055,59:1E:17:32:36:4E,Protocol_Converter,Emerson,Protocol_Converter-242,false,false,false,false,false,None,6,2,2025-11-06,91,v14.3,Modbus TCP
-192.168.25.102,,33:1F:3C:1A:2D:11,Analyzer,Siemens,Analyzer-395,true,true,false,false,true,Role-Based,3,0,2025-11-08,60,v2.8.1,HART-IP
-192.168.225.161,Anal-0032,50:4D:5E:A:54:37,Analyzer,Schneider,Analyzer-243,false,false,true,false,false,None,4,1,2025-11-07,81,R4.03,HART-IP
-192.168.147.45,VFD-0030,49:58:3B:5C:60:19,VFD,ABB,VFD-820,false,false,false,true,false,None,7,3,2025-11-04,81,v20.19,Modbus TCP
-192.168.161.47,DEVICE-192-168-161-47,55:11:12:38:E:25,Smart_Transmitter,Emerson,Smart_Transmitter-288,false,false,false,true,false,None,2,0,2025-11-02,60,v5.0,Modbus TCP
-192.168.140.139,,28:4B:51:5A:3C:59,Controller,Siemens,Model-6768,true,true,false,true,true,Role-Based,2,0,2025-11-07,64,v20.19,Proprietary
-192.168.169.231,,35:57:3E:38:30:49,Gateway,Rosemount,Gateway-340,true,true,false,false,false,Basic,1,0,2025-11-03,93,v2.8.1,BACnet
-192.168.177.205,DEVICE-192-168-177-205,A:3D:4E:3E:25:4F,VFD,Siemens,VFD-994,true,true,true,true,true,Role-Based,0,0,2025-11-09,99,R4.03,HART-IP
-192.168.88.97,DEVICE-192-168-88-97,57:5B:3E:63:22:44,IP_Camera,ABB,IP_Camera-199,true,true,false,false,true,Role-Based,2,0,2025-11-03,70,v2.8.1,HART-IP
-192.168.13.140,DEVICE-192-168-13-140,55:22:2E:5E:3C:5B,Gateway,Emerson,Gateway-482,false,false,false,false,true,None,5,0,2025-11-02,83,v21.11,Unknown
-192.168.215.15,Smar-0054,57:21:2E:4F:31:31,Smart_Transmitter,ABB,Smart_Transmitter-838,false,false,false,true,true,None,4,2,2025-11-02,63,v2.8.3,Modbus TCP
-192.168.88.11,,62:1B:22:2A:27:4E,Switch,Yokogawa,Switch-371,false,false,false,false,false,None,6,3,2025-11-06,93,v21.11,BACnet
-192.168.97.44,DEVICE-192-168-97-44,5E:1D:38:5C:5F:36,IP_Camera,Rosemount,IP_Camera-255,false,false,false,true,true,None,2,0,2025-11-02,93,v2.8.1,Unknown
-192.168.106.213,DEVICE-192-168-106-213,4E:2F:F:58:27:48,Protocol_Converter,Siemens,Protocol_Converter-997,false,false,false,true,true,None,2,1,2025-11-07,71,R511.5,Unknown
-192.168.93.157,DEVICE-192-168-93-157,43:37:52:B:1A:55,Switch,Rosemount,Switch-250,false,false,false,false,true,None,8,1,2025-11-09,95,v21.11,HART-IP
-192.168.203.105,,45:19:61:53:57:26,DCS,Schneider,Model-3971,false,false,false,true,false,None,5,0,2025-11-08,75,v2.8.1,Modbus TCP
-192.168.177.42,DEVICE-192-168-177-42,36:50:5E:3D:2E:61,Switch,Yokogawa,Switch-837,false,false,false,false,false,None,9,4,2025-11-02,87,v14.3,BACnet
-192.168.144.11,DEVICE-192-168-144-11,5F:4A:2E:18:47:15,VFD,Siemens,VFD-386,false,false,false,false,true,None,7,0,2025-11-03,97,v2.8.1,BACnet
-192.168.46.67,DEVICE-192-168-46-67,1D:1C:2C:C:2E:61,Smart_Transmitter,Generic,Unknown,false,false,false,false,true,None,5,1,2025-11-08,62,R4.03,BACnet
-192.168.79.164,CONTRACTOR-47,60:55:1F:5C:39:26,Unknown,Unknown,Unknown,false,false,false,false,false,None,21,6,2025-09-12,46,Unknown,Unknown
+192.168.41.157,Anal-0095,58:23:40:10:A:60,Analyzer,Emerson,Analyzer-996,false,false,true,false,true,None,8,1,2025-11-10,97,Unknown,Unknown
+192.168.124.26,DEVICE-192-168-124-26,48:1D:4B:1D:C:31,IP_Camera,Schneider,IP_Camera-286,true,true,false,false,true,Basic,3,1,2025-11-09,64,R4.03,BACnet
+192.168.211.66,,2F:3E:27:A:61:61,Gateway,Yokogawa,Gateway-175,true,true,false,false,false,Basic,3,1,2025-11-09,68,v20.19,BACnet
+192.168.50.142,DEVICE-192-168-50-142,26:29:2E:4F:38:27,Protocol_Converter,Schneider,Protocol_Converter-777,true,true,false,false,false,Basic,0,0,2025-11-08,77,v2.8.1,BACnet
+192.168.66.221,DEVICE-192-168-66-221,E:1D:2D:62:5E:25,IP_Camera,Emerson,IP_Camera-623,false,false,true,true,true,None,5,0,2025-11-05,71,v4.5.2,Modbus TCP
+192.168.138.140,Anal-0125,1E:5A:44:28:48:54,Analyzer,Emerson,Analyzer-183,true,true,false,false,true,Basic,0,0,2025-11-09,74,v5.0,HART-IP
+192.168.84.88,Gate-0121,39:4D:53:2F:15:33,Gateway,Generic,Unknown,true,true,false,true,true,Basic,0,0,2025-11-08,89,v14.3,BACnet
+192.168.165.238,DEVICE-192-168-165-238,11:3E:1E:24:54:2C,Controller,GE,Model-4787,true,false,false,true,true,Role-Based,1,0,2025-11-06,83,v4.5.2,EtherNet/IP
+192.168.67.108,DEVICE-192-168-67-108,3B:23:11:2D:31:56,Switch,Rosemount,Switch-868,false,false,false,true,false,None,10,1,2025-11-07,94,R4.03,HART-IP
+192.168.73.201,Smar-0082,A:33:3D:3C:27:56,Smart_Transmitter,Siemens,Smart_Transmitter-729,false,false,false,false,true,None,11,5,2025-11-05,96,R4.03,HART-IP
+192.168.34.33,Anal-0080,23:5C:20:63:4E:2D,Analyzer,Siemens,Analyzer-590,false,false,false,true,false,None,10,1,2025-11-04,81,v1.2.3,BACnet
+192.168.206.75,,50:38:32:1D:32:48,HMI,Generic,Unknown,false,false,false,true,false,None,11,1,2025-11-05,80,v14.3,EtherNet/IP
+192.168.35.61,Anal-0158,44:A:51:5D:36:33,Analyzer,Endress+Hauser,Analyzer-733,false,false,false,false,true,None,10,2,2025-11-10,88,v4.5.2,Modbus TCP
+192.168.104.69,Smar-0113,54:57:32:28:24:49,Smart_Transmitter,ABB,Smart_Transmitter-892,false,false,false,false,true,None,5,0,2025-11-09,95,v2.8.1,BACnet
+192.168.13.196,RTU-005,3F:16:37:34:4C:34,RTU,Siemens,Model-4500,true,true,false,true,true,Basic,2,0,2025-11-07,86,Unknown,Proprietary
+192.168.227.78,,4D:1D:27:59:4F:19,VFD,Schneider,VFD-638,false,false,false,true,true,None,8,0,2025-11-10,81,v5.0,HART-IP
+192.168.180.144,,5F:5B:54:25:58:40,VFD,Yokogawa,VFD-749,true,true,true,false,true,Basic,0,0,2025-11-04,71,R4.03,BACnet
+192.168.44.81,,49:B:55:46:4F:53,Gateway,Rosemount,Gateway-855,false,false,false,false,true,None,10,2,2025-11-03,69,v21.11,BACnet
+192.168.124.114,DEVICE-192-168-124-114,26:21:14:45:51:37,Analyzer,ABB,Analyzer-783,false,false,false,false,true,None,5,2,2025-11-08,61,v1.2.3,Unknown
+192.168.139.15,DEVICE-192-168-139-15,23:56:35:25:57:2B,Protocol_Converter,Yokogawa,Protocol_Converter-489,true,true,false,false,true,Basic,2,0,2025-11-10,88,R511.5,Unknown
+192.168.137.228,VFD-0119,1C:1B:3F:E:42:17,VFD,Siemens,VFD-349,false,false,false,true,true,None,7,2,2025-11-04,61,v14.3,Unknown
+192.168.92.113,Smar-0063,16:B:10:26:62:A,Smart_Transmitter,Schneider,Smart_Transmitter-970,false,false,false,false,false,None,7,0,2025-11-08,86,v20.19,Modbus TCP
+192.168.115.145,DEVICE-192-168-115-145,5B:5A:49:15:B:29,IP_Camera,Endress+Hauser,IP_Camera-898,true,true,false,true,true,Role-Based,0,0,2025-11-06,84,v5.0,Modbus TCP
+192.168.193.52,DEVICE-192-168-193-52,2E:50:5D:D:A:23,SCADA,Yokogawa,Model-2654,true,true,false,true,true,Basic,2,0,2025-11-10,71,v21.11,Modbus TCP
+192.168.59.43,DEVICE-192-168-59-43,5C:2A:1F:53:30:19,Server,Siemens,Model-7011,true,true,true,true,false,Basic,0,0,2025-11-09,95,v4.5.2,Proprietary
+192.168.218.17,,18:40:5A:5A:4A:5E,Switch,Siemens,Switch-667,false,false,false,true,true,None,3,1,2025-11-10,85,v2.8.3,HART-IP
+192.168.42.31,,16:2E:62:52:32:2B,Smart_Transmitter,Siemens,Smart_Transmitter-194,true,true,false,true,true,Role-Based,1,0,2025-11-10,92,v3.1.0,BACnet
+192.168.28.88,DEVICE-192-168-28-88,30:3A:21:39:40:2B,Safety_Controller,ABB,Safety_Controller-474,false,false,false,true,false,None,11,2,2025-11-10,99,R4.03,BACnet
+192.168.130.144,DEVICE-192-168-130-144,2C:61:1E:39:3A:56,Protocol_Converter,Rosemount,Protocol_Converter-500,false,false,true,false,true,None,8,1,2025-11-04,85,R511.5,Modbus TCP
+192.168.87.80,DEVICE-192-168-87-80,51:55:47:47:34:1D,Smart_Transmitter,Schneider,Smart_Transmitter-698,false,false,false,false,true,None,2,0,2025-11-08,66,v2.8.3,HART-IP
+192.168.88.203,,45:2F:16:51:4A:26,Analyzer,Schneider,Analyzer-223,true,true,false,false,true,Role-Based,0,0,2025-11-06,85,v5.0,BACnet
+192.168.98.21,DEVICE-192-168-98-21,32:16:59:23:39:44,VFD,Schneider,VFD-654,false,false,false,false,true,None,8,4,2025-11-07,87,v14.3,HART-IP
+192.168.102.157,Gate-0131,18:57:1B:3E:3C:32,Gateway,Rosemount,Gateway-251,false,false,false,false,false,None,7,2,2025-11-06,100,v2.8.1,HART-IP
+192.168.169.119,DEVICE-192-168-169-119,3A:58:19:5B:4B:41,Analyzer,Emerson,Analyzer-151,false,false,false,false,false,None,6,2,2025-11-03,71,v16.0,BACnet
+192.168.199.59,DEVICE-192-168-199-59,4D:36:F:41:3B:11,IP_Camera,Endress+Hauser,IP_Camera-585,false,false,false,true,false,None,12,6,2025-11-05,82,v5.0,BACnet
+192.168.65.110,Gate-0096,43:12:F:19:5A:55,Gateway,Endress+Hauser,Gateway-500,false,false,false,false,true,None,11,6,2025-11-07,76,v14.3,Modbus TCP
+192.168.224.84,,45:3E:57:39:34:4C,Analyzer,Unknown,Unknown,false,false,false,false,true,None,2,0,2025-11-03,84,v4.5.2,BACnet
+192.168.212.211,,31:35:A:B:37:5D,Switch,Endress+Hauser,Switch-523,true,true,false,true,false,Role-Based,0,0,2025-11-08,85,v3.1.0,Unknown
+192.168.194.104,,19:2A:57:40:51:3A,Gateway,Schneider,Gateway-593,true,false,false,false,false,Role-Based,0,0,2025-11-05,82,v16.0,Unknown
+192.168.213.250,,12:F:61:21:5A:38,Protocol_Converter,Emerson,Protocol_Converter-658,true,true,true,true,false,Basic,1,0,2025-11-08,80,v1.2.3,HART-IP
+192.168.240.88,DEVICE-192-168-240-88,33:1A:15:63:14:11,Smart_Transmitter,Unknown,Unknown,true,true,false,true,true,Basic,1,0,2025-11-06,91,v16.0,Modbus TCP
+192.168.39.69,PLC-017,2E:53:26:53:5C:4D,PLC,Allen-Bradley,Model-1309,true,true,true,true,true,Basic,2,0,2025-11-10,88,R4.03,EtherNet/IP
+192.168.172.227,,58:40:4C:12:22:60,Smart_Transmitter,Yokogawa,Smart_Transmitter-583,false,false,false,false,true,None,3,0,2025-11-08,79,v16.0,Modbus TCP
+192.168.113.61,PLC-009,18:49:3D:41:62:46,PLC,ABB,Model-9867,false,false,true,true,false,None,12,5,2025-11-05,94,v2.8.3,Proprietary
+192.168.55.202,,48:12:53:22:E:15,Smart_Transmitter,Yokogawa,Smart_Transmitter-103,false,false,false,true,true,None,7,2,2025-11-06,77,v3.1.0,BACnet
+192.168.81.221,,1D:35:16:5E:4C:1C,Controller,GE,Model-1655,true,true,false,true,true,Role-Based,0,0,2025-11-07,92,v3.1.0,Profinet
+192.168.74.245,DEVICE-192-168-74-245,1E:43:36:49:33:26,Safety_Controller,Emerson,Safety_Controller-550,false,false,false,false,false,None,7,4,2025-11-08,97,R511.5,BACnet
+192.168.208.15,DEVICE-192-168-208-15,42:45:4E:2F:2E:3F,Engineering_Workstation,ABB,Model-9060,true,true,true,true,false,Role-Based,2,0,2025-11-05,66,v2.8.3,Profinet
+192.168.237.184,DEVICE-192-168-237-184,4A:50:4D:63:16:49,Smart_Transmitter,ABB,Smart_Transmitter-881,false,false,false,false,false,None,10,4,2025-11-08,65,v21.11,BACnet
+192.168.104.66,DCS-010,21:26:31:40:53:5B,DCS,GE,Model-6969,false,false,true,true,true,None,8,3,2025-11-08,81,v1.2.3,Proprietary
+192.168.52.193,,40:3E:3A:45:52:22,Unknown,Unknown,Unknown,false,false,false,false,false,None,4,2,2025-10-19,37,Unknown,Unknown
+192.168.91.137,CONTRACTOR-89,4E:15:5F:1C:2A:52,Unknown,Unknown,Unknown,false,false,false,false,false,None,20,13,2025-10-09,26,Unknown,Unknown
+192.168.77.178,CONTRACTOR-9,3C:32:42:40:21:1D,Unknown,Unknown,Unknown,false,false,false,false,false,None,12,13,2025-09-21,33,Unknown,Unknown
+192.168.98.89,,2B:4D:27:1F:31:58,Unknown,Unknown,Unknown,false,false,false,false,false,None,2,1,2025-09-16,37,Unknown,Unknown
