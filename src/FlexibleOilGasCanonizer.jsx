@@ -314,6 +314,179 @@ export default function FlexibleOilGasCanonizer() {
             </div>
           </div>
 
+          {/* 🔍 VALIDATION & AUDIT SECTION (CROSS-VALIDATION) */}
+          {result.validationSummary && (
+            <div style={{
+              padding: '2rem',
+              background: 'white',
+              border: '3px solid #8b5cf6',
+              borderRadius: '0.75rem',
+              marginBottom: '2rem'
+            }}>
+              <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1.25rem', fontWeight: '700', color: '#0f172a' }}>
+                🔍 Match Validation & Audit
+              </h3>
+              <p style={{ margin: '0 0 1.5rem 0', fontSize: '0.875rem', color: '#64748b' }}>
+                Cross-validation checks how many fields agree between engineering baseline and OT discovery data.
+                High confidence = multiple sources agree. Low confidence = requires human review.
+              </p>
+
+              {/* Validation Summary */}
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginBottom: '1.5rem' }}>
+                <div style={{
+                  padding: '1rem',
+                  background: '#f0fdf4',
+                  border: '2px solid #10b981',
+                  borderRadius: '0.5rem'
+                }}>
+                  <div style={{ fontSize: '0.75rem', color: '#64748b', marginBottom: '0.25rem' }}>
+                    ✅ HIGH CONFIDENCE
+                  </div>
+                  <div style={{ fontSize: '2rem', fontWeight: '700', color: '#10b981' }}>
+                    {result.validationSummary.highConfidence.toLocaleString()}
+                  </div>
+                  <div style={{ fontSize: '0.75rem', color: '#64748b' }}>
+                    Multiple sources agree
+                  </div>
+                </div>
+
+                <div style={{
+                  padding: '1rem',
+                  background: '#fffbeb',
+                  border: '2px solid #f59e0b',
+                  borderRadius: '0.5rem'
+                }}>
+                  <div style={{ fontSize: '0.75rem', color: '#64748b', marginBottom: '0.25rem' }}>
+                    ⚠️ MEDIUM CONFIDENCE
+                  </div>
+                  <div style={{ fontSize: '2rem', fontWeight: '700', color: '#f59e0b' }}>
+                    {result.validationSummary.mediumConfidence.toLocaleString()}
+                  </div>
+                  <div style={{ fontSize: '0.75rem', color: '#64748b' }}>
+                    Single source match
+                  </div>
+                </div>
+
+                <div style={{
+                  padding: '1rem',
+                  background: '#fef2f2',
+                  border: '2px solid #ef4444',
+                  borderRadius: '0.5rem'
+                }}>
+                  <div style={{ fontSize: '0.75rem', color: '#64748b', marginBottom: '0.25rem' }}>
+                    🔴 LOW CONFIDENCE
+                  </div>
+                  <div style={{ fontSize: '2rem', fontWeight: '700', color: '#ef4444' }}>
+                    {result.validationSummary.lowConfidence.toLocaleString()}
+                  </div>
+                  <div style={{ fontSize: '0.75rem', color: '#64748b' }}>
+                    Needs human review
+                  </div>
+                </div>
+
+                <div style={{
+                  padding: '1rem',
+                  background: '#f8fafc',
+                  border: '2px solid #64748b',
+                  borderRadius: '0.5rem'
+                }}>
+                  <div style={{ fontSize: '0.75rem', color: '#64748b', marginBottom: '0.25rem' }}>
+                    👁️ TOTAL NEEDS REVIEW
+                  </div>
+                  <div style={{ fontSize: '2rem', fontWeight: '700', color: '#64748b' }}>
+                    {result.validationSummary.needsReview.toLocaleString()}
+                  </div>
+                  <div style={{ fontSize: '0.75rem', color: '#64748b' }}>
+                    Manual validation recommended
+                  </div>
+                </div>
+              </div>
+
+              {/* Audit Details */}
+              <div style={{ 
+                padding: '1rem', 
+                background: '#eff6ff', 
+                border: '1px solid #3b82f6',
+                borderRadius: '0.5rem',
+                marginBottom: '1rem'
+              }}>
+                <h4 style={{ margin: '0 0 0.5rem 0', fontSize: '0.875rem', fontWeight: '700', color: '#1e40af' }}>
+                  📋 Validation Criteria
+                </h4>
+                <div style={{ fontSize: '0.75rem', color: '#1e40af', lineHeight: '1.6' }}>
+                  • <strong>High Confidence:</strong> 3+ fields agree OR exact tag_id + 2 other fields<br />
+                  • <strong>Medium Confidence:</strong> 1+ fields agree OR matched by IP/hostname<br />
+                  • <strong>Low Confidence:</strong> Fuzzy/intelligent matching, minimal agreement
+                </div>
+              </div>
+
+              {/* Quick Actions */}
+              <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+                <button
+                  onClick={() => {
+                    const lowConf = result.assets.filter(a => a.validation.level === 'low')
+                    console.log('Low confidence matches:', lowConf)
+                    alert(`${lowConf.length} low confidence matches logged to console for review`)
+                  }}
+                  style={{
+                    padding: '0.75rem 1.5rem',
+                    background: '#ef4444',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '0.5rem',
+                    fontSize: '0.875rem',
+                    fontWeight: '600',
+                    cursor: 'pointer'
+                  }}
+                >
+                  🔴 Export Low Confidence Matches
+                </button>
+
+                {result.blindSpots && result.blindSpots.length > 0 && (
+                  <button
+                    onClick={() => {
+                      console.log('Blind spots (not discovered):', result.blindSpots)
+                      alert(`${result.kpis.blind_spots} blind spots logged to console (showing first 100)`)
+                    }}
+                    style={{
+                      padding: '0.75rem 1.5rem',
+                      background: '#f59e0b',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '0.5rem',
+                      fontSize: '0.875rem',
+                      fontWeight: '600',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    ⚠️ Export Blind Spots ({result.kpis.blind_spots})
+                  </button>
+                )}
+
+                {result.orphans && result.orphans.length > 0 && (
+                  <button
+                    onClick={() => {
+                      console.log('Orphan devices (no engineering match):', result.orphans)
+                      alert(`${result.kpis.orphan_assets} orphans logged to console (showing first 100)`)
+                    }}
+                    style={{
+                      padding: '0.75rem 1.5rem',
+                      background: '#8b5cf6',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '0.5rem',
+                      fontSize: '0.875rem',
+                      fontWeight: '600',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    👁️ Export Orphan Devices ({result.kpis.orphan_assets})
+                  </button>
+                )}
+              </div>
+            </div>
+          )}
+
           {/* 1️⃣ COMPLETE ASSET INVENTORY & SECURITY POSTURE (FIRST!) */}
           {result.learningInsights?.deviceClassification && (
             <div style={{

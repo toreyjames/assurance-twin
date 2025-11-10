@@ -774,25 +774,62 @@ export default async function handler(req, res) {
     // Perform flexible matching
     const matchResults = performFlexibleMatching(allEngineering, allOtDiscovery)
     
-    // Build canonical assets
-    const canonicalAssets = matchResults.matched.map(({ engineering, discovered, matchType, matchConfidence }) => ({
-      tag_id: engineering.tag_id || discovered.tag_id || 'UNKNOWN',
-      ip_address: discovered.ip_address || engineering.ip_address || '',
-      hostname: discovered.hostname || engineering.hostname || '',
-      mac_address: discovered.mac_address || engineering.mac_address || '',
-      plant: engineering.plant || discovered.plant || 'Unknown',
-      unit: engineering.unit || discovered.unit || 'Unknown',
-      device_type: engineering.device_type || discovered.device_type || 'Unknown',
-      manufacturer: engineering.manufacturer || discovered.manufacturer || 'Unknown',
-      model: engineering.model || discovered.model || 'Unknown',
-      match_type: matchType,
-      match_confidence: matchConfidence,
-      last_seen: discovered.last_seen || '',
-      _sources: {
-        engineering: engineering._source,
-        discovered: discovered._source
+    // Build canonical assets WITH CROSS-VALIDATION
+    const canonicalAssets = matchResults.matched.map(({ engineering, discovered, matchType, matchConfidence }) => {
+      // Cross-validation: Check how many fields agree between sources
+      const validationChecks = {
+        tag_id: Boolean(engineering.tag_id && discovered.tag_id && engineering.tag_id === discovered.tag_id),
+        ip_address: Boolean(engineering.ip_address && discovered.ip_address && engineering.ip_address === discovered.ip_address),
+        hostname: Boolean(engineering.hostname && discovered.hostname && engineering.hostname.toLowerCase() === discovered.hostname.toLowerCase()),
+        mac_address: Boolean(engineering.mac_address && discovered.mac_address && engineering.mac_address === discovered.mac_address),
+        device_type: Boolean(engineering.device_type && discovered.device_type && engineering.device_type.toLowerCase() === discovered.device_type.toLowerCase()),
+        manufacturer: Boolean(engineering.manufacturer && discovered.manufacturer && engineering.manufacturer.toLowerCase() === discovered.manufacturer.toLowerCase())
       }
-    }))
+      
+      const agreementCount = Object.values(validationChecks).filter(Boolean).length
+      const validationScore = Math.round((agreementCount / 6) * 100) // 0-100%
+      
+      // Determine validation level
+      let validationLevel = 'low'
+      if (agreementCount >= 3 || (matchType === 'exact_tag_id' && agreementCount >= 2)) {
+        validationLevel = 'high'
+      } else if (agreementCount >= 1 || matchType === 'ip_match' || matchType === 'hostname_match') {
+        validationLevel = 'medium'
+      }
+      
+      return {
+        tag_id: engineering.tag_id || discovered.tag_id || 'UNKNOWN',
+        ip_address: discovered.ip_address || engineering.ip_address || '',
+        hostname: discovered.hostname || engineering.hostname || '',
+        mac_address: discovered.mac_address || engineering.mac_address || '',
+        plant: engineering.plant || discovered.plant || 'Unknown',
+        unit: engineering.unit || discovered.unit || 'Unknown',
+        device_type: engineering.device_type || discovered.device_type || 'Unknown',
+        manufacturer: engineering.manufacturer || discovered.manufacturer || 'Unknown',
+        model: engineering.model || discovered.model || 'Unknown',
+        match_type: matchType,
+        match_confidence: matchConfidence,
+        last_seen: discovered.last_seen || '',
+        validation: {
+          level: validationLevel,
+          score: validationScore,
+          agreementCount: agreementCount,
+          checks: validationChecks
+        },
+        _sources: {
+          engineering: engineering._source,
+          discovered: discovered._source
+        }
+      }
+    })
+    
+    // Categorize matches by validation level for audit
+    const validationSummary = {
+      highConfidence: canonicalAssets.filter(a => a.validation.level === 'high').length,
+      mediumConfidence: canonicalAssets.filter(a => a.validation.level === 'medium').length,
+      lowConfidence: canonicalAssets.filter(a => a.validation.level === 'low').length,
+      needsReview: canonicalAssets.filter(a => a.validation.level === 'low' || a.match_confidence < 70).length
+    }
     
     // Calculate KPIs
     const kpis = {
@@ -880,6 +917,9 @@ export default async function handler(req, res) {
           return acc
         }, {})
       },
+      validationSummary,  // NEW: Cross-validation summary for audit
+      blindSpots: matchResults.blindSpots.slice(0, 100),  // Sample of blind spots
+      orphans: matchResults.orphans.slice(0, 100),  // Sample of orphans
       learningInsights,
       distributions  // Add distributions for Plant Intelligence
     })
