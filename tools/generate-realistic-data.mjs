@@ -60,8 +60,8 @@ function generateEngineering(count, siteCount = 1) {
     const unit = randomChoice(processUnits);
     const deviceType = randomChoice(deviceTypes.tier1);
     const manufacturer = randomChoice(manufacturers.tier1);
-    const hasIP = randomBoolean(60); // 60% have IP
-    const hasHostname = randomBoolean(50); // 50% have hostname
+    const hasIP = randomBoolean(75); // 75% have IP (more realistic for modern control systems)
+    const hasHostname = randomBoolean(60); // 60% have hostname
     
     const tagPrefix = deviceType === 'PLC' ? 'PLC' :
                      deviceType === 'DCS' ? 'DCS' :
@@ -87,8 +87,8 @@ function generateEngineering(count, siteCount = 1) {
     const unit = randomChoice(processUnits);
     const deviceType = randomChoice(deviceTypes.tier2);
     const manufacturer = randomChoice(manufacturers.tier2);
-    const hasIP = randomBoolean(40); // 40% have IP
-    const hasHostname = randomBoolean(35); // 35% have hostname
+    const hasIP = randomBoolean(55); // 55% have IP (smart devices are increasingly IP-enabled)
+    const hasHostname = randomBoolean(45); // 45% have hostname
     
     assets.push({
       tag_id: `${deviceType.substring(0, 4).toUpperCase()}-${String(id).padStart(4, '0')}`,
@@ -146,8 +146,8 @@ function generateDiscovery(engineeringAssets, coveragePercent = 0.67) {
   // Generate discovery records
   toDiscover.forEach((asset, idx) => {
     const isTier1 = deviceTypes.tier1.includes(asset.device_type);
-    const isManaged = isTier1 ? randomBoolean(70) : randomBoolean(40);
-    const hasPatches = isManaged ? randomBoolean(80) : false;
+    const isManaged = isTier1 ? randomBoolean(80) : randomBoolean(50); // Higher management rates for realism
+    const hasPatches = isManaged ? randomBoolean(85) : false;
     const vulnCount = isManaged ? random(0, 3) : random(2, 12);
     const cveCount = vulnCount > 0 ? random(0, Math.floor(vulnCount * 0.6)) : 0;
     
@@ -253,12 +253,51 @@ function generateDataset(name, engineeringCount, siteCount = 1) {
   console.log(`✓ Generated ${name}\n`);
 }
 
-// Generate all three datasets
+// Generate all three datasets with custom coverage
 console.log('Generating realistic OT datasets...\n');
 
-generateDataset('demo', 500, 1);           // Quick demo - 500 assets, 1 site (for testing)
-generateDataset('medium', 6500, 1);        // REALISTIC medium refinery - 6,500 assets (150k bpd) - MAX SIZE for Vercel
-generateDataset('enterprise', 25000, 3);   // Large enterprise - 25,000 assets, 3 sites (local only)
+// Demo - small for testing
+const demoEngineering = generateEngineering(500, 1);
+const demoDiscovery = generateDiscovery(demoEngineering, 0.35); // 35% discovery coverage
+console.log('Generating demo...');
+console.log(`  Engineering assets: 500`);
+console.log(`  Discovered devices: ${demoDiscovery.length}`);
+console.log(`  Coverage: ${Math.round((demoDiscovery.length / demoEngineering.filter(a => a.ip_address).length) * 100)}%\n`);
+
+const dir = path.join(process.cwd(), '..', 'public', 'samples', 'demo', 'oil-gas');
+const engHeaders = ['tag_id', 'plant', 'unit', 'device_type', 'manufacturer', 'model', 'ip_address', 'hostname'];
+const discHeaders = ['ip_address', 'hostname', 'mac_address', 'device_type', 'manufacturer', 'model', 
+                     'is_managed', 'has_security_patches', 'encryption_enabled', 'authentication_required', 
+                     'firewall_protected', 'access_control', 'vulnerabilities', 'cve_count', 'last_seen', 
+                     'confidence_level', 'firmware_version', 'protocol'];
+
+fs.writeFileSync(path.join(dir, `engineering_baseline_demo.csv`), toCSV(demoEngineering, engHeaders));
+fs.writeFileSync(path.join(dir, `ot_discovery_demo.csv`), toCSV(demoDiscovery, discHeaders));
+console.log(`✓ Generated demo\n`);
+
+// Medium - REALISTIC for Vercel Pro (12,000 assets)
+const mediumEngineering = generateEngineering(12000, 1);
+const mediumDiscovery = generateDiscovery(mediumEngineering, 0.42); // 42% discovery coverage = realistic
+console.log('Generating medium...');
+console.log(`  Engineering assets: 12000`);
+console.log(`  Discovered devices: ${mediumDiscovery.length}`);
+console.log(`  Coverage: ${Math.round((mediumDiscovery.length / mediumEngineering.filter(a => a.ip_address).length) * 100)}%\n`);
+
+fs.writeFileSync(path.join(dir, `engineering_baseline_medium.csv`), toCSV(mediumEngineering, engHeaders));
+fs.writeFileSync(path.join(dir, `ot_discovery_medium.csv`), toCSV(mediumDiscovery, discHeaders));
+console.log(`✓ Generated medium\n`);
+
+// Enterprise - Large multi-site (local only, too big for Vercel)
+const enterpriseEngineering = generateEngineering(25000, 3);
+const enterpriseDiscovery = generateDiscovery(enterpriseEngineering, 0.45); // 45% discovery coverage
+console.log('Generating enterprise...');
+console.log(`  Engineering assets: 25000`);
+console.log(`  Discovered devices: ${enterpriseDiscovery.length}`);
+console.log(`  Coverage: ${Math.round((enterpriseDiscovery.length / enterpriseEngineering.filter(a => a.ip_address).length) * 100)}%\n`);
+
+fs.writeFileSync(path.join(dir, `engineering_baseline_enterprise.csv`), toCSV(enterpriseEngineering, engHeaders));
+fs.writeFileSync(path.join(dir, `ot_discovery_enterprise.csv`), toCSV(enterpriseDiscovery, discHeaders));
+console.log(`✓ Generated enterprise\n`);
 
 console.log('✓ All datasets generated successfully!');
 
