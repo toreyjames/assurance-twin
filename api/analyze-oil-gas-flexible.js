@@ -5,6 +5,120 @@ import crypto from 'node:crypto'
 const parseCsv = (text) => Papa.parse(text || '', { header: true, skipEmptyLines: true }).data
 const sha256 = (s) => crypto.createHash('sha256').update(s).digest('hex')
 
+// ============================================================================
+// REFINERY EQUIPMENT TEMPLATES - Operational Intelligence Layer
+// Expected equipment mix for typical refinery process units
+// Used for completeness scoring and context-aware unknown device classification
+// ============================================================================
+const REFINERY_EQUIPMENT_TEMPLATES = {
+  'Crude Distillation': {
+    displayName: 'Crude Distillation Unit (CDU)',
+    description: 'Primary crude oil separation - most critical production unit',
+    expectedEquipment: {
+      // Control systems
+      'PLC': { min: 8, typical: 10, max: 15, criticality: 'CRITICAL', function: 'Main process control' },
+      'DCS': { min: 5, typical: 8, max: 12, criticality: 'CRITICAL', function: 'Distributed control' },
+      'Safety_Controller': { min: 2, typical: 4, max: 6, criticality: 'CRITICAL', function: 'SIS/ESD systems' },
+      
+      // Field devices
+      'Transmitter': { min: 120, typical: 150, max: 200, criticality: 'HIGH', function: 'Pressure/temp/level/flow monitoring' },
+      'Pressure_Transmitter': { min: 30, typical: 40, max: 60, criticality: 'HIGH', function: 'Column pressure control' },
+      'Temperature_Transmitter': { min: 30, typical: 40, max: 60, criticality: 'HIGH', function: 'Distillation control' },
+      'Level_Transmitter': { min: 20, typical: 25, max: 35, criticality: 'HIGH', function: 'Tank/vessel level control' },
+      'Flow_Transmitter': { min: 20, typical: 25, max: 35, criticality: 'HIGH', function: 'Crude feed/product flow' },
+      'Control_Valve': { min: 60, typical: 80, max: 100, criticality: 'HIGH', function: 'Flow/pressure regulation' },
+      'Pump': { min: 25, typical: 35, max: 50, criticality: 'CRITICAL', function: 'Crude feed/product transfer' },
+      'Analyzer': { min: 10, typical: 15, max: 25, criticality: 'MEDIUM', function: 'Product quality analysis' },
+      
+      // Network infrastructure
+      'Switch': { min: 5, typical: 8, max: 15, criticality: 'HIGH', function: 'OT network connectivity' },
+      'Gateway': { min: 2, typical: 4, max: 8, criticality: 'HIGH', function: 'Protocol conversion' },
+      'HMI': { min: 2, typical: 4, max: 8, criticality: 'MEDIUM', function: 'Operator interface' }
+    }
+  },
+  
+  'Hydrocracker': {
+    displayName: 'Hydrocracker Unit',
+    description: 'Heavy oil upgrading - high pressure/temperature operations',
+    expectedEquipment: {
+      'PLC': { min: 10, typical: 15, max: 20, criticality: 'CRITICAL', function: 'Process automation' },
+      'DCS': { min: 8, typical: 12, max: 16, criticality: 'CRITICAL', function: 'Reactor control' },
+      'Safety_Controller': { min: 3, typical: 5, max: 8, criticality: 'CRITICAL', function: 'High-pressure safety systems' },
+      'Transmitter': { min: 150, typical: 200, max: 280, criticality: 'HIGH', function: 'Process monitoring' },
+      'Pressure_Transmitter': { min: 50, typical: 65, max: 90, criticality: 'CRITICAL', function: 'High-pressure reactor control' },
+      'Temperature_Transmitter': { min: 40, typical: 55, max: 75, criticality: 'CRITICAL', function: 'Reactor temperature control' },
+      'Flow_Transmitter': { min: 30, typical: 40, max: 55, criticality: 'HIGH', function: 'Hydrogen/feed flow' },
+      'Control_Valve': { min: 90, typical: 120, max: 160, criticality: 'HIGH', function: 'Process regulation' },
+      'Pump': { min: 35, typical: 45, max: 60, criticality: 'CRITICAL', function: 'High-pressure pumps' },
+      'Compressor': { min: 5, typical: 8, max: 12, criticality: 'CRITICAL', function: 'Hydrogen recirculation' },
+      'Analyzer': { min: 20, typical: 30, max: 45, criticality: 'HIGH', function: 'H2 purity, product quality' },
+      'Switch': { min: 6, typical: 10, max: 15, criticality: 'HIGH', function: 'Network infrastructure' },
+      'Gateway': { min: 3, typical: 5, max: 8, criticality: 'HIGH', function: 'Protocol conversion' }
+    }
+  },
+  
+  'FCC': {
+    displayName: 'Fluid Catalytic Cracking (FCC)',
+    description: 'Gasoline production - complex catalyst circulation',
+    expectedEquipment: {
+      'PLC': { min: 12, typical: 18, max: 25, criticality: 'CRITICAL', function: 'Catalyst control' },
+      'DCS': { min: 10, typical: 15, max: 20, criticality: 'CRITICAL', function: 'Reactor/regenerator control' },
+      'Safety_Controller': { min: 4, typical: 6, max: 10, criticality: 'CRITICAL', function: 'Blower trip, pressure relief' },
+      'Transmitter': { min: 180, typical: 250, max: 350, criticality: 'HIGH', function: 'Complex process monitoring' },
+      'Pressure_Transmitter': { min: 60, typical: 80, max: 110, criticality: 'CRITICAL', function: 'Reactor/regenerator pressure' },
+      'Temperature_Transmitter': { min: 50, typical: 70, max: 95, criticality: 'CRITICAL', function: 'Catalyst temperature control' },
+      'Flow_Transmitter': { min: 40, typical: 55, max: 75, criticality: 'HIGH', function: 'Feed/air/catalyst flow' },
+      'Control_Valve': { min: 100, typical: 140, max: 190, criticality: 'HIGH', function: 'Complex flow control' },
+      'Pump': { min: 30, typical: 40, max: 55, criticality: 'CRITICAL', function: 'Product transfer' },
+      'Compressor': { min: 3, typical: 5, max: 8, criticality: 'CRITICAL', function: 'Air blower for regenerator' },
+      'Analyzer': { min: 25, typical: 35, max: 50, criticality: 'HIGH', function: 'Product quality, emissions' },
+      'Switch': { min: 8, typical: 12, max: 18, criticality: 'HIGH', function: 'Network infrastructure' }
+    }
+  },
+  
+  'Tank Farm': {
+    displayName: 'Tank Farm / Storage',
+    description: 'Crude and product storage - inventory management',
+    expectedEquipment: {
+      'PLC': { min: 5, typical: 8, max: 12, criticality: 'MEDIUM', function: 'Tank monitoring' },
+      'Transmitter': { min: 80, typical: 120, max: 180, criticality: 'MEDIUM', function: 'Tank monitoring' },
+      'Level_Transmitter': { min: 50, typical: 80, max: 120, criticality: 'HIGH', function: 'Inventory tracking' },
+      'Pressure_Transmitter': { min: 20, typical: 30, max: 45, criticality: 'MEDIUM', function: 'Tank pressure' },
+      'Temperature_Transmitter': { min: 30, typical: 50, max: 75, criticality: 'MEDIUM', function: 'Product temperature' },
+      'Pump': { min: 30, typical: 50, max: 75, criticality: 'HIGH', function: 'Transfer pumps' },
+      'Control_Valve': { min: 20, typical: 30, max: 45, criticality: 'MEDIUM', function: 'Flow isolation' },
+      'Analyzer': { min: 5, typical: 10, max: 15, criticality: 'LOW', function: 'Product quality spot checks' },
+      'Switch': { min: 4, typical: 6, max: 10, criticality: 'MEDIUM', function: 'Tank farm network' },
+      'IP_Camera': { min: 10, typical: 20, max: 35, criticality: 'LOW', function: 'Security surveillance' }
+    }
+  },
+  
+  'Utilities': {
+    displayName: 'Utilities (Steam, Power, Cooling)',
+    description: 'Supporting systems - plant-wide distribution',
+    expectedEquipment: {
+      'PLC': { min: 8, typical: 12, max: 18, criticality: 'HIGH', function: 'Utilities distribution' },
+      'DCS': { min: 4, typical: 6, max: 10, criticality: 'HIGH', function: 'Boiler/turbine control' },
+      'Safety_Controller': { min: 2, typical: 4, max: 6, criticality: 'HIGH', function: 'Boiler safety systems' },
+      'Transmitter': { min: 150, typical: 200, max: 280, criticality: 'HIGH', function: 'System monitoring' },
+      'Pressure_Transmitter': { min: 60, typical: 80, max: 110, criticality: 'HIGH', function: 'Steam pressure' },
+      'Temperature_Transmitter': { min: 50, typical: 70, max: 95, criticality: 'HIGH', function: 'Steam/water temperature' },
+      'Flow_Transmitter': { min: 40, typical: 55, max: 75, criticality: 'HIGH', function: 'Steam/water flow' },
+      'Control_Valve': { min: 80, typical: 110, max: 150, criticality: 'HIGH', function: 'Distribution control' },
+      'Pump': { min: 40, typical: 60, max: 85, criticality: 'HIGH', function: 'Water circulation' },
+      'Switch': { min: 10, typical: 15, max: 22, criticality: 'HIGH', function: 'Plant-wide network backbone' },
+      'Gateway': { min: 5, typical: 8, max: 12, criticality: 'HIGH', function: 'Cross-unit communication' }
+    }
+  },
+  
+  // Catch-all for unknown units
+  'Unknown': {
+    displayName: 'Unknown / Uncategorized',
+    description: 'Assets not assigned to a specific process unit',
+    expectedEquipment: {}
+  }
+}
+
 // Normalize dataset to handle varied CSV formats and enable flexible matching
 const normalizeDataset = (rows, sourceType = 'unknown') => rows.map((row) => {
   const norm = {}
@@ -299,6 +413,265 @@ function performFlexibleMatching(engineering, discovered, options = {}) {
     blindSpotCount: blindSpots.length,
     orphanCount: orphans.length
   }
+}
+
+// ============================================================================
+// OPERATIONAL INTELLIGENCE: Plant Completeness & Context-Aware Analysis
+// ============================================================================
+
+// Normalize device type to match template keys (handles variations)
+function normalizeDeviceType(deviceType) {
+  const dt = String(deviceType || '').toLowerCase().trim()
+  
+  // Map variations to canonical types
+  const typeMap = {
+    'plc': 'PLC',
+    'programmable_logic_controller': 'PLC',
+    'controller': 'PLC',
+    'dcs': 'DCS',
+    'distributed_control': 'DCS',
+    'safety_controller': 'Safety_Controller',
+    'sis': 'Safety_Controller',
+    'esd': 'Safety_Controller',
+    'safety_plc': 'Safety_Controller',
+    'transmitter': 'Transmitter',
+    'sensor': 'Transmitter',
+    'pressure_transmitter': 'Pressure_Transmitter',
+    'pressure_sensor': 'Pressure_Transmitter',
+    'pt': 'Pressure_Transmitter',
+    'temperature_transmitter': 'Temperature_Transmitter',
+    'temp_transmitter': 'Temperature_Transmitter',
+    'tt': 'Temperature_Transmitter',
+    'thermocouple': 'Temperature_Transmitter',
+    'level_transmitter': 'Level_Transmitter',
+    'level_sensor': 'Level_Transmitter',
+    'lt': 'Level_Transmitter',
+    'flow_transmitter': 'Flow_Transmitter',
+    'flow_meter': 'Flow_Transmitter',
+    'ft': 'Flow_Transmitter',
+    'control_valve': 'Control_Valve',
+    'valve': 'Control_Valve',
+    'actuator': 'Control_Valve',
+    'pump': 'Pump',
+    'motor': 'Pump',
+    'compressor': 'Compressor',
+    'analyzer': 'Analyzer',
+    'chromatograph': 'Analyzer',
+    'switch': 'Switch',
+    'ethernet_switch': 'Switch',
+    'network_switch': 'Switch',
+    'gateway': 'Gateway',
+    'protocol_converter': 'Gateway',
+    'hmi': 'HMI',
+    'workstation': 'HMI',
+    'scada': 'HMI',
+    'ip_camera': 'IP_Camera',
+    'camera': 'IP_Camera',
+    'cctv': 'IP_Camera'
+  }
+  
+  return typeMap[dt] || null
+}
+
+// Analyze completeness of a process unit vs expected equipment
+function analyzeProcessUnitCompleteness(unitName, assets, matchedAssets) {
+  // Get template for this unit (normalize unit name variations)
+  const normalizedUnit = unitName.toLowerCase().includes('distill') ? 'Crude Distillation' :
+                        unitName.toLowerCase().includes('hydro') ? 'Hydrocracker' :
+                        unitName.toLowerCase().includes('fcc') || unitName.toLowerCase().includes('cat') ? 'FCC' :
+                        unitName.toLowerCase().includes('tank') || unitName.toLowerCase().includes('storage') ? 'Tank Farm' :
+                        unitName.toLowerCase().includes('util') || unitName.toLowerCase().includes('power') || unitName.toLowerCase().includes('steam') ? 'Utilities' :
+                        'Unknown'
+  
+  const template = REFINERY_EQUIPMENT_TEMPLATES[normalizedUnit]
+  if (!template || Object.keys(template.expectedEquipment).length === 0) {
+    // Unknown unit - can't assess completeness
+    return {
+      unitName,
+      templateName: normalizedUnit,
+      displayName: template?.displayName || unitName,
+      description: template?.description || 'No template available',
+      canAssess: false,
+      completenessScore: null,
+      analysis: { actual: {}, expected: {}, gaps: [], overages: [], unknowns: [] },
+      operationalRisk: 'UNKNOWN',
+      cyberRisk: 'UNKNOWN'
+    }
+  }
+  
+  // Count actual equipment by type
+  const actualEquipment = {}
+  const unknownDevices = []
+  
+  assets.forEach(asset => {
+    const normalizedType = normalizeDeviceType(asset.device_type)
+    if (normalizedType) {
+      actualEquipment[normalizedType] = (actualEquipment[normalizedType] || 0) + 1
+    } else {
+      // Couldn't classify - track as unknown
+      unknownDevices.push({
+        tag_id: asset.tag_id,
+        device_type: asset.device_type,
+        manufacturer: asset.manufacturer,
+        ip_address: asset.ip_address
+      })
+    }
+  })
+  
+  // Compare actual vs expected
+  const gaps = []
+  const overages = []
+  let totalExpected = 0
+  let totalActual = 0
+  let totalWithinRange = 0
+  
+  Object.entries(template.expectedEquipment).forEach(([deviceType, spec]) => {
+    const actual = actualEquipment[deviceType] || 0
+    const { min, typical, max, criticality, function: func } = spec
+    
+    totalExpected += typical
+    totalActual += actual
+    
+    if (actual >= min && actual <= max) {
+      totalWithinRange += typical
+    } else if (actual < min) {
+      gaps.push({
+        deviceType,
+        expected: typical,
+        actual,
+        missing: min - actual,
+        criticality,
+        function: func,
+        severity: actual === 0 ? 'CRITICAL' : criticality === 'CRITICAL' ? 'HIGH' : 'MEDIUM'
+      })
+    } else if (actual > max) {
+      overages.push({
+        deviceType,
+        expected: typical,
+        actual,
+        excess: actual - max,
+        reason: 'Possible data quality issue or advanced instrumentation'
+      })
+    }
+  })
+  
+  // Calculate completeness score (0-100%)
+  const completenessScore = totalExpected > 0 ? Math.round((totalWithinRange / totalExpected) * 100) : 0
+  
+  // Assess operational risk
+  const criticalGaps = gaps.filter(g => g.criticality === 'CRITICAL')
+  const operationalRisk = criticalGaps.length > 3 ? 'HIGH' :
+                         criticalGaps.length > 0 ? 'MEDIUM' :
+                         gaps.length > 5 ? 'MEDIUM' : 'LOW'
+  
+  // Assess cyber risk (from matched assets with security data)
+  const networkableAssets = matchedAssets.filter(m => {
+    const classification = classifyDeviceBySecurity(m.engineering)
+    return classification.tier === 1 || classification.tier === 2
+  })
+  
+  const securedAssets = networkableAssets.filter(m => {
+    const isManaged = m.discovered && isTruthy(m.discovered.is_managed)
+    return isManaged
+  })
+  
+  const securityPercent = networkableAssets.length > 0 ? Math.round((securedAssets.length / networkableAssets.length) * 100) : 0
+  const cyberRisk = securityPercent >= 70 ? 'LOW' :
+                   securityPercent >= 40 ? 'MEDIUM' : 'HIGH'
+  
+  // Context-aware unknown device classification
+  const unknownInferences = inferUnknownDevices(unknownDevices, gaps, template)
+  
+  return {
+    unitName,
+    templateName: normalizedUnit,
+    displayName: template.displayName,
+    description: template.description,
+    canAssess: true,
+    completenessScore,
+    totalAssets: assets.length,
+    totalExpected,
+    totalActual,
+    totalWithinRange,
+    analysis: {
+      actual: actualEquipment,
+      expected: template.expectedEquipment,
+      gaps,
+      overages,
+      unknowns: unknownInferences
+    },
+    operationalRisk,
+    cyberRisk,
+    securityMetrics: {
+      totalAssets: assets.length,
+      networkableAssets: networkableAssets.length,
+      securedAssets: securedAssets.length,
+      securityPercent
+    }
+  }
+}
+
+// Infer what unknown devices likely are based on process unit context
+function inferUnknownDevices(unknownDevices, gaps, template) {
+  if (unknownDevices.length === 0) return []
+  
+  const inferences = []
+  
+  // Sort gaps by severity (critical gaps first)
+  const sortedGaps = [...gaps].sort((a, b) => {
+    const severityOrder = { CRITICAL: 0, HIGH: 1, MEDIUM: 2, LOW: 3 }
+    return severityOrder[a.severity] - severityOrder[b.severity]
+  })
+  
+  unknownDevices.forEach(device => {
+    let bestGuess = null
+    let confidence = 'LOW'
+    let reasoning = 'Unknown device type - no template match'
+    
+    // Strategy 1: Check if manufacturer hints at device type
+    const mfr = String(device.manufacturer || '').toLowerCase()
+    if (mfr.includes('rosemount') || mfr.includes('yokogawa') || mfr.includes('emerson')) {
+      bestGuess = 'Transmitter'
+      confidence = 'MEDIUM'
+      reasoning = `Manufacturer ${device.manufacturer} typically makes transmitters/sensors`
+    } else if (mfr.includes('fisher') || mfr.includes('masoneilan')) {
+      bestGuess = 'Control_Valve'
+      confidence = 'MEDIUM'
+      reasoning = `Manufacturer ${device.manufacturer} typically makes control valves`
+    } else if (mfr.includes('allen-bradley') || mfr.includes('siemens') || mfr.includes('schneider')) {
+      bestGuess = 'PLC'
+      confidence = 'MEDIUM'
+      reasoning = `Manufacturer ${device.manufacturer} typically makes PLCs/controllers`
+    } else if (mfr.includes('cisco') || mfr.includes('hirschmann') || mfr.includes('moxa')) {
+      bestGuess = 'Switch'
+      confidence = 'HIGH'
+      reasoning = `Manufacturer ${device.manufacturer} makes industrial network switches`
+    }
+    
+    // Strategy 2: Check if we have critical gaps that these unknowns could fill
+    if (!bestGuess && sortedGaps.length > 0) {
+      const topGap = sortedGaps[0]
+      bestGuess = topGap.deviceType
+      confidence = 'LOW'
+      reasoning = `Process unit is missing ${topGap.missing} ${topGap.deviceType}(s) - possible match`
+    }
+    
+    // Strategy 3: Check if device has IP (likely networked device)
+    if (!bestGuess && device.ip_address) {
+      bestGuess = 'PLC or Switch'
+      confidence = 'LOW'
+      reasoning = 'Has IP address - likely PLC, DCS, or network infrastructure'
+    }
+    
+    inferences.push({
+      ...device,
+      inferredType: bestGuess || 'Unknown',
+      confidence,
+      reasoning
+    })
+  })
+  
+  return inferences
 }
 
 // DEVICE CLASSIFICATION: Categorize by security necessity
@@ -950,6 +1323,55 @@ export default async function handler(req, res) {
       }
     })
     
+    // ============================================================================
+    // PLANT COMPLETENESS ANALYSIS - Operational Intelligence Layer
+    // ============================================================================
+    const plantCompleteness = {}
+    
+    // Group assets by process unit
+    const assetsByUnit = {}
+    const matchesByUnit = {}
+    
+    allEngineering.forEach(asset => {
+      const unit = asset.unit || 'Unknown'
+      if (!assetsByUnit[unit]) assetsByUnit[unit] = []
+      assetsByUnit[unit].push(asset)
+    })
+    
+    matchResults.matched.forEach(match => {
+      const unit = match.engineering.unit || 'Unknown'
+      if (!matchesByUnit[unit]) matchesByUnit[unit] = []
+      matchesByUnit[unit].push(match)
+    })
+    
+    // Analyze each process unit
+    Object.keys(assetsByUnit).forEach(unitName => {
+      plantCompleteness[unitName] = analyzeProcessUnitCompleteness(
+        unitName,
+        assetsByUnit[unitName],
+        matchesByUnit[unitName] || []
+      )
+    })
+    
+    // Calculate match strategy breakdown (for "How the Canon Works" section)
+    const matchStrategyBreakdown = {
+      tag_id: 0,
+      ip_address: 0,
+      hostname: 0,
+      mac_address: 0,
+      fuzzy: 0,
+      intelligent_pairing: 0
+    }
+    
+    matchResults.matched.forEach(m => {
+      if (m.matchType === 'exact_tag_id') matchStrategyBreakdown.tag_id++
+      else if (m.matchType === 'ip_match') matchStrategyBreakdown.ip_address++
+      else if (m.matchType === 'hostname_match') matchStrategyBreakdown.hostname++
+      else if (m.matchType === 'mac_match') matchStrategyBreakdown.mac_address++
+      else if (m.matchType.includes('fuzzy')) matchStrategyBreakdown.fuzzy++
+      else matchStrategyBreakdown.intelligent_pairing++
+    })
+    
     console.log('[FLEXIBLE API] Returning results:', kpis)
     
     return res.status(200).json({
@@ -963,13 +1385,15 @@ export default async function handler(req, res) {
         matchTypes: matchResults.matched.reduce((acc, m) => {
           acc[m.matchType] = (acc[m.matchType] || 0) + 1
           return acc
-        }, {})
+        }, {}),
+        strategyBreakdown: matchStrategyBreakdown  // NEW: For "How the Canon Works" UI section
       },
-      validationSummary,  // NEW: Cross-validation summary for audit
+      validationSummary,  // Cross-validation summary for audit
       blindSpots: matchResults.blindSpots.slice(0, 100),  // Sample of blind spots
       orphans: matchResults.orphans.slice(0, 100),  // Sample of orphans
       learningInsights,
-      distributions  // Add distributions for Plant Intelligence
+      distributions,  // Plant Intelligence distributions
+      plantCompleteness  // NEW: Operational Intelligence - plant completeness by unit
     })
     
   } catch (error) {

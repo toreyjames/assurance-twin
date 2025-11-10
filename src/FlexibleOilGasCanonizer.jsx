@@ -824,8 +824,8 @@ export default function FlexibleOilGasCanonizer() {
             </div>
           )}
 
-          {/* 🔍 VALIDATION & AUDIT SECTION (MOVED TO BOTTOM - TECHNICAL/AUDIT DETAILS) */}
-          {result.validationSummary && (
+          {/* 🎯 HOW THE CANONIZER WORKS - Match Strategy Breakdown */}
+          {result.matchResults && (
             <div style={{
               padding: '2rem',
               background: 'white',
@@ -834,164 +834,309 @@ export default function FlexibleOilGasCanonizer() {
               marginBottom: '2rem'
             }}>
               <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1.25rem', fontWeight: '700', color: '#0f172a' }}>
-                🔍 Technical Validation & Audit Trail
+                🎯 How the Canonizer Matched Your Assets
               </h3>
               <p style={{ margin: '0 0 1.5rem 0', fontSize: '0.875rem', color: '#64748b' }}>
-                Cross-validation results for technical review. High confidence = multiple data sources agree. Export low confidence matches for manual validation before trusting canonization.
+                Even without perfect data, the Canonizer intelligently matched {result.kpis.matched_assets.toLocaleString()} assets using multiple strategies. This shows what data sources you have and where improvements can be made.
               </p>
 
-              {/* Validation Summary */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginBottom: '1.5rem' }}>
+              {/* Match Strategy Breakdown */}
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem', marginBottom: '1.5rem' }}>
+                {/* Tag ID matches - gold standard */}
                 <div style={{
                   padding: '1rem',
-                  background: '#f0fdf4',
-                  border: '2px solid #10b981',
-                  borderRadius: '0.5rem'
-                }}>
-                  <div style={{ fontSize: '0.75rem', color: '#64748b', marginBottom: '0.25rem' }}>
-                    ✅ HIGH CONFIDENCE
-                  </div>
-                  <div style={{ fontSize: '2rem', fontWeight: '700', color: '#10b981' }}>
-                    {result.validationSummary.highConfidence.toLocaleString()}
-                  </div>
-                  <div style={{ fontSize: '0.75rem', color: '#64748b' }}>
-                    Multiple sources agree
-                  </div>
-                </div>
-
-                <div style={{
-                  padding: '1rem',
-                  background: '#fffbeb',
+                  background: '#fef3c7',
                   border: '2px solid #f59e0b',
                   borderRadius: '0.5rem'
                 }}>
-                  <div style={{ fontSize: '0.75rem', color: '#64748b', marginBottom: '0.25rem' }}>
-                    ⚠️ MEDIUM CONFIDENCE
+                  <div style={{ fontSize: '0.75rem', color: '#92400e', marginBottom: '0.25rem', fontWeight: '600' }}>
+                    🥇 TAG ID MATCH
                   </div>
-                  <div style={{ fontSize: '2rem', fontWeight: '700', color: '#f59e0b' }}>
-                    {result.validationSummary.mediumConfidence.toLocaleString()}
+                  <div style={{ fontSize: '2rem', fontWeight: '700', color: '#d97706' }}>
+                    {(result.matchResults.strategyBreakdown?.tag_id || 0).toLocaleString()}
                   </div>
-                  <div style={{ fontSize: '0.75rem', color: '#64748b' }}>
-                    Single source match
-                  </div>
-                </div>
-
-                <div style={{
-                  padding: '1rem',
-                  background: '#fef2f2',
-                  border: '2px solid #ef4444',
-                  borderRadius: '0.5rem'
-                }}>
-                  <div style={{ fontSize: '0.75rem', color: '#64748b', marginBottom: '0.25rem' }}>
-                    🔴 LOW CONFIDENCE
-                  </div>
-                  <div style={{ fontSize: '2rem', fontWeight: '700', color: '#ef4444' }}>
-                    {result.validationSummary.lowConfidence.toLocaleString()}
-                  </div>
-                  <div style={{ fontSize: '0.75rem', color: '#64748b' }}>
-                    Needs human review
+                  <div style={{ fontSize: '0.75rem', color: '#78350f' }}>
+                    Gold standard - exact match
                   </div>
                 </div>
 
+                {/* IP Address matches */}
                 <div style={{
                   padding: '1rem',
-                  background: '#f8fafc',
-                  border: '2px solid #64748b',
+                  background: '#e0e7ff',
+                  border: '2px solid #6366f1',
                   borderRadius: '0.5rem'
                 }}>
-                  <div style={{ fontSize: '0.75rem', color: '#64748b', marginBottom: '0.25rem' }}>
-                    👁️ TOTAL NEEDS REVIEW
+                  <div style={{ fontSize: '0.75rem', color: '#312e81', marginBottom: '0.25rem', fontWeight: '600' }}>
+                    🌐 IP ADDRESS MATCH
                   </div>
-                  <div style={{ fontSize: '2rem', fontWeight: '700', color: '#64748b' }}>
-                    {result.validationSummary.needsReview.toLocaleString()}
+                  <div style={{ fontSize: '2rem', fontWeight: '700', color: '#4f46e5' }}>
+                    {(result.matchResults.strategyBreakdown?.ip_address || 0).toLocaleString()}
                   </div>
-                  <div style={{ fontSize: '0.75rem', color: '#64748b' }}>
-                    Manual validation recommended
+                  <div style={{ fontSize: '0.75rem', color: '#3730a3' }}>
+                    No tag_id, used IP
+                  </div>
+                </div>
+
+                {/* Hostname matches */}
+                <div style={{
+                  padding: '1rem',
+                  background: '#dbeafe',
+                  border: '2px solid #3b82f6',
+                  borderRadius: '0.5rem'
+                }}>
+                  <div style={{ fontSize: '0.75rem', color: '#1e3a8a', marginBottom: '0.25rem', fontWeight: '600' }}>
+                    💻 HOSTNAME MATCH
+                  </div>
+                  <div style={{ fontSize: '2rem', fontWeight: '700', color: '#2563eb' }}>
+                    {(result.matchResults.strategyBreakdown?.hostname || 0).toLocaleString()}
+                  </div>
+                  <div style={{ fontSize: '0.75rem', color: '#1e40af' }}>
+                    Matched by device name
+                  </div>
+                </div>
+
+                {/* MAC Address matches */}
+                <div style={{
+                  padding: '1rem',
+                  background: '#d1fae5',
+                  border: '2px solid #10b981',
+                  borderRadius: '0.5rem'
+                }}>
+                  <div style={{ fontSize: '0.75rem', color: '#064e3b', marginBottom: '0.25rem', fontWeight: '600' }}>
+                    🔌 MAC ADDRESS MATCH
+                  </div>
+                  <div style={{ fontSize: '2rem', fontWeight: '700', color: '#059669' }}>
+                    {(result.matchResults.strategyBreakdown?.mac_address || 0).toLocaleString()}
+                  </div>
+                  <div style={{ fontSize: '0.75rem', color: '#065f46' }}>
+                    Network hardware address
+                  </div>
+                </div>
+
+                {/* Fuzzy matches */}
+                <div style={{
+                  padding: '1rem',
+                  background: '#fce7f3',
+                  border: '2px solid #ec4899',
+                  borderRadius: '0.5rem'
+                }}>
+                  <div style={{ fontSize: '0.75rem', color: '#831843', marginBottom: '0.25rem', fontWeight: '600' }}>
+                    🧠 FUZZY LOGIC MATCH
+                  </div>
+                  <div style={{ fontSize: '2rem', fontWeight: '700', color: '#db2777' }}>
+                    {(result.matchResults.strategyBreakdown?.fuzzy || 0).toLocaleString()}
+                  </div>
+                  <div style={{ fontSize: '0.75rem', color: '#9f1239' }}>
+                    Device type + manufacturer
+                  </div>
+                </div>
+
+                {/* Intelligent pairing */}
+                <div style={{
+                  padding: '1rem',
+                  background: '#ede9fe',
+                  border: '2px solid #8b5cf6',
+                  borderRadius: '0.5rem'
+                }}>
+                  <div style={{ fontSize: '0.75rem', color: '#4c1d95', marginBottom: '0.25rem', fontWeight: '600' }}>
+                    🤖 INTELLIGENT PAIRING
+                  </div>
+                  <div style={{ fontSize: '2rem', fontWeight: '700', color: '#7c3aed' }}>
+                    {(result.matchResults.strategyBreakdown?.intelligent_pairing || 0).toLocaleString()}
+                  </div>
+                  <div style={{ fontSize: '0.75rem', color: '#5b21b6' }}>
+                    AI-inferred match
                   </div>
                 </div>
               </div>
 
-              {/* Audit Details */}
+              {/* Data Quality Insights */}
               <div style={{ 
                 padding: '1rem', 
-                background: '#eff6ff', 
-                border: '1px solid #3b82f6',
+                background: '#f0fdf4', 
+                border: '1px solid #10b981',
                 borderRadius: '0.5rem',
                 marginBottom: '1rem'
               }}>
-                <h4 style={{ margin: '0 0 0.5rem 0', fontSize: '0.875rem', fontWeight: '700', color: '#1e40af' }}>
-                  📋 Validation Criteria (Technical)
+                <h4 style={{ margin: '0 0 0.5rem 0', fontSize: '0.875rem', fontWeight: '700', color: '#065f46' }}>
+                  📊 What This Tells Us About Your Data
                 </h4>
-                <div style={{ fontSize: '0.75rem', color: '#1e40af', lineHeight: '1.6' }}>
-                  • <strong>High Confidence:</strong> 3+ fields agree OR exact tag_id + 2 other fields<br />
-                  • <strong>Medium Confidence:</strong> 1+ fields agree OR matched by IP/hostname<br />
-                  • <strong>Low Confidence:</strong> Fuzzy/intelligent matching, minimal agreement
+                <div style={{ fontSize: '0.75rem', color: '#065f46', lineHeight: '1.6' }}>
+                  {result.matchResults.strategyBreakdown.tag_id > result.kpis.matched_assets * 0.5 ? (
+                    <>✅ <strong>Excellent:</strong> You have Tag IDs in both engineering & OT discovery - gold standard for asset management!</>
+                  ) : result.matchResults.strategyBreakdown.tag_id > 0 ? (
+                    <>⚠️ <strong>Good:</strong> Some Tag IDs present, but many matches fell back to IP/hostname. Consider adding Tag IDs to OT discovery data.</>
+                  ) : (
+                    <>🚨 <strong>Needs Improvement:</strong> No Tag ID matches - OT discovery lacks asset tags. Canonizer used IP/hostname fallback strategies.</>
+                  )}
+                  <br />
+                  {result.matchResults.strategyBreakdown.ip_address + result.matchResults.strategyBreakdown.hostname > result.kpis.matched_assets * 0.3 && (
+                    <>💡 <strong>Recommendation:</strong> Add asset tag fields to your OT discovery tool configuration for more accurate matching.</>
+                  )}
                 </div>
               </div>
 
-              {/* Export Actions */}
-              <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-                <button
-                  onClick={() => {
-                    const lowConf = result.assets.filter(a => a.validation.level === 'low')
-                    console.log('Low confidence matches:', lowConf)
-                    alert(`${lowConf.length} low confidence matches logged to console for review`)
-                  }}
-                  style={{
-                    padding: '0.75rem 1.5rem',
-                    background: '#ef4444',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '0.5rem',
-                    fontSize: '0.875rem',
-                    fontWeight: '600',
-                    cursor: 'pointer'
-                  }}
-                >
-                  🔴 Export Low Confidence Matches
-                </button>
+              {/* Coverage Summary */}
+              <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', justifyContent: 'center', padding: '1rem', background: '#fef3c7', borderRadius: '0.5rem' }}>
+                <div style={{ fontSize: '0.875rem', color: '#92400e', textAlign: 'center' }}>
+                  <strong>✅ Matched:</strong> {result.kpis.matched_assets.toLocaleString()} assets
+                </div>
+                <div style={{ fontSize: '0.875rem', color: '#92400e', textAlign: 'center' }}>
+                  <strong>⚠️ Blind Spots:</strong> {result.kpis.blind_spots.toLocaleString()} (engineered but not discovered)
+                </div>
+                <div style={{ fontSize: '0.875rem', color: '#92400e', textAlign: 'center' }}>
+                  <strong>👁️ Orphans:</strong> {result.kpis.orphan_assets.toLocaleString()} (discovered but not in baseline)
+                </div>
+              </div>
+            </div>
+          )}
 
-                {result.blindSpots && result.blindSpots.length > 0 && (
-                  <button
-                    onClick={() => {
-                      console.log('Blind spots (not discovered):', result.blindSpots)
-                      alert(`${result.kpis.blind_spots} blind spots logged to console (showing first 100)`)
-                    }}
-                    style={{
-                      padding: '0.75rem 1.5rem',
-                      background: '#f59e0b',
-                      color: 'white',
-                      border: 'none',
-                      borderRadius: '0.5rem',
-                      fontSize: '0.875rem',
-                      fontWeight: '600',
-                      cursor: 'pointer'
-                    }}
-                  >
-                    ⚠️ Export Blind Spots ({result.kpis.blind_spots})
-                  </button>
-                )}
+          {/* 🏭 PLANT COMPLETENESS & OPERATIONAL CONTEXT - The merged operational + cyber view */}
+          {result.plantCompleteness && Object.keys(result.plantCompleteness).length > 0 && (
+            <div style={{
+              padding: '2rem',
+              background: 'white',
+              border: '3px solid #10b981',
+              borderRadius: '0.75rem',
+              marginBottom: '2rem'
+            }}>
+              <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1.25rem', fontWeight: '700', color: '#0f172a' }}>
+                🏭 Plant Completeness & Operational Context
+              </h3>
+              <p style={{ margin: '0 0 1.5rem 0', fontSize: '0.875rem', color: '#64748b' }}>
+                Operational Intelligence + Cyber Security = Context-Aware Defense. For each process unit, we analyze: Is it complete for production? What's the attack surface? Where are the gaps?
+              </p>
 
-                {result.orphans && result.orphans.length > 0 && (
-                  <button
-                    onClick={() => {
-                      console.log('Orphan devices (no engineering match):', result.orphans)
-                      alert(`${result.kpis.orphan_assets} orphans logged to console (showing first 100)`)
-                    }}
-                    style={{
-                      padding: '0.75rem 1.5rem',
-                      background: '#8b5cf6',
-                      color: 'white',
-                      border: 'none',
-                      borderRadius: '0.5rem',
-                      fontSize: '0.875rem',
-                      fontWeight: '600',
-                      cursor: 'pointer'
-                    }}
-                  >
-                    👁️ Export Orphan Devices ({result.kpis.orphan_assets})
-                  </button>
-                )}
+              {/* Process Unit Cards */}
+              <div style={{ display: 'grid', gap: '1.5rem' }}>
+                {Object.entries(result.plantCompleteness)
+                  .filter(([_, unit]) => unit.canAssess) // Only show units we can assess
+                  .sort((a, b) => {
+                    // Sort by operational risk (HIGH first)
+                    const riskOrder = { HIGH: 0, MEDIUM: 1, LOW: 2, UNKNOWN: 3 }
+                    return riskOrder[a[1].operationalRisk] - riskOrder[b[1].operationalRisk]
+                  })
+                  .map(([unitName, unit]) => {
+                    const completenessColor = unit.completenessScore >= 85 ? '#10b981' :
+                                             unit.completenessScore >= 70 ? '#f59e0b' : '#ef4444'
+                    const opRiskColor = unit.operationalRisk === 'HIGH' ? '#ef4444' :
+                                        unit.operationalRisk === 'MEDIUM' ? '#f59e0b' : '#10b981'
+                    const cyberRiskColor = unit.cyberRisk === 'HIGH' ? '#ef4444' :
+                                          unit.cyberRisk === 'MEDIUM' ? '#f59e0b' : '#10b981'
+                    
+                    const criticalGaps = unit.analysis.gaps.filter(g => g.criticality === 'CRITICAL')
+                    
+                    return (
+                      <div key={unitName} style={{
+                        padding: '1.5rem',
+                        background: unit.operationalRisk === 'HIGH' || unit.cyberRisk === 'HIGH' ? '#fef2f2' : '#f8fafc',
+                        border: `2px solid ${unit.operationalRisk === 'HIGH' || unit.cyberRisk === 'HIGH' ? '#ef4444' : '#cbd5e1'}`,
+                        borderRadius: '0.5rem'
+                      }}>
+                        {/* Header */}
+                        <div style={{ marginBottom: '1rem', borderBottom: '2px solid #e2e8f0', paddingBottom: '0.75rem' }}>
+                          <h4 style={{ margin: '0 0 0.25rem 0', fontSize: '1rem', fontWeight: '700', color: '#0f172a' }}>
+                            {unit.displayName}
+                          </h4>
+                          <div style={{ fontSize: '0.75rem', color: '#64748b', fontStyle: 'italic' }}>
+                            {unit.description}
+                          </div>
+                        </div>
+
+                        {/* Metrics Grid */}
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1rem', marginBottom: '1rem' }}>
+                          {/* Operational Completeness */}
+                          <div style={{ padding: '0.75rem', background: 'white', borderRadius: '0.375rem', border: '1px solid #e2e8f0' }}>
+                            <div style={{ fontSize: '0.7rem', color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase', fontWeight: '600' }}>
+                              🏭 Operational Completeness
+                            </div>
+                            <div style={{ fontSize: '1.5rem', fontWeight: '700', color: completenessColor }}>
+                              {unit.completenessScore}%
+                            </div>
+                            <div style={{ fontSize: '0.65rem', color: '#64748b' }}>
+                              {unit.totalAssets} assets vs {unit.totalExpected} expected
+                            </div>
+                          </div>
+
+                          {/* Operational Risk */}
+                          <div style={{ padding: '0.75rem', background: 'white', borderRadius: '0.375rem', border: '1px solid #e2e8f0' }}>
+                            <div style={{ fontSize: '0.7rem', color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase', fontWeight: '600' }}>
+                              ⚠️ Operational Risk
+                            </div>
+                            <div style={{ fontSize: '1.5rem', fontWeight: '700', color: opRiskColor }}>
+                              {unit.operationalRisk}
+                            </div>
+                            <div style={{ fontSize: '0.65rem', color: '#64748b' }}>
+                              {criticalGaps.length > 0 ? `${criticalGaps.length} critical gap(s)` : 'No critical gaps'}
+                            </div>
+                          </div>
+
+                          {/* Cyber Security Posture */}
+                          <div style={{ padding: '0.75rem', background: 'white', borderRadius: '0.375rem', border: '1px solid #e2e8f0' }}>
+                            <div style={{ fontSize: '0.7rem', color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase', fontWeight: '600' }}>
+                              🔒 Security Posture
+                            </div>
+                            <div style={{ fontSize: '1.5rem', fontWeight: '700', color: cyberRiskColor }}>
+                              {unit.securityMetrics.securityPercent}%
+                            </div>
+                            <div style={{ fontSize: '0.65rem', color: '#64748b' }}>
+                              {unit.securityMetrics.securedAssets} / {unit.securityMetrics.networkableAssets} networkable secured
+                            </div>
+                          </div>
+
+                          {/* Cyber Risk */}
+                          <div style={{ padding: '0.75rem', background: 'white', borderRadius: '0.375rem', border: '1px solid #e2e8f0' }}>
+                            <div style={{ fontSize: '0.7rem', color: '#64748b', marginBottom: '0.25rem', textTransform: 'uppercase', fontWeight: '600' }}>
+                              🎯 Cyber Risk Level
+                            </div>
+                            <div style={{ fontSize: '1.5rem', fontWeight: '700', color: cyberRiskColor }}>
+                              {unit.cyberRisk}
+                            </div>
+                            <div style={{ fontSize: '0.65rem', color: '#64748b' }}>
+                              {unit.cyberRisk === 'HIGH' ? 'Wide open to attack' : unit.cyberRisk === 'MEDIUM' ? 'Needs improvement' : 'Well protected'}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Merged Recommendation */}
+                        {(unit.operationalRisk !== 'LOW' || unit.cyberRisk !== 'LOW') && (
+                          <div style={{ padding: '1rem', background: '#fff7ed', border: '1px solid #f59e0b', borderRadius: '0.375rem' }}>
+                            <div style={{ fontSize: '0.75rem', fontWeight: '700', color: '#92400e', marginBottom: '0.5rem' }}>
+                              🎯 MERGED RECOMMENDATION (Plant Manager + CISO):
+                            </div>
+                            <div style={{ fontSize: '0.75rem', color: '#78350f', lineHeight: '1.6' }}>
+                              {criticalGaps.length > 0 && (
+                                <>
+                                  <strong>Operations:</strong> Missing {criticalGaps.length} critical equipment type(s) ({criticalGaps.map(g => g.deviceType).join(', ')}). 
+                                  {criticalGaps.some(g => g.severity === 'CRITICAL') ? ' ⚠️ Cannot operate safely without these assets.' : ' Verify data completeness.'}
+                                  <br />
+                                </>
+                              )}
+                              {unit.cyberRisk === 'HIGH' && (
+                                <>
+                                  <strong>Cyber:</strong> Only {unit.securityMetrics.securityPercent}% of networkable devices are secured. 
+                                  {unit.completenessScore >= 85 
+                                    ? ` This unit is operational but vulnerable - ransomware could shut down production.`
+                                    : ` Data gaps + poor security = high risk of undetected compromise.`
+                                  }
+                                  <br />
+                                </>
+                              )}
+                              {unit.analysis.unknowns.length > 0 && (
+                                <>
+                                  <strong>Unknown Devices:</strong> {unit.analysis.unknowns.length} devices couldn't be classified. 
+                                  {unit.analysis.unknowns.filter(u => u.confidence !== 'LOW').length > 0 
+                                    ? ` AI suggests: ${unit.analysis.unknowns.filter(u => u.confidence !== 'LOW').slice(0, 2).map(u => u.inferredType).join(', ')}.`
+                                    : ' Conduct physical audit to identify these assets.'}
+                                </>
+                              )}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )
+                  })}
               </div>
             </div>
           )}

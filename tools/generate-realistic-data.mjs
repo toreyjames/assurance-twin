@@ -127,7 +127,7 @@ function generateEngineering(count, siteCount = 1) {
 }
 
 // Generate OT discovery data
-function generateDiscovery(engineeringAssets, coveragePercent = 0.67) {
+function generateDiscovery(engineeringAssets, coveragePercent = 0.75) {
   const discovered = [];
   
   // Get all networkable assets (Tier 1 + Tier 2)
