@@ -130,30 +130,27 @@ export default function FlexibleOilGasCanonizer() {
       // Process engineering files
       for (const file of engineeringFiles) {
         const text = await readFileText(file)
-        const parsed = Papa.parse(text, { header: true, skipEmptyLines: true })
         payload.dataSources.engineering.push({
           filename: file.name,
-          data: parsed.data
+          content: text  // Send raw CSV text, backend will parse it
         })
       }
 
       // Process OT tool files (maps to otDiscovery in backend)
       for (const file of otToolFiles) {
         const text = await readFileText(file)
-        const parsed = Papa.parse(text, { header: true, skipEmptyLines: true })
         payload.dataSources.otDiscovery.push({
           filename: file.name,
-          data: parsed.data
+          content: text  // Send raw CSV text, backend will parse it
         })
       }
 
       // Process other files
       for (const file of otherFiles) {
         const text = await readFileText(file)
-        const parsed = Papa.parse(text, { header: true, skipEmptyLines: true })
         payload.dataSources.other.push({
           filename: file.name,
-          data: parsed.data
+          content: text  // Send raw CSV text, backend will parse it
         })
       }
 
