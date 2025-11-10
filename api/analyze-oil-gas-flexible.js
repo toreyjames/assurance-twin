@@ -498,79 +498,168 @@ function generateLearningInsights(engineering, discovered, matchResults, dataSou
     }
   }
   
-  // 6. Smart Recommendations - TOP 3 ONLY (prioritized)
+  // 6. ACTIONABLE, LOCATION-SPECIFIC Recommendations
   const allRecommendations = []
   
-  // Priority 1: Security gaps (highest business risk)
-  if (securityCoveragePercent < 70 && networkableAssets.length > 0) {
-    const unmanagedNetworkable = networkableAssets.length - networkableManaged
+  // ANALYZE BY PROCESS UNIT - Where to deploy OT collectors?
+  const unitBlindSpots = {}
+  engineering.forEach(asset => {
+    const unit = asset.unit || 'Unknown'
+    const classification = classifyDeviceBySecurity(asset)
+    const isNetworkable = classification.tier === 1 || classification.tier === 2
+    
+    if (!unitBlindSpots[unit]) {
+      unitBlindSpots[unit] = { total: 0, networkable: 0, discovered: 0 }
+    }
+    
+    unitBlindSpots[unit].total++
+    if (isNetworkable) {
+      unitBlindSpots[unit].networkable++
+    }
+  })
+  
+  // Check which units are discovered
+  matchResults.matched.forEach(match => {
+    const unit = match.engineering.unit || 'Unknown'
+    if (unitBlindSpots[unit]) {
+      unitBlindSpots[unit].discovered++
+    }
+  })
+  
+  // Find units with worst coverage
+  const unitsNeedingCollectors = Object.entries(unitBlindSpots)
+    .filter(([unit, stats]) => stats.networkable > 20 && stats.discovered < stats.networkable * 0.5)
+    .map(([unit, stats]) => ({
+      unit,
+      ...stats,
+      coverage: Math.round((stats.discovered / stats.networkable) * 100)
+    }))
+    .sort((a, b) => (b.networkable - b.discovered) - (a.networkable - a.discovered))
+    .slice(0, 3)
+  
+  // Priority 1: Deploy OT collectors in blind spot areas
+  if (unitsNeedingCollectors.length > 0) {
+    const topUnit = unitsNeedingCollectors[0]
+    const blindSpotCount = topUnit.networkable - topUnit.discovered
     allRecommendations.push({
       priority: 1,
-      type: 'security_gap',
+      type: 'deploy_collector',
       severity: 'critical',
-      message: `${unmanagedNetworkable} networkable devices are unmanaged`,
-      detail: `Only ${securityCoveragePercent}% of networkable assets have security management. ${unmanagedNetworkable} devices with network connectivity are unmonitored - these are direct attack vectors.`,
-      action: `Onboard ${unmanagedNetworkable} devices to security platform (Claroty, Nozomi, or similar)`,
-      impact: 'High - reduces attack surface'
+      message: `Deploy OT collector in ${topUnit.unit}`,
+      detail: `${topUnit.unit} has ${topUnit.networkable} networkable devices but only ${topUnit.discovered} discovered (${topUnit.coverage}% coverage). ${blindSpotCount} devices are completely invisible to your security tools.`,
+      action: `Deploy passive OT collector (Claroty, Nozomi, Armis) in ${topUnit.unit} network segment to gain visibility`,
+      impact: `High - Discovers ${blindSpotCount} devices, ~${Math.round(blindSpotCount * 0.7)} likely need security management`
     })
   }
   
-  // Priority 2: Critical asset gaps
-  if (tier1Assets.length > 0) {
-    const tier1Managed = networkableMatched.filter(m => 
-      classifyDeviceBySecurity(m.engineering).tier === 1 && isTruthy(m.discovered?.is_managed)
-    ).length
-    const tier1Coverage = Math.round((tier1Managed / tier1Assets.length) * 100)
+  // ANALYZE BY MANUFACTURER - Which vendor devices are under-secured?
+  const manufacturerGaps = {}
+  engineeringClassified.forEach(asset => {
+    const mfr = asset.manufacturer || 'Unknown'
+    const isCritical = asset.securityClass.tier === 1
     
-    if (tier1Coverage < 90) {
-      allRecommendations.push({
-        priority: 2,
-        type: 'critical_asset_gap',
-        severity: 'critical',
-        message: `${tier1Assets.length - tier1Managed} critical PLCs/DCS/HMIs unsecured`,
-        detail: `Only ${tier1Coverage}% of Tier 1 critical assets (PLCs, DCS, HMIs, SCADA) are secured. These are your highest-risk programmable devices.`,
-        action: `Immediately secure ${tier1Assets.length - tier1Managed} critical network assets`,
-        impact: 'Critical - prevents ransomware/disruption'
-      })
+    if (!manufacturerGaps[mfr]) {
+      manufacturerGaps[mfr] = { total: 0, critical: 0, managed: 0 }
     }
+    
+    manufacturerGaps[mfr].total++
+    if (isCritical) manufacturerGaps[mfr].critical++
+  })
+  
+  // Check which manufacturers are managed
+  networkableMatched.forEach(match => {
+    const mfr = match.engineering.manufacturer || 'Unknown'
+    if (manufacturerGaps[mfr] && isTruthy(match.discovered?.is_managed)) {
+      manufacturerGaps[mfr].managed++
+    }
+  })
+  
+  const vendorGaps = Object.entries(manufacturerGaps)
+    .filter(([mfr, stats]) => mfr !== 'Unknown' && stats.critical > 10)
+    .map(([mfr, stats]) => ({
+      manufacturer: mfr,
+      ...stats,
+      managedPercent: stats.total > 0 ? Math.round((stats.managed / stats.total) * 100) : 0,
+      unmanaged: stats.critical - stats.managed
+    }))
+    .filter(v => v.managedPercent < 50)
+    .sort((a, b) => b.unmanaged - a.unmanaged)
+  
+  // Priority 2: Focus on specific vendor gaps
+  if (vendorGaps.length > 0 && vendorGaps[0].unmanaged > 10) {
+    const topVendor = vendorGaps[0]
+    allRecommendations.push({
+      priority: 2,
+      type: 'vendor_focus',
+      severity: 'high',
+      message: `Prioritize ${topVendor.manufacturer} device security`,
+      detail: `You have ${topVendor.critical} critical ${topVendor.manufacturer} controllers (PLCs/DCS), but only ${topVendor.managed} (${topVendor.managedPercent}%) are managed. ${topVendor.manufacturer} devices require vendor-specific security tools and patches.`,
+      action: `Deploy ${topVendor.manufacturer}-compatible security agents or configure passive monitoring for ${topVendor.unmanaged} unmanaged devices`,
+      impact: `Critical - ${topVendor.manufacturer} PLCs are common ransomware targets (see: Industroyer, TRITON attacks)`
+    })
   }
   
-  // Priority 3: Data quality (enables better coverage)
-  if (engWithIP < engineering.length * 0.5 && discWithIP > discovered.length * 0.8) {
+  // ANALYZE BY DEVICE TYPE IN SPECIFIC LOCATIONS
+  const deviceLocationGaps = {}
+  engineeringClassified.forEach(asset => {
+    const unit = asset.unit || 'Unknown'
+    const type = asset.device_type || 'Unknown'
+    const key = `${unit}:${type}`
+    const isSmart = asset.securityClass.tier === 2
+    
+    if (!deviceLocationGaps[key]) {
+      deviceLocationGaps[key] = { unit, type, total: 0, smart: 0, managed: 0 }
+    }
+    
+    deviceLocationGaps[key].total++
+    if (isSmart) deviceLocationGaps[key].smart++
+  })
+  
+  // Check managed status
+  networkableMatched.forEach(match => {
+    const unit = match.engineering.unit || 'Unknown'
+    const type = match.engineering.device_type || 'Unknown'
+    const key = `${unit}:${type}`
+    const classification = classifyDeviceBySecurity(match.engineering)
+    
+    if (deviceLocationGaps[key] && classification.tier === 2 && isTruthy(match.discovered?.is_managed)) {
+      deviceLocationGaps[key].managed++
+    }
+  })
+  
+  const deviceTypeGaps = Object.values(deviceLocationGaps)
+    .filter(gap => gap.smart > 30 && gap.managed < gap.smart * 0.3)
+    .map(gap => ({
+      ...gap,
+      unmanaged: gap.smart - gap.managed,
+      managedPercent: Math.round((gap.managed / gap.smart) * 100)
+    }))
+    .sort((a, b) => b.unmanaged - a.unmanaged)
+  
+  // Priority 3: Specific device type + location gaps
+  if (deviceTypeGaps.length > 0) {
+    const topGap = deviceTypeGaps[0]
     allRecommendations.push({
       priority: 3,
-      type: 'quick_win',
+      type: 'device_location_gap',
       severity: 'high',
-      message: `Add IP addresses to ${Math.floor(engineering.length * 0.5 - engWithIP)} engineering assets`,
-      detail: `Discovery data is ${Math.round((discWithIP / discovered.length) * 100)}% IP-complete but engineering baseline is only ${Math.round((engWithIP / engineering.length) * 100)}%. Adding IPs is a quick win that could improve matching significantly.`,
-      action: `Enrich engineering baseline with IP addresses from network scans or IPAM`,
-      impact: `Medium - could improve coverage from current to ~${Math.min(95, matchResults.coveragePercentage + 30)}%`
+      message: `Secure ${topGap.unmanaged} ${topGap.type}s in ${topGap.unit}`,
+      detail: `${topGap.unit} has ${topGap.smart} ${topGap.type} devices, but only ${topGap.managed} (${topGap.managedPercent}%) have security management. These smart devices have network connectivity and are potential attack vectors.`,
+      action: `Deploy network segmentation and monitoring for ${topGap.type}s in ${topGap.unit}. Consider VLAN isolation if they use industrial protocols (Modbus, Profinet).`,
+      impact: `Medium - Reduces lateral movement risk in ${topGap.unit}, protects ${topGap.smart} smart devices`
     })
   }
   
-  // Priority 4: Orphan devices (shadow IT risk)
-  if (matchResults.orphanCount > discovered.length * 0.1) {
+  // Priority 4: Orphan devices (always important for security)
+  if (matchResults.orphanCount > 10) {
     allRecommendations.push({
       priority: 4,
-      type: 'orphan_assets',
+      type: 'orphan_investigation',
       severity: 'medium',
-      message: `${matchResults.orphanCount} orphan devices found on network`,
-      detail: `${matchResults.orphanCount} discovered devices (${Math.round((matchResults.orphanCount / discovered.length) * 100)}%) have no engineering baseline match. These may be shadow IT, contractor equipment, or missing from asset register.`,
-      action: `Review orphan assets for unauthorized devices or missing documentation`,
-      impact: 'Medium - identifies shadow IT and compliance gaps'
-    })
-  }
-  
-  // Passive device insight (informational only)
-  if (passiveAssets.length > engineering.length * 0.3) {
-    allRecommendations.push({
-      priority: 5,
-      type: 'inventory_insight',
-      severity: 'info',
-      message: `${passiveAssets.length} passive/analog devices inventoried`,
-      detail: `${Math.round((passiveAssets.length / engineering.length) * 100)}% of assets are passive analog devices (4-20mA transmitters, valves). These don't require security management but are important for complete asset visibility.`,
-      action: `Good: Focus security efforts on ${networkableAssets.length} networkable assets, not passive devices`,
-      impact: 'Info - confirms proper device classification'
+      message: `Investigate ${matchResults.orphanCount} orphan devices on network`,
+      detail: `${matchResults.orphanCount} devices are actively communicating on your OT network but have no engineering baseline match. These could be: contractor laptops, shadow IT, rogue devices, or missing documentation.`,
+      action: `Export orphan device list, cross-reference MAC addresses with DHCP logs, investigate unknown IPs. Consider quarantine until validated.`,
+      impact: `Medium - Identifies unauthorized access, prevents shadow IT risks`
     })
   }
   
