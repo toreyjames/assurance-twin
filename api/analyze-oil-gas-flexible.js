@@ -319,14 +319,14 @@ function classifyDeviceBySecurity(asset) {
     }
   }
   
-  // Tier 2: Smart/Networkable Devices (SHOULD secure)
+  // Tier 2: Smart/Networkable Devices (MUST secure - network-facing!)
   const tier2Keywords = ['smart', 'ip', 'ethernet', 'profinet', 'modbus', 'dnp3', 'bacnet', 'camera', 'analyzer', 'vfd', 'drive']
   if (isNetworkable || tier2Keywords.some(kw => deviceType.includes(kw))) {
     return {
       tier: 2,
       classification: 'Smart/Networkable Device',
-      securityRequired: 'SHOULD',
-      rationale: 'Network-connected - potential attack surface'
+      securityRequired: 'MUST',
+      rationale: 'Network-connected - must be secured (lateral movement risk)'
     }
   }
   
