@@ -724,6 +724,27 @@ export default async function handler(req, res) {
       dataSources
     )
     
+    // Calculate distributions for Plant Intelligence (WHERE are the assets?)
+    const distributions = {
+      processUnitDistribution: {},
+      deviceTypeDistribution: {},
+      manufacturerDistribution: {}
+    }
+    
+    allEngineering.forEach(asset => {
+      // Process Unit (where in the plant)
+      const unit = asset.unit || 'Unknown'
+      distributions.processUnitDistribution[unit] = (distributions.processUnitDistribution[unit] || 0) + 1
+      
+      // Device Type (what kind of asset)
+      const type = asset.device_type || 'Unknown'
+      distributions.deviceTypeDistribution[type] = (distributions.deviceTypeDistribution[type] || 0) + 1
+      
+      // Manufacturer (who made it)
+      const mfr = asset.manufacturer || 'Unknown'
+      distributions.manufacturerDistribution[mfr] = (distributions.manufacturerDistribution[mfr] || 0) + 1
+    })
+    
     console.log('[FLEXIBLE API] Returning results:', kpis)
     
     return res.status(200).json({
@@ -739,7 +760,8 @@ export default async function handler(req, res) {
           return acc
         }, {})
       },
-      learningInsights
+      learningInsights,
+      distributions  // Add distributions for Plant Intelligence
     })
     
   } catch (error) {

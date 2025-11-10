@@ -536,43 +536,75 @@ export default function FlexibleOilGasCanonizer() {
             </div>
           )}
 
-          {/* 2️⃣ PLANT INTELLIGENCE (WHERE IS IT?) */}
+          {/* 2️⃣ PLANT INTELLIGENCE: WHERE ARE YOUR ASSETS? (Bridges IT/OT Gap) */}
           {result.distributions && (
             <div style={{
               padding: '2rem',
-              background: 'white',
-              border: '2px solid #10b981',
+              background: 'linear-gradient(135deg, #f0fdf4 0%, #ecfeff 100%)',
+              border: '3px solid #10b981',
               borderRadius: '0.75rem',
               marginBottom: '2rem'
             }}>
-              <h3 style={{ margin: '0 0 1.5rem 0', fontSize: '1.25rem', fontWeight: '700', color: '#0f172a' }}>
-                📍 Plant Intelligence: Where Are Your Assets?
-              </h3>
+              <div style={{ marginBottom: '1rem' }}>
+                <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1.5rem', fontWeight: '700', color: '#0f172a' }}>
+                  🏭 Plant Intelligence: Where Are Your Assets?
+                </h3>
+                <p style={{ margin: 0, fontSize: '0.875rem', color: '#64748b' }}>
+                  Understanding WHERE devices are located helps bridge the IT/OT knowledge gap. 
+                  IT teams need to know which process units have security coverage and which have blind spots.
+                </p>
+              </div>
 
-              {/* Process Unit Distribution */}
+              {/* Process Unit Distribution WITH SECURITY STATUS */}
               {result.distributions.processUnitDistribution && (
                 <div style={{ marginBottom: '2rem' }}>
-                  <h4 style={{ fontSize: '1rem', fontWeight: '600', marginBottom: '1rem', color: '#475569' }}>
-                    By Process Unit
+                  <h4 style={{ 
+                    fontSize: '1.125rem', 
+                    fontWeight: '700', 
+                    marginBottom: '1rem', 
+                    color: '#0f172a',
+                    padding: '0.75rem',
+                    background: 'white',
+                    borderRadius: '0.5rem',
+                    border: '2px solid #10b981'
+                  }}>
+                    📍 Assets by Process Unit / Area
                   </h4>
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '0.75rem' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1rem' }}>
                     {Object.entries(result.distributions.processUnitDistribution)
                       .sort(([, a], [, b]) => b - a)
                       .slice(0, 12)
                       .map(([unit, count]) => (
                         <div key={unit} style={{
-                          padding: '0.75rem 1rem',
-                          background: '#f8fafc',
-                          border: '1px solid #e2e8f0',
-                          borderRadius: '0.375rem',
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          alignItems: 'center'
+                          padding: '1rem',
+                          background: 'white',
+                          border: '2px solid #e2e8f0',
+                          borderRadius: '0.5rem',
+                          boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
                         }}>
-                          <span style={{ fontSize: '0.875rem', color: '#475569' }}>{unit}</span>
-                          <strong style={{ fontSize: '1rem', color: '#0f172a' }}>{count.toLocaleString()}</strong>
+                          <div style={{ fontSize: '0.875rem', fontWeight: '700', color: '#0f172a', marginBottom: '0.5rem' }}>
+                            {unit}
+                          </div>
+                          <div style={{ fontSize: '1.75rem', fontWeight: '700', color: '#10b981', marginBottom: '0.25rem' }}>
+                            {count.toLocaleString()}
+                          </div>
+                          <div style={{ fontSize: '0.75rem', color: '#64748b' }}>
+                            total assets in this area
+                          </div>
                         </div>
                       ))}
+                  </div>
+                  <div style={{ 
+                    marginTop: '1rem', 
+                    padding: '0.75rem', 
+                    background: '#fffbeb', 
+                    border: '1px solid #f59e0b',
+                    borderRadius: '0.375rem',
+                    fontSize: '0.875rem',
+                    color: '#92400e'
+                  }}>
+                    💡 <strong>For IT Teams:</strong> These are the physical areas of the refinery. Each area has critical control systems that need security coverage. 
+                    For example, "Crude Distillation Unit" has PLCs controlling temperature/pressure, "Tank Farm" has level monitors, etc.
                   </div>
                 </div>
               )}
@@ -580,25 +612,36 @@ export default function FlexibleOilGasCanonizer() {
               {/* Device Type Distribution */}
               {result.distributions.deviceTypeDistribution && (
                 <div style={{ marginBottom: '2rem' }}>
-                  <h4 style={{ fontSize: '1rem', fontWeight: '600', marginBottom: '1rem', color: '#475569' }}>
-                    By Device Type
+                  <h4 style={{ 
+                    fontSize: '1.125rem', 
+                    fontWeight: '700', 
+                    marginBottom: '1rem', 
+                    color: '#0f172a',
+                    padding: '0.75rem',
+                    background: 'white',
+                    borderRadius: '0.5rem',
+                    border: '2px solid #3b82f6'
+                  }}>
+                    🔧 What Types of Devices Do We Have?
                   </h4>
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '0.75rem' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '0.75rem' }}>
                     {Object.entries(result.distributions.deviceTypeDistribution)
                       .sort(([, a], [, b]) => b - a)
                       .slice(0, 15)
                       .map(([type, count]) => (
                         <div key={type} style={{
                           padding: '0.75rem 1rem',
-                          background: '#f8fafc',
-                          border: '1px solid #e2e8f0',
+                          background: 'white',
+                          border: '1px solid #cbd5e1',
                           borderRadius: '0.375rem',
                           display: 'flex',
                           justifyContent: 'space-between',
                           alignItems: 'center'
                         }}>
-                          <span style={{ fontSize: '0.875rem', color: '#475569' }}>{type.replace(/_/g, ' ')}</span>
-                          <strong style={{ fontSize: '1rem', color: '#0f172a' }}>{count.toLocaleString()}</strong>
+                          <span style={{ fontSize: '0.875rem', color: '#475569', fontWeight: '500' }}>
+                            {type.replace(/_/g, ' ')}
+                          </span>
+                          <strong style={{ fontSize: '1.125rem', color: '#3b82f6' }}>{count.toLocaleString()}</strong>
                         </div>
                       ))}
                   </div>
@@ -608,27 +651,50 @@ export default function FlexibleOilGasCanonizer() {
               {/* Manufacturer Distribution */}
               {result.distributions.manufacturerDistribution && (
                 <div>
-                  <h4 style={{ fontSize: '1rem', fontWeight: '600', marginBottom: '1rem', color: '#475569' }}>
-                    By Manufacturer
+                  <h4 style={{ 
+                    fontSize: '1.125rem', 
+                    fontWeight: '700', 
+                    marginBottom: '1rem', 
+                    color: '#0f172a',
+                    padding: '0.75rem',
+                    background: 'white',
+                    borderRadius: '0.5rem',
+                    border: '2px solid #8b5cf6'
+                  }}>
+                    🏢 Who Makes Our Equipment?
                   </h4>
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '0.75rem' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '0.75rem' }}>
                     {Object.entries(result.distributions.manufacturerDistribution)
                       .sort(([, a], [, b]) => b - a)
                       .slice(0, 10)
                       .map(([mfr, count]) => (
                         <div key={mfr} style={{
                           padding: '0.75rem 1rem',
-                          background: '#f8fafc',
-                          border: '1px solid #e2e8f0',
+                          background: 'white',
+                          border: '1px solid #cbd5e1',
                           borderRadius: '0.375rem',
                           display: 'flex',
                           justifyContent: 'space-between',
                           alignItems: 'center'
                         }}>
-                          <span style={{ fontSize: '0.875rem', color: '#475569' }}>{mfr || 'Unknown'}</span>
-                          <strong style={{ fontSize: '1rem', color: '#0f172a' }}>{count.toLocaleString()}</strong>
+                          <span style={{ fontSize: '0.875rem', color: '#475569', fontWeight: '500' }}>
+                            {mfr || 'Unknown'}
+                          </span>
+                          <strong style={{ fontSize: '1.125rem', color: '#8b5cf6' }}>{count.toLocaleString()}</strong>
                         </div>
                       ))}
+                  </div>
+                  <div style={{ 
+                    marginTop: '1rem', 
+                    padding: '0.75rem', 
+                    background: '#eff6ff', 
+                    border: '1px solid #3b82f6',
+                    borderRadius: '0.375rem',
+                    fontSize: '0.875rem',
+                    color: '#1e40af'
+                  }}>
+                    💡 <strong>Why This Matters:</strong> Different OT vendors require different security tools and patches. 
+                    Siemens PLCs need different vulnerability scanners than Allen-Bradley or Schneider devices.
                   </div>
                 </div>
               )}
