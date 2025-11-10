@@ -1223,6 +1223,153 @@ export default async function handler(req, res) {
       needsReview: canonicalAssets.filter(a => a.validation.level === 'low' || a.match_confidence < 70).length
     }
     
+    // ============================================================================
+    // CROSS-VERIFICATION: Verify networkable vs passive classification
+    // Core assurance function - how do we KNOW what needs to be secured?
+    // ============================================================================
+    const classificationVerification = {
+      verified: [],           // Engineering says networkable + OT confirmed (HIGH CONFIDENCE)
+      unverified: [],         // Engineering says networkable + OT didn't find (NEEDS INVESTIGATION)
+      suspiciousPassive: [],  // Engineering says passive + OT found it (LIKELY MISCLASSIFIED)
+      verifiedPassive: [],    // Engineering says passive + OT didn't find (PROBABLY CORRECT)
+      orphanAnalysis: []      // OT found but not in baseline (what are these?)
+    }
+    
+    // Analyze each engineering asset
+    allEngineering.forEach(asset => {
+      const classification = classifyDeviceBySecurity(asset)
+      const isNetworkable = classification.tier === 1 || classification.tier === 2
+      const hasIPinBaseline = Boolean(asset.ip_address)
+      const wasDiscovered = matchResults.matched.find(m => m.engineering.tag_id === asset.tag_id)
+      
+      if (isNetworkable || hasIPinBaseline) {
+        // Engineering baseline says this device is networkable
+        if (wasDiscovered) {
+          // OT discovery confirmed it - VERIFIED!
+          classificationVerification.verified.push({
+            tag_id: asset.tag_id,
+            device_type: asset.device_type,
+            ip_address: asset.ip_address,
+            unit: asset.unit,
+            tier: classification.tier,
+            status: 'VERIFIED',
+            confidence: 'HIGH',
+            reason: 'Engineering baseline + OT discovery agree - device is networkable and was found on network'
+          })
+        } else {
+          // OT discovery didn't find it - UNVERIFIED (suspicious!)
+          classificationVerification.unverified.push({
+            tag_id: asset.tag_id,
+            device_type: asset.device_type,
+            ip_address: asset.ip_address,
+            unit: asset.unit,
+            tier: classification.tier,
+            status: 'UNVERIFIED',
+            confidence: 'LOW',
+            reason: 'Engineering says networkable but OT discovery didn\'t find it',
+            possibleCauses: ['Device is offline', 'Wrong IP address in baseline', 'Network segment not scanned', 'Stale engineering data', 'Device was replaced with analog version']
+          })
+        }
+      } else {
+        // Engineering baseline says this device is passive/analog
+        if (wasDiscovered) {
+          // OT discovery found it anyway - SUSPICIOUS! Likely misclassified
+          classificationVerification.suspiciousPassive.push({
+            tag_id: asset.tag_id,
+            device_type: asset.device_type,
+            ip_address: asset.ip_address || 'NONE_IN_BASELINE',
+            unit: asset.unit,
+            tier: classification.tier,
+            status: 'SUSPICIOUS',
+            confidence: 'LOW',
+            reason: 'Engineering says passive/analog but OT discovery found it on network - likely misclassified',
+            recommendation: 'Update engineering baseline with network information, re-classify as networkable'
+          })
+        } else {
+          // OT discovery didn't find it - probably truly passive
+          classificationVerification.verifiedPassive.push({
+            tag_id: asset.tag_id,
+            device_type: asset.device_type,
+            unit: asset.unit,
+            tier: classification.tier,
+            status: 'VERIFIED_PASSIVE',
+            confidence: 'MEDIUM',
+            reason: 'Engineering says passive and OT discovery didn\'t find it - probably analog/non-network device'
+          })
+        }
+      }
+    })
+    
+    // Analyze orphans - what are these devices OT found but not in baseline?
+    matchResults.orphans.forEach(orphan => {
+      const deviceType = String(orphan.device_type || '').toLowerCase()
+      const hasIP = Boolean(orphan.ip_address)
+      
+      // Try to classify what this orphan likely is
+      const tier1Keywords = ['plc', 'dcs', 'hmi', 'scada', 'rtu', 'controller', 'server', 'workstation']
+      const tier2Keywords = ['smart', 'ip', 'ethernet', 'camera', 'analyzer', 'vfd', 'drive']
+      
+      let likelyType = 'UNKNOWN'
+      let severity = 'MEDIUM'
+      
+      if (tier1Keywords.some(kw => deviceType.includes(kw))) {
+        likelyType = 'Critical Network Asset (PLC/DCS/HMI)'
+        severity = 'HIGH'
+      } else if (tier2Keywords.some(kw => deviceType.includes(kw)) || hasIP) {
+        likelyType = 'Smart/Networkable Device'
+        severity = 'MEDIUM'
+      } else {
+        likelyType = 'Unknown device type'
+        severity = 'LOW'
+      }
+      
+      classificationVerification.orphanAnalysis.push({
+        ip_address: orphan.ip_address,
+        hostname: orphan.hostname,
+        mac_address: orphan.mac_address,
+        device_type: orphan.device_type,
+        manufacturer: orphan.manufacturer,
+        likelyType,
+        severity,
+        status: 'ORPHAN',
+        confidence: 'LOW',
+        reason: 'Found on network but not in engineering baseline',
+        possibleCauses: ['Rogue device / shadow IT', 'Contractor equipment', 'Missing from engineering documentation', 'Recently added device', 'Misclassified passive device in baseline']
+      })
+    })
+    
+    // Calculate verification summary metrics
+    const verificationSummary = {
+      totalEngineeredNetworkable: classificationVerification.verified.length + classificationVerification.unverified.length + classificationVerification.suspiciousPassive.length,
+      verified: classificationVerification.verified.length,
+      unverified: classificationVerification.unverified.length,
+      suspiciousPassive: classificationVerification.suspiciousPassive.length,
+      verifiedPassive: classificationVerification.verifiedPassive.length,
+      orphans: classificationVerification.orphanAnalysis.length,
+      
+      // Key metrics for "How do we know?"
+      verificationRate: classificationVerification.verified.length > 0 
+        ? Math.round((classificationVerification.verified.length / (classificationVerification.verified.length + classificationVerification.unverified.length)) * 100)
+        : 0,
+      
+      classificationAccuracy: allEngineering.length > 0
+        ? Math.round(((classificationVerification.verified.length + classificationVerification.verifiedPassive.length) / allEngineering.length) * 100)
+        : 0,
+      
+      suspiciousCount: classificationVerification.suspiciousPassive.length + classificationVerification.orphanAnalysis.filter(o => o.severity === 'HIGH').length,
+      
+      confidenceLevel: null // Will calculate below
+    }
+    
+    // Determine overall confidence level
+    if (verificationSummary.verificationRate >= 70 && verificationSummary.suspiciousCount < 10) {
+      verificationSummary.confidenceLevel = 'HIGH'
+    } else if (verificationSummary.verificationRate >= 40 && verificationSummary.suspiciousCount < 50) {
+      verificationSummary.confidenceLevel = 'MEDIUM'
+    } else {
+      verificationSummary.confidenceLevel = 'LOW'
+    }
+    
     // Calculate KPIs
     const kpis = {
       total_assets: allEngineering.length,
@@ -1231,7 +1378,11 @@ export default async function handler(req, res) {
       blind_spots: matchResults.blindSpotCount,
       orphan_assets: matchResults.orphanCount,
       discovery_coverage_percentage: matchResults.coveragePercentage,
-      blind_spot_percentage: 100 - matchResults.coveragePercentage
+      blind_spot_percentage: 100 - matchResults.coveragePercentage,
+      // Add verification metrics to KPIs
+      verification_rate: verificationSummary.verificationRate,
+      classification_accuracy: verificationSummary.classificationAccuracy,
+      suspicious_classifications: verificationSummary.suspiciousCount
     }
     
     // LEARNING: Analyze column usage and data quality
@@ -1386,14 +1537,16 @@ export default async function handler(req, res) {
           acc[m.matchType] = (acc[m.matchType] || 0) + 1
           return acc
         }, {}),
-        strategyBreakdown: matchStrategyBreakdown  // NEW: For "How the Canon Works" UI section
+        strategyBreakdown: matchStrategyBreakdown  // For "How the Canon Works" UI section
       },
       validationSummary,  // Cross-validation summary for audit
+      classificationVerification,  // NEW: Cross-verification of networkable vs passive classification
+      verificationSummary,  // NEW: Summary metrics for "How do we know?" section
       blindSpots: matchResults.blindSpots.slice(0, 100),  // Sample of blind spots
       orphans: matchResults.orphans.slice(0, 100),  // Sample of orphans
       learningInsights,
       distributions,  // Plant Intelligence distributions
-      plantCompleteness  // NEW: Operational Intelligence - plant completeness by unit
+      plantCompleteness  // Operational Intelligence - plant completeness by unit
     })
     
   } catch (error) {

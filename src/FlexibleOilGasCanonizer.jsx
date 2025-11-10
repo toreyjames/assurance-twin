@@ -760,6 +760,195 @@ export default function FlexibleOilGasCanonizer() {
             </div>
           )}
 
+          {/* 🔍 CLASSIFICATION CONFIDENCE - "How do we know?" */}
+          {result.verificationSummary && (
+            <div style={{
+              padding: '2rem',
+              background: 'white',
+              border: '3px solid #6366f1',
+              borderRadius: '0.75rem',
+              marginBottom: '2rem'
+            }}>
+              <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1.25rem', fontWeight: '700', color: '#0f172a' }}>
+                🔍 Classification Confidence: How Do We Know?
+              </h3>
+              <p style={{ margin: '0 0 1.5rem 0', fontSize: '0.875rem', color: '#64748b' }}>
+                Cross-verification of networkable vs passive classification. Verifies that devices classified as "networkable" are actually found on the network, and vice versa.
+              </p>
+
+              {/* Overall Confidence Badge */}
+              <div style={{ 
+                padding: '1rem', 
+                background: result.verificationSummary.confidenceLevel === 'HIGH' ? '#f0fdf4' :
+                           result.verificationSummary.confidenceLevel === 'MEDIUM' ? '#fffbeb' : '#fef2f2',
+                border: `2px solid ${result.verificationSummary.confidenceLevel === 'HIGH' ? '#10b981' :
+                                      result.verificationSummary.confidenceLevel === 'MEDIUM' ? '#f59e0b' : '#ef4444'}`,
+                borderRadius: '0.5rem',
+                marginBottom: '1.5rem',
+                textAlign: 'center'
+              }}>
+                <div style={{ fontSize: '0.875rem', color: '#64748b', marginBottom: '0.5rem' }}>
+                  Overall Classification Confidence
+                </div>
+                <div style={{ 
+                  fontSize: '2rem', 
+                  fontWeight: '700',
+                  color: result.verificationSummary.confidenceLevel === 'HIGH' ? '#10b981' :
+                         result.verificationSummary.confidenceLevel === 'MEDIUM' ? '#f59e0b' : '#ef4444'
+                }}>
+                  {result.verificationSummary.confidenceLevel}
+                </div>
+                <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '0.5rem' }}>
+                  {result.verificationSummary.verificationRate}% of networkable assets verified by OT discovery
+                </div>
+              </div>
+
+              {/* Verification Breakdown */}
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem', marginBottom: '1.5rem' }}>
+                {/* Verified */}
+                <div style={{
+                  padding: '1rem',
+                  background: '#f0fdf4',
+                  border: '2px solid #10b981',
+                  borderRadius: '0.5rem'
+                }}>
+                  <div style={{ fontSize: '0.75rem', color: '#064e3b', marginBottom: '0.25rem', fontWeight: '600' }}>
+                    ✅ VERIFIED
+                  </div>
+                  <div style={{ fontSize: '2rem', fontWeight: '700', color: '#10b981' }}>
+                    {result.verificationSummary.verified.toLocaleString()}
+                  </div>
+                  <div style={{ fontSize: '0.7rem', color: '#065f46', marginTop: '0.5rem', lineHeight: '1.4' }}>
+                    Engineering says networkable + OT found it
+                  </div>
+                </div>
+
+                {/* Unverified */}
+                <div style={{
+                  padding: '1rem',
+                  background: '#fffbeb',
+                  border: '2px solid #f59e0b',
+                  borderRadius: '0.5rem'
+                }}>
+                  <div style={{ fontSize: '0.75rem', color: '#78350f', marginBottom: '0.25rem', fontWeight: '600' }}>
+                    ⚠️ UNVERIFIED
+                  </div>
+                  <div style={{ fontSize: '2rem', fontWeight: '700', color: '#f59e0b' }}>
+                    {result.verificationSummary.unverified.toLocaleString()}
+                  </div>
+                  <div style={{ fontSize: '0.7rem', color: '#92400e', marginTop: '0.5rem', lineHeight: '1.4' }}>
+                    Engineering says networkable but OT didn't find it
+                  </div>
+                </div>
+
+                {/* Suspicious */}
+                {result.verificationSummary.suspiciousCount > 0 && (
+                  <div style={{
+                    padding: '1rem',
+                    background: '#fef2f2',
+                    border: '2px solid #ef4444',
+                    borderRadius: '0.5rem'
+                  }}>
+                    <div style={{ fontSize: '0.75rem', color: '#7f1d1d', marginBottom: '0.25rem', fontWeight: '600' }}>
+                      🚨 SUSPICIOUS
+                    </div>
+                    <div style={{ fontSize: '2rem', fontWeight: '700', color: '#ef4444' }}>
+                      {result.verificationSummary.suspiciousCount.toLocaleString()}
+                    </div>
+                    <div style={{ fontSize: '0.7rem', color: '#991b1b', marginTop: '0.5rem', lineHeight: '1.4' }}>
+                      Misclassified or missing from baseline
+                    </div>
+                  </div>
+                )}
+
+                {/* Verified Passive */}
+                <div style={{
+                  padding: '1rem',
+                  background: '#f8fafc',
+                  border: '2px solid #64748b',
+                  borderRadius: '0.5rem'
+                }}>
+                  <div style={{ fontSize: '0.75rem', color: '#334155', marginBottom: '0.25rem', fontWeight: '600' }}>
+                    📦 VERIFIED PASSIVE
+                  </div>
+                  <div style={{ fontSize: '2rem', fontWeight: '700', color: '#64748b' }}>
+                    {result.verificationSummary.verifiedPassive.toLocaleString()}
+                  </div>
+                  <div style={{ fontSize: '0.7rem', color: '#475569', marginTop: '0.5rem', lineHeight: '1.4' }}>
+                    Passive/analog - OT didn't find (as expected)
+                  </div>
+                </div>
+              </div>
+
+              {/* What This Means */}
+              <div style={{ 
+                padding: '1rem', 
+                background: '#eff6ff', 
+                border: '1px solid #3b82f6',
+                borderRadius: '0.5rem'
+              }}>
+                <h4 style={{ margin: '0 0 0.5rem 0', fontSize: '0.875rem', fontWeight: '700', color: '#1e40af' }}>
+                  📊 What This Means
+                </h4>
+                <div style={{ fontSize: '0.75rem', color: '#1e40af', lineHeight: '1.6' }}>
+                  <strong>Verified ({result.verificationSummary.verified}):</strong> These devices are confirmed networkable - engineering baseline and OT discovery agree.<br />
+                  <strong>Unverified ({result.verificationSummary.unverified}):</strong> Engineering says these have IP addresses, but OT discovery didn't find them. Could be offline, wrong IP, or stale baseline data.<br />
+                  {result.verificationSummary.suspiciousCount > 0 && (
+                    <><strong>Suspicious ({result.verificationSummary.suspiciousCount}):</strong> Misclassified devices - OT found them but engineering says they're passive, OR orphans that look like critical assets.<br /></>
+                  )}
+                  <strong>Verified Passive ({result.verificationSummary.verifiedPassive}):</strong> These are analog/non-network devices - no IP address and OT didn't find them (as expected).
+                </div>
+              </div>
+
+              {/* Export Verification Data */}
+              {(result.classificationVerification?.suspiciousPassive?.length > 0 || result.classificationVerification?.unverified?.length > 0) && (
+                <div style={{ marginTop: '1rem', display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+                  {result.classificationVerification.unverified.length > 0 && (
+                    <button
+                      onClick={() => {
+                        console.log('Unverified networkable assets:', result.classificationVerification.unverified)
+                        alert(`${result.classificationVerification.unverified.length} unverified assets logged to console. These should be investigated - are they offline? Wrong IPs?`)
+                      }}
+                      style={{
+                        padding: '0.75rem 1.5rem',
+                        background: '#f59e0b',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '0.5rem',
+                        fontSize: '0.875rem',
+                        fontWeight: '600',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      ⚠️ Export Unverified Assets ({result.classificationVerification.unverified.length})
+                    </button>
+                  )}
+                  
+                  {result.classificationVerification.suspiciousPassive.length > 0 && (
+                    <button
+                      onClick={() => {
+                        console.log('Suspicious passive classifications:', result.classificationVerification.suspiciousPassive)
+                        alert(`${result.classificationVerification.suspiciousPassive.length} suspicious classifications logged to console. These are likely misclassified - update engineering baseline.`)
+                      }}
+                      style={{
+                        padding: '0.75rem 1.5rem',
+                        background: '#ef4444',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '0.5rem',
+                        fontSize: '0.875rem',
+                        fontWeight: '600',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      🚨 Export Suspicious Classifications ({result.classificationVerification.suspiciousPassive.length})
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
+
           {/* 3️⃣ TOP 3 ACTIONS (AT THE BOTTOM!) */}
           {result.learningInsights?.recommendations?.length > 0 && (
             <div style={{
