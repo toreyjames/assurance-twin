@@ -86,6 +86,138 @@ const INDUSTRY_LAYOUTS = {
 // Default refinery layout for backwards compatibility
 const REFINERY_LAYOUT = INDUSTRY_LAYOUTS['oil-gas']
 
+/**
+ * Simple hash function for plant names
+ * Returns a consistent value for the same input
+ */
+function hashString(str) {
+  let hash = 0
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i)
+    hash = ((hash << 5) - hash) + char
+    hash = hash & hash // Convert to 32bit integer
+  }
+  return Math.abs(hash)
+}
+
+/**
+ * Seeded random number generator
+ * Returns consistent "random" values for the same seed
+ */
+function seededRandom(seed) {
+  let value = seed
+  return function() {
+    value = (value * 16807) % 2147483647
+    return (value - 1) / 2147483646
+  }
+}
+
+/**
+ * Guess equipment type from unit name
+ */
+function guessEquipmentType(unitName) {
+  const name = (unitName || '').toLowerCase()
+  
+  if (name.includes('tank') || name.includes('storage')) return 'tanks'
+  if (name.includes('column') || name.includes('distill') || name.includes('tower')) return 'column'
+  if (name.includes('reactor') || name.includes('crack') || name.includes('convert')) return 'reactor'
+  if (name.includes('control') || name.includes('room') || name.includes('center')) return 'controlroom'
+  if (name.includes('flare') || name.includes('burn')) return 'flare'
+  if (name.includes('boiler') || name.includes('furnace') || name.includes('heater')) return 'furnace'
+  if (name.includes('heat') || name.includes('exchange') || name.includes('cool')) return 'exchanger'
+  if (name.includes('load') || name.includes('ship') || name.includes('terminal')) return 'tanks'
+  
+  return 'reactor' // Default
+}
+
+/**
+ * Generate a plant-specific layout based on actual units in the data
+ * Each plant gets a unique but consistent layout based on its name
+ */
+function generatePlantLayout(plantName, units, baseTemplate, industry) {
+  const seed = hashString(plantName || 'default')
+  const rng = seededRandom(seed)
+  
+  const layout = {}
+  const usedPositions = new Set()
+  
+  // Track positions used to avoid overlap
+  const positionKey = (x, z) => `${Math.round(x/5)*5}_${Math.round(z/5)*5}`
+  
+  // Different layout patterns for variety
+  const layoutPattern = seed % 4
+  const xMultiplier = layoutPattern < 2 ? 1 : -1
+  const zMultiplier = layoutPattern % 2 === 0 ? 1 : -1
+  
+  // Scale factor based on number of units
+  const scaleFactor = Math.max(0.8, Math.min(1.3, units.length / 10))
+  
+  let autoIndex = 0
+  
+  units.forEach((unit) => {
+    const templateLayout = baseTemplate[unit.name]
+    
+    if (templateLayout) {
+      // Use template position but add plant-specific offset
+      const offsetX = (rng() - 0.5) * 6 * xMultiplier
+      const offsetZ = (rng() - 0.5) * 6 * zMultiplier
+      
+      const newPosition = [
+        templateLayout.position[0] * scaleFactor + offsetX,
+        templateLayout.position[1],
+        templateLayout.position[2] * scaleFactor + offsetZ
+      ]
+      
+      // Adjust height based on asset count (more assets = slightly larger)
+      const heightMultiplier = Math.min(1.4, Math.max(0.9, unit.count / 15))
+      
+      layout[unit.name] = {
+        ...templateLayout,
+        position: newPosition,
+        height: templateLayout.height ? templateLayout.height * heightMultiplier : undefined,
+        isDynamic: true
+      }
+      
+      usedPositions.add(positionKey(newPosition[0], newPosition[2]))
+    } else {
+      // Auto-position unknown units in a spiral pattern
+      const angle = autoIndex * 0.7 // Spiral angle
+      const radius = 40 + autoIndex * 3 // Increasing radius
+      
+      let x = Math.cos(angle) * radius
+      let z = Math.sin(angle) * radius
+      
+      // Apply plant-specific rotation
+      const rotation = (seed % 360) * Math.PI / 180
+      const rotX = x * Math.cos(rotation) - z * Math.sin(rotation)
+      const rotZ = x * Math.sin(rotation) + z * Math.cos(rotation)
+      
+      // Ensure no overlap
+      while (usedPositions.has(positionKey(rotX, rotZ))) {
+        autoIndex++
+        const newAngle = autoIndex * 0.7
+        const newRadius = 40 + autoIndex * 3
+        x = Math.cos(newAngle) * newRadius
+        z = Math.sin(newAngle) * newRadius
+      }
+      
+      layout[unit.name] = {
+        position: [rotX, 0, rotZ],
+        equipment: guessEquipmentType(unit.name),
+        section: 'other',
+        flowOrder: 99,
+        isDynamic: true,
+        isAutoPositioned: true
+      }
+      
+      usedPositions.add(positionKey(rotX, rotZ))
+      autoIndex++
+    }
+  })
+  
+  return layout
+}
+
 // Industry-specific process flows
 const INDUSTRY_FLOWS = {
   'oil-gas': [
@@ -263,32 +395,89 @@ function ProcessPipes({ units, showFlow, layout, flows }) {
 }
 
 /**
+ * Gap indicator ring that pulses around equipment with gaps
+ */
+function GapIndicator({ position, severity, height = 0 }) {
+  const meshRef = useRef()
+  
+  useFrame(({ clock }) => {
+    if (meshRef.current) {
+      const pulse = Math.sin(clock.elapsedTime * 2) * 0.1 + 1
+      meshRef.current.scale.set(pulse, 1, pulse)
+    }
+  })
+  
+  const color = severity === 'critical' ? '#ef4444' : '#f59e0b'
+  
+  return (
+    <group position={[position[0], height + 0.1, position[2]]}>
+      <mesh ref={meshRef} rotation={[-Math.PI / 2, 0, 0]}>
+        <ringGeometry args={[3, 3.3, 32]} />
+        <meshBasicMaterial color={color} transparent opacity={0.6} />
+      </mesh>
+      {/* Warning icon floating above */}
+      <Html position={[0, height + 4, 0]} center>
+        <div style={{
+          background: severity === 'critical' ? 'rgba(239, 68, 68, 0.9)' : 'rgba(245, 158, 11, 0.9)',
+          color: 'white',
+          padding: '2px 6px',
+          borderRadius: '4px',
+          fontSize: '10px',
+          fontWeight: 'bold',
+          whiteSpace: 'nowrap'
+        }}>
+          {severity === 'critical' ? '⚠️ GAP' : '⚡ CHECK'}
+        </div>
+      </Html>
+    </group>
+  )
+}
+
+/**
  * Equipment renderer based on unit type
  */
-function EquipmentUnit({ unit, layout, onClick, selected }) {
+function EquipmentUnit({ unit, layout, onClick, selected, gapInfo }) {
   const data = {
     name: unit.name,
     assetCount: unit.count,
     tier1: unit.tier1,
     tier2: unit.tier2,
-    tier3: unit.tier3
+    tier3: unit.tier3,
+    hasGap: gapInfo?.total > 0,
+    gapSeverity: gapInfo?.critical > 0 ? 'critical' : gapInfo?.warning > 0 ? 'warning' : null
   }
   
   const position = layout?.position || [0, 0, 0]
+  const showGapIndicator = gapInfo?.total > 0
+  
+  // Wrap equipment with gap indicator if needed
+  const wrapWithGap = (equipment, equipmentHeight = 0) => (
+    <group>
+      {equipment}
+      {showGapIndicator && (
+        <GapIndicator 
+          position={position} 
+          severity={data.gapSeverity} 
+          height={equipmentHeight}
+        />
+      )}
+    </group>
+  )
   
   switch (layout?.equipment) {
     case 'column':
-      return (
+      return wrapWithGap(
         <DistillationColumn 
           position={position} 
           height={layout.height || 8}
           data={data}
           onClick={onClick}
           selected={selected}
-        />
+        />,
+        layout.height || 8
       )
     case 'reactor':
-      return (
+      return wrapWithGap(
         <Reactor 
           position={position} 
           radius={1.5}
@@ -296,10 +485,11 @@ function EquipmentUnit({ unit, layout, onClick, selected }) {
           data={data}
           onClick={onClick}
           selected={selected}
-        />
+        />,
+        3
       )
     case 'tanks':
-      return (
+      return wrapWithGap(
         <group>
           <StorageTank 
             position={[position[0] - 3, position[1], position[2]]} 
@@ -319,10 +509,11 @@ function EquipmentUnit({ unit, layout, onClick, selected }) {
             radius={2}
             height={3}
           />
-        </group>
+        </group>,
+        3
       )
     case 'tank':
-      return (
+      return wrapWithGap(
         <StorageTank 
           position={position} 
           radius={2.5}
@@ -330,48 +521,53 @@ function EquipmentUnit({ unit, layout, onClick, selected }) {
           data={data}
           onClick={onClick}
           selected={selected}
-        />
+        />,
+        2
       )
     case 'exchanger':
-      return (
+      return wrapWithGap(
         <HeatExchanger 
           position={position} 
           data={data}
           onClick={onClick}
           selected={selected}
-        />
+        />,
+        1.5
       )
     case 'flare':
-      return (
+      return wrapWithGap(
         <FlareStack 
           position={position} 
           height={15}
           data={data}
           onClick={onClick}
           selected={selected}
-        />
+        />,
+        15
       )
     case 'controlroom':
-      return (
+      return wrapWithGap(
         <ControlRoom 
           position={position} 
           data={data}
           onClick={onClick}
           selected={selected}
-        />
+        />,
+        3
       )
     case 'furnace':
-      return (
+      return wrapWithGap(
         <Furnace 
           position={position} 
           data={data}
           onClick={onClick}
           selected={selected}
-        />
+        />,
+        2
       )
     default:
       // Default to reactor for unknown types
-      return (
+      return wrapWithGap(
         <Reactor 
           position={position} 
           radius={1.2}
@@ -379,7 +575,8 @@ function EquipmentUnit({ unit, layout, onClick, selected }) {
           data={data}
           onClick={onClick}
           selected={selected}
-        />
+        />,
+        2.4
       )
   }
 }
@@ -415,14 +612,14 @@ function LoadingSpinner() {
 /**
  * Main Refinery Map Component
  */
-export default function RefineryMap({ result, selectedPlant = 'all', industry = 'oil-gas' }) {
+export default function RefineryMap({ result, selectedPlant = 'all', industry = 'oil-gas', gapMatrix }) {
   const containerRef = useRef()
   const [selectedUnit, setSelectedUnit] = useState(null)
   const [showFlow, setShowFlow] = useState(true)
   const [isLoading, setIsLoading] = useState(true)
   
-  // Select industry-specific layout
-  const ACTIVE_LAYOUT = INDUSTRY_LAYOUTS[industry] || INDUSTRY_LAYOUTS['oil-gas']
+  // Base industry-specific layout (template)
+  const BASE_LAYOUT = INDUSTRY_LAYOUTS[industry] || INDUSTRY_LAYOUTS['oil-gas']
   const ACTIVE_FLOWS = INDUSTRY_FLOWS[industry] || INDUSTRY_FLOWS['oil-gas']
   
   // Industry display names
@@ -484,11 +681,36 @@ export default function RefineryMap({ result, selectedPlant = 'all', industry = 
     return Object.values(units)
       .filter(u => u.name !== 'Unassigned' || u.count > 10)
       .sort((a, b) => {
-        const aLayout = ACTIVE_LAYOUT[a.name]
-        const bLayout = ACTIVE_LAYOUT[b.name]
+        const aLayout = BASE_LAYOUT[a.name]
+        const bLayout = BASE_LAYOUT[b.name]
         return (aLayout?.flowOrder || 99) - (bLayout?.flowOrder || 99)
       })
-  }, [filteredAssets, ACTIVE_LAYOUT])
+  }, [filteredAssets, BASE_LAYOUT])
+  
+  // Generate plant-specific layout (dynamic based on plant name and actual units)
+  const ACTIVE_LAYOUT = useMemo(() => {
+    if (currentPlant === 'all') {
+      // For "all plants" view, use the base template
+      return BASE_LAYOUT
+    }
+    // Generate unique layout for this specific plant
+    return generatePlantLayout(currentPlant, processUnits, BASE_LAYOUT, industry)
+  }, [currentPlant, processUnits, BASE_LAYOUT, industry])
+  
+  // Get gap data for units (for visual highlighting)
+  const unitGaps = useMemo(() => {
+    if (!gapMatrix?.gaps) return {}
+    const gaps = {}
+    gapMatrix.gaps.forEach(g => {
+      if (!gaps[g.unit]) {
+        gaps[g.unit] = { critical: 0, warning: 0, total: 0 }
+      }
+      gaps[g.unit].total++
+      if (g.severity === 'critical') gaps[g.unit].critical++
+      if (g.severity === 'warning') gaps[g.unit].warning++
+    })
+    return gaps
+  }, [gapMatrix])
 
   // Export as PNG
   const handleExport = async () => {
@@ -634,13 +856,15 @@ export default function RefineryMap({ result, selectedPlant = 'all', industry = 
             {/* Equipment */}
             {processUnits.map((unit) => {
               const unitLayout = ACTIVE_LAYOUT[unit.name]
+              const gapInfo = unitGaps[unit.name]
+              
               if (!unitLayout) {
-                // Auto-position unknown units in a grid
+                // Auto-position unknown units in a grid (fallback for dynamic layout)
                 const unknownUnits = processUnits.filter(u => !ACTIVE_LAYOUT[u.name])
                 const idx = unknownUnits.indexOf(unit)
                 const autoLayout = {
                   position: [45 + (idx % 4) * 6, 0, -15 + Math.floor(idx / 4) * 6],
-                  equipment: 'reactor'
+                  equipment: guessEquipmentType(unit.name)
                 }
                 return (
                   <EquipmentUnit
@@ -648,6 +872,7 @@ export default function RefineryMap({ result, selectedPlant = 'all', industry = 
                     unit={unit}
                     layout={autoLayout}
                     selected={selectedUnit === unit.name}
+                    gapInfo={gapInfo}
                     onClick={(e) => {
                       e.stopPropagation()
                       setSelectedUnit(unit.name === selectedUnit ? null : unit.name)
@@ -662,6 +887,7 @@ export default function RefineryMap({ result, selectedPlant = 'all', industry = 
                   unit={unit}
                   layout={unitLayout}
                   selected={selectedUnit === unit.name}
+                  gapInfo={gapInfo}
                   onClick={(e) => {
                     e.stopPropagation()
                     setSelectedUnit(unit.name === selectedUnit ? null : unit.name)
@@ -737,12 +963,45 @@ export default function RefineryMap({ result, selectedPlant = 'all', industry = 
             
             <div style={{ borderTop: '1px solid #334155', paddingTop: '0.75rem' }}>
               <div style={{ fontSize: '0.7rem', color: '#64748b', marginBottom: '0.5rem' }}>ASSET BREAKDOWN</div>
-              <div style={{ display: 'flex', gap: '0.5rem', fontSize: '0.75rem' }}>
+              <div style={{ display: 'flex', gap: '0.5rem', fontSize: '0.75rem', flexWrap: 'wrap' }}>
                 <span style={{ color: '#ef4444' }}>● Tier 1: {selectedUnitData.tier1}</span>
                 <span style={{ color: '#f59e0b' }}>● Tier 2: {selectedUnitData.tier2}</span>
                 <span style={{ color: '#6366f1' }}>● Tier 3: {selectedUnitData.tier3}</span>
               </div>
             </div>
+            
+            {/* Gap information if available */}
+            {unitGaps[selectedUnitData.name] && (
+              <div style={{ 
+                borderTop: '1px solid #334155', 
+                paddingTop: '0.75rem',
+                marginTop: '0.75rem'
+              }}>
+                <div style={{ 
+                  fontSize: '0.7rem', 
+                  color: unitGaps[selectedUnitData.name].critical > 0 ? '#ef4444' : '#f59e0b', 
+                  marginBottom: '0.5rem',
+                  fontWeight: '600'
+                }}>
+                  ⚠️ GAP ANALYSIS
+                </div>
+                <div style={{ fontSize: '0.75rem', color: '#e2e8f0' }}>
+                  {unitGaps[selectedUnitData.name].critical > 0 && (
+                    <div style={{ color: '#ef4444', marginBottom: '0.25rem' }}>
+                      🔴 {unitGaps[selectedUnitData.name].critical} critical gap(s)
+                    </div>
+                  )}
+                  {unitGaps[selectedUnitData.name].warning > 0 && (
+                    <div style={{ color: '#f59e0b' }}>
+                      🟡 {unitGaps[selectedUnitData.name].warning} warning(s)
+                    </div>
+                  )}
+                  <div style={{ marginTop: '0.5rem', fontSize: '0.7rem', color: '#94a3b8' }}>
+                    Click "Ask Questions" to learn more
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>
@@ -764,9 +1023,16 @@ export default function RefineryMap({ result, selectedPlant = 'all', industry = 
           <span>🔥 Flare</span>
           <span>🏢 Control</span>
           {showFlow && <span style={{ color: '#ef4444' }}>━ Critical Flow</span>}
+          {Object.keys(unitGaps).length > 0 && (
+            <>
+              <span style={{ color: '#ef4444' }}>⚠️ Critical Gap</span>
+              <span style={{ color: '#f59e0b' }}>⚡ Warning</span>
+            </>
+          )}
         </div>
         <div style={{ color: '#64748b', fontSize: '0.7rem' }}>
           {processUnits.length} units • {filteredAssets.length.toLocaleString()} assets
+          {Object.keys(unitGaps).length > 0 && ` • ${Object.keys(unitGaps).length} units with gaps`}
         </div>
       </div>
     </div>

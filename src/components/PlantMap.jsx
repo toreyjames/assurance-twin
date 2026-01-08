@@ -33,7 +33,7 @@ function isMobileDevice() {
   )
 }
 
-export default function PlantMap({ result, industry = 'oil-gas' }) {
+export default function PlantMap({ result, industry = 'oil-gas', gapMatrix }) {
   const [viewMode, setViewMode] = useState('refinery') // 'refinery', 'simple3d', '2d'
   const [hasWebGL, setHasWebGL] = useState(true)
   
@@ -135,7 +135,7 @@ export default function PlantMap({ result, industry = 'oil-gas' }) {
         <PlantVisualization result={result} />
       )}
       {viewMode === 'refinery' && (
-        <RefineryMap result={result} industry={industry} />
+        <RefineryMap result={result} industry={industry} gapMatrix={gapMatrix} />
       )}
     </div>
   )

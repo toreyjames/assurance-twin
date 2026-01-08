@@ -7,6 +7,7 @@
  * - Instrumentation gap analysis
  * - Data quality observations
  * - Risk indicators and recommendations
+ * - Conversational follow-up questions
  */
 
 // Note: For Vercel deployment, we use the edge-compatible fetch approach
@@ -26,20 +27,17 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'POST method required' })
   }
   
-  const { prompt, summary } = req.body
-  
-  if (!prompt) {
-    return res.status(400).json({ error: 'Prompt is required' })
-  }
+  const { prompt, summary, followUp, question, conversationHistory, context } = req.body
   
   // Check for API key
   const apiKey = process.env.ANTHROPIC_API_KEY
   
   if (!apiKey) {
-    // Return a helpful message if not configured
     console.warn('[ENGINEERING-ANALYSIS] ANTHROPIC_API_KEY not configured')
     return res.status(200).json({
-      analysis: generateFallbackResponse(summary),
+      analysis: followUp 
+        ? "I'm unable to answer follow-up questions without the API configured. Please configure the ANTHROPIC_API_KEY to enable conversational analysis."
+        : generateFallbackResponse(summary),
       model: 'fallback-no-api-key',
       timestamp: new Date().toISOString(),
       note: 'API key not configured. Using template-based fallback analysis.'
@@ -47,7 +45,17 @@ export default async function handler(req, res) {
   }
   
   try {
-    console.log('[ENGINEERING-ANALYSIS] Calling Claude API...')
+    // Handle follow-up questions
+    if (followUp) {
+      return await handleFollowUp(req, res, apiKey, question, conversationHistory, context)
+    }
+    
+    // Handle initial analysis
+    if (!prompt) {
+      return res.status(400).json({ error: 'Prompt is required' })
+    }
+    
+    console.log('[ENGINEERING-ANALYSIS] Calling Claude API for initial analysis...')
     
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -93,13 +101,139 @@ export default async function handler(req, res) {
     
     // Return fallback analysis on error
     return res.status(200).json({
-      analysis: generateFallbackResponse(summary),
+      analysis: followUp 
+        ? `I encountered an error processing your question: ${error.message}. Please try again.`
+        : generateFallbackResponse(summary),
       model: 'fallback-error',
       timestamp: new Date().toISOString(),
       error: error.message,
       note: 'Using template-based fallback due to API error.'
     })
   }
+}
+
+/**
+ * Handle conversational follow-up questions
+ */
+async function handleFollowUp(req, res, apiKey, question, conversationHistory, context) {
+  if (!question) {
+    return res.status(400).json({ error: 'Question is required for follow-up' })
+  }
+  
+  console.log('[ENGINEERING-ANALYSIS] Processing follow-up question...')
+  
+  // Build system prompt with context
+  const systemPrompt = buildFollowUpSystemPrompt(context)
+  
+  // Build messages array from conversation history
+  const messages = []
+  
+  // Add conversation history (limit to last 10 messages to avoid token limits)
+  const recentHistory = (conversationHistory || []).slice(-10)
+  recentHistory.forEach(msg => {
+    messages.push({
+      role: msg.role === 'user' ? 'user' : 'assistant',
+      content: msg.content
+    })
+  })
+  
+  // Add the new question
+  messages.push({
+    role: 'user',
+    content: question
+  })
+  
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01'
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1500,
+        system: systemPrompt,
+        messages: messages
+      })
+    })
+    
+    if (!response.ok) {
+      const errorData = await response.text()
+      console.error('[ENGINEERING-ANALYSIS] Follow-up API error:', response.status, errorData)
+      throw new Error(`Claude API returned ${response.status}`)
+    }
+    
+    const data = await response.json()
+    
+    console.log('[ENGINEERING-ANALYSIS] Follow-up response complete')
+    
+    return res.status(200).json({
+      analysis: data.content[0].text,
+      model: data.model,
+      timestamp: new Date().toISOString(),
+      isFollowUp: true,
+      usage: {
+        inputTokens: data.usage?.input_tokens,
+        outputTokens: data.usage?.output_tokens
+      }
+    })
+    
+  } catch (error) {
+    console.error('[ENGINEERING-ANALYSIS] Follow-up error:', error.message)
+    throw error
+  }
+}
+
+/**
+ * Build system prompt for follow-up questions
+ */
+function buildFollowUpSystemPrompt(context) {
+  const industry = context?.industry || 'oil-gas'
+  const industryName = {
+    'oil-gas': 'Oil & Gas / Refinery',
+    'pharma': 'Pharmaceutical Manufacturing',
+    'utilities': 'Power Generation & Utilities'
+  }[industry] || 'Industrial'
+  
+  let prompt = `You are a senior OT/ICS engineering consultant helping a client understand their asset inventory gap analysis results.
+
+## Context
+- Industry: ${industryName}
+- You previously analyzed their asset inventory and identified gaps between expected and actual device counts.
+
+## Your Role
+- Answer questions about the gap analysis findings
+- Explain what specific gaps mean and their implications
+- Provide actionable recommendations
+- Help prioritize remediation efforts
+- Explain industry norms and standards when relevant
+
+## Guidelines
+- Be concise but thorough
+- Reference specific units and device types from their data
+- Explain technical concepts in accessible language
+- Always consider safety implications for OT environments
+- Suggest concrete next steps when appropriate
+`
+
+  // Add gap context if available
+  if (context?.gapMatrix && context.gapMatrix.length > 0) {
+    prompt += `\n## Current Gap Findings\nThe following gaps were identified in their data:\n`
+    context.gapMatrix.slice(0, 10).forEach(gap => {
+      prompt += `- ${gap.unit}: ${gap.deviceType} - Expected ${gap.expected}, Found ${gap.actual} (${gap.severity})\n`
+    })
+  }
+
+  // Add summary context if available
+  if (context?.summary) {
+    prompt += `\n## Data Summary\n`
+    if (context.summary.totalAssets) prompt += `- Total Assets: ${context.summary.totalAssets}\n`
+    if (context.summary.matchRate) prompt += `- Match Rate: ${context.summary.matchRate}%\n`
+  }
+
+  return prompt
 }
 
 /**

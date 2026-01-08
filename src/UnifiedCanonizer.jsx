@@ -929,7 +929,11 @@ function Results({ result, outputLevel, onReset, industry }) {
 
       {/* 3D Plant Visualization (Map tier only) */}
       {outputLevel === 'map' && (
-        <PlantMap result={result} industry={industry} />
+        <PlantMap 
+          result={result} 
+          industry={industry} 
+          gapMatrix={engineeringAnalysis?.gapMatrix}
+        />
       )}
       
       {/* Engineering Intelligence Panel (Map tier only) */}
@@ -943,6 +947,9 @@ function Results({ result, outputLevel, onReset, industry }) {
           timestamp={engineeringAnalysis?.timestamp}
           model={engineeringAnalysis?.model}
           isFallback={engineeringAnalysis?.isFallback}
+          gapMatrix={engineeringAnalysis?.gapMatrix}
+          industry={industry}
+          summary={engineeringAnalysis?.summary}
         />
       )}
 
