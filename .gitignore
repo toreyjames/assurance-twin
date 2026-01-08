@@ -1,7 +1,23 @@
-# Local Netlify folder
-.netlify
-node_modules
+# Dependencies
 node_modules
 
+# Build output
+dist
+
+# Local Netlify folder
+.netlify
+
+# Vercel
 .vercel
+
+# Environment variables
+.env
 .env*.local
+
+# IDE
+.idea
+.vscode
+
+# OS
+.DS_Store
+Thumbs.db
