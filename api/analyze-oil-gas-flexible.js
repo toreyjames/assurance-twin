@@ -7,8 +7,13 @@ const sha256 = (s) => crypto.createHash('sha256').update(s).digest('hex')
 
 // ============================================================================
 // REFINERY EQUIPMENT TEMPLATES - Operational Intelligence Layer
-// Expected equipment mix for typical refinery process units
-// Used for completeness scoring and context-aware unknown device classification
+// Industry reference ranges (min/typical/max) for typical refinery process units
+// Used as one layer of multi-layered completeness analysis:
+// 1. Industry reference ranges (sanity checks, anomaly detection)
+// 2. Relative comparison (compare similar units within same plant)
+// 3. Functional completeness (ensure critical process functions have required instrumentation)
+// 4. Baseline tracking (compare to historical state when available)
+// Note: Templates are reference points, not rigid requirements - customizable to plant-specific design
 // ============================================================================
 const REFINERY_EQUIPMENT_TEMPLATES = {
   'Crude Distillation': {
@@ -505,7 +510,11 @@ function normalizeDeviceType(deviceType) {
   return typeMap[dt] || null
 }
 
-// Analyze completeness of a process unit vs expected equipment
+// Analyze completeness of a process unit using multi-layered approach:
+// Layer 1: Industry reference ranges (templates) for anomaly detection
+// Layer 2: Relative comparison (compare to similar units - not yet implemented in this function)
+// Layer 3: Functional completeness (critical functions check - partially implemented via criticality)
+// Layer 4: Baseline tracking (historical comparison - requires persisted data)
 function analyzeProcessUnitCompleteness(unitName, assets, matchedAssets) {
   // Get template for this unit (normalize unit name variations)
   const normalizedUnit = unitName.toLowerCase().includes('distill') ? 'Crude Distillation' :

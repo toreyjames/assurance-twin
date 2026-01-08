@@ -1,0 +1,86 @@
+{
+  "id": "oil-gas",
+  "name": "Oil & Gas Refineries",
+  "icon": "⛽",
+  "description": "Refinery process units, safety systems, material flows",
+  
+  "standards": ["ISA/IEC 62443", "IEC 61511", "API 1164", "NIST CSF"],
+  "governance": ["SOX 404", "NERC CIP", "TSA Pipeline Security"],
+  
+  "processUnits": {
+    "Crude Distillation": {
+      "displayName": "Crude Distillation Unit (CDU)",
+      "criticality": "Critical",
+      "function": "Primary crude oil separation",
+      "safetySystems": ["Fire Protection", "Emergency Shutdown"],
+      "expectedDevices": {
+        "PLC": { "min": 8, "typical": 10, "max": 15 },
+        "DCS": { "min": 5, "typical": 8, "max": 12 },
+        "Transmitter": { "min": 120, "typical": 150, "max": 200 },
+        "Control_Valve": { "min": 60, "typical": 80, "max": 100 }
+      }
+    },
+    "FCC": {
+      "displayName": "Fluid Catalytic Cracking (FCC)",
+      "criticality": "Critical", 
+      "function": "Heavy oil conversion to lighter products",
+      "safetySystems": ["Catalyst Regeneration Safety", "Emergency Shutdown"],
+      "expectedDevices": {
+        "PLC": { "min": 12, "typical": 18, "max": 25 },
+        "DCS": { "min": 10, "typical": 15, "max": 20 },
+        "Transmitter": { "min": 180, "typical": 250, "max": 350 }
+      }
+    },
+    "Hydrocracker": {
+      "displayName": "Hydrocracker Unit",
+      "criticality": "Critical",
+      "function": "High-pressure hydrogenation",
+      "safetySystems": ["High Pressure Safety", "Hydrogen Safety"],
+      "expectedDevices": {
+        "PLC": { "min": 10, "typical": 15, "max": 20 },
+        "Safety_Controller": { "min": 3, "typical": 5, "max": 8 },
+        "Compressor": { "min": 5, "typical": 8, "max": 12 }
+      }
+    },
+    "Tank Farm": {
+      "displayName": "Tank Farm / Storage",
+      "criticality": "Medium",
+      "function": "Crude and product storage",
+      "safetySystems": ["Fire Protection", "Level Alarms"],
+      "expectedDevices": {
+        "Level_Transmitter": { "min": 50, "typical": 80, "max": 120 },
+        "Pump": { "min": 30, "typical": 50, "max": 75 }
+      }
+    },
+    "Utilities": {
+      "displayName": "Utilities (Steam, Power, Cooling)",
+      "criticality": "High",
+      "function": "Supporting systems - plant-wide distribution",
+      "safetySystems": ["Boiler Safety"],
+      "expectedDevices": {
+        "PLC": { "min": 8, "typical": 12, "max": 18 },
+        "DCS": { "min": 4, "typical": 6, "max": 10 }
+      }
+    }
+  },
+  
+  "controlHierarchy": {
+    "Field_Level": {
+      "devices": ["Transmitter", "Control_Valve", "VFD", "Sensor"],
+      "standards": ["ISA/IEC 62443-3-3", "IEC 61511"],
+      "criticality": "High"
+    },
+    "Control_Level": {
+      "devices": ["PLC", "DCS", "Safety_Controller"],
+      "standards": ["ISA/IEC 62443-2-1", "IEC 61511"],
+      "criticality": "Critical"
+    },
+    "Supervisory_Level": {
+      "devices": ["HMI", "SCADA", "Historian"],
+      "standards": ["ISA/IEC 62443-2-1", "NIST CSF"],
+      "criticality": "High"
+    }
+  }
+}
+
+

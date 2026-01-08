@@ -1,0 +1,91 @@
+{
+  "id": "utilities",
+  "name": "Power & Utilities",
+  "icon": "⚡",
+  "description": "Generation units, grid stability, environmental controls",
+  
+  "standards": ["NERC CIP", "IEC 61850", "IEEE 1815", "IEEE 1584"],
+  "governance": ["FERC", "NERC Reliability", "NFPA 70E"],
+  
+  "processUnits": {
+    "Generation": {
+      "displayName": "Power Generation",
+      "criticality": "Critical",
+      "function": "Electricity generation (turbines, generators)",
+      "safetySystems": ["Turbine Protection", "Generator Protection"],
+      "nercCip": true,
+      "expectedDevices": {
+        "Turbine_Controller": { "min": 2, "typical": 4, "max": 8 },
+        "DCS": { "min": 5, "typical": 8, "max": 15 },
+        "Protective_Relay": { "min": 20, "typical": 40, "max": 80 }
+      }
+    },
+    "Transmission": {
+      "displayName": "Transmission Substation",
+      "criticality": "Critical",
+      "function": "High voltage transmission",
+      "safetySystems": ["Breaker Failure", "Bus Protection"],
+      "nercCip": true,
+      "expectedDevices": {
+        "RTU": { "min": 5, "typical": 10, "max": 20 },
+        "Protective_Relay": { "min": 30, "typical": 60, "max": 120 },
+        "IED": { "min": 20, "typical": 40, "max": 80 }
+      }
+    },
+    "Distribution": {
+      "displayName": "Distribution System",
+      "criticality": "High",
+      "function": "Medium/low voltage distribution",
+      "safetySystems": ["Recloser Controls", "Fault Detection"],
+      "nercCip": false,
+      "expectedDevices": {
+        "RTU": { "min": 10, "typical": 25, "max": 50 },
+        "Smart_Meter": { "min": 100, "typical": 500, "max": 2000 }
+      }
+    },
+    "Control Center": {
+      "displayName": "Energy Management System (EMS)",
+      "criticality": "Critical",
+      "function": "Grid operations and control",
+      "safetySystems": ["SCADA Security", "Backup Control"],
+      "nercCip": true,
+      "expectedDevices": {
+        "EMS_Server": { "min": 4, "typical": 8, "max": 16 },
+        "SCADA": { "min": 2, "typical": 4, "max": 8 },
+        "Historian": { "min": 2, "typical": 4, "max": 8 }
+      }
+    },
+    "Renewable": {
+      "displayName": "Renewable Generation",
+      "criticality": "High",
+      "function": "Wind/Solar generation",
+      "safetySystems": ["Inverter Protection", "Grid Sync"],
+      "nercCip": true,
+      "expectedDevices": {
+        "Inverter": { "min": 10, "typical": 50, "max": 200 },
+        "Weather_Station": { "min": 2, "typical": 5, "max": 15 },
+        "SCADA": { "min": 1, "typical": 2, "max": 4 }
+      }
+    }
+  },
+  
+  "controlHierarchy": {
+    "Field_Level": {
+      "devices": ["IED", "Protective_Relay", "RTU", "Meter"],
+      "standards": ["IEC 61850", "IEEE 1815 (DNP3)"],
+      "criticality": "Critical"
+    },
+    "Control_Level": {
+      "devices": ["Substation_Gateway", "DCS", "Turbine_Controller"],
+      "standards": ["NERC CIP-007", "IEC 62351"],
+      "criticality": "Critical"
+    },
+    "Supervisory_Level": {
+      "devices": ["EMS", "SCADA", "Historian", "OMS"],
+      "standards": ["NERC CIP-005", "NERC CIP-007"],
+      "criticality": "Critical"
+    }
+  }
+}
+
+

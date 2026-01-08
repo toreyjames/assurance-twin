@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OT Assurance Twin - Proposal Shell | Deloitte</title>
+    <style>
+        @page {
+            size: letter;
+            margin: 1in;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Aptos', 'Segoe UI', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: white;
+            max-width: 8.5in;
+            margin: 0 auto;
+            padding: 0.5in;
+        }
+
+        /* Deloitte Branding */
+        .header {
+            border-bottom: 3px solid #1B5E20;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .deloitte-logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #1B5E20;
+            margin-bottom: 5px;
+        }
+
+        .deloitte-logo::after {
+            content: ".";
+            color: #66BB6A;
+        }
+
+        .tagline {
+            font-size: 12px;
+            font-style: italic;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        /* Typography */
+        h1 {
+            font-size: 32px;
+            color: #1B5E20;
+            margin: 30px 0 15px 0;
+            font-weight: bold;
+            line-height: 1.2;
+        }
+
+        h2 {
+            font-size: 24px;
+            color: #1B5E20;
+            margin: 25px 0 12px 0;
+            font-weight: 600;
+            border-bottom: 2px solid #66BB6A;
+            padding-bottom: 5px;
+        }
+
+        h3 {
+            font-size: 18px;
+            color: #2E7D32;
+            margin: 20px 0 10px 0;
+            font-weight: 600;
+        }
+
+        h4 {
+            font-size: 16px;
+            color: #388E3C;
+            margin: 15px 0 8px 0;
+            font-weight: 600;
+        }
+
+        p {
+            margin: 10px 0;
+            text-align: justify;
+        }
+
+        ul, ol {
+            margin: 10px 0 10px 30px;
+        }
+
+        li {
+            margin: 5px 0;
+        }
+
+        /* Highlight Boxes */
+        .highlight-box {
+            background: #E8F5E9;
+            border-left: 4px solid #66BB6A;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        .callout-box {
+            background: #E3F2FD;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        .info-box {
+            background: #FFF9C4;
+            border-left: 4px solid #FBC02D;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 14px;
+        }
+
+        th {
+            background: #1B5E20;
+            color: white;
+            padding: 10px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 8px 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:nth-child(even) {
+            background: #F5F5F5;
+        }
+
+        /* Two Column */
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 15px 0;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            font-size: 11px;
+            color: #666;
+            text-align: center;
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                padding: 0.5in;
+            }
+            .no-print {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="deloitte-logo">Deloitte</div>
+        <div class="tagline">Together makes progress</div>
+    </div>
+
+    <h1>OT Assurance Twin: Context-Aware Asset Management for Operational Technology</h1>
+    <p style="color: #666; font-size: 14px; margin-bottom: 20px;">
+        <strong>Proposal for:</strong> [CLIENT NAME]<br>
+        <strong>Date:</strong> [DATE]<br>
+        <strong>Prepared by:</strong> Deloitte Performance Assurance
+    </p>
+
+    <div class="highlight-box">
+        <h2>Executive Summary</h2>
+        <p>
+            Deloitte proposes to deliver an <strong>OT Assurance Twin</strong> pilot engagement for [CLIENT NAME], 
+            providing a verified, context-aware asset canon that fuses Engineering baseline, OT discovery, CMMS, 
+            security, and network data into a single source of truth. This pilot will deliver:
+        </p>
+        <ul>
+            <li>A <strong>canonical asset inventory</strong> with cross-verified classifications</li>
+            <li><strong>Explicit blind spot identification</strong> (what's missing, not just what's found)</li>
+            <li><strong>Process-aware completeness analysis</strong> mapped to your production units</li>
+            <li><strong>Regulator-ready assurance evidence</strong> with validation scores</li>
+            <li>A <strong>clear roadmap</strong> for scaling across additional sites</li>
+        </ul>
+        <p>
+            <strong>Engagement Approach:</strong> Time & Materials with estimated range of 30–50 consulting days 
+            for initial plant. Subsequent runs and additional plants benefit from re-use and lower marginal effort.
+        </p>
+    </div>
+
+    <div class="section">
+        <h2>1. The Challenge: OT Asset Visibility Gap</h2>
+        <p>
+            Industrial organizations typically have only <strong>50–80% visibility</strong> into their OT assets. 
+            Engineering documentation, OT security platforms, CMDB systems, and CMMS operate in silos, creating 
+            blind spots that compromise security, compliance, and operational efficiency.
+        </p>
+        <p>
+            Traditional tools produce <strong>lists</strong>—inventories of devices with attributes. But lists lack 
+            context: <em>What does this device do? Where is it in the production process? Is it critical? How do we 
+            know it's correct? What's missing?</em>
+        </p>
+        <div class="callout-box">
+            <h4>The OT Assurance Twin Difference</h4>
+            <p>
+                The Assurance Twin provides <strong>context-aware asset management</strong>—not just what you have, 
+                but what it does, where it is, how you know, and what's missing. It's an <strong>assurance layer</strong> 
+                that answers the hardest question: <em>"Do we actually have what we think we have, can we prove it to 
+                regulators, and where are the gaps?"</em>
+            </p>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>2. Our Solution: OT Assurance Twin</h2>
+        
+        <h3>2.1 Core Capabilities</h3>
+        <ul>
+            <li><strong>Multi-Source Fusion:</strong> Ingests Engineering baseline, OT discovery, CMMS, Security findings, 
+            Network segmentation, and Incident data</li>
+            <li><strong>Flexible Matching:</strong> 6 matching strategies (Tag ID, IP, Hostname, MAC, Fuzzy, Intelligent Pairing) 
+            with confidence scoring</li>
+            <li><strong>Cross-Verification:</strong> Validates Engineering baseline against OT discovery reality—flags mismatches, 
+            unverified devices, suspicious classifications</li>
+            <li><strong>Process-Aware Intelligence:</strong> Maps assets to process units and performs multi-layered completeness 
+            analysis (reference ranges, relative comparison, functional completeness, baseline tracking)</li>
+            <li><strong>Explicit Gap Detection:</strong> Identifies blind spots (Engineering assets not on network) and orphans 
+            (OT assets not in baseline)</li>
+            <li><strong>Multi-Source Enrichment:</strong> Links maintenance history, vulnerabilities, network zones, and incidents 
+            to canonical assets</li>
+            <li><strong>Audit-Ready Outputs:</strong> Generates regulator-ready evidence with validation scores and cross-verification summaries</li>
+        </ul>
+
+        <h3>2.2 The 4-Phase Process</h3>
+        
+        <h4>Phase 1: Ingest & Standardize</h4>
+        <p>
+            Accepts disparate CSV files from multiple sources. Auto-detects data source type from headers, normalizes field names 
+            across varied formats, merges multiple files of the same type, and deduplicates by tag_id/IP/hostname.
+        </p>
+
+        <h4>Phase 2: Match & Canonize</h4>
+        <p>
+            Matches engineering baseline to OT discovery using 6 strategies in order of confidence. Builds canonical asset records 
+            (one row per matched asset) and identifies gaps: blind spots and orphans.
+        </p>
+
+        <h4>Phase 3: Verify & Enrich</h4>
+        <p>
+            Cross-validates matches by checking field agreement and assigns confidence levels. Classifies devices by security tier. 
+            Enriches with multi-source data (CMMS work orders, CVEs, firewall zones, incidents). Maps to process units and performs 
+            multi-layered completeness analysis.
+        </p>
+
+        <h4>Phase 4: Analyze & Export</h4>
+        <p>
+            Calculates KPIs (coverage %, security coverage %, plant completeness scores). Generates AI recommendations (data quality 
+            issues, security gaps, unknown devices, OT collector deployment locations). Exports canonical inventory, blind spots, 
+            and orphans as CSV/JSON.
+        </p>
+    </div>
+
+    <div class="section">
+        <h2>3. Proposed Engagement Approach</h2>
+
+        <h3>3.1 Engagement Structure</h3>
+        <div class="two-column">
+            <div>
+                <h4>Steering Group</h4>
+                <ul>
+                    <li>[CLIENT SPONSOR NAME]</li>
+                    <li>OT / Cyber Lead</li>
+                    <li>Plant Manager Representative</li>
+                    <li>Deloitte Engagement Lead</li>
+                </ul>
+                <p><em>Meets: Kick-off, Mid-point, Final Readout</em></p>
+            </div>
+            <div>
+                <h4>Working Group</h4>
+                <ul>
+                    <li>Data Owners (Engineering, OT, CMMS, Security, Network)</li>
+                    <li>Deloitte Delivery Team</li>
+                </ul>
+                <p><em>Meets: Weekly stand-ups for data intake and issue resolution</em></p>
+            </div>
+        </div>
+
+        <h3>3.2 Engagement Phases & Timeline</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Phase</th>
+                    <th>Duration</th>
+                    <th>Key Activities</th>
+                    <th>Deliverables</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Phase 0: Scoping & Data Onboarding</strong></td>
+                    <td>1–2 weeks</td>
+                    <td>Plant data readiness workshop, dependency scan, data owner identification, access approvals</td>
+                    <td>Data intake checklist, ownership map, engagement plan</td>
+                </tr>
+                <tr>
+                    <td><strong>Phase 1: Canonization & Analysis</strong></td>
+                    <td>3–4 weeks</td>
+                    <td>Data ingestion, matching, verification, completeness analysis, early findings</td>
+                    <td>Canonical inventory, blind spots, orphans, preliminary insights</td>
+                </tr>
+                <tr>
+                    <td><strong>Phase 2: Readout, Actions & Tuning</strong></td>
+                    <td>1–2 weeks</td>
+                    <td>Deep-dives with SMEs, refine gaps, develop recommendations, executive readout</td>
+                    <td>Final assurance report, executive deck, action plan, roadmap</td>
+                </tr>
+            </tbody>
+        </table>
+        <p><strong>Total Timeline: 6–8 weeks</strong> for initial plant pilot</p>
+
+        <h3>3.3 Commercial Model</h3>
+        <div class="info-box">
+            <p>
+                <strong>Time & Materials Engagement</strong><br>
+                <strong>Core Product:</strong> OT Assurance Twin Pilot – <strong>30–50 consulting days</strong> for initial plant 
+                (role-mixed: Engagement Lead, OT/Data Engineer, OT Cyber SME)<br><br>
+                <strong>Subsequent re-runs:</strong> 5–10 days per run (benefits from re-use and standardized pipelines)<br><br>
+                <strong>Additional plants:</strong> Incremental effort per plant with scale efficiencies (20–35 days per additional plant)
+            </p>
+        </div>
+
+        <h3>3.4 Strategic Add-On Options</h3>
+        <p>
+            Based on your priorities and organizational maturity, we offer strategic add-on options that build on the baseline 
+            to address specific business outcomes:
+        </p>
+
+        <div class="highlight-box">
+            <h4>Option A: Regulatory & Assurance Focus (Always Available)</h4>
+            <p><strong>Estimated Additional LOE:</strong> 5–10 consulting days</p>
+            <p>
+                <strong>What It Delivers:</strong> Transforms your baseline into regulator-ready evidence packs. Maps findings to 
+                NERC CIP, IEC 62443, FDA, or other relevant standards. Creates compliance-ready documentation with validation scores, 
+                traceability, and justification narratives that answer "how do we know" when regulators ask about asset completeness.
+            </p>
+            <p>
+                <strong>Why It Matters:</strong> Asset inventory accuracy is consistently cited as a top pain point in regulatory audits. 
+                Most organizations struggle to prove completeness when regulators ask. This option directly addresses that gap and positions 
+                you to confidently respond to audit inquiries.
+            </p>
+            <p>
+                <strong>Best For:</strong> Organizations subject to regulatory oversight (NERC CIP, IEC 62443, FDA, etc.) or preparing 
+                for upcoming audits. Universal concern in OT environments—even if not currently under audit, organizations need to be audit-ready.
+            </p>
+        </div>
+
+        <div class="callout-box">
+            <h4>Option B: OT Cyber Risk Reduction (Often Available)</h4>
+            <p><strong>Estimated Additional LOE:</strong> 5–10 consulting days</p>
+            <p>
+                <strong>What It Delivers:</strong> Uses your canonical inventory to build a prioritized risk register. Identifies which 
+                blind spots and orphans pose the highest cyber risk. Creates remediation roadmap (90-day and 12-month views) with clear 
+                prioritization based on criticality, network exposure, and vulnerability data.
+            </p>
+            <p>
+                <strong>Why It Matters:</strong> CISOs and OT security teams are already investing heavily in OT security platforms 
+                (Claroty, Nozomi, Dragos), but struggle to prove coverage completeness and prioritize remediation. The Assurance Twin's 
+                blind spot detection and cross-verification directly addresses "what are we missing" and "where should we focus first."
+            </p>
+            <p>
+                <strong>Best For:</strong> Organizations with active OT security programs, CISO-driven initiatives, recent security incidents, 
+                or those trying to justify additional OT security investments.
+            </p>
+        </div>
+
+        <div class="info-box">
+            <h4>Option C: Preventive Maintenance Optimization (Where Data Maturity Allows)</h4>
+            <p><strong>Estimated Additional LOE:</strong> 5–10 consulting days</p>
+            <p>
+                <strong>What It Delivers:</strong> Uses your canonical inventory + CMMS data to identify under-maintained critical assets 
+                and over-maintained low-impact assets. Creates risk-based PM segmentation (Tier 1: must have robust PM, Tier 2: optimized 
+                intervals, Tier 3: candidates for PM reduction). Produces maintenance optimization playbook for your pilot plant.
+            </p>
+            <p>
+                <strong>Why It Matters:</strong> Predictive/preventive maintenance is a multi-billion dollar market with strong growth. 
+                Unplanned downtime costs manufacturing $50B+ annually. Many organizations have PM programs but lack data-driven prioritization. 
+                This option helps maintenance teams focus effort where it matters most.
+            </p>
+            <p>
+                <strong>Best For:</strong> Organizations with reasonably linked CMMS data (tag ↔ asset) and active maintenance/reliability programs. 
+                Best as follow-on after proving value with core pilot and Stage 1 options.
+            </p>
+        </div>
+
+        <div class="info-box">
+            <h4>Option D: Turnaround Planning Intelligence (Timing-Dependent)</h4>
+            <p><strong>Estimated Additional LOE:</strong> 5–10 consulting days</p>
+            <p>
+                <strong>What It Delivers:</strong> Uses your canonical inventory to validate and prioritize turnaround scope. Identifies 
+                high-risk blind spots that should be addressed during TA. Creates risk-based scope prioritization and deferral intelligence 
+                (what can safely be deferred vs. what's critical). Defines post-TA data capture plan to improve the canon.
+            </p>
+            <p>
+                <strong>Why It Matters:</strong> Turnarounds are massive, infrequent, high-stakes events. Better scope validation and 
+                prioritization can significantly reduce TA costs and risk. Organizations are willing to pay for intelligence that helps 
+                optimize these critical windows.
+            </p>
+            <p>
+                <strong>Best For:</strong> Organizations with a turnaround/shutdown planned within 12–18 months. Timing-dependent but 
+                high-value when applicable.
+            </p>
+        </div>
+
+        <div class="info-box">
+            <h4>Option E: Digital Twin Readiness (Strategic)</h4>
+            <p><strong>Estimated Additional LOE:</strong> 3–5 consulting days</p>
+            <p>
+                <strong>What It Delivers:</strong> Assesses data quality and completeness of your canonical inventory against digital twin 
+                requirements. Maps gaps (what's missing for DT foundation). Creates roadmap for what's needed (data, governance, integration) 
+                to progress from Assurance Twin to full digital twin.
+            </p>
+            <p>
+                <strong>Why It Matters:</strong> Digital twins are a strategic priority for many organizations, but lack of clean, complete 
+                asset data is consistently cited as the #1 barrier. The Assurance Twin provides that foundation, and this option explicitly 
+                maps the path forward.
+            </p>
+            <p>
+                <strong>Best For:</strong> Organizations with active or planned digital twin initiatives. Best positioned as strategic narrative 
+                layer on top of baseline + assurance.
+            </p>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>4. What We Need From You</h2>
+
+        <div class="two-column">
+            <div>
+                <h4>1. Sponsorship & Time</h4>
+                <ul>
+                    <li>Senior sponsor (4–6 hours total across engagement)</li>
+                    <li>Named working-level people with allocated time</li>
+                    <li>Access to decision-makers for scope/priority calls</li>
+                </ul>
+            </div>
+            <div>
+                <h4>2. Data & Access</h4>
+                <ul>
+                    <li>Specific exports from Engineering, OT, CMMS, Security, Network, Tickets</li>
+                    <li>Data owner identification and time allocation</li>
+                    <li>Security/legal approvals for data exports</li>
+                </ul>
+            </div>
+            <div>
+                <h4>3. Openness to Findings</h4>
+                <ul>
+                    <li>Agreement that findings may challenge existing tools/assumptions</li>
+                    <li>Willingness to address identified gaps</li>
+                    <li>Commitment to joint ownership of outcomes</li>
+                </ul>
+            </div>
+            <div>
+                <h4>4. Environment & Access</h4>
+                <ul>
+                    <li>Technical contact for infrastructure/environment setup</li>
+                    <li>Network/firewall approvals if needed</li>
+                    <li>Access to data sources and export capabilities</li>
+                </ul>
+            </div>
+        </div>
+
+        <h3>4.1 Data Requirements</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Data Source</th>
+                    <th>Owner</th>
+                    <th>Key Fields Needed</th>
+                    <th>Target Lead Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Engineering Baseline</strong></td>
+                    <td>Process / Controls Engineering</td>
+                    <td>tag_id, unit/area, device_type, manufacturer, model, networkability flag</td>
+                    <td>1–2 weeks</td>
+                </tr>
+                <tr>
+                    <td><strong>OT Discovery</strong></td>
+                    <td>OT Security / ICS Cyber</td>
+                    <td>ip_address, hostname, mac_address, device_type, vendor, zone, managed flags</td>
+                    <td>1 week</td>
+                </tr>
+                <tr>
+                    <td><strong>CMMS / Maintenance</strong></td>
+                    <td>Maintenance / Reliability</td>
+                    <td>asset_id, tag_id, unit, criticality, work order counts/status</td>
+                    <td>1–2 weeks</td>
+                </tr>
+                <tr>
+                    <td><strong>Vulnerability / Security</strong></td>
+                    <td>Cybersecurity</td>
+                    <td>ip, hostname, severity, CVE count, patched/unpatched</td>
+                    <td>1 week</td>
+                </tr>
+                <tr>
+                    <td><strong>Network Segmentation</strong></td>
+                    <td>Network Engineering / OT Network</td>
+                    <td>ip, current_zone, expected_zone, policy violations</td>
+                    <td>2–3 weeks</td>
+                </tr>
+                <tr>
+                    <td><strong>Incidents / Tickets</strong></td>
+                    <td>SOC / ServiceNow Owner</td>
+                    <td>asset/tag/ip, incident category/severity, timestamps, status</td>
+                    <td>1–2 weeks</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>5. Execution Prerequisites</h2>
+        <p>
+            Before we begin, we'll work together to confirm the following prerequisites are in place:
+        </p>
+        <ul>
+            <li><strong>Executive Sponsor Identified:</strong> OT leader / CISO / Plant GM with authority to make decisions and provide air cover</li>
+            <li><strong>Core Team Named:</strong> Engineering, OT cyber, network, CMMS, ticketing owners with allocated time (0.1–0.2 FTE for 6–8 weeks)</li>
+            <li><strong>Data Access Approvals:</strong> Security/legal sign-off for exports from each system</li>
+            <li><strong>Success Criteria Defined:</strong> Written agreement on what "good" looks like for this pilot</li>
+            <li><strong>Dependency Scan Completed:</strong> Identification of any overlapping/planned initiatives (control system upgrades, turnarounds, 
+            OT security tool deployments, CMDB/CMMS migrations, network segmentation projects, digital twin programs, regulatory audits) that may 
+            impact timing or scope</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>6. Expected Deliverables</h2>
+        <ul>
+            <li><strong>Canonical Asset Inventory (CSV/JSON):</strong> Verified, matched assets with engineering + OT discovery data merged</li>
+            <li><strong>Blind Spots Report:</strong> Engineering assets not found on network (visibility gaps)</li>
+            <li><strong>Orphans Report:</strong> OT assets not in engineering baseline (undocumented devices)</li>
+            <li><strong>Plant Completeness Analysis:</strong> Multi-layered assessment by process unit</li>
+            <li><strong>Assurance Report:</strong> Security coverage, validation scores, cross-verification summaries, risk assessment</li>
+            <li><strong>Executive Deck:</strong> Findings, recommendations, and roadmap for scaling</li>
+            <li><strong>Action Plan:</strong> Prioritized remediation steps and next 90 days</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>7. Why Deloitte</h2>
+        <ul>
+            <li><strong>Cross-Domain Expertise:</strong> OT security, engineering operations, and IT asset management—the three domains required for true assurance</li>
+            <li><strong>Industry-Specific Knowledge:</strong> Deep experience in Oil & Gas, Utilities, Manufacturing—we understand your processes and what "complete" looks like</li>
+            <li><strong>Regulatory and Compliance Expertise:</strong> We understand what regulators need—provable, verifiable, audit-ready evidence</li>
+            <li><strong>Trusted Advisor Position:</strong> We deliver this as a service—not just software, but the expertise to interpret results, guide remediation, and build organizational capability</li>
+            <li><strong>Integration Capabilities:</strong> We can integrate the Assurance Twin with your existing systems (ServiceNow, Axonius, SIEM/SOAR, data lakes) and build the APIs and automation needed for enterprise deployment</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>8. Next Steps</h2>
+        <ol>
+            <li><strong>Review & Alignment:</strong> Review this proposal and align on scope, timeline, and success criteria</li>
+            <li><strong>Prerequisites Confirmation:</strong> Confirm executive sponsor, core team, data access approvals, and dependency scan</li>
+            <li><strong>Kick-off Planning:</strong> Schedule kick-off meeting and plant data readiness workshop</li>
+            <li><strong>Engagement Start:</strong> Begin Phase 0 (Scoping & Data Onboarding)</li>
+        </ol>
+    </div>
+
+    <div class="footer">
+        <p><strong>Deloitte</strong> | Performance Assurance</p>
+        <p>Copyright © 2025 Deloitte Development LLC. All rights reserved.</p>
+        <p style="margin-top: 10px;">
+            This proposal is confidential and intended solely for [CLIENT NAME]. This document contains general information only and Deloitte is not, 
+            by means of this document, rendering accounting, business, financial, investment, legal, tax, or other professional advice or services.
+        </p>
+    </div>
+
+    <script>
+        function printToPDF() {
+            window.print();
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const printBtn = document.createElement('button');
+            printBtn.textContent = 'Print to PDF';
+            printBtn.style.cssText = 'position: fixed; top: 20px; right: 20px; padding: 10px 20px; background: #1B5E20; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; z-index: 10000;';
+            printBtn.onclick = printToPDF;
+            printBtn.className = 'no-print';
+            document.body.appendChild(printBtn);
+        });
+    </script>
+</body>
+</html>
+

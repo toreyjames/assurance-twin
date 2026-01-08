@@ -1,5 +1,0 @@
-asset_id,tag_id,oem,model,serial,last_patch
-A3000,T2000,Siemens,S7-300,S123456,2023-05-01
-A3001,T2001,Rockwell,CompactLogix,S234567,2022-11-15
-A3002,T2002,Schneider,Quantum,S345678,2021-09-10
-A3003,T2003,Emerson,DeltaV,S456789,2024-04-20

@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OT Assurance Twin - Deloitte</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/dist/theme/white.css">
+    <style>
+        /* Deloitte Green Gradient Theme */
+        :root {
+            --deloitte-dark-green: #1B5E20;
+            --deloitte-light-green: #A5D6A7;
+            --deloitte-lime: #C5E1A5;
+            --deloitte-accent: #66BB6A;
+        }
+
+        .reveal {
+            background: linear-gradient(to right, var(--deloitte-dark-green) 0%, var(--deloitte-dark-green) 50%, var(--deloitte-lime) 100%);
+            font-family: 'Aptos', 'Segoe UI', Arial, sans-serif;
+        }
+
+        .reveal .slides section {
+            text-align: left;
+            color: white;
+            background: transparent;
+            padding: 50px 80px;
+            height: 100vh;
+            box-sizing: border-box;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .reveal .slides section::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .reveal .slides section::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+
+        .reveal .slides section::-webkit-scrollbar-thumb {
+            background: var(--deloitte-accent);
+            border-radius: 4px;
+        }
+
+        /* Deloitte Header - Fixed on all slides */
+        .deloitte-header {
+            position: fixed;
+            top: 20px;
+            left: 40px;
+            z-index: 1000;
+            font-family: 'Aptos', 'Segoe UI', Arial, sans-serif;
+        }
+
+        .deloitte-logo {
+            font-size: 32px;
+            font-weight: bold;
+            color: white;
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        .deloitte-logo::after {
+            content: ".";
+            color: var(--deloitte-accent);
+        }
+
+        .deloitte-tagline {
+            font-size: 14px;
+            font-style: italic;
+            color: white;
+            margin-top: 4px;
+            opacity: 0.9;
+        }
+
+        /* Footer */
+        .deloitte-footer {
+            position: fixed;
+            bottom: 20px;
+            left: 40px;
+            font-size: 12px;
+            color: white;
+            opacity: 0.7;
+            z-index: 1000;
+        }
+
+        /* Slide Content Styling - Better sizing */
+        .reveal h1 {
+            color: white;
+            font-size: 2.4em;
+            font-weight: bold;
+            margin-bottom: 0.4em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            line-height: 1.2;
+        }
+
+        .reveal h2 {
+            color: white;
+            font-size: 1.9em;
+            font-weight: bold;
+            margin-bottom: 0.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            border-bottom: 2px solid var(--deloitte-accent);
+            padding-bottom: 0.2em;
+        }
+
+        .reveal h3 {
+            color: var(--deloitte-lime);
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-top: 0.6em;
+            margin-bottom: 0.3em;
+        }
+
+        .reveal h4 {
+            color: var(--deloitte-lime);
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-top: 0.5em;
+            margin-bottom: 0.3em;
+        }
+
+        .reveal p, .reveal li {
+            color: white;
+            font-size: 0.95em;
+            line-height: 1.4;
+            margin-bottom: 0.3em;
+        }
+
+        .reveal ul {
+            margin-left: 1.2em;
+            margin-top: 0.3em;
+            margin-bottom: 0.5em;
+        }
+
+        .reveal li {
+            margin-bottom: 0.25em;
+        }
+
+        /* Highlight boxes */
+        .highlight-box {
+            background: rgba(255, 255, 255, 0.15);
+            border-left: 4px solid var(--deloitte-accent);
+            padding: 1em;
+            margin: 0.8em 0;
+            border-radius: 4px;
+        }
+
+        /* Stats/Capabilities Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1em;
+            margin: 1em 0;
+        }
+
+        .stat-box {
+            background: rgba(255, 255, 255, 0.12);
+            padding: 1em;
+            border-radius: 8px;
+            border: 2px solid rgba(255, 255, 255, 0.25);
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: var(--deloitte-lime);
+            display: block;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.85em;
+            color: white;
+            margin-top: 0.4em;
+        }
+
+        /* Checkmark list */
+        .check-list li::before {
+            content: "✅ ";
+            margin-right: 0.4em;
+        }
+
+        /* Two-column layout */
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5em;
+            margin: 0.8em 0;
+        }
+
+        /* Phase boxes */
+        .phase-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.2em;
+            border-radius: 8px;
+            margin: 0.8em 0;
+            border-left: 5px solid var(--deloitte-accent);
+        }
+
+        .phase-title {
+            color: var(--deloitte-lime);
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-bottom: 0.4em;
+        }
+
+        /* Visual flow diagram - horizontal */
+        .flow-diagram {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin: 1.5em 0;
+            padding: 1em;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            flex-wrap: nowrap;
+        }
+
+        .flow-step {
+            flex: 1;
+            text-align: center;
+            min-width: 0;
+        }
+
+        .flow-step-number {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--deloitte-accent);
+            color: white;
+            font-size: 1.5em;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 0.6em;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+        }
+
+        .flow-step-title {
+            font-size: 0.95em;
+            font-weight: 600;
+            color: var(--deloitte-lime);
+            margin-bottom: 0.3em;
+        }
+
+        .flow-step-desc {
+            font-size: 0.8em;
+            color: rgba(255, 255, 255, 0.85);
+            line-height: 1.3;
+        }
+
+        .flow-arrow {
+            font-size: 1.8em;
+            color: var(--deloitte-accent);
+            margin: 20px 0.3em 0;
+            flex-shrink: 0;
+        }
+
+        /* Feature cards */
+        .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            padding: 0.9em;
+            margin: 0.6em 0;
+        }
+
+        .feature-card h4 {
+            color: var(--deloitte-lime);
+            font-size: 1em;
+            margin: 0 0 0.4em 0;
+        }
+
+        /* Data source badges */
+        .data-source-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 0.3em 0.6em;
+            border-radius: 15px;
+            font-size: 0.8em;
+            margin: 0.15em;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* Abstract graphic */
+        .abstract-graphic {
+            position: fixed;
+            right: -150px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, var(--deloitte-lime) 0%, var(--deloitte-accent) 50%, transparent 100%);
+            border-radius: 50%;
+            opacity: 0.25;
+            filter: blur(80px);
+            z-index: 0;
+        }
+
+        .reveal .slides section > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Cover slide */
+        .cover-slide {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 0;
+        }
+
+        .cover-slide h1 {
+            font-size: 3.2em;
+            margin-bottom: 0.3em;
+        }
+
+        .cover-slide .subtitle {
+            font-size: 1.5em;
+            color: var(--deloitte-lime);
+            margin-top: 0.4em;
+            font-weight: 300;
+        }
+
+        .cover-slide .date {
+            font-size: 1em;
+            color: white;
+            margin-top: 1.5em;
+            opacity: 0.8;
+        }
+
+        /* Problem statement */
+        .problem-statement {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5em;
+            border-radius: 10px;
+            margin: 1em 0;
+            border: 2px solid var(--deloitte-accent);
+        }
+
+        .problem-statement h3 {
+            color: var(--deloitte-lime);
+            font-size: 1.5em;
+            margin-bottom: 0.6em;
+        }
+
+        /* Value prop grid */
+        .value-prop-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1em;
+            margin: 1em 0;
+        }
+
+        .value-prop-box {
+            background: rgba(255, 255, 255, 0.12);
+            padding: 1.2em;
+            border-radius: 8px;
+            text-align: center;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .value-prop-icon {
+            font-size: 2.5em;
+            margin-bottom: 0.4em;
+        }
+
+        .value-prop-title {
+            font-size: 1em;
+            font-weight: 600;
+            color: var(--deloitte-lime);
+            margin-bottom: 0.4em;
+        }
+
+        /* Compact styling */
+        .compact-list {
+            font-size: 0.9em;
+            line-height: 1.3;
+        }
+
+        .compact-list li {
+            margin-bottom: 0.2em;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .reveal .slides section {
+                padding: 40px 50px;
+            }
+            .reveal h1 { font-size: 2em; }
+            .reveal h2 { font-size: 1.6em; }
+            .two-column { grid-template-columns: 1fr; }
+            .value-prop-grid { grid-template-columns: 1fr; }
+            .flow-diagram { flex-direction: column; }
+            .flow-arrow { transform: rotate(90deg); margin: 0.3em 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="deloitte-header">
+        <div class="deloitte-logo">Deloitte</div>
+        <div class="deloitte-tagline">Together makes progress</div>
+    </div>
+
+    <div class="deloitte-footer">
+        OT Assurance Twin | Performance Assurance
+    </div>
+
+    <div class="reveal">
+        <div class="slides">
+            <!-- Cover Slide -->
+            <section class="cover-slide">
+                <h1>OT Assurance Twin</h1>
+                <p class="subtitle">OT Asset MDM with Assurance Layer</p>
+                <p class="date">November 22, 2025</p>
+            </section>
+
+            <!-- The Challenge -->
+            <section>
+                <h2>The Challenge</h2>
+                <div class="problem-statement">
+                    <h3>If OT asset visibility is ~50%, performance can be guesswork</h3>
+                    <p style="font-size: 1.1em; margin-top: 0.8em; line-height: 1.5;">
+                        Organizations struggle with fragmented OT asset data across Engineering, OT Security tools, 
+                        CMMS, and Network systems. Without a single source of truth, you can't answer critical questions:
+                    </p>
+                    <ul style="font-size: 1em; margin-top: 0.8em;">
+                        <li><strong>"Do we actually have what we think we have?"</strong></li>
+                        <li><strong>"How do we know our security coverage is accurate?"</strong></li>
+                        <li><strong>"Where are the blind spots in our OT network?"</strong></li>
+                        <li><strong>"Can we prove our asset inventory to regulators?"</strong></li>
+                    </ul>
+                </div>
+                <div class="highlight-box" style="margin-top: 1.2em;">
+                    <p style="font-size: 1.1em; margin: 0;"><strong>We fix the asset visibility map, then show the process, then prove it.</strong></p>
+                </div>
+            </section>
+
+            <!-- What It Is -->
+            <section>
+                <h2>What It Is</h2>
+                <div class="highlight-box">
+                    <p style="font-size: 1.2em; margin: 0.4em 0;"><strong>OT Asset MDM with Assurance Layer</strong></p>
+                    <p style="margin: 0.4em 0;">Master Data Management (MDM) for OT assets with built-in assurance and cross-verification</p>
+                </div>
+
+                <div class="value-prop-grid">
+                    <div class="value-prop-box">
+                        <div class="value-prop-icon">📊</div>
+                        <div class="value-prop-title">7 Data Sources</div>
+                        <p style="font-size: 0.85em;">Engineering, OT Discovery, Security, CMMS, Network, Incidents, More</p>
+                    </div>
+                    <div class="value-prop-box">
+                        <div class="value-prop-icon">🔗</div>
+                        <div class="value-prop-title">6 Matching Strategies</div>
+                        <p style="font-size: 0.85em;">Tag ID, IP, Hostname, MAC, Fuzzy, Intelligent Pairing</p>
+                    </div>
+                    <div class="value-prop-box">
+                        <div class="value-prop-icon">✅</div>
+                        <div class="value-prop-title">Cross-Verified</div>
+                        <p style="font-size: 0.85em;">Engineering vs OT reality with confidence scoring</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- How It Works: Visual Flow -->
+            <section>
+                <h2>How It Works</h2>
+                <p style="text-align: center; font-size: 1.2em; margin-bottom: 1.2em; color: var(--deloitte-lime);">
+                    <strong>4-Phase Process</strong>
+                </p>
+
+                <div class="flow-diagram">
+                    <div class="flow-step">
+                        <div class="flow-step-number">1</div>
+                        <div class="flow-step-title">Ingest & Standardize</div>
+                        <div class="flow-step-desc">Auto-detect, normalize, merge</div>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-step">
+                        <div class="flow-step-number">2</div>
+                        <div class="flow-step-title">Match & Canonize</div>
+                        <div class="flow-step-desc">Multi-strategy matching</div>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-step">
+                        <div class="flow-step-number">3</div>
+                        <div class="flow-step-title">Verify & Enrich</div>
+                        <div class="flow-step-desc">Cross-validate, classify, enrich</div>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-step">
+                        <div class="flow-step-number">4</div>
+                        <div class="flow-step-title">Analyze & Export</div>
+                        <div class="flow-step-desc">KPIs, insights, exports</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Phase 1 Detail -->
+            <section>
+                <h2>Phase 1: Ingest & Standardize</h2>
+                <div class="phase-box">
+                    <div class="phase-title">📥 Accept Disparate Data Sources</div>
+                    <div class="two-column">
+                        <div>
+                            <h4>Supported Sources</h4>
+                            <div style="margin-top: 0.4em;">
+                                <span class="data-source-badge">Engineering Baseline</span>
+                                <span class="data-source-badge">OT Discovery</span>
+                                <span class="data-source-badge">Security & Vulnerability</span>
+                                <span class="data-source-badge">CMMS / Maintenance</span>
+                                <span class="data-source-badge">Network Segmentation</span>
+                                <span class="data-source-badge">Incidents & Tickets</span>
+                                <span class="data-source-badge">Other (Auto-detected)</span>
+                            </div>
+                        </div>
+                        <div>
+                            <h4>What We Do</h4>
+                            <ul class="compact-list">
+                                <li>Auto-detect data source type from CSV headers</li>
+                                <li>Normalize field names (tag_id = tag = asset_tag)</li>
+                                <li>Merge multiple files of same type</li>
+                                <li>Deduplicate by tag_id/IP/hostname</li>
+                                <li>Preserve provenance (track source files)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="highlight-box" style="margin-top: 0.8em;">
+                    <p><strong>Output:</strong> Clean, standardized datasets ready for matching</p>
+                </div>
+            </section>
+
+            <!-- Phase 2 Detail -->
+            <section>
+                <h2>Phase 2: Match & Canonize</h2>
+                <div class="phase-box">
+                    <div class="phase-title">🔍 Create Single Source of Truth</div>
+                    <div class="two-column">
+                        <div>
+                            <h4>Matching Strategies (in order)</h4>
+                            <ul class="compact-list">
+                                <li><strong>1. Exact Tag ID</strong> (100% confidence)</li>
+                                <li><strong>2. IP Address</strong> (95% confidence)</li>
+                                <li><strong>3. Hostname</strong> (90% confidence)</li>
+                                <li><strong>4. MAC Address</strong> (85% confidence)</li>
+                                <li><strong>5. Fuzzy Match</strong> (Type + Manufacturer, 60%)</li>
+                                <li><strong>6. Intelligent Pairing</strong> (Last resort, 50%)</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4>Gap Identification</h4>
+                            <div class="feature-card">
+                                <h4>👁️ Blind Spots</h4>
+                                <p class="compact-list">Engineering assets NOT found on network - visibility gaps</p>
+                            </div>
+                            <div class="feature-card">
+                                <h4>🔍 Orphans</h4>
+                                <p class="compact-list">OT assets NOT in engineering baseline - undocumented devices</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="highlight-box" style="margin-top: 0.8em;">
+                    <p><strong>Output:</strong> Canonical Asset Inventory + Blind Spots + Orphans + Match Confidence Scores</p>
+                </div>
+            </section>
+
+            <!-- Phase 3 Detail -->
+            <section>
+                <h2>Phase 3: Verify & Enrich</h2>
+                <div class="phase-box">
+                    <div class="phase-title">✅ Add Security Context & Intelligence</div>
+                    <div class="two-column">
+                        <div>
+                            <h4>Cross-Validation (4 Methods)</h4>
+                            <ul class="compact-list">
+                                <li><strong>Field Agreement:</strong> Validates 6 fields (tag, IP, hostname, MAC, device_type, manufacturer)</li>
+                                <li><strong>Confidence Scoring:</strong> High (≥3 agreements), Medium (≥1), Low (0)</li>
+                                <li><strong>Classification Verification:</strong> Engineering vs OT reality (Verified, Unverified, Suspicious)</li>
+                                <li><strong>Security Tier:</strong> Tier 1 (Critical), Tier 2 (Networkable), Tier 3 (Passive)</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4>Multi-Source Enrichment</h4>
+                            <ul class="compact-list">
+                                <li><strong>CMMS:</strong> Work orders, PM schedules, maintenance history</li>
+                                <li><strong>Vulnerability:</strong> CVEs, patches, security gaps</li>
+                                <li><strong>Network:</strong> Firewall zones, segmentation compliance</li>
+                                <li><strong>Incidents:</strong> Tickets, operational issues</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div style="margin-top: 0.8em;">
+                        <h4>Process Mapping</h4>
+                        <p class="compact-list">Maps assets to refinery units (Crude Distillation, FCC, Tank Farm) and performs multi-layered completeness analysis (reference ranges, relative comparison, functional completeness, baseline tracking)</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Phase 4 Detail -->
+            <section>
+                <h2>Phase 4: Analyze & Export</h2>
+                <div class="phase-box">
+                    <div class="phase-title">📊 Generate Insights & Deliverables</div>
+                    <div class="two-column">
+                        <div>
+                            <h4>KPIs Calculated</h4>
+                            <ul class="compact-list">
+                                <li>Coverage % (matched/total engineering)</li>
+                                <li>Security Coverage % (networkable assets managed/secured)</li>
+                                <li>Plant Completeness Score (multi-layered analysis: reference ranges, relative comparison, functional completeness)</li>
+                                <li>Blind Spots Count</li>
+                                <li>Orphans Count</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4>AI Recommendations</h4>
+                            <ul class="compact-list">
+                                <li>Data quality issues to fix</li>
+                                <li>Security gaps to close</li>
+                                <li>Unknown devices to investigate</li>
+                                <li>OT collector deployment locations</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="highlight-box" style="margin-top: 0.8em;">
+                        <p><strong>Export Formats:</strong> CSV (canonical inventory, blind spots, orphans), JSON</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Key Capabilities -->
+            <section>
+                <h2>Key Capabilities</h2>
+                
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <span class="stat-number">7</span>
+                        <span class="stat-label">Data Source Types</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-number">6</span>
+                        <span class="stat-label">Matching Strategies</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-number">4</span>
+                        <span class="stat-label">Validation Features</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-number">4</span>
+                        <span class="stat-label">Enrichment Sources</span>
+                    </div>
+                </div>
+
+                <h3>Key Differentiators</h3>
+                <div class="two-column">
+                    <div class="feature-card">
+                        <h4>🔍 Cross-Verification</h4>
+                        <p class="compact-list">Validates Engineering baseline against OT discovery reality. Flags mismatches: Verified (HIGH), Unverified (NEEDS INVESTIGATION), Suspicious Passive (LIKELY MISCLASSIFIED)</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>🏭 Process-Aware Intelligence</h4>
+                        <p class="compact-list">Maps assets to refinery process units. Uses equipment templates to assess completeness (actual vs expected transmitters, PLCs, valves per unit)</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>🔗 Multi-Source Reconciliation</h4>
+                        <p class="compact-list">Not just network discovery - fuses Engineering + OT + CMMS + Security + Network + Incidents into one verified canon</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>👁️ Explicit Blind Spot Detection</h4>
+                        <p class="compact-list">Shows what's missing (Engineering assets not on network) and what's undocumented (OT orphans not in baseline)</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Outputs -->
+            <section>
+                <h2>Outputs & Deliverables</h2>
+                <div class="two-column">
+                    <div>
+                        <h3>Generated Outputs</h3>
+                        <ul class="compact-list">
+                            <li>Canonical Asset Inventory</li>
+                            <li>Blind Spots (Engineering assets not on network)</li>
+                            <li>Orphans (OT assets not in engineering baseline)</li>
+                            <li>Plant Completeness Analysis (actual vs expected equipment)</li>
+                            <li>AI Recommendations</li>
+                            <li>Multi-Source Assurance Insights</li>
+                            <li>Distributions (by unit, type, manufacturer)</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3>Export Capabilities</h3>
+                        <ul class="compact-list">
+                            <li>CSV format exports</li>
+                            <li>JSON format exports</li>
+                        </ul>
+                        <h3 style="margin-top: 1em;">Sample Datasets</h3>
+                        <div style="margin-top: 0.4em;">
+                            <span class="data-source-badge">Automotive</span>
+                            <span class="data-source-badge">Demo</span>
+                            <span class="data-source-badge">Large</span>
+                            <span class="data-source-badge">Oil-gas</span>
+                            <span class="data-source-badge">Pharma</span>
+                            <span class="data-source-badge">Small</span>
+                            <span class="data-source-badge">Utilities</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Technical Architecture: Current State -->
+            <section>
+                <h2>Current State: Demo Version</h2>
+                <div class="two-column">
+                    <div class="highlight-box">
+                        <h3>What You're Seeing Now</h3>
+                        <ul class="compact-list">
+                            <li><strong>Deployment:</strong> Serverless (Vercel) - Stateless, in-memory processing</li>
+                            <li><strong>Data Limits:</strong> ~12K assets per run (demo scale)</li>
+                            <li><strong>Persistence:</strong> None (results lost on page refresh)</li>
+                            <li><strong>Authentication:</strong> None (public demo)</li>
+                            <li><strong>Processing:</strong> Synchronous (blocks until complete)</li>
+                            <li><strong>File Size:</strong> 1MB max per file (Vercel Pro limits)</li>
+                        </ul>
+                    </div>
+                    <div class="highlight-box">
+                        <h3>Demo Capabilities</h3>
+                        <ul class="compact-list">
+                            <li>✅ Multi-file upload & auto-detection</li>
+                            <li>✅ Flexible matching (6 strategies)</li>
+                            <li>✅ Cross-verification & validation</li>
+                            <li>✅ Plant completeness analysis</li>
+                            <li>✅ AI recommendations</li>
+                            <li>✅ CSV exports</li>
+                            <li>❌ No data persistence</li>
+                            <li>❌ No user management</li>
+                            <li>❌ No scheduled imports</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Enterprise Journey: Scaling Path -->
+            <section>
+                <h2>From Demo to Enterprise</h2>
+                <div class="problem-statement" style="margin-bottom: 1em;">
+                    <h3>What Changes When Scaling to Large Clients?</h3>
+                </div>
+
+                <div class="two-column">
+                    <div>
+                        <h3>Data & Performance</h3>
+                        <div class="feature-card">
+                            <h4>Scale Requirements</h4>
+                            <ul class="compact-list">
+                                <li><strong>Current:</strong> 12K assets, in-memory</li>
+                                <li><strong>Enterprise:</strong> 1M+ assets, database-backed</li>
+                                <li><strong>Solution:</strong> Async job queue (Celery/RabbitMQ)</li>
+                                <li><strong>Processing:</strong> Chunked/parallel processing</li>
+                                <li><strong>Progress:</strong> Real-time updates via WebSocket</li>
+                            </ul>
+                        </div>
+                        <div class="feature-card">
+                            <h4>Data Persistence</h4>
+                            <ul class="compact-list">
+                                <li><strong>PostgreSQL:</strong> Canonical assets, runs, audit logs</li>
+                                <li><strong>MongoDB:</strong> Raw CSVs, enrichment data</li>
+                                <li><strong>Redis:</strong> Cache, session management</li>
+                                <li><strong>Blob Storage:</strong> Uploaded files, exports (S3/Azure)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div>
+                        <h3>Users & Security</h3>
+                        <div class="feature-card">
+                            <h4>Authentication & Access</h4>
+                            <ul class="compact-list">
+                                <li><strong>SSO Integration:</strong> Azure AD, Okta, Google Workspace</li>
+                                <li><strong>RBAC:</strong> Admin, Engineer, Auditor, Viewer roles</li>
+                                <li><strong>Tenant Isolation:</strong> Multi-tenant SaaS (separate schemas)</li>
+                                <li><strong>API Keys:</strong> For automated integrations</li>
+                            </ul>
+                        </div>
+                        <div class="feature-card">
+                            <h4>Data Governance</h4>
+                            <ul class="compact-list">
+                                <li><strong>Audit Trail:</strong> Who ran what, when, what changed</li>
+                                <li><strong>Data Retention:</strong> Configurable (e.g., 2 years)</li>
+                                <li><strong>Compliance:</strong> SOC 2, ISO 27001 certified infrastructure</li>
+                                <li><strong>Encryption:</strong> At rest + in transit</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Enterprise Features: Automation -->
+            <section>
+                <h2>Enterprise Features: Automation</h2>
+                
+                <div class="phase-box">
+                    <div class="phase-title">🔄 Scheduled Data Ingestion</div>
+                    <div class="two-column">
+                        <div>
+                            <h4>Integration Connectors</h4>
+                            <ul class="compact-list">
+                                <li><strong>SFTP:</strong> Nightly exports from client systems</li>
+                                <li><strong>API:</strong> Real-time sync with OT security tools (Claroty, Dragos)</li>
+                                <li><strong>ServiceNow:</strong> CMDB integration (every 4 hours)</li>
+                                <li><strong>Historian:</strong> Scheduled tag exports</li>
+                                <li><strong>CMMS:</strong> Work order feeds</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4>Change Detection</h4>
+                            <ul class="compact-list">
+                                <li>Compare new run vs previous run</li>
+                                <li>Flag new assets discovered</li>
+                                <li>Alert on removed/offline assets</li>
+                                <li>Track configuration changes (IP, location, manufacturer)</li>
+                                <li>Monitor security status changes</li>
+                                <li>Alert on significant changes (50+ new orphans)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="phase-box" style="margin-top: 1em;">
+                    <div class="phase-title">📊 Time-Series Analysis</div>
+                    <ul class="compact-list">
+                        <li>Track asset state over time (historical runs)</li>
+                        <li>Show improvement trends (coverage %, security coverage)</li>
+                        <li>Identify regression (assets going offline, security degrading)</li>
+                        <li>Generate trend reports for executive dashboards</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Enterprise Features: Integration & APIs -->
+            <section>
+                <h2>Enterprise Features: Integration & APIs</h2>
+                
+                <div class="two-column">
+                    <div>
+                        <h3>REST API Endpoints</h3>
+                        <div class="feature-card">
+                            <h4>Asset Management</h4>
+                            <ul class="compact-list">
+                                <li><code>GET /api/v1/assets</code> - List canonical assets (paginated)</li>
+                                <li><code>GET /api/v1/assets/:id</code> - Get single asset details</li>
+                                <li><code>GET /api/v1/assets/search</code> - Search by tag_id, IP, unit</li>
+                                <li><code>POST /api/v1/canonize</code> - Start new canonization</li>
+                            </ul>
+                        </div>
+                        <div class="feature-card">
+                            <h4>Data Access</h4>
+                            <ul class="compact-list">
+                                <li><code>GET /api/v1/runs</code> - List canonization runs</li>
+                                <li><code>GET /api/v1/runs/:id/export</code> - Export as CSV/JSON</li>
+                                <li><code>GET /api/v1/blindspots</code> - Get blind spots</li>
+                                <li><code>GET /api/v1/orphans</code> - Get orphan devices</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div>
+                        <h3>Enterprise Integrations</h3>
+                        <div class="feature-card">
+                            <h4>Downstream Systems</h4>
+                            <ul class="compact-list">
+                                <li><strong>ServiceNow:</strong> Push canonical assets to CMDB</li>
+                                <li><strong>Axonius:</strong> Sync asset inventory</li>
+                                <li><strong>SIEM/SOAR:</strong> Feed security posture data</li>
+                                <li><strong>Data Lake:</strong> Export for analytics</li>
+                                <li><strong>Reporting Tools:</strong> PowerBI, Tableau connectors</li>
+                            </ul>
+                        </div>
+                        <div class="feature-card">
+                            <h4>Webhooks & Events</h4>
+                            <ul class="compact-list">
+                                <li>Notify on canonization completion</li>
+                                <li>Alert on significant changes</li>
+                                <li>Trigger downstream workflows</li>
+                                <li>Integration with ticketing systems</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Deployment Options -->
+            <section>
+                <h2>Deployment Options for Large Clients</h2>
+                
+                <div class="two-column">
+                    <div class="highlight-box">
+                        <h3>Option 1: SaaS Multi-Tenant (Deloitte-Hosted)</h3>
+                        <h4>Best for: Multiple clients, managed by Deloitte</h4>
+                        <ul class="compact-list">
+                            <li><strong>Infrastructure:</strong> Azure Government Cloud or AWS GovCloud</li>
+                            <li><strong>Tenant Isolation:</strong> Separate database schemas per client</li>
+                            <li><strong>Auth:</strong> SSO via Azure AD, Okta, Auth0</li>
+                            <li><strong>Compliance:</strong> SOC 2, ISO 27001, FedRAMP (for regulated)</li>
+                            <li><strong>Updates:</strong> Centralized - Deloitte manages</li>
+                            <li><strong>Cost:</strong> ~$2,000/month base (scales with tenants)</li>
+                        </ul>
+                        <p style="margin-top: 0.8em; font-size: 0.9em;"><strong>Pros:</strong> Faster time-to-value, no client IT overhead<br>
+                        <strong>Cons:</strong> Some clients refuse cloud (data sovereignty)</p>
+                    </div>
+                    <div class="highlight-box">
+                        <h3>Option 2: On-Premise / Private Cloud (Client-Hosted)</h3>
+                        <h4>Best for: Highly regulated industries (Oil & Gas, Utilities, Defense)</h4>
+                        <ul class="compact-list">
+                            <li><strong>Deployment:</strong> Docker/Kubernetes in client environment</li>
+                            <li><strong>Data Control:</strong> Client owns all data, never leaves network</li>
+                            <li><strong>Air-Gap:</strong> Can run fully offline</li>
+                            <li><strong>Auth:</strong> Integrates with client AD/LDAP</li>
+                            <li><strong>Backup/DR:</strong> Client's responsibility (or Deloitte manages as service)</li>
+                            <li><strong>Updates:</strong> Client-controlled deployment schedule</li>
+                        </ul>
+                        <p style="margin-top: 0.8em; font-size: 0.9em;"><strong>Pros:</strong> Meets strictest data sovereignty, air-gap compatible<br>
+                        <strong>Cons:</strong> Requires client IT resources, slower to update</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Enterprise Timeline & Roadmap -->
+            <section>
+                <h2>Enterprise Deployment Timeline</h2>
+                
+                <div class="flow-diagram" style="flex-direction: column; gap: 1em;">
+                    <div class="phase-box">
+                        <div class="phase-title">Phase 1: Auth + Database (6-8 weeks)</div>
+                        <ul class="compact-list">
+                            <li>User login & SSO integration (Azure AD, Okta)</li>
+                            <li>Role-based access control (Admin, Engineer, Auditor, Viewer)</li>
+                            <li>Database schema (PostgreSQL for assets, runs, audit logs)</li>
+                            <li>Save canonization runs with history</li>
+                            <li>View previous runs and compare</li>
+                        </ul>
+                    </div>
+                    <div class="phase-box">
+                        <div class="phase-title">Phase 2: Scale & Performance (4-6 weeks)</div>
+                        <ul class="compact-list">
+                            <li>Async job queue for large datasets (1M+ assets)</li>
+                            <li>Chunked processing (handle millions in parallel)</li>
+                            <li>Progress tracking (real-time updates via WebSocket)</li>
+                            <li>Streaming CSV processing (don't load entire file into memory)</li>
+                            <li>Horizontal scaling (multiple worker nodes)</li>
+                        </ul>
+                    </div>
+                    <div class="phase-box">
+                        <div class="phase-title">Phase 3: Automation (4-6 weeks)</div>
+                        <ul class="compact-list">
+                            <li>Scheduled imports (SFTP, API connectors)</li>
+                            <li>Change detection (compare runs, alert on changes)</li>
+                            <li>Time-series analysis (track trends over time)</li>
+                            <li>Automated reporting (scheduled delivery to stakeholders)</li>
+                        </ul>
+                    </div>
+                    <div class="phase-box">
+                        <div class="phase-title">Phase 4: Enterprise Features (8-12 weeks)</div>
+                        <ul class="compact-list">
+                            <li>REST API for enterprise integration</li>
+                            <li>Webhooks & event notifications</li>
+                            <li>Compliance reports (62443, NERC CIP, FDA - auto-generate PDFs)</li>
+                            <li>Chatbot/Q&A interface (natural language queries)</li>
+                            <li>On-premise deployment option (Docker/K8s)</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="highlight-box" style="margin-top: 1em;">
+                    <p><strong>Total Timeline:</strong> 6-9 months to production-ready enterprise platform</p>
+                </div>
+            </section>
+
+            <!-- Value Proposition for Enterprise -->
+            <section>
+                <h2>Enterprise Value Proposition</h2>
+                
+                <div class="value-prop-grid">
+                    <div class="value-prop-box">
+                        <div class="value-prop-icon">🔒</div>
+                        <div class="value-prop-title">Audit-Ready</div>
+                        <p style="font-size: 0.85em;">Regulator-ready evidence packs with validation scores, cross-verification summaries, and tamper-evident audit trails</p>
+                    </div>
+                    <div class="value-prop-box">
+                        <div class="value-prop-icon">📈</div>
+                        <div class="value-prop-title">Scalable</div>
+                        <p style="font-size: 0.85em;">Handles millions of assets, multiple sites, scheduled ingestion, and enterprise integrations</p>
+                    </div>
+                    <div class="value-prop-box">
+                        <div class="value-prop-icon">🔗</div>
+                        <div class="value-prop-title">Integrated</div>
+                        <p style="font-size: 0.85em;">APIs, webhooks, and connectors to ServiceNow, Axonius, SIEM/SOAR, data lakes, and reporting tools</p>
+                    </div>
+                    <div class="value-prop-box">
+                        <div class="value-prop-icon">🏢</div>
+                        <div class="value-prop-title">Flexible Deployment</div>
+                        <p style="font-size: 0.85em;">SaaS (Deloitte-hosted) or On-Premise (client-hosted) - choose based on data sovereignty requirements</p>
+                    </div>
+                    <div class="value-prop-box">
+                        <div class="value-prop-icon">👥</div>
+                        <div class="value-prop-title">Multi-User</div>
+                        <p style="font-size: 0.85em;">SSO, RBAC, tenant isolation - supports teams from engineers to CISOs to auditors</p>
+                    </div>
+                    <div class="value-prop-box">
+                        <div class="value-prop-icon">📊</div>
+                        <div class="value-prop-title">Historical Tracking</div>
+                        <p style="font-size: 0.85em;">Versioned runs, trend analysis, change detection - see improvement over time</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Strategic Add-On Options -->
+            <section>
+                <h2>Strategic Add-On Options: Art of the Possible</h2>
+                <p style="font-size: 0.95em; margin-bottom: 1.5em; color: #666;">
+                    The OT Assurance Twin baseline unlocks strategic options that address specific business outcomes. 
+                    Each option builds on your verified inventory to deliver targeted value.
+                </p>
+
+                <div class="two-column" style="gap: 1.5rem;">
+                    <div class="feature-card" style="border-left: 4px solid #4CAF50;">
+                        <div style="display: flex; align-items: center; margin-bottom: 0.5em;">
+                            <span style="background: #4CAF50; color: white; padding: 3px 8px; border-radius: 3px; font-size: 0.75em; font-weight: 600; margin-right: 0.5em;">STAGE 1</span>
+                            <h3 style="margin: 0; font-size: 1.1em;">Regulatory & Assurance Focus</h3>
+                        </div>
+                        <p style="font-size: 0.85em; margin-bottom: 0.5em;"><strong>Always Available</strong></p>
+                        <p style="font-size: 0.85em; line-height: 1.5;">
+                            Transforms baseline into regulator-ready evidence packs. Maps to NERC CIP, IEC 62443, FDA standards. 
+                            Creates compliance-ready documentation with validation scores and traceability.
+                        </p>
+                        <p style="font-size: 0.8em; color: #666; margin-top: 0.5em; font-style: italic;">
+                            Universal concern in OT environments—be audit-ready even when not under audit.
+                        </p>
+                    </div>
+
+                    <div class="feature-card" style="border-left: 4px solid #2196F3;">
+                        <div style="display: flex; align-items: center; margin-bottom: 0.5em;">
+                            <span style="background: #2196F3; color: white; padding: 3px 8px; border-radius: 3px; font-size: 0.75em; font-weight: 600; margin-right: 0.5em;">STAGE 1.5</span>
+                            <h3 style="margin: 0; font-size: 1.1em;">OT Cyber Risk Reduction</h3>
+                        </div>
+                        <p style="font-size: 0.85em; margin-bottom: 0.5em;"><strong>Often Available</strong></p>
+                        <p style="font-size: 0.85em; line-height: 1.5;">
+                            Builds prioritized risk register from canonical inventory. Identifies high-risk blind spots and orphans. 
+                            Creates remediation roadmap (90-day and 12-month views) with clear prioritization.
+                        </p>
+                        <p style="font-size: 0.8em; color: #666; margin-top: 0.5em; font-style: italic;">
+                            For CISO-driven initiatives and organizations with active OT security programs.
+                        </p>
+                    </div>
+
+                    <div class="feature-card" style="border-left: 4px solid #FF9800;">
+                        <div style="display: flex; align-items: center; margin-bottom: 0.5em;">
+                            <span style="background: #FF9800; color: white; padding: 3px 8px; border-radius: 3px; font-size: 0.75em; font-weight: 600; margin-right: 0.5em;">STAGE 2</span>
+                            <h3 style="margin: 0; font-size: 1.1em;">Preventive Maintenance Optimization</h3>
+                        </div>
+                        <p style="font-size: 0.85em; margin-bottom: 0.5em;"><strong>Where Data Maturity Allows</strong></p>
+                        <p style="font-size: 0.85em; line-height: 1.5;">
+                            Identifies under-maintained critical assets and over-maintained low-impact assets. Creates risk-based PM 
+                            segmentation. Produces maintenance optimization playbook.
+                        </p>
+                        <p style="font-size: 0.8em; color: #666; margin-top: 0.5em; font-style: italic;">
+                            Multi-billion dollar market—focus PM effort where it matters most.
+                        </p>
+                    </div>
+
+                    <div class="feature-card" style="border-left: 4px solid #FF9800;">
+                        <div style="display: flex; align-items: center; margin-bottom: 0.5em;">
+                            <span style="background: #FF9800; color: white; padding: 3px 8px; border-radius: 3px; font-size: 0.75em; font-weight: 600; margin-right: 0.5em;">STAGE 2</span>
+                            <h3 style="margin: 0; font-size: 1.1em;">Turnaround Planning Intelligence</h3>
+                        </div>
+                        <p style="font-size: 0.85em; margin-bottom: 0.5em;"><strong>Timing-Dependent</strong></p>
+                        <p style="font-size: 0.85em; line-height: 1.5;">
+                            Validates and prioritizes turnaround scope. Identifies high-risk blind spots for TA. Creates risk-based 
+                            scope prioritization and deferral intelligence.
+                        </p>
+                        <p style="font-size: 0.8em; color: #666; margin-top: 0.5em; font-style: italic;">
+                            High-value when turnaround is planned within 12–18 months.
+                        </p>
+                    </div>
+
+                    <div class="feature-card" style="border-left: 4px solid #FF9800;">
+                        <div style="display: flex; align-items: center; margin-bottom: 0.5em;">
+                            <span style="background: #FF9800; color: white; padding: 3px 8px; border-radius: 3px; font-size: 0.75em; font-weight: 600; margin-right: 0.5em;">STAGE 2</span>
+                            <h3 style="margin: 0; font-size: 1.1em;">Digital Twin Readiness</h3>
+                        </div>
+                        <p style="font-size: 0.85em; margin-bottom: 0.5em;"><strong>Strategic</strong></p>
+                        <p style="font-size: 0.85em; line-height: 1.5;">
+                            Assesses data quality and completeness against digital twin requirements. Maps gaps and creates roadmap 
+                            to progress from Assurance Twin to full digital twin.
+                        </p>
+                        <p style="font-size: 0.8em; color: #666; margin-top: 0.5em; font-style: italic;">
+                            For organizations with active or planned digital twin initiatives.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="highlight-box" style="margin-top: 1.5em; text-align: center;">
+                    <p style="font-size: 0.95em; margin: 0;">
+                        <strong>Core Product:</strong> OT Assurance Twin Pilot (30–50 consulting days) | 
+                        <strong>Add-On Options:</strong> 3–10 additional days each, based on your priorities
+                    </p>
+                </div>
+            </section>
+
+            <!-- Download Whitepaper -->
+            <section>
+                <h2>Learn More</h2>
+                <div class="highlight-box" style="text-align: center; padding: 2em; max-width: 90%; margin: 0 auto;">
+                    <h3 style="margin-bottom: 1em; color: var(--deloitte-primary);">Deloitte Knowledge Exchange Whitepaper</h3>
+                    <p style="font-size: 1.1em; margin-bottom: 1.5em; line-height: 1.6;">
+                        For a detailed breakdown of the problem we're addressing, market analysis, 
+                        unique capabilities, and how the Assurance Twin enhances existing tools, 
+                        download our comprehensive whitepaper.
+                    </p>
+                    <a href="OT-Assurance-Twin-KX-Whitepaper.html" 
+                       target="_blank" 
+                       style="display: inline-block; 
+                              padding: 15px 30px; 
+                              background: var(--deloitte-accent); 
+                              color: white; 
+                              text-decoration: none; 
+                              border-radius: 6px; 
+                              font-size: 1.1em; 
+                              font-weight: 600;
+                              margin: 0.5em;
+                              transition: background 0.3s;">
+                        📄 Download Whitepaper
+                    </a>
+                    <p style="margin-top: 1.5em; font-size: 0.9em; opacity: 0.9; line-height: 1.5;">
+                        Comprehensive analysis: Problem statement, market trends, solution capabilities, 
+                        competitive positioning, and digital twin foundation
+                    </p>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <div class="abstract-graphic"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/dist/reveal.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            width: 1280,
+            height: 720,
+            margin: 0.1
+        });
+    </script>
+</body>
+</html>

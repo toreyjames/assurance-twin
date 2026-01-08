@@ -1,0 +1,59 @@
+OT ASSURANCE TWIN - ENGINEERING ANALYSIS
+Generated: 2026-01-08T12:19:13.140Z
+Model: template-fallback
+============================================================
+
+## Engineering Assessment (Automated)
+
+*Note: This is an automated assessment based on template comparisons. For detailed engineering analysis, ensure the analysis API is configured.*
+
+### 1. BASELINE COMPLETENESS
+
+**Facility Profile:**
+- 7,267 assets documented across 3 site(s)
+- 12 process units identified
+- Match rate with discovery: 99%
+
+**Assessment:** ✅ Good coverage - 99% of engineering baseline validated by discovery.
+
+### 2. INSTRUMENTATION OVERVIEW
+
+| Process Unit | Total Assets | Critical (Tier 1) | Networkable (Tier 2) |
+|--------------|--------------|-------------------|---------------------|
+| Crude Distillation Unit | 656 | 207 | 50 |
+| Fluid Catalytic Cracker | 799 | 231 | 79 |
+| Hydrocracker | 749 | 209 | 56 |
+| Reformer | 524 | 158 | 35 |
+| Coker Unit | 780 | 207 | 52 |
+| Hydrotreater | 497 | 125 | 33 |
+| Tank Farm | 438 | 142 | 28 |
+| Loading Rack | 407 | 122 | 30 |
+| Utilities | 518 | 156 | 33 |
+| Control Room | 691 | 220 | 49 |
+
+### 3. DATA QUALITY FLAGS
+
+⚠️ **6 critical assets** documented but not discovered on network. These may be:
+- Offline or disconnected
+- On isolated network segments not scanned
+- Incorrectly documented
+
+🚨 **10 critical devices** discovered but not in engineering baseline. These may be:
+- Recently added systems not yet documented
+- Undocumented test or development systems
+- Potential unauthorized devices requiring investigation
+
+### 4. RECOMMENDATIONS
+
+1. **Validate blind spots** - Investigate the 100 assets in engineering baseline that weren't discovered. Determine if they're offline, on separate networks, or documentation errors.
+
+2. **Document orphans** - Review the 100 discovered devices not in baseline. Add legitimate devices to engineering documentation.
+
+3. **Expand discovery scope** - If match rate is below 80%, consider running discovery tools on additional network segments.
+
+4. **Review process unit coverage** - Ensure all 8 typical Oil & Gas Refinery process units are represented.
+
+---
+*Assessment generated: 2026-01-08T12:19:13.140Z*
+*Industry template: Oil & Gas Refinery*
+*Standards reference: ISA/IEC 62443, IEC 61511 (SIS), API 1164*

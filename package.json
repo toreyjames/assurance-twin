@@ -14,13 +14,19 @@
     "seed:utilities": "node tools/utilities-seed.mjs",
     "seed:ot-discovery": "node tools/ot-discovery-seed.mjs",
     "seed:demo": "node tools/demo-data-generator.mjs",
-    "seed:all": "npm run seed:automotive && npm run seed:pharma && npm run seed:utilities && npm run seed:ot-discovery"
+    "seed:all": "npm run seed:automotive && npm run seed:pharma && npm run seed:utilities && npm run seed:ot-discovery",
+    "update-docs": "node scripts/analyze-capabilities.mjs",
+    "update-slides": "node scripts/analyze-capabilities.mjs"
   },
   "dependencies": {
+    "@react-three/drei": "^9.88.0",
+    "@react-three/fiber": "^8.15.0",
     "dayjs": "^1.11.11",
+    "html2canvas": "^1.4.1",
     "papaparse": "^5.4.1",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "three": "^0.158.0"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.3.1",

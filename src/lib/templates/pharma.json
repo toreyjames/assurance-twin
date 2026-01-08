@@ -1,0 +1,88 @@
+{
+  "id": "pharma",
+  "name": "Pharmaceutical Plants",
+  "icon": "💊",
+  "description": "API manufacturing, batch processes, GMP compliance",
+  
+  "standards": ["FDA 21 CFR Part 11", "GAMP 5", "ISO 27001", "ICH Q9"],
+  "governance": ["GMP", "FDA Validation", "EU Annex 11"],
+  
+  "processUnits": {
+    "API Manufacturing": {
+      "displayName": "Active Pharmaceutical Ingredient (API)",
+      "criticality": "Critical",
+      "function": "Drug substance synthesis",
+      "safetySystems": ["Containment Systems", "Environmental Controls"],
+      "compliance": ["FDA 21 CFR Part 11", "GAMP 5 Category 4"],
+      "expectedDevices": {
+        "Batch_Controller": { "min": 5, "typical": 8, "max": 12 },
+        "PLC": { "min": 10, "typical": 15, "max": 20 },
+        "Environmental_Monitor": { "min": 20, "typical": 30, "max": 50 }
+      }
+    },
+    "Formulation": {
+      "displayName": "Formulation / Drug Product",
+      "criticality": "Critical",
+      "function": "Final dosage form manufacturing",
+      "safetySystems": ["Clean Room Controls", "Contamination Prevention"],
+      "compliance": ["FDA 21 CFR Part 11", "GAMP 5 Category 4"],
+      "expectedDevices": {
+        "Batch_Controller": { "min": 8, "typical": 12, "max": 18 },
+        "Temperature_Controller": { "min": 15, "typical": 25, "max": 40 }
+      }
+    },
+    "Packaging": {
+      "displayName": "Packaging & Serialization",
+      "criticality": "High",
+      "function": "Primary/secondary packaging with track & trace",
+      "safetySystems": ["Serialization Verification"],
+      "compliance": ["FDA DSCSA", "EU FMD"],
+      "expectedDevices": {
+        "Serialization_System": { "min": 3, "typical": 5, "max": 10 },
+        "Vision_System": { "min": 5, "typical": 10, "max": 20 }
+      }
+    },
+    "Utilities": {
+      "displayName": "Clean Utilities",
+      "criticality": "High",
+      "function": "WFI, clean steam, HVAC",
+      "safetySystems": ["Environmental Monitoring"],
+      "compliance": ["USP <1231>", "WHO Guidelines"],
+      "expectedDevices": {
+        "PLC": { "min": 5, "typical": 8, "max": 12 },
+        "TOC_Analyzer": { "min": 2, "typical": 4, "max": 8 }
+      }
+    },
+    "QC Laboratory": {
+      "displayName": "Quality Control Laboratory",
+      "criticality": "High",
+      "function": "In-process and release testing",
+      "safetySystems": ["Data Integrity Controls"],
+      "compliance": ["FDA 21 CFR Part 11", "EU Annex 11"],
+      "expectedDevices": {
+        "LIMS": { "min": 1, "typical": 2, "max": 4 },
+        "Chromatograph": { "min": 5, "typical": 10, "max": 20 }
+      }
+    }
+  },
+  
+  "controlHierarchy": {
+    "Field_Level": {
+      "devices": ["Sensor", "Transmitter", "Environmental_Monitor"],
+      "standards": ["GAMP 5 Category 4"],
+      "criticality": "High"
+    },
+    "Control_Level": {
+      "devices": ["PLC", "Batch_Controller", "Safety_PLC"],
+      "standards": ["FDA 21 CFR Part 11", "GAMP 5"],
+      "criticality": "Critical"
+    },
+    "Supervisory_Level": {
+      "devices": ["SCADA", "MES", "Historian", "LIMS"],
+      "standards": ["FDA 21 CFR Part 11", "EU Annex 11"],
+      "criticality": "Critical"
+    }
+  }
+}
+
+
