@@ -26,23 +26,6 @@ export default function App() {
         <div className="subtle">
           Context-Aware Asset Canonization Framework
         </div>
-        <div style={{ marginTop: '10px', display: 'flex', gap: '15px', fontSize: '0.85em' }}>
-          <a 
-            href="/docs/slides/presentation.html" 
-            target="_blank" 
-            style={{ color: '#1B5E20', textDecoration: 'none', fontWeight: '500' }}
-          >
-            📊 View Presentation
-          </a>
-          <span style={{ color: '#ccc' }}>|</span>
-          <a 
-            href="/docs/slides/OT-Assurance-Twin-KX-Whitepaper.html" 
-            target="_blank" 
-            style={{ color: '#1B5E20', textDecoration: 'none', fontWeight: '500' }}
-          >
-            📄 Download Whitepaper
-          </a>
-        </div>
       </header>
 
       {/* Main Canonizer - Industry is auto-detected from data (AIGNE principle) */}

@@ -25,27 +25,49 @@ export function normalizeDataset(rows, sourceId = 'unknown') {
     return {
       // Primary identifiers (for matching)
       tag_id: String(norm.tag_id ?? norm.tag ?? norm.tagid ?? norm.asset_tag ?? norm.asset_id ?? norm.asset_name ?? norm.name ?? '').trim().toUpperCase(),
-      ip_address: String(norm.ip_address ?? norm.ip ?? norm.ipaddress ?? norm.ipv4 ?? '').trim(),
+      ip_address: String(norm.ip_address ?? norm.ip ?? norm.ipaddress ?? norm.ipv4 ?? norm.discovered_ip ?? '').trim(),
       mac_address: String(norm.mac_address ?? norm.mac ?? norm.macaddress ?? '').trim().toUpperCase(),
       hostname: String(norm.hostname ?? norm.host ?? norm.device_name ?? norm.devicename ?? '').trim(),
       
-      // Asset attributes
-      plant: String(norm.plant ?? norm.site ?? norm.facility ?? norm.location ?? '').trim(),
+      // Asset attributes - PLANT
+      plant: String(norm.plant ?? norm.site ?? norm.facility ?? '').trim(),
+      plant_code: String(norm.plant_code ?? norm.plantcode ?? norm.site_code ?? '').trim().toUpperCase(),
+      
+      // Asset attributes - UNIT
       unit: String(norm.unit ?? norm.area ?? norm.process_unit ?? norm.zone ?? '').trim(),
+      unit_code: String(norm.unit_code ?? norm.unitcode ?? '').trim().toUpperCase(),
+      
+      // Asset attributes - DEVICE
       device_type: String(norm.device_type ?? norm.type ?? norm.asset_type ?? norm.instrument_type ?? norm.category ?? '').trim(),
       manufacturer: String(norm.manufacturer ?? norm.vendor ?? norm.oem ?? norm.make ?? '').trim(),
       model: String(norm.model ?? norm.device_model ?? norm.product ?? '').trim(),
+      criticality: String(norm.criticality ?? norm.priority ?? '').trim(),
+      security_tier: parseInt(norm.security_tier ?? norm.tier ?? 3) || 3,
       
-      // Security attributes
+      // Security attributes - core
       is_managed: parseBoolean(norm.is_managed ?? norm.managed ?? norm.security_managed),
       has_security_patches: parseBoolean(norm.has_security_patches ?? norm.patched ?? norm.patch_status),
       
       // Vulnerability data
       vulnerabilities: parseInt(norm.vulnerabilities ?? norm.vuln_count ?? 0) || 0,
       cve_count: parseInt(norm.cve_count ?? norm.cves ?? 0) || 0,
+      cve_ids: String(norm.cve_ids ?? norm.cves_list ?? '').trim(),
+      
+      // Risk scoring
+      risk_score: parseInt(norm.risk_score ?? norm.riskScore ?? norm.risk ?? 0) || 0,
+      
+      // Patching / lifecycle
+      last_patch_date: String(norm.last_patch_date ?? norm.last_patched ?? norm.patched_date ?? '').trim(),
+      firmware_version: String(norm.firmware_version ?? norm.firmware ?? norm.fw_version ?? '').trim(),
       
       // Discovery metadata
       last_seen: norm.last_seen ?? norm.lastseen ?? norm.last_discovered ?? '',
+      first_seen: norm.first_seen ?? norm.firstseen ?? norm.first_discovered ?? '',
+      discovery_method: String(norm.discovery_method ?? norm.scan_type ?? '').trim(),
+      
+      // Network attributes
+      network_segment: String(norm.network_segment ?? norm.segment ?? norm.vlan ?? '').trim(),
+      protocol: String(norm.protocol ?? norm.expected_protocol ?? norm.ot_protocol ?? '').trim(),
       
       // Provenance tracking
       _sourceId: sourceId,
