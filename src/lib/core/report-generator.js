@@ -97,6 +97,62 @@ export class ReportGenerator {
     const tier3 = assets.filter(a => a.classification?.tier === 3).length
     const coverage = summary.coverage || 0
 
+    // =====================================================================
+    // THE THREE QUESTIONS — this is what the CISO is paying for
+    // =====================================================================
+    // Q1: How many assets do we have?
+    const totalAssets = assets.length
+    const blindSpots = summary.blindSpots || 0
+    const orphans = summary.orphans || 0
+
+    // Q2: How do we know that?
+    const matchedCount = summary.matched || 0
+    const matchRate = totalAssets > 0 ? Math.round((matchedCount / (summary.total || 1)) * 100) : 0
+    const evidenceBasis = coverage >= 80 ? 'HIGH CONFIDENCE' :
+                          coverage >= 60 ? 'MODERATE CONFIDENCE' :
+                          coverage >= 30 ? 'LOW CONFIDENCE' : 'INSUFFICIENT EVIDENCE'
+
+    // Q3: Are the devices that need cyber management actually managed?
+    const needsManagement = assets.filter(a => a.classification?.tier === 1 || a.classification?.tier === 2)
+    const needsManagementCount = needsManagement.length
+    const actuallyManaged = needsManagement.filter(a => a.is_managed === true || a.is_managed === 'true')
+    const actuallyManagedCount = actuallyManaged.length
+    const unmanagedCritical = needsManagementCount - actuallyManagedCount
+    const managementRate = needsManagementCount > 0
+      ? Math.round((actuallyManagedCount / needsManagementCount) * 100) : 0
+
+    const threeQuestions = {
+      q1_assetCount: {
+        question: 'How many OT assets do we have?',
+        answer: `${totalAssets} canonical assets identified from ${summary.total || 0} engineering records + ${orphans} discovered-only devices.`,
+        total: totalAssets,
+        fromEngineering: summary.total || 0,
+        orphansFound: orphans,
+        blindSpots
+      },
+      q2_howWeKnow: {
+        question: 'How do we know that?',
+        answer: `${matchRate}% of engineering baseline verified against network discovery (${matchedCount} matched). ${blindSpots} documented assets were NOT found on the network. ${orphans} undocumented devices were found.`,
+        confidence: evidenceBasis,
+        coveragePercent: coverage,
+        matchRate,
+        matchedCount,
+        strategies: '6-strategy matching: Tag ID, IP, Hostname, MAC, Fuzzy, Intelligent Pairing'
+      },
+      q3_areTheyManaged: {
+        question: 'Are the devices that need cyber management actually managed?',
+        answer: needsManagementCount > 0
+          ? `${needsManagementCount} assets require cyber management (Tier 1 + Tier 2). Of those, ${actuallyManagedCount} (${managementRate}%) are confirmed managed. ${unmanagedCritical} are NOT managed.`
+          : 'No assets classified as requiring cyber management (Tier 1/2). Review classification criteria.',
+        needsManagement: needsManagementCount,
+        actuallyManaged: actuallyManagedCount,
+        unmanaged: unmanagedCritical,
+        managementRate,
+        tier1Unmanaged: assets.filter(a => a.classification?.tier === 1 && a.is_managed !== true && a.is_managed !== 'true').length,
+        tier2Unmanaged: assets.filter(a => a.classification?.tier === 2 && a.is_managed !== true && a.is_managed !== 'true').length
+      }
+    }
+
     // Determine overall posture
     // This must account for: findings severity, coverage gaps, AND data quality.
     // "ACCEPTABLE" should be HARD to achieve — it means we looked thoroughly
@@ -217,16 +273,34 @@ export class ReportGenerator {
       })
     }
 
+    // THE BIG ONE: Unmanaged critical devices
+    if (unmanagedCritical > 0) {
+      keyFindings.push({
+        severity: unmanagedCritical > needsManagementCount * 0.5 ? 'critical' : 'high',
+        finding: `${unmanagedCritical} of ${needsManagementCount} devices requiring cyber management are NOT managed (${100 - managementRate}% gap).`,
+        implication: `These are Tier 1/2 assets (PLCs, DCS, HMIs, safety systems) that are on the network but lack security management — patching, monitoring, access control. This is the primary risk exposure.`,
+        reference: 'IEC 62443 SR 1.1, SR 2.1, NIST CSF PR.AC-1, PR.IP-1'
+      })
+    }
+
     return {
+      // THE THREE QUESTIONS — front and center
+      threeQuestions,
       overallPosture,
       postureColor,
       complianceScore: complianceSummary.complianceScore,
       assetBreakdown: { total: assets.length, tier1, tier2, tier3 },
+      managementMetrics: {
+        needsManagement: needsManagementCount,
+        actuallyManaged: actuallyManagedCount,
+        unmanaged: unmanagedCritical,
+        managementRate
+      },
       coverageMetrics: {
         discoveryRate: coverage,
         blindSpots: summary.blindSpots || 0,
         orphans: summary.orphans || 0,
-        matchRate: summary.matched ? Math.round((summary.matched / (summary.total || 1)) * 100) : 0
+        matchRate
       },
       gapSummary: complianceSummary.bySeverity,
       keyFindings,
@@ -535,9 +609,26 @@ export class ReportGenerator {
 
     md += `---\n\n`
     md += `## Overall Posture: ${exec.overallPosture}\n\n`
-    md += `**Compliance Score:** ${exec.complianceScore}%\n\n`
 
-    md += `### Asset Inventory\n\n`
+    // THE THREE QUESTIONS
+    const q = exec.threeQuestions
+    const mm = exec.managementMetrics
+    if (q) {
+      md += `## Three Core Questions\n\n`
+      md += `### 1. How many OT assets do we have?\n\n`
+      md += `**${q.q1_assetCount.total.toLocaleString()} canonical assets** — ${q.q1_assetCount.fromEngineering.toLocaleString()} from engineering baseline, ${q.q1_assetCount.orphansFound} discovered-only devices. ${q.q1_assetCount.blindSpots} documented assets were NOT found on the network.\n\n`
+      md += `### 2. How do we know?\n\n`
+      md += `**${q.q2_howWeKnow.coveragePercent}% discovery coverage** (${q.q2_howWeKnow.confidence}). ${q.q2_howWeKnow.matchedCount.toLocaleString()} assets verified via ${q.q2_howWeKnow.strategies}.\n\n`
+      md += `### 3. Are the devices that need cyber management actually managed?\n\n`
+      if (mm && mm.needsManagement > 0) {
+        md += `**${mm.actuallyManaged} of ${mm.needsManagement}** Tier 1/2 devices are confirmed managed (**${mm.managementRate}%**). **${mm.unmanaged} devices are UNMANAGED** — these are on the network without confirmed security management (patching, monitoring, access control).\n\n`
+      } else {
+        md += `No assets classified as requiring cyber management (Tier 1/2). Review classification criteria.\n\n`
+      }
+      md += `---\n\n`
+    }
+
+    md += `### Asset Inventory Detail\n\n`
     md += `| Metric | Value |\n|---|---|\n`
     md += `| Total Assets | ${exec.assetBreakdown.total} |\n`
     md += `| Tier 1 (Critical) | ${exec.assetBreakdown.tier1} |\n`
@@ -545,7 +636,13 @@ export class ReportGenerator {
     md += `| Tier 3 (Standard) | ${exec.assetBreakdown.tier3} |\n`
     md += `| Discovery Coverage | ${exec.coverageMetrics.discoveryRate}% |\n`
     md += `| Blind Spots | ${exec.coverageMetrics.blindSpots} |\n`
-    md += `| Orphan Devices | ${exec.coverageMetrics.orphans} |\n\n`
+    md += `| Orphan Devices | ${exec.coverageMetrics.orphans} |\n`
+    if (mm) {
+      md += `| Need Cyber Mgmt | ${mm.needsManagement} |\n`
+      md += `| Actually Managed | ${mm.actuallyManaged} (${mm.managementRate}%) |\n`
+      md += `| **Unmanaged Gap** | **${mm.unmanaged}** |\n`
+    }
+    md += `\n`
 
     md += `### Key Findings\n\n`
     exec.keyFindings.forEach((f, i) => {

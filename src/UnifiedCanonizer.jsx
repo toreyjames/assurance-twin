@@ -974,7 +974,106 @@ function Results({ result, outputLevel, onReset, industry }) {
       {/* ================================================================ */}
       {activeTab === 'summary' && (
         <div>
-          {/* Summary Cards */}
+          {/* ============================================================ */}
+          {/* THE THREE QUESTIONS — this is the whole point of the tool     */}
+          {/* ============================================================ */}
+          {engagementReport?.executiveSummary?.threeQuestions && (
+            <div style={{
+              marginBottom: '2rem', padding: '1.5rem',
+              background: '#f8fafc', borderRadius: '0.75rem',
+              border: '2px solid #e2e8f0'
+            }}>
+              {(() => {
+                const q = engagementReport.executiveSummary.threeQuestions
+                const mm = engagementReport.executiveSummary.managementMetrics
+                return (
+                  <>
+                    {/* Q1 */}
+                    <div style={{ marginBottom: '1.25rem' }}>
+                      <div style={{ fontSize: '0.7rem', color: '#94a3b8', fontFamily: 'monospace', fontWeight: '600', marginBottom: '0.375rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                        Q1: How many assets do we have?
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.75rem', flexWrap: 'wrap' }}>
+                        <span style={{ fontSize: '2rem', fontWeight: '800', color: '#0f172a', fontFamily: 'monospace' }}>
+                          {q.q1_assetCount.total.toLocaleString()}
+                        </span>
+                        <span style={{ fontSize: '0.85rem', color: '#64748b' }}>
+                          canonical assets ({q.q1_assetCount.fromEngineering.toLocaleString()} engineered + {q.q1_assetCount.orphansFound} discovered-only)
+                        </span>
+                      </div>
+                      {q.q1_assetCount.blindSpots > 0 && (
+                        <div style={{ fontSize: '0.8rem', color: '#f59e0b', marginTop: '0.25rem' }}>
+                          {q.q1_assetCount.blindSpots} documented assets NOT found on network
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Q2 */}
+                    <div style={{ marginBottom: '1.25rem', paddingTop: '1rem', borderTop: '1px solid #e2e8f0' }}>
+                      <div style={{ fontSize: '0.7rem', color: '#94a3b8', fontFamily: 'monospace', fontWeight: '600', marginBottom: '0.375rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                        Q2: How do we know?
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.75rem', flexWrap: 'wrap' }}>
+                        <span style={{ fontSize: '2rem', fontWeight: '800', fontFamily: 'monospace',
+                          color: q.q2_howWeKnow.coveragePercent >= 80 ? '#22c55e' : q.q2_howWeKnow.coveragePercent >= 60 ? '#f59e0b' : '#ef4444' }}>
+                          {q.q2_howWeKnow.coveragePercent}%
+                        </span>
+                        <span style={{ fontSize: '0.85rem', color: '#64748b' }}>
+                          discovery coverage — {q.q2_howWeKnow.matchedCount.toLocaleString()} assets verified on network
+                        </span>
+                        <span style={{
+                          padding: '0.2rem 0.5rem', borderRadius: '0.25rem', fontSize: '0.7rem', fontWeight: '700', fontFamily: 'monospace',
+                          background: q.q2_howWeKnow.confidence === 'HIGH CONFIDENCE' ? '#dcfce7' : q.q2_howWeKnow.confidence === 'MODERATE CONFIDENCE' ? '#fef9c3' : '#fef2f2',
+                          color: q.q2_howWeKnow.confidence === 'HIGH CONFIDENCE' ? '#166534' : q.q2_howWeKnow.confidence === 'MODERATE CONFIDENCE' ? '#854d0e' : '#991b1b'
+                        }}>
+                          {q.q2_howWeKnow.confidence}
+                        </span>
+                      </div>
+                      <div style={{ fontSize: '0.7rem', color: '#94a3b8', marginTop: '0.25rem' }}>
+                        {q.q2_howWeKnow.strategies}
+                      </div>
+                    </div>
+
+                    {/* Q3 */}
+                    <div style={{ paddingTop: '1rem', borderTop: '1px solid #e2e8f0' }}>
+                      <div style={{ fontSize: '0.7rem', color: '#94a3b8', fontFamily: 'monospace', fontWeight: '600', marginBottom: '0.375rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                        Q3: Are the devices that need cyber management actually managed?
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.75rem', flexWrap: 'wrap' }}>
+                        <span style={{ fontSize: '2rem', fontWeight: '800', fontFamily: 'monospace',
+                          color: mm.managementRate >= 80 ? '#22c55e' : mm.managementRate >= 50 ? '#f59e0b' : '#ef4444' }}>
+                          {mm.actuallyManaged} / {mm.needsManagement}
+                        </span>
+                        <span style={{ fontSize: '0.85rem', color: '#64748b' }}>
+                          managed ({mm.managementRate}%)
+                        </span>
+                        {mm.unmanaged > 0 && (
+                          <span style={{
+                            padding: '0.2rem 0.6rem', borderRadius: '0.25rem', fontSize: '0.75rem', fontWeight: '700',
+                            background: '#fef2f2', color: '#dc2626', fontFamily: 'monospace'
+                          }}>
+                            {mm.unmanaged} UNMANAGED
+                          </span>
+                        )}
+                      </div>
+                      {mm.unmanaged > 0 && (
+                        <div style={{ fontSize: '0.8rem', color: '#ef4444', marginTop: '0.25rem' }}>
+                          {mm.unmanaged} Tier 1/2 devices are on the network without confirmed security management
+                        </div>
+                      )}
+                      {mm.needsManagement === 0 && (
+                        <div style={{ fontSize: '0.8rem', color: '#f59e0b', marginTop: '0.25rem' }}>
+                          No assets classified as Tier 1/2. Review if classification data is available in source files.
+                        </div>
+                      )}
+                    </div>
+                  </>
+                )
+              })()}
+            </div>
+          )}
+
+          {/* Summary Cards (secondary) */}
           <div style={{
             display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
             gap: '1rem', marginBottom: '2rem'
