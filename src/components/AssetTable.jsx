@@ -174,17 +174,56 @@ function Field({ label, value }) {
 
 export default function AssetTable({ unifiedAssets, result }) {
   const [filter, setFilter] = useState('all')
+  const [plantFilter, setPlantFilter] = useState('all')
+  const [unitFilter, setUnitFilter] = useState('all')
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(0)
   const [selectedAsset, setSelectedAsset] = useState(null)
   const [sortCol, setSortCol] = useState(null)
   const [sortDir, setSortDir] = useState('asc')
 
+  // Extract unique plants and units for dropdowns
+  const { plants, units } = useMemo(() => {
+    const plantSet = new Set()
+    const unitSet = new Set()
+    for (const a of (unifiedAssets || [])) {
+      const p = a.plant || a.plant_code || a.facility
+      const u = a.unit || a.area
+      if (p) plantSet.add(p)
+      if (u) unitSet.add(u)
+    }
+    return {
+      plants: Array.from(plantSet).sort(),
+      units: Array.from(unitSet).sort()
+    }
+  }, [unifiedAssets])
+
+  // Filtered units based on selected plant
+  const filteredUnits = useMemo(() => {
+    if (plantFilter === 'all') return units
+    const unitSet = new Set()
+    for (const a of (unifiedAssets || [])) {
+      const p = a.plant || a.plant_code || a.facility
+      if (p === plantFilter && (a.unit || a.area)) unitSet.add(a.unit || a.area)
+    }
+    return Array.from(unitSet).sort()
+  }, [unifiedAssets, plantFilter, units])
+
   // Filter + search
   const filtered = useMemo(() => {
     let list = unifiedAssets || []
 
-    // Filter
+    // Plant filter
+    if (plantFilter !== 'all') {
+      list = list.filter(a => (a.plant || a.plant_code || a.facility) === plantFilter)
+    }
+
+    // Unit filter
+    if (unitFilter !== 'all') {
+      list = list.filter(a => (a.unit || a.area) === unitFilter)
+    }
+
+    // Status filter
     if (filter === 'matched') list = list.filter(a => a._status === 'matched')
     else if (filter === 'blind_spot') list = list.filter(a => a._status === 'blind_spot')
     else if (filter === 'orphan') list = list.filter(a => a._status === 'orphan')
@@ -218,7 +257,7 @@ export default function AssetTable({ unifiedAssets, result }) {
     }
 
     return list
-  }, [unifiedAssets, filter, search, sortCol, sortDir])
+  }, [unifiedAssets, filter, plantFilter, unitFilter, search, sortCol, sortDir])
 
   // Pagination
   const totalPages = Math.ceil(filtered.length / PAGE_SIZE)
@@ -227,15 +266,19 @@ export default function AssetTable({ unifiedAssets, result }) {
   // Reset page on filter/search change
   const handleFilter = useCallback(f => { setFilter(f); setPage(0) }, [])
   const handleSearch = useCallback(e => { setSearch(e.target.value); setPage(0) }, [])
+  const handlePlant = useCallback(p => { setPlantFilter(p); setUnitFilter('all'); setPage(0) }, [])
+  const handleUnit = useCallback(u => { setUnitFilter(u); setPage(0) }, [])
 
   const handleSort = useCallback(col => {
     if (sortCol === col) setSortDir(d => d === 'asc' ? 'desc' : 'asc')
     else { setSortCol(col); setSortDir('asc') }
   }, [sortCol])
 
-  // Counts for filter badges
+  // Counts for filter badges (scoped to current plant/unit selection)
   const counts = useMemo(() => {
-    const all = unifiedAssets || []
+    let all = unifiedAssets || []
+    if (plantFilter !== 'all') all = all.filter(a => (a.plant || a.plant_code || a.facility) === plantFilter)
+    if (unitFilter !== 'all') all = all.filter(a => (a.unit || a.area) === unitFilter)
     return {
       all: all.length,
       matched: all.filter(a => a._status === 'matched').length,
@@ -285,9 +328,46 @@ export default function AssetTable({ unifiedAssets, result }) {
     </th>
   )
 
+  const selectStyle = {
+    padding: '0.375rem 0.5rem', border: '1.5px solid #e2e8f0', borderRadius: '0.25rem',
+    fontSize: '0.8rem', background: 'white', cursor: 'pointer', color: '#0f172a'
+  }
+
   return (
     <div>
-      {/* Filters + Search */}
+      {/* Plant / Unit Filters */}
+      {plants.length > 1 && (
+        <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
+          <label style={{ fontSize: '0.7rem', color: '#64748b', fontWeight: '600', fontFamily: 'monospace' }}>PLANT:</label>
+          <select value={plantFilter} onChange={e => handlePlant(e.target.value)} style={selectStyle}>
+            <option value="all">All Plants ({plants.length})</option>
+            {plants.map(p => {
+              const c = (unifiedAssets || []).filter(a => (a.plant || a.plant_code || a.facility) === p).length
+              return <option key={p} value={p}>{p} ({c.toLocaleString()})</option>
+            })}
+          </select>
+
+          <label style={{ fontSize: '0.7rem', color: '#64748b', fontWeight: '600', fontFamily: 'monospace', marginLeft: '0.5rem' }}>UNIT:</label>
+          <select value={unitFilter} onChange={e => handleUnit(e.target.value)} style={selectStyle}>
+            <option value="all">All Units ({filteredUnits.length})</option>
+            {filteredUnits.map(u => {
+              let scope = unifiedAssets || []
+              if (plantFilter !== 'all') scope = scope.filter(a => (a.plant || a.plant_code || a.facility) === plantFilter)
+              const c = scope.filter(a => (a.unit || a.area) === u).length
+              return <option key={u} value={u}>{u} ({c.toLocaleString()})</option>
+            })}
+          </select>
+
+          {(plantFilter !== 'all' || unitFilter !== 'all') && (
+            <button onClick={() => { handlePlant('all') }} style={{
+              padding: '0.25rem 0.5rem', background: 'none', border: '1px solid #e2e8f0',
+              borderRadius: '0.25rem', fontSize: '0.75rem', color: '#64748b', cursor: 'pointer'
+            }}>Clear</button>
+          )}
+        </div>
+      )}
+
+      {/* Status Filters + Search */}
       <div style={{
         display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '0.75rem',
         alignItems: 'center'
