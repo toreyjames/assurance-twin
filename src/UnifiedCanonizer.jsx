@@ -46,6 +46,9 @@ import { analyzeEngineering, generateFallbackAnalysis } from './lib/context/engi
 // Import Core Engine: Compliance mapping + Report generation
 import { ReportGenerator } from './lib/core/report-generator.js'
 
+// Import Asset Table (the actual product)
+import AssetTable from './components/AssetTable.jsx'
+
 // =============================================================================
 // FILE UPLOAD COMPONENT
 // =============================================================================
@@ -87,7 +90,7 @@ function FileUploader({ label, description, files, setFiles }) {
               marginBottom: '0.5rem',
               border: '1px solid #e2e8f0'
             }}>
-              <span style={{ fontSize: '0.875rem' }}>📄 {file.name}</span>
+              <span style={{ fontSize: '0.875rem' }}>ðŸ“„ {file.name}</span>
               <button
                 onClick={() => removeFile(idx)}
                 style={{
@@ -97,7 +100,7 @@ function FileUploader({ label, description, files, setFiles }) {
                   cursor: 'pointer',
                   fontSize: '1rem'
                 }}
-              >×</button>
+              >Ã—</button>
             </div>
           ))}
         </div>
@@ -136,7 +139,7 @@ function TierSelector({ selected, onSelect, disabled }) {
       id: 'inventory',
       name: 'Inventory',
       subtitle: 'What do we have?',
-      icon: '📋',
+      icon: 'ðŸ“‹',
       color: '#10b981',
       description: 'Single source of truth for OT assets',
       features: [
@@ -151,7 +154,7 @@ function TierSelector({ selected, onSelect, disabled }) {
       id: 'context',
       name: 'Context',
       subtitle: 'What gaps exist?',
-      icon: '🔍',
+      icon: 'ðŸ”',
       color: '#3b82f6',
       description: 'Verify baseline completeness',
       features: [
@@ -167,7 +170,7 @@ function TierSelector({ selected, onSelect, disabled }) {
       id: 'assurance',
       name: 'Assurance',
       subtitle: 'Is it secure?',
-      icon: '🗺️',
+      icon: 'ðŸ—ºï¸',
       color: '#8b5cf6',
       description: 'Visual plant map + evidence package',
       features: [
@@ -317,7 +320,7 @@ function IndustrySelector({ detection, selected, onSelect, disabled }) {
               fontSize: '0.875rem',
               color: '#854d0e'
             }}>
-              ⚠️ {detection.reason}
+              âš ï¸ {detection.reason}
             </div>
           )}
           
@@ -342,7 +345,7 @@ function IndustrySelector({ detection, selected, onSelect, disabled }) {
                 opacity: disabled ? 0.6 : 1
               }}
             >
-              <span>🌐</span>
+              <span>ðŸŒ</span>
               <span style={{ fontWeight: selected === null ? '600' : '400' }}>Universal</span>
             </button>
             
@@ -420,7 +423,7 @@ function HumanReview({ reviewItems, onComplete, onSkip }) {
       marginBottom: '2rem'
     }}>
       <h3 style={{ margin: '0 0 0.5rem 0', color: '#92400e' }}>
-        👁️ Human Review Checkpoint
+        ðŸ‘ï¸ Human Review Checkpoint
       </h3>
       <p style={{ color: '#78350f', fontSize: '0.875rem', marginBottom: '1.5rem' }}>
         {totalItems} items flagged for verification before finalizing results
@@ -430,7 +433,7 @@ function HumanReview({ reviewItems, onComplete, onSkip }) {
       {reviewItems.lowConfidence.length > 0 && (
         <div style={{ marginBottom: '1.5rem' }}>
           <h4 style={{ fontSize: '0.95rem', color: '#0f172a', marginBottom: '0.75rem' }}>
-            ⚠️ Low Confidence Matches ({reviewItems.lowConfidence.length})
+            âš ï¸ Low Confidence Matches ({reviewItems.lowConfidence.length})
           </h4>
           <div style={{ maxHeight: '200px', overflowY: 'auto' }}>
             {reviewItems.lowConfidence.slice(0, 10).map((item, idx) => (
@@ -441,7 +444,7 @@ function HumanReview({ reviewItems, onComplete, onSkip }) {
                 marginBottom: '0.5rem',
                 fontSize: '0.875rem'
               }}>
-                <strong>{item.tag_id}</strong> — {item.device_type} ({item.unit})
+                <strong>{item.tag_id}</strong> â€” {item.device_type} ({item.unit})
                 <div style={{ fontSize: '0.75rem', color: '#64748b' }}>
                   Match: {item.matchType}, Confidence: {item.matchConfidence}%
                 </div>
@@ -455,7 +458,7 @@ function HumanReview({ reviewItems, onComplete, onSkip }) {
       {reviewItems.suspiciousClassifications.length > 0 && (
         <div style={{ marginBottom: '1.5rem' }}>
           <h4 style={{ fontSize: '0.95rem', color: '#0f172a', marginBottom: '0.75rem' }}>
-            🔍 Suspicious Classifications ({reviewItems.suspiciousClassifications.length})
+            ðŸ” Suspicious Classifications ({reviewItems.suspiciousClassifications.length})
           </h4>
           <p style={{ fontSize: '0.75rem', color: '#64748b', marginBottom: '0.5rem' }}>
             Classified as passive/analog but found on network
@@ -469,7 +472,7 @@ function HumanReview({ reviewItems, onComplete, onSkip }) {
                 marginBottom: '0.5rem',
                 fontSize: '0.875rem'
               }}>
-                <strong>{item.tag_id}</strong> — {item.device_type}
+                <strong>{item.tag_id}</strong> â€” {item.device_type}
                 <div style={{ fontSize: '0.75rem', color: '#ef4444' }}>
                   Has IP: {item.discovered?.ip_address} but classified as Tier 3
                 </div>
@@ -483,7 +486,7 @@ function HumanReview({ reviewItems, onComplete, onSkip }) {
       {reviewItems.criticalOrphans.length > 0 && (
         <div style={{ marginBottom: '1.5rem' }}>
           <h4 style={{ fontSize: '0.95rem', color: '#0f172a', marginBottom: '0.75rem' }}>
-            👁️ Critical Orphan Devices ({reviewItems.criticalOrphans.length})
+            ðŸ‘ï¸ Critical Orphan Devices ({reviewItems.criticalOrphans.length})
           </h4>
           <p style={{ fontSize: '0.75rem', color: '#64748b', marginBottom: '0.5rem' }}>
             Discovered on network but not in engineering baseline
@@ -497,7 +500,7 @@ function HumanReview({ reviewItems, onComplete, onSkip }) {
                 marginBottom: '0.5rem',
                 fontSize: '0.875rem'
               }}>
-                <strong>{item.ip_address || item.hostname}</strong> — {item.device_type}
+                <strong>{item.ip_address || item.hostname}</strong> â€” {item.device_type}
                 <div style={{ fontSize: '0.75rem', color: '#8b5cf6' }}>
                   Manufacturer: {item.manufacturer || 'Unknown'}
                 </div>
@@ -520,7 +523,7 @@ function HumanReview({ reviewItems, onComplete, onSkip }) {
             cursor: 'pointer'
           }}
         >
-          ✓ Mark as Reviewed
+          âœ“ Mark as Reviewed
         </button>
         <button
           onClick={onSkip}
@@ -534,7 +537,7 @@ function HumanReview({ reviewItems, onComplete, onSkip }) {
             cursor: 'pointer'
           }}
         >
-          Skip Review →
+          Skip Review â†’
         </button>
       </div>
     </div>
@@ -613,14 +616,14 @@ function OperationsContext({ result }) {
     if (coverage < 50) {
       messages.push({
         type: 'warning',
-        icon: '⚠️',
+        icon: 'âš ï¸',
         title: 'Low Discovery Coverage',
         text: `Only ${coverage}% of documented assets were found on the network. This suggests either disconnected assets, documentation gaps, or network visibility issues.`
       })
     } else if (coverage > 80) {
       messages.push({
         type: 'success',
-        icon: '✅',
+        icon: 'âœ…',
         title: 'Good Discovery Coverage',
         text: `${coverage}% of documented assets were discovered on the network, indicating good baseline-to-reality alignment.`
       })
@@ -630,7 +633,7 @@ function OperationsContext({ result }) {
     if (tier1 > 0) {
       messages.push({
         type: 'alert',
-        icon: '🔴',
+        icon: 'ðŸ”´',
         title: `${tier1} Critical Control Systems Identified`,
         text: `These Tier 1 assets (PLCs, DCS, safety systems) should be prioritized for hardening, monitoring, and incident response planning.`
       })
@@ -640,7 +643,7 @@ function OperationsContext({ result }) {
     if (safetySystems.length > 0) {
       messages.push({
         type: 'info',
-        icon: '🛡️',
+        icon: 'ðŸ›¡ï¸',
         title: `${safetySystems.length} Safety-Related Assets`,
         text: `Detected ESD, F&G, SIS, or similar safety systems. These require special handling per IEC 61511/ISA 84.`
       })
@@ -650,7 +653,7 @@ function OperationsContext({ result }) {
     if (result.summary?.orphans > 10) {
       messages.push({
         type: 'warning',
-        icon: '👻',
+        icon: 'ðŸ‘»',
         title: `${result.summary.orphans} Undocumented Network Devices`,
         text: `These "orphans" were found on the network but don't appear in engineering documentation. Investigate for shadow IT or documentation gaps.`
       })
@@ -676,9 +679,9 @@ function OperationsContext({ result }) {
         alignItems: 'center',
         gap: '0.5rem'
       }}>
-        🏭 Operations Context
+        ðŸ­ Operations Context
         <span style={{ fontSize: '0.75rem', fontWeight: '400', color: '#7c3aed' }}>
-          — We understand how your plant operates
+          â€” We understand how your plant operates
         </span>
       </h3>
       
@@ -763,7 +766,7 @@ function OperationsContext({ result }) {
                   {cluster.count} devices
                 </span>
                 {cluster.hasCritical && (
-                  <span style={{ marginLeft: '0.25rem', color: '#ef4444' }}>⚠️</span>
+                  <span style={{ marginLeft: '0.25rem', color: '#ef4444' }}>âš ï¸</span>
                 )}
               </div>
             ))}
@@ -805,7 +808,7 @@ function OperationsContext({ result }) {
               )}
             </div>
             <p style={{ fontSize: '0.7rem', color: '#dc2626', marginTop: '0.5rem', marginBottom: 0 }}>
-              🛡️ These require IEC 61511 / ISA 84 compliance review
+              ðŸ›¡ï¸ These require IEC 61511 / ISA 84 compliance review
             </p>
           </div>
         </div>
@@ -815,737 +818,108 @@ function OperationsContext({ result }) {
 }
 
 // =============================================================================
-// TAB NAVIGATION FOR RESULTS
-// =============================================================================
-
-function ResultTabs({ activeTab, setActiveTab, tabs }) {
-  return (
-    <div style={{
-      display: 'flex', gap: '0.125rem', background: '#f1f5f9',
-      borderRadius: '0.5rem', padding: '0.25rem', marginBottom: '1.5rem',
-      overflowX: 'auto'
-    }}>
-      {tabs.map(tab => (
-        <button
-          key={tab.id}
-          onClick={() => setActiveTab(tab.id)}
-          style={{
-            padding: '0.625rem 1.25rem',
-            background: activeTab === tab.id ? 'white' : 'transparent',
-            color: activeTab === tab.id ? '#0f172a' : '#64748b',
-            border: 'none',
-            borderRadius: '0.375rem',
-            cursor: 'pointer',
-            fontSize: '0.8rem',
-            fontWeight: activeTab === tab.id ? '700' : '500',
-            fontFamily: "'JetBrains Mono', monospace",
-            whiteSpace: 'nowrap',
-            boxShadow: activeTab === tab.id ? '0 1px 3px rgba(0,0,0,0.1)' : 'none',
-            transition: 'all 0.15s ease',
-            display: 'flex', alignItems: 'center', gap: '0.5rem'
-          }}
-        >
-          {tab.label}
-          {tab.badge != null && (
-            <span style={{
-              background: tab.badgeColor || '#e2e8f0', color: tab.badgeTextColor || '#475569',
-              fontSize: '0.65rem', fontWeight: '700', padding: '0.1rem 0.4rem',
-              borderRadius: '9999px', minWidth: '1.2rem', textAlign: 'center'
-            }}>
-              {tab.badge}
-            </span>
-          )}
-        </button>
-      ))}
-    </div>
-  )
-}
-
-// =============================================================================
-// RESULTS COMPONENT — Tab-based navigation
+// RESULTS COMPONENT â€” First Principles: Three questions + Data table
 // =============================================================================
 
 function Results({ result, outputLevel, onReset, industry }) {
-  const [activeTab, setActiveTab] = React.useState('summary')
+  const [showPlantMap, setShowPlantMap] = React.useState(false)
 
-  // Engineering analysis state (for Assurance tier)
-  const [engineeringAnalysis, setEngineeringAnalysis] = React.useState(null)
-  const [analysisLoading, setAnalysisLoading] = React.useState(false)
-  const [analysisError, setAnalysisError] = React.useState(null)
+  // Build unified asset list: matched + blind spots + orphans
+  const unifiedAssets = React.useMemo(() => {
+    const list = []
+    for (const a of (result.assets || [])) list.push({ ...a, _status: 'matched' })
+    for (const a of (result.blindSpots || [])) list.push({ ...a, _status: 'blind_spot', classification: a.classification || { tier: a.security_tier || 3 } })
+    for (const a of (result.orphans || [])) list.push({ ...a, _status: 'orphan', classification: a.classification || { tier: a.security_tier || 3 } })
+    return list
+  }, [result])
 
-  // Auto-generated engagement report
-  const [engagementReport, setEngagementReport] = React.useState(null)
+  // Three questions computed from unified list
+  const q3 = React.useMemo(() => {
+    const matched = unifiedAssets.filter(a => a._status === 'matched').length
+    const blindSpots = unifiedAssets.filter(a => a._status === 'blind_spot').length
+    const orphans = unifiedAssets.filter(a => a._status === 'orphan').length
+    const coverage = result.summary?.coverage || 0
+    const confidence = coverage >= 80 ? 'HIGH' : coverage >= 60 ? 'MODERATE' : coverage >= 30 ? 'LOW' : 'INSUFFICIENT'
+    const needsMgmt = unifiedAssets.filter(a => { const t = a.classification?.tier || a.security_tier; return t === 1 || t === 2 })
+    const managed = needsMgmt.filter(a => a.is_managed === true || a.is_managed === 'true')
+    return { total: unifiedAssets.length, matched, blindSpots, orphans, coverage, confidence, needsMgmt: needsMgmt.length, managed: managed.length, unmanaged: needsMgmt.length - managed.length, mgmtRate: needsMgmt.length > 0 ? Math.round((managed.length / needsMgmt.length) * 100) : 0 }
+  }, [unifiedAssets, result])
 
-  // Handle engineering analysis
-  const handleAnalyze = async () => {
-    if (!result || analysisLoading) return
-    setAnalysisLoading(true)
-    setAnalysisError(null)
-    try {
-      const analysisResult = await analyzeEngineering(result, industry)
-      if (analysisResult.success) {
-        setEngineeringAnalysis(analysisResult)
-      } else {
-        const fallback = generateFallbackAnalysis(result, industry, null)
-        setEngineeringAnalysis(fallback)
-      }
-    } catch (error) {
-      setAnalysisError(error.message)
-      const fallback = generateFallbackAnalysis(result, industry, null)
-      setEngineeringAnalysis(fallback)
-    } finally {
-      setAnalysisLoading(false)
-    }
-  }
-
-  // Auto-analyze + auto-generate report on mount
-  React.useEffect(() => {
-    if (!result) return
-
-    // Auto-analyze for Assurance tier
-    if (outputLevel === 'assurance' && !engineeringAnalysis && !analysisLoading) {
-      handleAnalyze()
-    }
-
-    // Auto-generate engagement report for Context + Assurance
-    if ((outputLevel === 'context' || outputLevel === 'assurance') && !engagementReport) {
-      try {
-        const gen = new ReportGenerator({ industry, plantName: 'All Sites' })
-        const gaps = result?.contextAnalysis?.gapAnalysis?.allGaps || []
-        const risks = result?.contextAnalysis?.riskAnalysis || {}
-        const rpt = gen.generateReport(result, { gaps, risks })
-        setEngagementReport(rpt)
-      } catch (err) {
-        console.error('[REPORT] Auto-generation failed:', err)
-      }
-    }
-  }, [result, outputLevel])
-
-  // CSV download helper
+  // CSV/file download helpers
   const downloadCSV = (data, filename) => {
     if (!data || data.length === 0) return
     const headers = Object.keys(data[0]).filter(k => !k.startsWith('_') && k !== 'discovered' && k !== 'classification' && k !== 'validation' && k !== 'provenance')
-    const rows = data.map(item =>
-      headers.map(h => {
-        let val = item[h]
-        if (typeof val === 'object') val = JSON.stringify(val)
-        return `"${String(val || '').replace(/"/g, '""')}"`
-      }).join(',')
-    )
+    const rows = data.map(item => headers.map(h => { let v = item[h]; if (typeof v === 'object') v = JSON.stringify(v); return `"${String(v || '').replace(/"/g, '""')}"` }).join(','))
     const csv = [headers.join(','), ...rows].join('\n')
-    const blob = new Blob([csv], { type: 'text/csv' })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.href = url; a.download = filename; a.click()
-    URL.revokeObjectURL(url)
+    const blob = new Blob([csv], { type: 'text/csv' }); const url = URL.createObjectURL(blob)
+    const a = document.createElement('a'); a.href = url; a.download = filename; a.click(); URL.revokeObjectURL(url)
   }
-
   const downloadFile = (content, filename, type = 'text/csv') => {
-    const blob = new Blob([content], { type })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.href = url; a.download = filename; a.click()
-    URL.revokeObjectURL(url)
+    const blob = new Blob([content], { type }); const url = URL.createObjectURL(blob)
+    const a = document.createElement('a'); a.href = url; a.download = filename; a.click(); URL.revokeObjectURL(url)
   }
-
-  // Build tab list based on output level
-  const isAdvanced = outputLevel === 'context' || outputLevel === 'assurance'
-  const isAssurance = outputLevel === 'assurance'
-  const criticalCount = engagementReport?.executiveSummary?.gapSummary?.critical || 0
-
-  const tabs = [
-    { id: 'summary', label: 'SUMMARY' },
-    ...(isAssurance ? [{ id: 'plantmap', label: 'PLANT MAP' }] : []),
-    ...(isAdvanced ? [{
-      id: 'compliance', label: 'COMPLIANCE',
-      badge: criticalCount > 0 ? criticalCount : null,
-      badgeColor: '#fef2f2', badgeTextColor: '#dc2626'
-    }] : []),
-    { id: 'exports', label: 'EXPORTS' }
-  ]
-
-  return (
-    <div>
-      {/* === TAB NAVIGATION === */}
-      <ResultTabs activeTab={activeTab} setActiveTab={setActiveTab} tabs={tabs} />
-
-      {/* ================================================================ */}
-      {/* TAB: SUMMARY                                                     */}
-      {/* ================================================================ */}
-      {activeTab === 'summary' && (
-        <div>
-          {/* ============================================================ */}
-          {/* THE THREE QUESTIONS — this is the whole point of the tool     */}
-          {/* ============================================================ */}
-          {engagementReport?.executiveSummary?.threeQuestions && (
-            <div style={{
-              marginBottom: '2rem', padding: '1.5rem',
-              background: '#f8fafc', borderRadius: '0.75rem',
-              border: '2px solid #e2e8f0'
-            }}>
-              {(() => {
-                const q = engagementReport.executiveSummary.threeQuestions
-                const mm = engagementReport.executiveSummary.managementMetrics
-                return (
-                  <>
-                    {/* Q1 */}
-                    <div style={{ marginBottom: '1.25rem' }}>
-                      <div style={{ fontSize: '0.7rem', color: '#94a3b8', fontFamily: 'monospace', fontWeight: '600', marginBottom: '0.375rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                        Q1: How many assets do we have?
-                      </div>
-                      <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.75rem', flexWrap: 'wrap' }}>
-                        <span style={{ fontSize: '2rem', fontWeight: '800', color: '#0f172a', fontFamily: 'monospace' }}>
-                          {q.q1_assetCount.total.toLocaleString()}
-                        </span>
-                        <span style={{ fontSize: '0.85rem', color: '#64748b' }}>
-                          canonical assets ({q.q1_assetCount.fromEngineering.toLocaleString()} engineered + {q.q1_assetCount.orphansFound} discovered-only)
-                        </span>
-                      </div>
-                      {q.q1_assetCount.blindSpots > 0 && (
-                        <div style={{ fontSize: '0.8rem', color: '#f59e0b', marginTop: '0.25rem' }}>
-                          {q.q1_assetCount.blindSpots} documented assets NOT found on network
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Q2 */}
-                    <div style={{ marginBottom: '1.25rem', paddingTop: '1rem', borderTop: '1px solid #e2e8f0' }}>
-                      <div style={{ fontSize: '0.7rem', color: '#94a3b8', fontFamily: 'monospace', fontWeight: '600', marginBottom: '0.375rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                        Q2: How do we know?
-                      </div>
-                      <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.75rem', flexWrap: 'wrap' }}>
-                        <span style={{ fontSize: '2rem', fontWeight: '800', fontFamily: 'monospace',
-                          color: q.q2_howWeKnow.coveragePercent >= 80 ? '#22c55e' : q.q2_howWeKnow.coveragePercent >= 60 ? '#f59e0b' : '#ef4444' }}>
-                          {q.q2_howWeKnow.coveragePercent}%
-                        </span>
-                        <span style={{ fontSize: '0.85rem', color: '#64748b' }}>
-                          discovery coverage — {q.q2_howWeKnow.matchedCount.toLocaleString()} assets verified on network
-                        </span>
-                        <span style={{
-                          padding: '0.2rem 0.5rem', borderRadius: '0.25rem', fontSize: '0.7rem', fontWeight: '700', fontFamily: 'monospace',
-                          background: q.q2_howWeKnow.confidence === 'HIGH CONFIDENCE' ? '#dcfce7' : q.q2_howWeKnow.confidence === 'MODERATE CONFIDENCE' ? '#fef9c3' : '#fef2f2',
-                          color: q.q2_howWeKnow.confidence === 'HIGH CONFIDENCE' ? '#166534' : q.q2_howWeKnow.confidence === 'MODERATE CONFIDENCE' ? '#854d0e' : '#991b1b'
-                        }}>
-                          {q.q2_howWeKnow.confidence}
-                        </span>
-                      </div>
-                      <div style={{ fontSize: '0.7rem', color: '#94a3b8', marginTop: '0.25rem' }}>
-                        {q.q2_howWeKnow.strategies}
-                      </div>
-                    </div>
-
-                    {/* Q3 */}
-                    <div style={{ paddingTop: '1rem', borderTop: '1px solid #e2e8f0' }}>
-                      <div style={{ fontSize: '0.7rem', color: '#94a3b8', fontFamily: 'monospace', fontWeight: '600', marginBottom: '0.375rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                        Q3: Are the devices that need cyber management actually managed?
-                      </div>
-                      <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.75rem', flexWrap: 'wrap' }}>
-                        <span style={{ fontSize: '2rem', fontWeight: '800', fontFamily: 'monospace',
-                          color: mm.managementRate >= 80 ? '#22c55e' : mm.managementRate >= 50 ? '#f59e0b' : '#ef4444' }}>
-                          {mm.actuallyManaged} / {mm.needsManagement}
-                        </span>
-                        <span style={{ fontSize: '0.85rem', color: '#64748b' }}>
-                          managed ({mm.managementRate}%)
-                        </span>
-                        {mm.unmanaged > 0 && (
-                          <span style={{
-                            padding: '0.2rem 0.6rem', borderRadius: '0.25rem', fontSize: '0.75rem', fontWeight: '700',
-                            background: '#fef2f2', color: '#dc2626', fontFamily: 'monospace'
-                          }}>
-                            {mm.unmanaged} UNMANAGED
-                          </span>
-                        )}
-                      </div>
-                      {mm.unmanaged > 0 && (
-                        <div style={{ fontSize: '0.8rem', color: '#ef4444', marginTop: '0.25rem' }}>
-                          {mm.unmanaged} Tier 1/2 devices are on the network without confirmed security management
-                        </div>
-                      )}
-                      {mm.needsManagement === 0 && (
-                        <div style={{ fontSize: '0.8rem', color: '#f59e0b', marginTop: '0.25rem' }}>
-                          No assets classified as Tier 1/2. Review if classification data is available in source files.
-                        </div>
-                      )}
-                    </div>
-                  </>
-                )
-              })()}
-            </div>
-          )}
-
-          {/* Summary Cards (secondary) */}
-          <div style={{
-            display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-            gap: '1rem', marginBottom: '2rem'
-          }}>
-            <SummaryCard label="Total Assets" value={result.summary.total} color="#10b981" />
-            <SummaryCard label="Matched" value={result.summary.matched} sublabel={`${result.summary.coverage}% coverage`} color="#3b82f6" />
-            <SummaryCard label="Blind Spots" value={result.summary.blindSpots} sublabel="Not discovered" color="#f59e0b" />
-            <SummaryCard label="Orphans" value={result.summary.orphans} sublabel="Not in baseline" color="#8b5cf6" />
-          </div>
-
-          {/* Tier Distribution */}
-          {isAdvanced && (
-            <div style={{ padding: '1.5rem', background: '#f8fafc', borderRadius: '0.75rem', marginBottom: '2rem' }}>
-              <h3 style={{ margin: '0 0 1rem 0', fontSize: '1rem', fontWeight: '600' }}>
-                Security Tier Distribution
-              </h3>
-              <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap' }}>
-                <TierBadge tier={1} count={result.summary.tier1} label="Critical" color="#ef4444" />
-                <TierBadge tier={2} count={result.summary.tier2} label="Networkable" color="#f59e0b" />
-                <TierBadge tier={3} count={result.summary.tier3} label="Passive" color="#6366f1" />
-              </div>
-              <div style={{ marginTop: '1rem', fontSize: '0.875rem', color: '#64748b' }}>
-                <strong>{result.summary.tier1 + result.summary.tier2}</strong> assets require security management
-              </div>
-            </div>
-          )}
-
-          {/* Compliance posture banner (auto-generated) */}
-          {engagementReport && (
-            <div style={{
-              padding: '1.25rem', marginBottom: '1.5rem',
-              background: `${engagementReport.executiveSummary.postureColor}08`,
-              border: `2px solid ${engagementReport.executiveSummary.postureColor}40`,
-              borderRadius: '0.75rem',
-              display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem'
-            }}>
-              <div>
-                <div style={{ fontSize: '0.7rem', color: '#64748b', fontFamily: 'monospace', marginBottom: '0.25rem' }}>
-                  OVERALL POSTURE
-                </div>
-                <div style={{ fontSize: '1.25rem', fontWeight: '700', color: engagementReport.executiveSummary.postureColor, fontFamily: 'monospace' }}>
-                  {engagementReport.executiveSummary.overallPosture}
-                </div>
-              </div>
-              <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
-                <div style={{ textAlign: 'center' }}>
-                  <div style={{ fontSize: '1.75rem', fontWeight: '700', fontFamily: 'monospace',
-                    color: engagementReport.executiveSummary.complianceScore > 70 ? '#22c55e' : engagementReport.executiveSummary.complianceScore > 40 ? '#f59e0b' : '#ef4444' }}>
-                    {engagementReport.executiveSummary.complianceScore}%
-                  </div>
-                  <div style={{ fontSize: '0.6rem', color: '#64748b', fontFamily: 'monospace' }}>COMPLIANCE</div>
-                </div>
-                <div style={{ textAlign: 'center' }}>
-                  <div style={{ fontSize: '1.75rem', fontWeight: '700', fontFamily: 'monospace', color: '#0f172a' }}>
-                    {engagementReport.gapMatrix.totalFindings}
-                  </div>
-                  <div style={{ fontSize: '0.6rem', color: '#64748b', fontFamily: 'monospace' }}>FINDINGS</div>
-                </div>
-                <button onClick={() => setActiveTab('compliance')} style={{
-                  padding: '0.5rem 1rem', background: '#3b82f6', color: 'white', border: 'none',
-                  borderRadius: '0.375rem', cursor: 'pointer', fontSize: '0.75rem', fontWeight: '600', fontFamily: 'monospace'
-                }}>
-                  VIEW DETAILS
-                </button>
-              </div>
-            </div>
-          )}
-
-          {/* Key findings preview */}
-          {engagementReport?.executiveSummary?.keyFindings?.length > 0 && (
-            <div style={{ marginBottom: '1.5rem' }}>
-              <h3 style={{ fontSize: '1rem', fontWeight: '600', marginBottom: '0.75rem', color: '#0f172a' }}>
-                Key Findings
-              </h3>
-              {engagementReport.executiveSummary.keyFindings.slice(0, 3).map((f, i) => (
-                <div key={i} style={{
-                  padding: '0.75rem 1rem', marginBottom: '0.5rem',
-                  background: '#f8fafc', borderRadius: '0.5rem',
-                  borderLeft: `4px solid ${f.severity === 'critical' ? '#ef4444' : f.severity === 'high' ? '#f97316' : '#3b82f6'}`
-                }}>
-                  <div style={{ fontSize: '0.85rem', color: '#0f172a', marginBottom: '0.25rem' }}>{f.finding}</div>
-                  <div style={{ fontSize: '0.75rem', color: '#64748b' }}>{f.implication}</div>
-                  <div style={{ fontSize: '0.65rem', color: '#94a3b8', fontFamily: 'monospace', marginTop: '0.25rem' }}>{f.reference}</div>
-                </div>
-              ))}
-            </div>
-          )}
-
-          {/* Security Posture + Operations Context */}
-          {isAdvanced && (
-            <>
-              <SecurityPosture result={result} gapAnalysis={result.contextAnalysis?.gapAnalysis} />
-              <OperationsContext result={result} />
-            </>
-          )}
-
-          {/* Quick action buttons */}
-          <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', marginTop: '1.5rem' }}>
-            {isAssurance && (
-              <button onClick={() => setActiveTab('plantmap')} style={{
-                padding: '0.75rem 1.5rem', background: '#0f172a', color: 'white',
-                border: 'none', borderRadius: '0.5rem', fontWeight: '600', cursor: 'pointer'
-              }}>
-                View Plant Map
-              </button>
-            )}
-            {isAdvanced && (
-              <button onClick={() => setActiveTab('compliance')} style={{
-                padding: '0.75rem 1.5rem', background: '#3b82f6', color: 'white',
-                border: 'none', borderRadius: '0.5rem', fontWeight: '600', cursor: 'pointer'
-              }}>
-                View Compliance Report
-              </button>
-            )}
-            <button onClick={() => setActiveTab('exports')} style={{
-              padding: '0.75rem 1.5rem', background: '#10b981', color: 'white',
-              border: 'none', borderRadius: '0.5rem', fontWeight: '600', cursor: 'pointer'
-            }}>
-              Export All Data
-            </button>
-            <button onClick={onReset} style={{
-              padding: '0.75rem 1.5rem', background: 'white', color: '#64748b',
-              border: '2px solid #e2e8f0', borderRadius: '0.5rem', fontWeight: '600', cursor: 'pointer'
-            }}>
-              Start New Assessment
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* ================================================================ */}
-      {/* TAB: PLANT MAP (Assurance only)                                  */}
-      {/* ================================================================ */}
-      {activeTab === 'plantmap' && isAssurance && (
-        <div>
-          {/* World Model */}
-          <WorldModel result={result} industry={industry} />
-
-          {/* Plant Map - THE HERO */}
-          <PlantMap
-            result={result}
-            industry={industry}
-            gapMatrix={engineeringAnalysis?.gapMatrix}
-          />
-
-          {/* Engineering Intelligence */}
-          <EngineeringIntelligence
-            analysis={engineeringAnalysis?.analysis}
-            loading={analysisLoading}
-            error={analysisError}
-            onAnalyze={handleAnalyze}
-            onRetry={handleAnalyze}
-            timestamp={engineeringAnalysis?.timestamp}
-            model={engineeringAnalysis?.model}
-            isFallback={engineeringAnalysis?.isFallback}
-            gapMatrix={engineeringAnalysis?.gapMatrix}
-            industry={industry}
-            summary={engineeringAnalysis?.summary}
-          />
-        </div>
-      )}
-
-      {/* ================================================================ */}
-      {/* TAB: COMPLIANCE (Context + Assurance)                            */}
-      {/* ================================================================ */}
-      {activeTab === 'compliance' && isAdvanced && engagementReport && (
-        <EngagementReportSection result={result} industry={industry} preGeneratedReport={engagementReport} />
-      )}
-
-      {/* ================================================================ */}
-      {/* TAB: EXPORTS (all tiers)                                         */}
-      {/* ================================================================ */}
-      {activeTab === 'exports' && (
-        <ExportCenter
-          result={result}
-          industry={industry}
-          engagementReport={engagementReport}
-          downloadCSV={downloadCSV}
-          downloadFile={downloadFile}
-        />
-      )}
-    </div>
-  )
-}
-
-// =============================================================================
-// ENGAGEMENT REPORT SECTION (Compliance + Audit)
-// =============================================================================
-
-function EngagementReportSection({ result, industry, preGeneratedReport }) {
-  const report = preGeneratedReport
-
-  if (!report) {
-    return (
-      <div style={{ padding: '2rem', textAlign: 'center', color: '#64748b' }}>
-        Compliance report not available. Run Context or Assurance tier to generate.
-      </div>
-    )
-  }
-
-  return (
-    <div style={{
-      padding: '1.5rem',
-      background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
-      borderRadius: '0.75rem',
-      border: '2px solid #334155'
-    }}>
-      <div style={{ marginBottom: '1rem' }}>
-        <h3 style={{ margin: 0, color: 'white', fontSize: '1.1rem', fontFamily: "'JetBrains Mono', monospace" }}>
-          <span style={{ color: '#334155' }}>[</span> COMPLIANCE REPORT <span style={{ color: '#334155' }}>]</span>
-        </h3>
-        <p style={{ margin: '0.25rem 0 0', color: '#64748b', fontSize: '0.8rem', fontFamily: 'monospace' }}>
-          IEC 62443 + NIST CSF compliance mapping — auto-generated from gap analysis
-        </p>
-      </div>
-
-      {/* Posture banner */}
-      <div style={{
-        padding: '1rem', marginBottom: '1rem',
-        background: `${report.executiveSummary.postureColor}15`,
-        border: `2px solid ${report.executiveSummary.postureColor}`,
-        borderRadius: '0.5rem',
-        display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.75rem'
-      }}>
-        <div>
-          <div style={{ fontSize: '0.7rem', color: '#64748b', fontFamily: 'monospace', marginBottom: '0.25rem' }}>OVERALL POSTURE</div>
-          <div style={{ fontSize: '1.2rem', fontWeight: '700', fontFamily: 'monospace', color: report.executiveSummary.postureColor }}>
-            {report.executiveSummary.overallPosture}
-          </div>
-        </div>
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: '0.7rem', color: '#64748b', fontFamily: 'monospace' }}>COMPLIANCE SCORE</div>
-          <div style={{ fontSize: '2rem', fontWeight: '700', fontFamily: 'monospace',
-            color: report.executiveSummary.complianceScore > 70 ? '#22c55e' : report.executiveSummary.complianceScore > 40 ? '#f59e0b' : '#ef4444' }}>
-            {report.executiveSummary.complianceScore}%
-          </div>
-        </div>
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: '0.7rem', color: '#64748b', fontFamily: 'monospace' }}>FINDINGS</div>
-          <div style={{ fontSize: '1.5rem', fontWeight: '700', fontFamily: 'monospace', color: 'white' }}>{report.gapMatrix.totalFindings}</div>
-        </div>
-        <div>
-          <div style={{ fontSize: '0.7rem', color: '#64748b', fontFamily: 'monospace' }}>CONTROLS IMPACTED</div>
-          <div style={{ fontSize: '0.8rem', color: '#94a3b8', fontFamily: 'monospace' }}>IEC 62443: {report.executiveSummary.controlsImpacted.iec62443}</div>
-          <div style={{ fontSize: '0.8rem', color: '#94a3b8', fontFamily: 'monospace' }}>NIST CSF: {report.executiveSummary.controlsImpacted.nistCsf}</div>
-        </div>
-      </div>
-
-      {/* Gap severity breakdown */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '0.5rem', marginBottom: '1rem' }}>
-        {[
-          { label: 'Critical', count: report.executiveSummary.gapSummary.critical, color: '#ef4444' },
-          { label: 'High', count: report.executiveSummary.gapSummary.high, color: '#f97316' },
-          { label: 'Medium', count: report.executiveSummary.gapSummary.medium, color: '#f59e0b' },
-          { label: 'Low', count: report.executiveSummary.gapSummary.low, color: '#22c55e' },
-          { label: 'Info', count: report.executiveSummary.gapSummary.info, color: '#64748b' }
-        ].map(({ label, count, color }) => (
-          <div key={label} style={{ padding: '0.5rem', background: `${color}10`, border: `1px solid ${color}40`, borderRadius: '0.375rem', textAlign: 'center' }}>
-            <div style={{ fontSize: '1.25rem', fontWeight: '700', color, fontFamily: 'monospace' }}>{count || 0}</div>
-            <div style={{ fontSize: '0.6rem', color: '#64748b', textTransform: 'uppercase', fontFamily: 'monospace' }}>{label}</div>
-          </div>
-        ))}
-      </div>
-
-      {/* Key findings */}
-      {report.executiveSummary.keyFindings.length > 0 && (
-        <div style={{ marginBottom: '1rem' }}>
-          <div style={{ fontSize: '0.75rem', color: '#64748b', fontFamily: 'monospace', marginBottom: '0.5rem', fontWeight: '600' }}>KEY FINDINGS</div>
-          {report.executiveSummary.keyFindings.map((f, i) => (
-            <div key={i} style={{
-              padding: '0.75rem', background: 'rgba(255,255,255,0.03)', borderRadius: '0.375rem',
-              marginBottom: '0.375rem', borderLeft: `3px solid ${f.severity === 'critical' ? '#ef4444' : f.severity === 'high' ? '#f97316' : '#3b82f6'}`
-            }}>
-              <div style={{ fontSize: '0.8rem', color: '#e2e8f0', marginBottom: '0.25rem' }}>{f.finding}</div>
-              <div style={{ fontSize: '0.7rem', color: '#64748b' }}>{f.implication}</div>
-              <div style={{ fontSize: '0.6rem', color: '#475569', fontFamily: 'monospace', marginTop: '0.25rem' }}>{f.reference}</div>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* Recommendations */}
-      {report.recommendations.length > 0 && (
-        <div>
-          <div style={{ fontSize: '0.75rem', color: '#64748b', fontFamily: 'monospace', marginBottom: '0.5rem', fontWeight: '600' }}>PRIORITIZED RECOMMENDATIONS</div>
-          {report.recommendations.slice(0, 4).map((rec, i) => (
-            <div key={i} style={{
-              padding: '0.75rem', background: 'rgba(255,255,255,0.03)', borderRadius: '0.375rem',
-              marginBottom: '0.375rem', display: 'flex', gap: '0.75rem', alignItems: 'flex-start'
-            }}>
-              <div style={{
-                minWidth: '28px', height: '28px', borderRadius: '50%',
-                background: i === 0 ? '#ef4444' : i === 1 ? '#f59e0b' : '#3b82f6',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                color: 'white', fontSize: '0.75rem', fontWeight: '700', fontFamily: 'monospace'
-              }}>P{rec.priority}</div>
-              <div>
-                <div style={{ fontSize: '0.8rem', color: '#e2e8f0', fontWeight: '600' }}>{rec.title}</div>
-                <div style={{ fontSize: '0.7rem', color: '#64748b', marginTop: '0.125rem' }}>{rec.category} — {rec.timeline} — {rec.effort} effort</div>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-  )
-}
-
-// =============================================================================
-// EXPORT CENTER — Unified download hub
-// =============================================================================
-
-function ExportCenter({ result, industry, engagementReport, downloadCSV, downloadFile }) {
-  const today = new Date().toISOString().split('T')[0]
-  const gen = React.useMemo(() => new ReportGenerator({ industry }), [industry])
-
-  const exports = [
-    {
-      category: 'Asset Data',
-      items: [
-        { label: 'Canonical Assets', desc: `${result.assets?.length || 0} matched and classified assets`, ext: '.csv', color: '#10b981',
-          action: () => downloadCSV(result.assets, `canonized_assets_${today}.csv`) },
-        ...(result.blindSpots?.length > 0 ? [{
-          label: 'Blind Spots', desc: `${result.blindSpots.length} assets not discovered on network`, ext: '.csv', color: '#f59e0b',
-          action: () => downloadCSV(result.blindSpots, `blind_spots_${today}.csv`)
-        }] : []),
-        ...(result.orphans?.length > 0 ? [{
-          label: 'Orphan Devices', desc: `${result.orphans.length} undocumented network devices`, ext: '.csv', color: '#8b5cf6',
-          action: () => downloadCSV(result.orphans, `orphans_${today}.csv`)
-        }] : [])
-      ]
-    },
-    ...(engagementReport ? [{
-      category: 'Engagement Deliverables',
-      items: [
-        { label: 'Executive Summary', desc: 'CISO-ready findings with compliance references', ext: '.md', color: '#3b82f6',
-          action: () => downloadFile(gen.toExecutiveMarkdown(engagementReport), `executive_summary_${today}.md`, 'text/markdown') },
-        { label: 'Gap Matrix', desc: `${engagementReport.gapMatrix.totalFindings} findings mapped to IEC 62443 + NIST CSF`, ext: '.csv', color: '#22c55e',
-          action: () => downloadFile(gen.toGapMatrixCSV(engagementReport), `gap_matrix_${today}.csv`) },
-        { label: 'Risk Heat Map', desc: 'Unit-level risk scoring and severity breakdown', ext: '.csv', color: '#f59e0b',
-          action: () => downloadFile(gen.toRiskHeatMapCSV(engagementReport), `risk_heat_map_${today}.csv`) },
-        { label: 'Full Report', desc: 'Complete structured report with all analysis data', ext: '.json', color: '#a855f7',
-          action: () => downloadFile(JSON.stringify(engagementReport, null, 2), `full_report_${today}.json`, 'application/json') }
-      ]
-    }] : [])
-  ]
-
-  const handleDownloadAll = () => {
-    // Download each file with a small delay to avoid browser blocking
-    const allActions = exports.flatMap(cat => cat.items.map(item => item.action))
-    allActions.forEach((action, i) => {
-      setTimeout(action, i * 300)
-    })
+  const handleExportAll = () => {
+    const today = new Date().toISOString().split('T')[0]
+    downloadCSV(unifiedAssets, `all_assets_${today}.csv`)
+    try {
+      const gen = new ReportGenerator({ industry })
+      const gaps = result?.contextAnalysis?.gapAnalysis?.allGaps || []
+      const risks = result?.contextAnalysis?.riskAnalysis || {}
+      const rpt = gen.generateReport(result, { gaps, risks })
+      setTimeout(() => downloadFile(gen.toExecutiveMarkdown(rpt), `executive_summary_${today}.md`, 'text/markdown'), 300)
+      setTimeout(() => downloadFile(gen.toGapMatrixCSV(rpt), `gap_matrix_${today}.csv`), 600)
+      setTimeout(() => downloadFile(JSON.stringify(rpt, null, 2), `full_report_${today}.json`, 'application/json'), 900)
+    } catch (e) { console.error('[EXPORT]', e) }
   }
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-        <div>
-          <h3 style={{ margin: 0, fontSize: '1.1rem', fontWeight: '600', color: '#0f172a' }}>
-            Export Center
-          </h3>
-          <p style={{ margin: '0.25rem 0 0', color: '#64748b', fontSize: '0.8rem' }}>
-            Download assessment deliverables for your engagement folder
-          </p>
+      {/* THREE QUESTIONS */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1rem', marginBottom: '1.5rem' }}>
+        <div style={{ padding: '1.25rem', background: '#f8fafc', borderRadius: '0.5rem', border: '1px solid #e2e8f0' }}>
+          <div style={{ fontSize: '0.65rem', color: '#94a3b8', fontFamily: 'monospace', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>How many assets do we have?</div>
+          <div style={{ fontSize: '2.25rem', fontWeight: '800', color: '#0f172a', fontFamily: 'monospace', lineHeight: 1 }}>{q3.total.toLocaleString()}</div>
+          <div style={{ fontSize: '0.8rem', color: '#64748b', marginTop: '0.375rem' }}>{q3.matched.toLocaleString()} matched Â· {q3.blindSpots.toLocaleString()} blind spots Â· {q3.orphans.toLocaleString()} orphans</div>
         </div>
-        <button onClick={handleDownloadAll} style={{
-          padding: '0.75rem 1.5rem', background: '#0f172a', color: 'white',
-          border: 'none', borderRadius: '0.5rem', fontWeight: '600', cursor: 'pointer',
-          fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.5rem'
-        }}>
-          Download All Files
-        </button>
-      </div>
-
-      {exports.map(category => (
-        <div key={category.category} style={{ marginBottom: '1.5rem' }}>
-          <div style={{
-            fontSize: '0.7rem', color: '#94a3b8', fontFamily: 'monospace',
-            fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.05em',
-            marginBottom: '0.5rem', paddingBottom: '0.25rem', borderBottom: '1px solid #e2e8f0'
-          }}>
-            {category.category}
+        <div style={{ padding: '1.25rem', background: '#f8fafc', borderRadius: '0.5rem', border: '1px solid #e2e8f0' }}>
+          <div style={{ fontSize: '0.65rem', color: '#94a3b8', fontFamily: 'monospace', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>How do we know?</div>
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.5rem' }}>
+            <span style={{ fontSize: '2.25rem', fontWeight: '800', fontFamily: 'monospace', lineHeight: 1, color: q3.coverage >= 80 ? '#16a34a' : q3.coverage >= 60 ? '#d97706' : '#dc2626' }}>{q3.coverage}%</span>
+            <span style={{ padding: '0.15rem 0.4rem', borderRadius: '0.2rem', fontSize: '0.65rem', fontWeight: '700', fontFamily: 'monospace', background: q3.confidence === 'HIGH' ? '#dcfce7' : q3.confidence === 'MODERATE' ? '#fef9c3' : '#fef2f2', color: q3.confidence === 'HIGH' ? '#166534' : q3.confidence === 'MODERATE' ? '#854d0e' : '#991b1b' }}>{q3.confidence}</span>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '0.75rem' }}>
-            {category.items.map(item => (
-              <button key={item.label} onClick={item.action} style={{
-                padding: '1rem', background: 'white', border: `2px solid #e2e8f0`,
-                borderRadius: '0.5rem', cursor: 'pointer', textAlign: 'left',
-                transition: 'all 0.15s ease', display: 'flex', gap: '0.75rem', alignItems: 'flex-start'
-              }}
-              onMouseEnter={e => { e.currentTarget.style.borderColor = item.color; e.currentTarget.style.background = `${item.color}08` }}
-              onMouseLeave={e => { e.currentTarget.style.borderColor = '#e2e8f0'; e.currentTarget.style.background = 'white' }}
-              >
-                <div style={{
-                  minWidth: '36px', height: '36px', borderRadius: '0.375rem',
-                  background: `${item.color}15`, display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  color: item.color, fontSize: '0.7rem', fontWeight: '700', fontFamily: 'monospace'
-                }}>
-                  {item.ext}
-                </div>
-                <div>
-                  <div style={{ fontWeight: '600', color: '#0f172a', fontSize: '0.85rem' }}>{item.label}</div>
-                  <div style={{ fontSize: '0.7rem', color: '#64748b', marginTop: '0.125rem' }}>{item.desc}</div>
-                </div>
-              </button>
-            ))}
-          </div>
+          <div style={{ fontSize: '0.8rem', color: '#64748b', marginTop: '0.375rem' }}>{q3.matched.toLocaleString()} of {(result.summary?.total || q3.total).toLocaleString()} verified on network</div>
         </div>
-      ))}
+        <div style={{ padding: '1.25rem', background: '#f8fafc', borderRadius: '0.5rem', border: '1px solid #e2e8f0' }}>
+          <div style={{ fontSize: '0.65rem', color: '#94a3b8', fontFamily: 'monospace', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Are critical devices managed?</div>
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.5rem' }}>
+            <span style={{ fontSize: '2.25rem', fontWeight: '800', fontFamily: 'monospace', lineHeight: 1, color: q3.mgmtRate >= 80 ? '#16a34a' : q3.mgmtRate >= 50 ? '#d97706' : '#dc2626' }}>{q3.managed}/{q3.needsMgmt}</span>
+            {q3.unmanaged > 0 && <span style={{ padding: '0.15rem 0.5rem', borderRadius: '0.2rem', fontSize: '0.7rem', fontWeight: '700', background: '#fef2f2', color: '#dc2626', fontFamily: 'monospace' }}>{q3.unmanaged} UNMANAGED</span>}
+          </div>
+          <div style={{ fontSize: '0.8rem', color: '#64748b', marginTop: '0.375rem' }}>{q3.needsMgmt > 0 ? `${q3.mgmtRate}% of Tier 1/2 devices managed` : 'No Tier 1/2 classification data'}</div>
+        </div>
+      </div>
 
-      {/* Methodology note */}
-      <div style={{
-        padding: '1rem', background: '#f8fafc', borderRadius: '0.5rem',
-        border: '1px solid #e2e8f0', fontSize: '0.75rem', color: '#64748b', marginTop: '1rem'
-      }}>
-        <strong>Methodology:</strong> AIGNE Context Engineering Framework (arXiv:2512.05470) — 6-strategy asset matching,
-        context-aware gap detection, IEC 62443 / NIST CSF compliance mapping.
-        All data processed client-side. No data transmitted to external servers.
+      {/* ACTION BAR */}
+      <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '1.5rem', alignItems: 'center' }}>
+        {outputLevel === 'assurance' && (
+          <button onClick={() => setShowPlantMap(!showPlantMap)} style={{ padding: '0.5rem 1rem', background: showPlantMap ? '#0f172a' : 'white', color: showPlantMap ? 'white' : '#0f172a', border: '1.5px solid #0f172a', borderRadius: '0.375rem', fontWeight: '600', cursor: 'pointer', fontSize: '0.8rem' }}>
+            {showPlantMap ? 'Hide Plant Map' : 'Show Plant Map'}
+          </button>
+        )}
+        <button onClick={handleExportAll} style={{ padding: '0.5rem 1rem', background: '#10b981', color: 'white', border: 'none', borderRadius: '0.375rem', fontWeight: '600', cursor: 'pointer', fontSize: '0.8rem' }}>Export All</button>
+        <button onClick={onReset} style={{ padding: '0.5rem 1rem', background: 'white', color: '#64748b', border: '1.5px solid #e2e8f0', borderRadius: '0.375rem', fontWeight: '600', cursor: 'pointer', fontSize: '0.8rem', marginLeft: 'auto' }}>New Assessment</button>
       </div>
-    </div>
-  )
-}
 
-function SummaryCard({ label, value, sublabel, color }) {
-  return (
-    <div style={{
-      padding: '1.25rem',
-      background: `${color}10`,
-      border: `2px solid ${color}`,
-      borderRadius: '0.75rem'
-    }}>
-      <div style={{ fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', fontWeight: '600' }}>
-        {label}
-      </div>
-      <div style={{ fontSize: '2rem', fontWeight: '700', color }}>
-        {value?.toLocaleString?.() || value}
-      </div>
-      {sublabel && (
-        <div style={{ fontSize: '0.75rem', color: '#64748b' }}>{sublabel}</div>
+      {/* PLANT MAP (toggle) */}
+      {showPlantMap && outputLevel === 'assurance' && (
+        <div style={{ marginBottom: '1.5rem' }}><PlantMap result={result} industry={industry} /></div>
       )}
+
+      {/* THE DATA TABLE */}
+      <AssetTable unifiedAssets={unifiedAssets} result={result} />
     </div>
   )
 }
-
-function TierBadge({ tier, count, label, color }) {
-  return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-      <div style={{
-        width: '2.5rem',
-        height: '2.5rem',
-        borderRadius: '50%',
-        background: color,
-        color: 'white',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        fontWeight: '700'
-      }}>
-        {tier}
-      </div>
-      <div>
-        <div style={{ fontWeight: '600', color: '#0f172a' }}>{count.toLocaleString()}</div>
-        <div style={{ fontSize: '0.75rem', color: '#64748b' }}>{label}</div>
-      </div>
-    </div>
-  )
-}
-
-// =============================================================================
-// MAIN COMPONENT
-// =============================================================================
 
 // =============================================================================
 // SESSION PERSISTENCE (AIGNE: Context must not be forgotten)
@@ -2055,12 +1429,12 @@ export default function UnifiedCanonizer() {
 
   // Available demo datasets (AIGNE-generated)
   const DEMO_DATASETS = [
-    { id: 'automotive-large', label: '🚗 Automotive - TMNA Style (~12K assets, 5 plants)', industry: 'automotive', scale: 'large', path: '/samples/aigne/automotive/large' },
-    { id: 'oil-gas-medium', label: '⛽ Oil & Gas - Medium (~12K assets)', industry: 'oil-gas', scale: 'medium', path: '/samples/demo/oil-gas' },
-    { id: 'oil-gas-large', label: '⛽ Oil & Gas - Large (~11K assets, 3 plants)', industry: 'oil-gas', scale: 'large', path: '/samples/aigne/oil-gas/large' },
-    { id: 'oil-gas-enterprise', label: '⛽ Oil & Gas - Enterprise (~32K assets, 5 plants)', industry: 'oil-gas', scale: 'enterprise', path: '/samples/aigne/oil-gas/enterprise' },
-    { id: 'pharma-large', label: '💊 Pharma - Large (~11K assets, 3 plants)', industry: 'pharma', scale: 'large', path: '/samples/aigne/pharma/large' },
-    { id: 'utilities-large', label: '⚡ Utilities - Large (~10K assets, 3 plants)', industry: 'utilities', scale: 'large', path: '/samples/aigne/utilities/large' }
+    { id: 'automotive-large', label: 'ðŸš— Automotive - TMNA Style (~12K assets, 5 plants)', industry: 'automotive', scale: 'large', path: '/samples/aigne/automotive/large' },
+    { id: 'oil-gas-medium', label: 'â›½ Oil & Gas - Medium (~12K assets)', industry: 'oil-gas', scale: 'medium', path: '/samples/demo/oil-gas' },
+    { id: 'oil-gas-large', label: 'â›½ Oil & Gas - Large (~11K assets, 3 plants)', industry: 'oil-gas', scale: 'large', path: '/samples/aigne/oil-gas/large' },
+    { id: 'oil-gas-enterprise', label: 'â›½ Oil & Gas - Enterprise (~32K assets, 5 plants)', industry: 'oil-gas', scale: 'enterprise', path: '/samples/aigne/oil-gas/enterprise' },
+    { id: 'pharma-large', label: 'ðŸ’Š Pharma - Large (~11K assets, 3 plants)', industry: 'pharma', scale: 'large', path: '/samples/aigne/pharma/large' },
+    { id: 'utilities-large', label: 'âš¡ Utilities - Large (~10K assets, 3 plants)', industry: 'utilities', scale: 'large', path: '/samples/aigne/utilities/large' }
   ]
   
   const [selectedDemoDataset, setSelectedDemoDataset] = useState('automotive-large')
@@ -2166,7 +1540,7 @@ export default function UnifiedCanonizer() {
                 gap: '0.5rem'
               }}
             >
-              ⚡ Load Dataset
+              âš¡ Load Dataset
             </button>
           </div>
 
@@ -2193,19 +1567,19 @@ export default function UnifiedCanonizer() {
             marginBottom: '2rem'
           }}>
             <FileUploader
-              label="📋 Engineering Baseline"
+              label="ðŸ“‹ Engineering Baseline"
               description="Asset registers, P&IDs, CMMS exports"
               files={engineeringFiles}
               setFiles={setEngineeringFiles}
             />
             <FileUploader
-              label="🔍 OT Discovery"
+              label="ðŸ” OT Discovery"
               description="Claroty, Nozomi, Armis exports"
               files={discoveryFiles}
               setFiles={setDiscoveryFiles}
             />
             <FileUploader
-              label="📦 Other Data (Optional)"
+              label="ðŸ“¦ Other Data (Optional)"
               description="Additional sources - auto-detected"
               files={otherFiles}
               setFiles={setOtherFiles}
@@ -2222,7 +1596,7 @@ export default function UnifiedCanonizer() {
               color: '#b91c1c',
               marginBottom: '1rem'
             }}>
-              ❌ {error}
+              âŒ {error}
             </div>
           )}
 
@@ -2241,7 +1615,7 @@ export default function UnifiedCanonizer() {
               cursor: loading ? 'not-allowed' : 'pointer'
             }}
           >
-            {loading ? '⚙️ Processing...' : '🚀 Canonize Assets'}
+            {loading ? 'âš™ï¸ Processing...' : 'ðŸš€ Canonize Assets'}
           </button>
           
           <div style={{ marginTop: '0.75rem', fontSize: '0.875rem', color: '#64748b' }}>
@@ -2281,7 +1655,7 @@ export default function UnifiedCanonizer() {
               alignItems: 'center',
               gap: '0.5rem'
             }}>
-              🔄 <strong>Session Restored</strong> — Your previous results are still here. 
+              ðŸ”„ <strong>Session Restored</strong> â€” Your previous results are still here. 
               <span style={{ color: '#64748b' }}>
                 (Saved {new Date(savedSession.savedAt).toLocaleString()})
               </span>
@@ -2289,7 +1663,7 @@ export default function UnifiedCanonizer() {
           )}
           
           <h2 style={{ fontSize: '1.5rem', fontWeight: '700', marginBottom: '0.5rem' }}>
-            ✅ Canonization Complete
+            âœ… Canonization Complete
           </h2>
           <p style={{ color: '#64748b', marginBottom: '2rem' }}>
             Output level: <strong>{outputLevel.charAt(0).toUpperCase() + outputLevel.slice(1)}</strong>
