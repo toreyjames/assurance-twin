@@ -1,11 +1,11 @@
 /**
  * UNIFIED CANONIZER
- * Single component with progressive disclosure (Basic/Standard/Premium tiers)
+ * Single component with progressive disclosure (Inventory/Context/Assurance tiers)
  * 
- * Based on AIGNE Framework principles + "Car Wash" pricing model:
- * - Basic: "Just the List" - simple asset inventory
- * - Standard: "Prioritized" - with security tiers & risk
- * - Premium: "Audit-Ready" - full evidence package
+ * Based on AIGNE Framework principles:
+ * - Inventory: "Know what you have" - clean asset inventory
+ * - Context: "Understand what matters" - gaps, risk, dependencies
+ * - Assurance: "Prove it to auditors" - full evidence package
  */
 
 import React, { useState, useCallback, useEffect } from 'react'
@@ -23,12 +23,28 @@ import { getAFS, resetAFS, FileType, FileStatus } from './lib/context/afs.js'
 // Import industry auto-detector
 import { detectIndustry, getAvailableIndustries, getIndustryInfo } from './lib/context/industry-detector.js'
 
-// Import Plant Map visualization (for "The Map" tier)
+// NEW: Import context analysis modules
+import { addDeviceContext } from './lib/context/device-patterns.js'
+import { addLifecycleStatus, generateLifecycleSummary } from './lib/context/lifecycle-tracker.js'
+import { generateDependencyMap } from './lib/context/dependency-mapper.js'
+import { analyzeAllGaps } from './lib/context/gap-analyzer.js'
+import { analyzePortfolioRisk } from './lib/context/risk-engine.js'
+
+// Import Plant Map visualization (for Assurance tier)
 import PlantMap from './components/PlantMap.jsx'
+
+// NEW: Import context UI components
+import SmartUpload from './components/SmartUpload.jsx'
+import SecurityPosture from './components/SecurityPosture.jsx'
+import GapPanel from './components/GapPanel.jsx'
+import WorldModel from './components/WorldModel.jsx'
 
 // Import Engineering Intelligence (LLM-powered analysis)
 import EngineeringIntelligence from './components/EngineeringIntelligence.jsx'
 import { analyzeEngineering, generateFallbackAnalysis } from './lib/context/engineering-analyzer.js'
+
+// Import Core Engine: Compliance mapping + Report generation
+import { ReportGenerator } from './lib/core/report-generator.js'
 
 // =============================================================================
 // FILE UPLOAD COMPONENT
@@ -117,50 +133,52 @@ function FileUploader({ label, description, files, setFiles }) {
 function TierSelector({ selected, onSelect, disabled }) {
   const tiers = [
     {
-      id: 'list',
-      name: 'The List',
-      subtitle: 'What You Have',
+      id: 'inventory',
+      name: 'Inventory',
+      subtitle: 'What do we have?',
       icon: '📋',
       color: '#10b981',
-      description: 'Clean, deduplicated asset inventory',
+      description: 'Single source of truth for OT assets',
       features: [
-        'Single source of truth',
-        'Standardized CSV format',
-        'Merged from all sources'
+        'Merge engineering + discovery data',
+        'Deduplicated asset list',
+        'Standardized CSV export',
+        'Auto-detect file types'
       ],
-      useCase: '"We need to know what we have"'
+      useCase: '"We need one clean list of what we have"'
     },
     {
-      id: 'priorities',
-      name: 'The Priorities',
-      subtitle: 'What Typically Matters',
-      icon: '🎯',
+      id: 'context',
+      name: 'Context',
+      subtitle: 'What gaps exist?',
+      icon: '🔍',
       color: '#3b82f6',
-      description: 'Security classified with insights',
+      description: 'Verify baseline completeness',
       features: [
-        'Everything in The List',
-        'Security tier classification',
-        'Blind spots and orphans',
-        'Executive summary',
-        'Process unit breakdown'
+        'Everything in Inventory',
+        'Blind spots: what\'s missing?',
+        'Orphans: what\'s undocumented?',
+        'Is the baseline comprehensive?',
+        'Unit-by-unit breakdown'
       ],
-      useCase: '"Where should we focus?"'
+      useCase: '"Is everything we should monitor, actually monitored?"'
     },
     {
-      id: 'map',
-      name: 'The Map',
-      subtitle: 'How It Connects',
-      icon: '🏭',
+      id: 'assurance',
+      name: 'Assurance',
+      subtitle: 'Is it secure?',
+      icon: '🗺️',
       color: '#8b5cf6',
-      description: 'Interactive plant visualization',
+      description: 'Visual plant map + evidence package',
       features: [
-        'Everything in The Priorities',
-        '3D plant topology',
-        'Network relationships',
-        'Click-to-explore units',
-        'Exportable views'
+        'Everything in Context',
+        'Interactive plant visualization',
+        'See gaps on the map',
+        'Multi-plant world model',
+        'Human review checkpoint',
+        'Audit-ready evidence'
       ],
-      useCase: '"Show me the big picture"'
+      useCase: '"Show me the plant and prove our coverage"'
     }
   ]
 
@@ -524,7 +542,7 @@ function HumanReview({ reviewItems, onComplete, onSkip }) {
 }
 
 // =============================================================================
-// OPERATIONS CONTEXT (PREMIUM) - Shows we understand the plant
+// OPERATIONS CONTEXT (Context & Assurance tiers) - Shows we understand the plant
 // =============================================================================
 
 function OperationsContext({ result }) {
@@ -797,237 +815,586 @@ function OperationsContext({ result }) {
 }
 
 // =============================================================================
-// RESULTS COMPONENT
+// TAB NAVIGATION FOR RESULTS
+// =============================================================================
+
+function ResultTabs({ activeTab, setActiveTab, tabs }) {
+  return (
+    <div style={{
+      display: 'flex', gap: '0.125rem', background: '#f1f5f9',
+      borderRadius: '0.5rem', padding: '0.25rem', marginBottom: '1.5rem',
+      overflowX: 'auto'
+    }}>
+      {tabs.map(tab => (
+        <button
+          key={tab.id}
+          onClick={() => setActiveTab(tab.id)}
+          style={{
+            padding: '0.625rem 1.25rem',
+            background: activeTab === tab.id ? 'white' : 'transparent',
+            color: activeTab === tab.id ? '#0f172a' : '#64748b',
+            border: 'none',
+            borderRadius: '0.375rem',
+            cursor: 'pointer',
+            fontSize: '0.8rem',
+            fontWeight: activeTab === tab.id ? '700' : '500',
+            fontFamily: "'JetBrains Mono', monospace",
+            whiteSpace: 'nowrap',
+            boxShadow: activeTab === tab.id ? '0 1px 3px rgba(0,0,0,0.1)' : 'none',
+            transition: 'all 0.15s ease',
+            display: 'flex', alignItems: 'center', gap: '0.5rem'
+          }}
+        >
+          {tab.label}
+          {tab.badge != null && (
+            <span style={{
+              background: tab.badgeColor || '#e2e8f0', color: tab.badgeTextColor || '#475569',
+              fontSize: '0.65rem', fontWeight: '700', padding: '0.1rem 0.4rem',
+              borderRadius: '9999px', minWidth: '1.2rem', textAlign: 'center'
+            }}>
+              {tab.badge}
+            </span>
+          )}
+        </button>
+      ))}
+    </div>
+  )
+}
+
+// =============================================================================
+// RESULTS COMPONENT — Tab-based navigation
 // =============================================================================
 
 function Results({ result, outputLevel, onReset, industry }) {
-  // Engineering analysis state (for The Map tier)
+  const [activeTab, setActiveTab] = React.useState('summary')
+
+  // Engineering analysis state (for Assurance tier)
   const [engineeringAnalysis, setEngineeringAnalysis] = React.useState(null)
   const [analysisLoading, setAnalysisLoading] = React.useState(false)
   const [analysisError, setAnalysisError] = React.useState(null)
-  
-  // Handle engineering analysis request
+
+  // Auto-generated engagement report
+  const [engagementReport, setEngagementReport] = React.useState(null)
+
+  // Handle engineering analysis
   const handleAnalyze = async () => {
     if (!result || analysisLoading) return
-    
     setAnalysisLoading(true)
     setAnalysisError(null)
-    
     try {
-      console.log('[ANALYSIS] Starting engineering analysis...')
       const analysisResult = await analyzeEngineering(result, industry)
-      
       if (analysisResult.success) {
-        console.log('[ANALYSIS] Complete:', analysisResult.model)
         setEngineeringAnalysis(analysisResult)
       } else {
-        console.warn('[ANALYSIS] Using fallback due to:', analysisResult.error)
-        // Use fallback if API fails
         const fallback = generateFallbackAnalysis(result, industry, null)
         setEngineeringAnalysis(fallback)
       }
     } catch (error) {
-      console.error('[ANALYSIS] Error:', error)
       setAnalysisError(error.message)
-      // Still try to show fallback
       const fallback = generateFallbackAnalysis(result, industry, null)
       setEngineeringAnalysis(fallback)
     } finally {
       setAnalysisLoading(false)
     }
   }
-  
-  // Auto-analyze for Map tier on first render
+
+  // Auto-analyze + auto-generate report on mount
   React.useEffect(() => {
-    if (outputLevel === 'map' && result && !engineeringAnalysis && !analysisLoading) {
+    if (!result) return
+
+    // Auto-analyze for Assurance tier
+    if (outputLevel === 'assurance' && !engineeringAnalysis && !analysisLoading) {
       handleAnalyze()
     }
-  }, [outputLevel, result])
-  
+
+    // Auto-generate engagement report for Context + Assurance
+    if ((outputLevel === 'context' || outputLevel === 'assurance') && !engagementReport) {
+      try {
+        const gen = new ReportGenerator({ industry, plantName: 'All Sites' })
+        const gaps = result?.contextAnalysis?.gapAnalysis?.allGaps || []
+        const risks = result?.contextAnalysis?.riskAnalysis || {}
+        const rpt = gen.generateReport(result, { gaps, risks })
+        setEngagementReport(rpt)
+      } catch (err) {
+        console.error('[REPORT] Auto-generation failed:', err)
+      }
+    }
+  }, [result, outputLevel])
+
+  // CSV download helper
   const downloadCSV = (data, filename) => {
     if (!data || data.length === 0) return
-    
     const headers = Object.keys(data[0]).filter(k => !k.startsWith('_') && k !== 'discovered' && k !== 'classification' && k !== 'validation' && k !== 'provenance')
-    const rows = data.map(item => 
+    const rows = data.map(item =>
       headers.map(h => {
         let val = item[h]
         if (typeof val === 'object') val = JSON.stringify(val)
         return `"${String(val || '').replace(/"/g, '""')}"`
       }).join(',')
     )
-    
     const csv = [headers.join(','), ...rows].join('\n')
     const blob = new Blob([csv], { type: 'text/csv' })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
-    a.href = url
-    a.download = filename
-    a.click()
+    a.href = url; a.download = filename; a.click()
     URL.revokeObjectURL(url)
   }
 
+  const downloadFile = (content, filename, type = 'text/csv') => {
+    const blob = new Blob([content], { type })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url; a.download = filename; a.click()
+    URL.revokeObjectURL(url)
+  }
+
+  // Build tab list based on output level
+  const isAdvanced = outputLevel === 'context' || outputLevel === 'assurance'
+  const isAssurance = outputLevel === 'assurance'
+  const criticalCount = engagementReport?.executiveSummary?.gapSummary?.critical || 0
+
+  const tabs = [
+    { id: 'summary', label: 'SUMMARY' },
+    ...(isAssurance ? [{ id: 'plantmap', label: 'PLANT MAP' }] : []),
+    ...(isAdvanced ? [{
+      id: 'compliance', label: 'COMPLIANCE',
+      badge: criticalCount > 0 ? criticalCount : null,
+      badgeColor: '#fef2f2', badgeTextColor: '#dc2626'
+    }] : []),
+    { id: 'exports', label: 'EXPORTS' }
+  ]
+
   return (
     <div>
-      {/* Summary Cards */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-        gap: '1rem',
-        marginBottom: '2rem'
-      }}>
-        <SummaryCard 
-          label="Total Assets" 
-          value={result.summary.total} 
-          color="#10b981" 
-        />
-        <SummaryCard 
-          label="Matched" 
-          value={result.summary.matched} 
-          sublabel={`${result.summary.coverage}% coverage`}
-          color="#3b82f6" 
-        />
-        <SummaryCard 
-          label="Blind Spots" 
-          value={result.summary.blindSpots} 
-          sublabel="Not discovered"
-          color="#f59e0b" 
-        />
-        <SummaryCard 
-          label="Orphans" 
-          value={result.summary.orphans} 
-          sublabel="Not in baseline"
-          color="#8b5cf6" 
-        />
-      </div>
+      {/* === TAB NAVIGATION === */}
+      <ResultTabs activeTab={activeTab} setActiveTab={setActiveTab} tabs={tabs} />
 
-      {/* Tier Distribution (Standard & Premium) */}
-      {outputLevel !== 'list' && (
-        <div style={{
-          padding: '1.5rem',
-          background: '#f8fafc',
-          borderRadius: '0.75rem',
-          marginBottom: '2rem'
-        }}>
-          <h3 style={{ margin: '0 0 1rem 0', fontSize: '1rem', fontWeight: '600' }}>
-            Security Tier Distribution
-          </h3>
-          <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap' }}>
-            <TierBadge tier={1} count={result.summary.tier1} label="Critical" color="#ef4444" />
-            <TierBadge tier={2} count={result.summary.tier2} label="Networkable" color="#f59e0b" />
-            <TierBadge tier={3} count={result.summary.tier3} label="Passive" color="#6366f1" />
+      {/* ================================================================ */}
+      {/* TAB: SUMMARY                                                     */}
+      {/* ================================================================ */}
+      {activeTab === 'summary' && (
+        <div>
+          {/* Summary Cards */}
+          <div style={{
+            display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+            gap: '1rem', marginBottom: '2rem'
+          }}>
+            <SummaryCard label="Total Assets" value={result.summary.total} color="#10b981" />
+            <SummaryCard label="Matched" value={result.summary.matched} sublabel={`${result.summary.coverage}% coverage`} color="#3b82f6" />
+            <SummaryCard label="Blind Spots" value={result.summary.blindSpots} sublabel="Not discovered" color="#f59e0b" />
+            <SummaryCard label="Orphans" value={result.summary.orphans} sublabel="Not in baseline" color="#8b5cf6" />
           </div>
-          <div style={{ marginTop: '1rem', fontSize: '0.875rem', color: '#64748b' }}>
-            <strong>{result.summary.tier1 + result.summary.tier2}</strong> assets require security management
+
+          {/* Tier Distribution */}
+          {isAdvanced && (
+            <div style={{ padding: '1.5rem', background: '#f8fafc', borderRadius: '0.75rem', marginBottom: '2rem' }}>
+              <h3 style={{ margin: '0 0 1rem 0', fontSize: '1rem', fontWeight: '600' }}>
+                Security Tier Distribution
+              </h3>
+              <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap' }}>
+                <TierBadge tier={1} count={result.summary.tier1} label="Critical" color="#ef4444" />
+                <TierBadge tier={2} count={result.summary.tier2} label="Networkable" color="#f59e0b" />
+                <TierBadge tier={3} count={result.summary.tier3} label="Passive" color="#6366f1" />
+              </div>
+              <div style={{ marginTop: '1rem', fontSize: '0.875rem', color: '#64748b' }}>
+                <strong>{result.summary.tier1 + result.summary.tier2}</strong> assets require security management
+              </div>
+            </div>
+          )}
+
+          {/* Compliance posture banner (auto-generated) */}
+          {engagementReport && (
+            <div style={{
+              padding: '1.25rem', marginBottom: '1.5rem',
+              background: `${engagementReport.executiveSummary.postureColor}08`,
+              border: `2px solid ${engagementReport.executiveSummary.postureColor}40`,
+              borderRadius: '0.75rem',
+              display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem'
+            }}>
+              <div>
+                <div style={{ fontSize: '0.7rem', color: '#64748b', fontFamily: 'monospace', marginBottom: '0.25rem' }}>
+                  OVERALL POSTURE
+                </div>
+                <div style={{ fontSize: '1.25rem', fontWeight: '700', color: engagementReport.executiveSummary.postureColor, fontFamily: 'monospace' }}>
+                  {engagementReport.executiveSummary.overallPosture}
+                </div>
+              </div>
+              <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
+                <div style={{ textAlign: 'center' }}>
+                  <div style={{ fontSize: '1.75rem', fontWeight: '700', fontFamily: 'monospace',
+                    color: engagementReport.executiveSummary.complianceScore > 70 ? '#22c55e' : engagementReport.executiveSummary.complianceScore > 40 ? '#f59e0b' : '#ef4444' }}>
+                    {engagementReport.executiveSummary.complianceScore}%
+                  </div>
+                  <div style={{ fontSize: '0.6rem', color: '#64748b', fontFamily: 'monospace' }}>COMPLIANCE</div>
+                </div>
+                <div style={{ textAlign: 'center' }}>
+                  <div style={{ fontSize: '1.75rem', fontWeight: '700', fontFamily: 'monospace', color: '#0f172a' }}>
+                    {engagementReport.gapMatrix.totalFindings}
+                  </div>
+                  <div style={{ fontSize: '0.6rem', color: '#64748b', fontFamily: 'monospace' }}>FINDINGS</div>
+                </div>
+                <button onClick={() => setActiveTab('compliance')} style={{
+                  padding: '0.5rem 1rem', background: '#3b82f6', color: 'white', border: 'none',
+                  borderRadius: '0.375rem', cursor: 'pointer', fontSize: '0.75rem', fontWeight: '600', fontFamily: 'monospace'
+                }}>
+                  VIEW DETAILS
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Key findings preview */}
+          {engagementReport?.executiveSummary?.keyFindings?.length > 0 && (
+            <div style={{ marginBottom: '1.5rem' }}>
+              <h3 style={{ fontSize: '1rem', fontWeight: '600', marginBottom: '0.75rem', color: '#0f172a' }}>
+                Key Findings
+              </h3>
+              {engagementReport.executiveSummary.keyFindings.slice(0, 3).map((f, i) => (
+                <div key={i} style={{
+                  padding: '0.75rem 1rem', marginBottom: '0.5rem',
+                  background: '#f8fafc', borderRadius: '0.5rem',
+                  borderLeft: `4px solid ${f.severity === 'critical' ? '#ef4444' : f.severity === 'high' ? '#f97316' : '#3b82f6'}`
+                }}>
+                  <div style={{ fontSize: '0.85rem', color: '#0f172a', marginBottom: '0.25rem' }}>{f.finding}</div>
+                  <div style={{ fontSize: '0.75rem', color: '#64748b' }}>{f.implication}</div>
+                  <div style={{ fontSize: '0.65rem', color: '#94a3b8', fontFamily: 'monospace', marginTop: '0.25rem' }}>{f.reference}</div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Security Posture + Operations Context */}
+          {isAdvanced && (
+            <>
+              <SecurityPosture result={result} gapAnalysis={result.contextAnalysis?.gapAnalysis} />
+              <OperationsContext result={result} />
+            </>
+          )}
+
+          {/* Quick action buttons */}
+          <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', marginTop: '1.5rem' }}>
+            {isAssurance && (
+              <button onClick={() => setActiveTab('plantmap')} style={{
+                padding: '0.75rem 1.5rem', background: '#0f172a', color: 'white',
+                border: 'none', borderRadius: '0.5rem', fontWeight: '600', cursor: 'pointer'
+              }}>
+                View Plant Map
+              </button>
+            )}
+            {isAdvanced && (
+              <button onClick={() => setActiveTab('compliance')} style={{
+                padding: '0.75rem 1.5rem', background: '#3b82f6', color: 'white',
+                border: 'none', borderRadius: '0.5rem', fontWeight: '600', cursor: 'pointer'
+              }}>
+                View Compliance Report
+              </button>
+            )}
+            <button onClick={() => setActiveTab('exports')} style={{
+              padding: '0.75rem 1.5rem', background: '#10b981', color: 'white',
+              border: 'none', borderRadius: '0.5rem', fontWeight: '600', cursor: 'pointer'
+            }}>
+              Export All Data
+            </button>
+            <button onClick={onReset} style={{
+              padding: '0.75rem 1.5rem', background: 'white', color: '#64748b',
+              border: '2px solid #e2e8f0', borderRadius: '0.5rem', fontWeight: '600', cursor: 'pointer'
+            }}>
+              Start New Assessment
+            </button>
           </div>
         </div>
       )}
 
-      {/* Operations Context (Priorities and Map tiers) */}
-      {(outputLevel === 'priorities' || outputLevel === 'map') && (
-        <OperationsContext result={result} />
+      {/* ================================================================ */}
+      {/* TAB: PLANT MAP (Assurance only)                                  */}
+      {/* ================================================================ */}
+      {activeTab === 'plantmap' && isAssurance && (
+        <div>
+          {/* World Model */}
+          <WorldModel result={result} industry={industry} />
+
+          {/* Plant Map - THE HERO */}
+          <PlantMap
+            result={result}
+            industry={industry}
+            gapMatrix={engineeringAnalysis?.gapMatrix}
+          />
+
+          {/* Engineering Intelligence */}
+          <EngineeringIntelligence
+            analysis={engineeringAnalysis?.analysis}
+            loading={analysisLoading}
+            error={analysisError}
+            onAnalyze={handleAnalyze}
+            onRetry={handleAnalyze}
+            timestamp={engineeringAnalysis?.timestamp}
+            model={engineeringAnalysis?.model}
+            isFallback={engineeringAnalysis?.isFallback}
+            gapMatrix={engineeringAnalysis?.gapMatrix}
+            industry={industry}
+            summary={engineeringAnalysis?.summary}
+          />
+        </div>
       )}
 
-      {/* 3D Plant Visualization (Map tier only) */}
-      {outputLevel === 'map' && (
-        <PlantMap 
-          result={result} 
-          industry={industry} 
-          gapMatrix={engineeringAnalysis?.gapMatrix}
-        />
+      {/* ================================================================ */}
+      {/* TAB: COMPLIANCE (Context + Assurance)                            */}
+      {/* ================================================================ */}
+      {activeTab === 'compliance' && isAdvanced && engagementReport && (
+        <EngagementReportSection result={result} industry={industry} preGeneratedReport={engagementReport} />
       )}
-      
-      {/* Engineering Intelligence Panel (Map tier only) */}
-      {outputLevel === 'map' && (
-        <EngineeringIntelligence
-          analysis={engineeringAnalysis?.analysis}
-          loading={analysisLoading}
-          error={analysisError}
-          onAnalyze={handleAnalyze}
-          onRetry={handleAnalyze}
-          timestamp={engineeringAnalysis?.timestamp}
-          model={engineeringAnalysis?.model}
-          isFallback={engineeringAnalysis?.isFallback}
-          gapMatrix={engineeringAnalysis?.gapMatrix}
+
+      {/* ================================================================ */}
+      {/* TAB: EXPORTS (all tiers)                                         */}
+      {/* ================================================================ */}
+      {activeTab === 'exports' && (
+        <ExportCenter
+          result={result}
           industry={industry}
-          summary={engineeringAnalysis?.summary}
+          engagementReport={engagementReport}
+          downloadCSV={downloadCSV}
+          downloadFile={downloadFile}
         />
       )}
+    </div>
+  )
+}
 
-      {/* Download Buttons */}
-      <div style={{
-        display: 'flex',
-        gap: '1rem',
-        flexWrap: 'wrap',
-        marginBottom: '2rem'
-      }}>
-        <button
-          onClick={() => downloadCSV(result.assets, `canonized_assets_${new Date().toISOString().split('T')[0]}.csv`)}
-          style={{
-            padding: '0.75rem 1.5rem',
-            background: '#10b981',
-            color: 'white',
-            border: 'none',
-            borderRadius: '0.5rem',
-            fontWeight: '600',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.5rem'
-          }}
-        >
-          📥 Download Assets ({result.assets?.length || 0})
-        </button>
-        
-        {result.blindSpots?.length > 0 && (
-          <button
-            onClick={() => downloadCSV(result.blindSpots, `blind_spots_${new Date().toISOString().split('T')[0]}.csv`)}
-            style={{
-              padding: '0.75rem 1.5rem',
-              background: '#f59e0b',
-              color: 'white',
-              border: 'none',
-              borderRadius: '0.5rem',
-              fontWeight: '600',
-              cursor: 'pointer'
-            }}
-          >
-            📥 Blind Spots ({result.blindSpots.length})
-          </button>
-        )}
-        
-        {result.orphans?.length > 0 && (
-          <button
-            onClick={() => downloadCSV(result.orphans, `orphans_${new Date().toISOString().split('T')[0]}.csv`)}
-            style={{
-              padding: '0.75rem 1.5rem',
-              background: '#8b5cf6',
-              color: 'white',
-              border: 'none',
-              borderRadius: '0.5rem',
-              fontWeight: '600',
-              cursor: 'pointer'
-            }}
-          >
-            📥 Orphans ({result.orphans.length})
-          </button>
-        )}
+// =============================================================================
+// ENGAGEMENT REPORT SECTION (Compliance + Audit)
+// =============================================================================
+
+function EngagementReportSection({ result, industry, preGeneratedReport }) {
+  const report = preGeneratedReport
+
+  if (!report) {
+    return (
+      <div style={{ padding: '2rem', textAlign: 'center', color: '#64748b' }}>
+        Compliance report not available. Run Context or Assurance tier to generate.
+      </div>
+    )
+  }
+
+  return (
+    <div style={{
+      padding: '1.5rem',
+      background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
+      borderRadius: '0.75rem',
+      border: '2px solid #334155'
+    }}>
+      <div style={{ marginBottom: '1rem' }}>
+        <h3 style={{ margin: 0, color: 'white', fontSize: '1.1rem', fontFamily: "'JetBrains Mono', monospace" }}>
+          <span style={{ color: '#334155' }}>[</span> COMPLIANCE REPORT <span style={{ color: '#334155' }}>]</span>
+        </h3>
+        <p style={{ margin: '0.25rem 0 0', color: '#64748b', fontSize: '0.8rem', fontFamily: 'monospace' }}>
+          IEC 62443 + NIST CSF compliance mapping — auto-generated from gap analysis
+        </p>
       </div>
 
-      {/* Start Over */}
-      <button
-        onClick={onReset}
-        style={{
-          padding: '0.75rem 1.5rem',
-          background: '#0f172a',
-          color: 'white',
-          border: 'none',
-          borderRadius: '0.5rem',
-          fontWeight: '600',
-          cursor: 'pointer'
-        }}
-      >
-        ← Start New Canonization
-      </button>
+      {/* Posture banner */}
+      <div style={{
+        padding: '1rem', marginBottom: '1rem',
+        background: `${report.executiveSummary.postureColor}15`,
+        border: `2px solid ${report.executiveSummary.postureColor}`,
+        borderRadius: '0.5rem',
+        display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.75rem'
+      }}>
+        <div>
+          <div style={{ fontSize: '0.7rem', color: '#64748b', fontFamily: 'monospace', marginBottom: '0.25rem' }}>OVERALL POSTURE</div>
+          <div style={{ fontSize: '1.2rem', fontWeight: '700', fontFamily: 'monospace', color: report.executiveSummary.postureColor }}>
+            {report.executiveSummary.overallPosture}
+          </div>
+        </div>
+        <div style={{ textAlign: 'center' }}>
+          <div style={{ fontSize: '0.7rem', color: '#64748b', fontFamily: 'monospace' }}>COMPLIANCE SCORE</div>
+          <div style={{ fontSize: '2rem', fontWeight: '700', fontFamily: 'monospace',
+            color: report.executiveSummary.complianceScore > 70 ? '#22c55e' : report.executiveSummary.complianceScore > 40 ? '#f59e0b' : '#ef4444' }}>
+            {report.executiveSummary.complianceScore}%
+          </div>
+        </div>
+        <div style={{ textAlign: 'center' }}>
+          <div style={{ fontSize: '0.7rem', color: '#64748b', fontFamily: 'monospace' }}>FINDINGS</div>
+          <div style={{ fontSize: '1.5rem', fontWeight: '700', fontFamily: 'monospace', color: 'white' }}>{report.gapMatrix.totalFindings}</div>
+        </div>
+        <div>
+          <div style={{ fontSize: '0.7rem', color: '#64748b', fontFamily: 'monospace' }}>CONTROLS IMPACTED</div>
+          <div style={{ fontSize: '0.8rem', color: '#94a3b8', fontFamily: 'monospace' }}>IEC 62443: {report.executiveSummary.controlsImpacted.iec62443}</div>
+          <div style={{ fontSize: '0.8rem', color: '#94a3b8', fontFamily: 'monospace' }}>NIST CSF: {report.executiveSummary.controlsImpacted.nistCsf}</div>
+        </div>
+      </div>
+
+      {/* Gap severity breakdown */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '0.5rem', marginBottom: '1rem' }}>
+        {[
+          { label: 'Critical', count: report.executiveSummary.gapSummary.critical, color: '#ef4444' },
+          { label: 'High', count: report.executiveSummary.gapSummary.high, color: '#f97316' },
+          { label: 'Medium', count: report.executiveSummary.gapSummary.medium, color: '#f59e0b' },
+          { label: 'Low', count: report.executiveSummary.gapSummary.low, color: '#22c55e' },
+          { label: 'Info', count: report.executiveSummary.gapSummary.info, color: '#64748b' }
+        ].map(({ label, count, color }) => (
+          <div key={label} style={{ padding: '0.5rem', background: `${color}10`, border: `1px solid ${color}40`, borderRadius: '0.375rem', textAlign: 'center' }}>
+            <div style={{ fontSize: '1.25rem', fontWeight: '700', color, fontFamily: 'monospace' }}>{count || 0}</div>
+            <div style={{ fontSize: '0.6rem', color: '#64748b', textTransform: 'uppercase', fontFamily: 'monospace' }}>{label}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Key findings */}
+      {report.executiveSummary.keyFindings.length > 0 && (
+        <div style={{ marginBottom: '1rem' }}>
+          <div style={{ fontSize: '0.75rem', color: '#64748b', fontFamily: 'monospace', marginBottom: '0.5rem', fontWeight: '600' }}>KEY FINDINGS</div>
+          {report.executiveSummary.keyFindings.map((f, i) => (
+            <div key={i} style={{
+              padding: '0.75rem', background: 'rgba(255,255,255,0.03)', borderRadius: '0.375rem',
+              marginBottom: '0.375rem', borderLeft: `3px solid ${f.severity === 'critical' ? '#ef4444' : f.severity === 'high' ? '#f97316' : '#3b82f6'}`
+            }}>
+              <div style={{ fontSize: '0.8rem', color: '#e2e8f0', marginBottom: '0.25rem' }}>{f.finding}</div>
+              <div style={{ fontSize: '0.7rem', color: '#64748b' }}>{f.implication}</div>
+              <div style={{ fontSize: '0.6rem', color: '#475569', fontFamily: 'monospace', marginTop: '0.25rem' }}>{f.reference}</div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Recommendations */}
+      {report.recommendations.length > 0 && (
+        <div>
+          <div style={{ fontSize: '0.75rem', color: '#64748b', fontFamily: 'monospace', marginBottom: '0.5rem', fontWeight: '600' }}>PRIORITIZED RECOMMENDATIONS</div>
+          {report.recommendations.slice(0, 4).map((rec, i) => (
+            <div key={i} style={{
+              padding: '0.75rem', background: 'rgba(255,255,255,0.03)', borderRadius: '0.375rem',
+              marginBottom: '0.375rem', display: 'flex', gap: '0.75rem', alignItems: 'flex-start'
+            }}>
+              <div style={{
+                minWidth: '28px', height: '28px', borderRadius: '50%',
+                background: i === 0 ? '#ef4444' : i === 1 ? '#f59e0b' : '#3b82f6',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                color: 'white', fontSize: '0.75rem', fontWeight: '700', fontFamily: 'monospace'
+              }}>P{rec.priority}</div>
+              <div>
+                <div style={{ fontSize: '0.8rem', color: '#e2e8f0', fontWeight: '600' }}>{rec.title}</div>
+                <div style={{ fontSize: '0.7rem', color: '#64748b', marginTop: '0.125rem' }}>{rec.category} — {rec.timeline} — {rec.effort} effort</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+// =============================================================================
+// EXPORT CENTER — Unified download hub
+// =============================================================================
+
+function ExportCenter({ result, industry, engagementReport, downloadCSV, downloadFile }) {
+  const today = new Date().toISOString().split('T')[0]
+  const gen = React.useMemo(() => new ReportGenerator({ industry }), [industry])
+
+  const exports = [
+    {
+      category: 'Asset Data',
+      items: [
+        { label: 'Canonical Assets', desc: `${result.assets?.length || 0} matched and classified assets`, ext: '.csv', color: '#10b981',
+          action: () => downloadCSV(result.assets, `canonized_assets_${today}.csv`) },
+        ...(result.blindSpots?.length > 0 ? [{
+          label: 'Blind Spots', desc: `${result.blindSpots.length} assets not discovered on network`, ext: '.csv', color: '#f59e0b',
+          action: () => downloadCSV(result.blindSpots, `blind_spots_${today}.csv`)
+        }] : []),
+        ...(result.orphans?.length > 0 ? [{
+          label: 'Orphan Devices', desc: `${result.orphans.length} undocumented network devices`, ext: '.csv', color: '#8b5cf6',
+          action: () => downloadCSV(result.orphans, `orphans_${today}.csv`)
+        }] : [])
+      ]
+    },
+    ...(engagementReport ? [{
+      category: 'Engagement Deliverables',
+      items: [
+        { label: 'Executive Summary', desc: 'CISO-ready findings with compliance references', ext: '.md', color: '#3b82f6',
+          action: () => downloadFile(gen.toExecutiveMarkdown(engagementReport), `executive_summary_${today}.md`, 'text/markdown') },
+        { label: 'Gap Matrix', desc: `${engagementReport.gapMatrix.totalFindings} findings mapped to IEC 62443 + NIST CSF`, ext: '.csv', color: '#22c55e',
+          action: () => downloadFile(gen.toGapMatrixCSV(engagementReport), `gap_matrix_${today}.csv`) },
+        { label: 'Risk Heat Map', desc: 'Unit-level risk scoring and severity breakdown', ext: '.csv', color: '#f59e0b',
+          action: () => downloadFile(gen.toRiskHeatMapCSV(engagementReport), `risk_heat_map_${today}.csv`) },
+        { label: 'Full Report', desc: 'Complete structured report with all analysis data', ext: '.json', color: '#a855f7',
+          action: () => downloadFile(JSON.stringify(engagementReport, null, 2), `full_report_${today}.json`, 'application/json') }
+      ]
+    }] : [])
+  ]
+
+  const handleDownloadAll = () => {
+    // Download each file with a small delay to avoid browser blocking
+    const allActions = exports.flatMap(cat => cat.items.map(item => item.action))
+    allActions.forEach((action, i) => {
+      setTimeout(action, i * 300)
+    })
+  }
+
+  return (
+    <div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+        <div>
+          <h3 style={{ margin: 0, fontSize: '1.1rem', fontWeight: '600', color: '#0f172a' }}>
+            Export Center
+          </h3>
+          <p style={{ margin: '0.25rem 0 0', color: '#64748b', fontSize: '0.8rem' }}>
+            Download assessment deliverables for your engagement folder
+          </p>
+        </div>
+        <button onClick={handleDownloadAll} style={{
+          padding: '0.75rem 1.5rem', background: '#0f172a', color: 'white',
+          border: 'none', borderRadius: '0.5rem', fontWeight: '600', cursor: 'pointer',
+          fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.5rem'
+        }}>
+          Download All Files
+        </button>
+      </div>
+
+      {exports.map(category => (
+        <div key={category.category} style={{ marginBottom: '1.5rem' }}>
+          <div style={{
+            fontSize: '0.7rem', color: '#94a3b8', fontFamily: 'monospace',
+            fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.05em',
+            marginBottom: '0.5rem', paddingBottom: '0.25rem', borderBottom: '1px solid #e2e8f0'
+          }}>
+            {category.category}
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '0.75rem' }}>
+            {category.items.map(item => (
+              <button key={item.label} onClick={item.action} style={{
+                padding: '1rem', background: 'white', border: `2px solid #e2e8f0`,
+                borderRadius: '0.5rem', cursor: 'pointer', textAlign: 'left',
+                transition: 'all 0.15s ease', display: 'flex', gap: '0.75rem', alignItems: 'flex-start'
+              }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor = item.color; e.currentTarget.style.background = `${item.color}08` }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = '#e2e8f0'; e.currentTarget.style.background = 'white' }}
+              >
+                <div style={{
+                  minWidth: '36px', height: '36px', borderRadius: '0.375rem',
+                  background: `${item.color}15`, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  color: item.color, fontSize: '0.7rem', fontWeight: '700', fontFamily: 'monospace'
+                }}>
+                  {item.ext}
+                </div>
+                <div>
+                  <div style={{ fontWeight: '600', color: '#0f172a', fontSize: '0.85rem' }}>{item.label}</div>
+                  <div style={{ fontSize: '0.7rem', color: '#64748b', marginTop: '0.125rem' }}>{item.desc}</div>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+      ))}
+
+      {/* Methodology note */}
+      <div style={{
+        padding: '1rem', background: '#f8fafc', borderRadius: '0.5rem',
+        border: '1px solid #e2e8f0', fontSize: '0.75rem', color: '#64748b', marginTop: '1rem'
+      }}>
+        <strong>Methodology:</strong> AIGNE Context Engineering Framework (arXiv:2512.05470) — 6-strategy asset matching,
+        context-aware gap detection, IEC 62443 / NIST CSF compliance mapping.
+        All data processed client-side. No data transmitted to external servers.
+      </div>
     </div>
   )
 }
@@ -1143,7 +1510,7 @@ export default function UnifiedCanonizer() {
   
   // UI state - restore from session if available
   const [stage, setStage] = useState(savedSession?.stage || 'upload')
-  const [outputLevel, setOutputLevel] = useState(savedSession?.outputLevel || 'priorities')
+  const [outputLevel, setOutputLevel] = useState(savedSession?.outputLevel || 'context')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   const [result, setResult] = useState(savedSession?.result || null)
@@ -1319,21 +1686,51 @@ export default function UnifiedCanonizer() {
       const validation = crossValidate(match)
 
       return {
+        // Identifiers
         tag_id: match.engineering.tag_id || match.discovered?.tag_id || 'UNKNOWN',
         ip_address: match.discovered?.ip_address || match.engineering.ip_address || '',
         hostname: match.discovered?.hostname || match.engineering.hostname || '',
         mac_address: match.discovered?.mac_address || match.engineering.mac_address || '',
+        
+        // Plant & location
         plant: match.engineering.plant,
+        plant_code: match.engineering.plant_code || match.engineering.tag_id?.split('-')?.[0] || '',
         unit: match.engineering.unit,
+        unit_code: match.engineering.unit_code || '',
+        
+        // Device info
         device_type: match.engineering.device_type,
         manufacturer: match.engineering.manufacturer,
         model: match.engineering.model,
+        criticality: match.engineering.criticality || '',
+        security_tier: match.engineering.security_tier || classification?.tier || 3,
+        
+        // Discovery data (from network scans)
         last_seen: match.discovered?.last_seen || '',
-        is_managed: match.discovered?.is_managed || false,
+        first_seen: match.discovered?.first_seen || '',
+        discovered_ip: match.discovered?.ip_address || '',
+        
+        // SECURITY FIELDS - pulled to top level for easy access
+        vulnerabilities: match.discovered?.vulnerabilities ?? 0,
+        cve_ids: match.discovered?.cve_ids || '',
+        cve_count: match.discovered?.cve_count ?? 0,
+        risk_score: match.discovered?.risk_score ?? 0,
+        is_managed: match.discovered?.is_managed ?? false,
+        last_patch_date: match.discovered?.last_patch_date || '',
+        firmware_version: match.discovered?.firmware_version || match.engineering?.firmware_version || '',
+        
+        // Network info
+        network_segment: match.discovered?.network_segment || match.engineering?.network_segment || '',
+        protocol: match.discovered?.protocol || match.engineering?.protocol || '',
+        
+        // Match metadata
         classification,
         validation,
         matchType: match.matchType,
+        match_type: 'matched', // Explicit flag for filtering
         matchConfidence: match.confidence,
+        
+        // Keep full discovered object for detailed access
         discovered: match.discovered
       }
     })
@@ -1378,14 +1775,76 @@ export default function UnifiedCanonizer() {
     console.log('[AFS] Output files registered:', { assetsFileId, blindSpotsFileId, orphansFileId })
     console.log('[AFS] File catalog:', afs.getCatalog())
 
+    // ==== CONTEXT ANALYSIS (for Context and Assurance tiers) ====
+    let contextAnalysis = null
+    
+    if (outputLevel === 'context' || outputLevel === 'assurance') {
+      console.log('[CONTEXT] Running context-aware analysis...')
+      
+      try {
+        // 1. Add device context (tag patterns, function inference)
+        const assetsWithDeviceContext = addDeviceContext(canonicalAssets)
+        
+        // 2. Add lifecycle status (EOL, firmware age)
+        const assetsWithLifecycle = addLifecycleStatus(assetsWithDeviceContext)
+        const lifecycleSummary = generateLifecycleSummary(assetsWithLifecycle)
+        
+        // 3. Generate dependency map (process flow, network, control)
+        const industryForContext = selectedIndustry || industryDetection?.detected || 'oil-gas'
+        const dependencyMap = generateDependencyMap(assetsWithLifecycle, industryForContext)
+        
+        // 4. Run comprehensive gap analysis
+        const gapAnalysis = analyzeAllGaps(
+          assetsWithLifecycle, 
+          matchResults, 
+          industryForContext
+        )
+        
+        // 5. Calculate context-aware risk scores
+        const riskAnalysis = analyzePortfolioRisk(assetsWithLifecycle, {
+          industry: industryForContext,
+          dependencies: dependencyMap.dependencies,
+          gapInfo: null // Could enhance with gap info per asset
+        })
+        
+        contextAnalysis = {
+          assets: assetsWithLifecycle,
+          lifecycleSummary,
+          dependencyMap,
+          gapAnalysis,
+          riskAnalysis,
+          industry: industryForContext
+        }
+        
+        console.log('[CONTEXT] Analysis complete:', {
+          assetsWithContext: assetsWithLifecycle.length,
+          gapsFound: gapAnalysis.summary.total,
+          criticalRisks: riskAnalysis.summary.riskDistribution.critical,
+          dependencies: dependencyMap.summary.totalDependencies
+        })
+        
+        provenance.record({ 
+          type: 'CONTEXT_ANALYSIS_COMPLETE', 
+          gapsFound: gapAnalysis.summary.total,
+          criticalRisks: riskAnalysis.summary.riskDistribution.critical
+        })
+        
+      } catch (contextErr) {
+        console.error('[CONTEXT] Analysis error:', contextErr)
+        // Continue without context - graceful degradation
+      }
+    }
+
     return {
       status: reviewItems.summary.lowConfidenceCount > 0 ? 'PENDING_REVIEW' : 'COMPLETE',
-      assets: canonicalAssets,
+      assets: contextAnalysis?.assets || canonicalAssets,
       blindSpots: matchResults.blindSpots.slice(0, 100),
       orphans: matchResults.orphans.slice(0, 100),
       summary,
       reviewRequired: reviewItems,
-      audit: outputLevel === 'map' ? await provenance.generateAuditPackage(canonicalAssets, summary) : null,
+      // Context analysis results (Context & Assurance tiers)
+      contextAnalysis,
+      audit: outputLevel === 'assurance' ? await provenance.generateAuditPackage(canonicalAssets, summary) : null,
       // Include AFS catalog for AIGNE compliance
       fileCatalog: afs.getCatalog()
     }
@@ -1459,7 +1918,7 @@ export default function UnifiedCanonizer() {
       
       console.log('[CANONIZE] Review needed:', hasReviewItems, 'Stage:', hasReviewItems && outputLevel !== 'list' ? 'review' : 'results')
       
-      if (hasReviewItems && outputLevel !== 'list') {
+      if (hasReviewItems && outputLevel !== 'inventory') {
         setStage('review')
       } else {
         setStage('results')
@@ -1497,14 +1956,15 @@ export default function UnifiedCanonizer() {
 
   // Available demo datasets (AIGNE-generated)
   const DEMO_DATASETS = [
-    { id: 'oil-gas-medium', label: 'Oil & Gas - Medium (~12K assets)', industry: 'oil-gas', scale: 'medium', path: '/samples/demo/oil-gas' },
-    { id: 'oil-gas-large', label: 'Oil & Gas - Large (~11K assets, 3 plants)', industry: 'oil-gas', scale: 'large', path: '/samples/aigne/oil-gas/large' },
-    { id: 'oil-gas-enterprise', label: 'Oil & Gas - Enterprise (~32K assets, 5 plants)', industry: 'oil-gas', scale: 'enterprise', path: '/samples/aigne/oil-gas/enterprise' },
-    { id: 'pharma-large', label: 'Pharma - Large (~11K assets, 3 plants)', industry: 'pharma', scale: 'large', path: '/samples/aigne/pharma/large' },
-    { id: 'utilities-large', label: 'Utilities - Large (~10K assets, 3 plants)', industry: 'utilities', scale: 'large', path: '/samples/aigne/utilities/large' }
+    { id: 'automotive-large', label: '🚗 Automotive - TMNA Style (~12K assets, 5 plants)', industry: 'automotive', scale: 'large', path: '/samples/aigne/automotive/large' },
+    { id: 'oil-gas-medium', label: '⛽ Oil & Gas - Medium (~12K assets)', industry: 'oil-gas', scale: 'medium', path: '/samples/demo/oil-gas' },
+    { id: 'oil-gas-large', label: '⛽ Oil & Gas - Large (~11K assets, 3 plants)', industry: 'oil-gas', scale: 'large', path: '/samples/aigne/oil-gas/large' },
+    { id: 'oil-gas-enterprise', label: '⛽ Oil & Gas - Enterprise (~32K assets, 5 plants)', industry: 'oil-gas', scale: 'enterprise', path: '/samples/aigne/oil-gas/enterprise' },
+    { id: 'pharma-large', label: '💊 Pharma - Large (~11K assets, 3 plants)', industry: 'pharma', scale: 'large', path: '/samples/aigne/pharma/large' },
+    { id: 'utilities-large', label: '⚡ Utilities - Large (~10K assets, 3 plants)', industry: 'utilities', scale: 'large', path: '/samples/aigne/utilities/large' }
   ]
   
-  const [selectedDemoDataset, setSelectedDemoDataset] = useState('oil-gas-large')
+  const [selectedDemoDataset, setSelectedDemoDataset] = useState('automotive-large')
 
   // Load demo data
   const loadDemoData = async () => {
