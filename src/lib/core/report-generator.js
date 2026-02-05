@@ -98,28 +98,83 @@ export class ReportGenerator {
     const coverage = summary.coverage || 0
 
     // Determine overall posture
-    let overallPosture = 'ACCEPTABLE'
-    let postureColor = '#22c55e'
-    if (complianceSummary.bySeverity.critical > 0) {
-      overallPosture = 'CRITICAL FINDINGS'
+    // This must account for: findings severity, coverage gaps, AND data quality.
+    // "ACCEPTABLE" should be HARD to achieve — it means we looked thoroughly
+    // and found nothing significant. In OT, that's rare.
+    let overallPosture = 'NEEDS REVIEW'
+    let postureColor = '#f59e0b'
+
+    const hasCritical = complianceSummary.bySeverity.critical > 0
+    const hasHigh = complianceSummary.bySeverity.high > 0
+    const highCount = complianceSummary.bySeverity.high || 0
+    const lowCoverage = coverage < 60
+    const veryLowCoverage = coverage < 30
+    const manyOrphans = (summary.orphans || 0) > 20
+    const manyBlindSpots = (summary.blindSpots || 0) > assets.length * 0.3
+    const noFindings = complianceSummary.bySeverity.critical === 0 &&
+                       complianceSummary.bySeverity.high === 0 &&
+                       complianceSummary.bySeverity.medium === 0
+
+    if (hasCritical || veryLowCoverage) {
+      overallPosture = 'CRITICAL — IMMEDIATE ACTION REQUIRED'
       postureColor = '#ef4444'
-    } else if (complianceSummary.bySeverity.high > 3) {
-      overallPosture = 'SIGNIFICANT GAPS'
+    } else if (highCount > 3 || (lowCoverage && hasHigh)) {
+      overallPosture = 'SIGNIFICANT GAPS IDENTIFIED'
       postureColor = '#f97316'
-    } else if (complianceSummary.bySeverity.high > 0) {
+    } else if (hasHigh || lowCoverage || manyOrphans || manyBlindSpots) {
       overallPosture = 'IMPROVEMENT NEEDED'
       postureColor = '#f59e0b'
+    } else if (noFindings && coverage >= 80) {
+      // Only "ACCEPTABLE" if we actually have good coverage AND no findings
+      overallPosture = 'ACCEPTABLE — MONITOR CONTINUOUSLY'
+      postureColor = '#22c55e'
+    } else if (noFindings) {
+      // No findings but coverage isn't great — suspicious
+      overallPosture = 'INSUFFICIENT DATA FOR ASSESSMENT'
+      postureColor = '#64748b'
     }
 
     // Key findings
     const keyFindings = []
 
-    if (coverage < 60) {
+    // ALWAYS lead with a coverage finding — it frames the entire assessment
+    if (coverage < 30) {
+      keyFindings.push({
+        severity: 'critical',
+        finding: `Discovery coverage is only ${coverage}%. The majority of documented assets are invisible to monitoring.`,
+        implication: 'Assessment reliability is LOW. Findings may significantly understate actual risk because most of the plant is not being observed.',
+        reference: 'IEC 62443 SR 6.2, NIST CSF DE.CM-1'
+      })
+    } else if (coverage < 60) {
       keyFindings.push({
         severity: 'high',
         finding: `Discovery coverage is ${coverage}% — over ${100 - coverage}% of documented assets were not found on the network.`,
         implication: 'Significant blind spots exist in network monitoring. Undiscovered assets cannot be protected.',
         reference: 'IEC 62443 SR 6.2, NIST CSF DE.CM-1'
+      })
+    } else if (coverage < 80) {
+      keyFindings.push({
+        severity: 'medium',
+        finding: `Discovery coverage is ${coverage}%. While above average, ${100 - coverage}% of assets remain unverified.`,
+        implication: 'Good baseline coverage but gaps remain. Target >80% for reliable assurance posture.',
+        reference: 'IEC 62443 SR 6.2'
+      })
+    } else {
+      keyFindings.push({
+        severity: 'info',
+        finding: `Discovery coverage is ${coverage}%. Strong alignment between engineering baseline and network reality.`,
+        implication: 'High coverage enables reliable gap detection and risk assessment.',
+        reference: 'IEC 62443 SR 6.2'
+      })
+    }
+
+    // If zero compliance findings, flag that as itself a finding
+    if (noFindings && gaps.length === 0) {
+      keyFindings.push({
+        severity: 'medium',
+        finding: 'Zero compliance findings generated. This is unusual for any OT environment.',
+        implication: 'Either the data lacks sufficient detail for gap detection (e.g., missing unit/area fields), or the environment has been recently remediated. Manual verification recommended.',
+        reference: 'Assessment methodology validation'
       })
     }
 

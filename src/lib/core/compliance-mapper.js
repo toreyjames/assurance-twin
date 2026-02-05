@@ -527,11 +527,33 @@ export class ComplianceMapper {
   }
 
   _computeComplianceScore(findings, iecHit, nistHit) {
-    // Score = percentage of controls NOT impacted (higher = better)
-    const totalControls = Object.keys(IEC_62443).length + Object.keys(NIST_CSF).length
-    const impacted = iecHit.size + nistHit.size
-    const clean = totalControls - impacted
-    return Math.round((clean / totalControls) * 100)
+    // Score is a DEDUCTION model, not a clean-controls model.
+    // Start at 100, deduct based on finding severity and count.
+    // Rationale: "100% with zero findings" should never happen in a real
+    // OT environment — it means the assessment didn't find anything,
+    // which is itself a finding (insufficient analysis depth).
+    let score = 100
+
+    // Deduct per finding by severity
+    findings.forEach(f => {
+      if (f.complianceSeverity === 'critical') score -= 8
+      else if (f.complianceSeverity === 'high') score -= 4
+      else if (f.complianceSeverity === 'medium') score -= 2
+      else if (f.complianceSeverity === 'low') score -= 1
+    })
+
+    // Deduct for breadth of control impact (more unique controls hit = worse)
+    const controlBreadth = (iecHit.size + nistHit.size) /
+      (Object.keys(IEC_62443).length + Object.keys(NIST_CSF).length)
+    score -= Math.round(controlBreadth * 20)
+
+    // If there are ZERO findings, that's suspicious — cap at 85
+    // because no real OT environment is 100% compliant
+    if (findings.length === 0) {
+      score = Math.min(score, 85)
+    }
+
+    return Math.max(0, Math.min(100, Math.round(score)))
   }
 }
 
