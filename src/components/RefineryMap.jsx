@@ -27,15 +27,21 @@ const INDUSTRY_LAYOUTS = {
     // Primary processing
     'Crude Distillation Unit': { position: [-10, 0, 0], equipment: 'column', height: 10, section: 'primary', flowOrder: 2 },
     'CDU': { position: [-10, 0, 0], equipment: 'column', height: 10, section: 'primary', flowOrder: 2 },
+    'Vacuum Distillation': { position: [-5, 0, 6], equipment: 'column', height: 8, section: 'primary', flowOrder: 2 },
+    'VDU': { position: [-5, 0, 6], equipment: 'column', height: 8, section: 'primary', flowOrder: 2 },
     // Secondary processing
     'Fluid Catalytic Cracker': { position: [5, 0, -8], equipment: 'reactor', section: 'conversion', flowOrder: 3 },
+    'Fluid Catalytic Cracking': { position: [5, 0, -8], equipment: 'reactor', section: 'conversion', flowOrder: 3 },
     'FCC': { position: [5, 0, -8], equipment: 'reactor', section: 'conversion', flowOrder: 3 },
     'Reformer': { position: [5, 0, 8], equipment: 'column', height: 7, section: 'conversion', flowOrder: 3 },
+    'Alkylation': { position: [10, 0, 14], equipment: 'reactor', section: 'conversion', flowOrder: 3 },
+    'Isomerization': { position: [0, 0, 14], equipment: 'column', height: 6, section: 'conversion', flowOrder: 3 },
     'Hydrocracker': { position: [15, 0, -8], equipment: 'reactor', section: 'conversion', flowOrder: 4 },
     'Coker Unit': { position: [15, 0, 8], equipment: 'column', height: 9, section: 'conversion', flowOrder: 4 },
     'Coker': { position: [15, 0, 8], equipment: 'column', height: 9, section: 'conversion', flowOrder: 4 },
     // Treatment
     'Hydrotreater': { position: [25, 0, 0], equipment: 'exchanger', section: 'treating', flowOrder: 5 },
+    'Sulfur Recovery': { position: [25, 0, -10], equipment: 'furnace', section: 'treating', flowOrder: 5 },
     // Utilities & support
     'Utilities': { position: [-20, 0, -15], equipment: 'furnace', section: 'utilities', flowOrder: 0 },
     'Control Room': { position: [-25, 0, -10], equipment: 'controlroom', section: 'control', flowOrder: 0 },
@@ -900,6 +906,14 @@ export default function RefineryMap({ result, selectedPlant = 'all', industry = 
               )
             })}
             
+            {/* Decorative pumps at base of major columns */}
+            <Pump position={[-12, 0, 1]} scale={0.5} />
+            <Pump position={[-8, 0, -1]} scale={0.5} />
+            <Pump position={[3, 0, -6]} scale={0.5} />
+            <Pump position={[13, 0, 6]} scale={0.5} />
+            <Pump position={[23, 0, 1]} scale={0.5} />
+            <Pump position={[33, 0, 12]} scale={0.5} />
+
             <OrbitControls 
               enablePan 
               enableZoom 

@@ -237,7 +237,7 @@ function DetailPanel({ selected, result, onReviewDecision, rightTab, setRightTab
                 Export CSV
               </button>
             </div>
-            <AssetTable assets={buildUnifiedAssets(result)} />
+            <AssetTable unifiedAssets={buildUnifiedAssets(result)} result={result} />
           </div>
         )}
       </div>
@@ -508,7 +508,58 @@ function FieldGroup({ title, fields }) {
 // THREE QUESTIONS SUMMARY BAR
 // =============================================================================
 
-function ThreeQuestions({ result }) {
+// =============================================================================
+// COMPACT PLANT STRIP (when map is collapsed)
+// =============================================================================
+
+function CompactPlantStrip({ result, onExpand }) {
+  const units = useMemo(() => {
+    const all = buildUnifiedAssets(result)
+    const map = {}
+    all.forEach(a => {
+      const u = a.unit || a.area || a.location || 'Unassigned'
+      if (!map[u]) map[u] = { name: u, total: 0, t1: 0, t2: 0, t3: 0 }
+      map[u].total++
+      const t = a.classification?.tier || a.security_tier || 3
+      if (t === 1) map[u].t1++
+      else if (t === 2) map[u].t2++
+      else map[u].t3++
+    })
+    return Object.values(map).sort((a, b) => b.total - a.total)
+  }, [result])
+
+  return (
+    <div style={{
+      padding: '0.5rem 0.75rem', background: '#0f172a', borderBottom: '1px solid #1e293b',
+      cursor: 'pointer', overflow: 'hidden'
+    }} onClick={onExpand}>
+      <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', marginBottom: '0.35rem' }}>
+        <span style={{ fontSize: '0.6rem', fontFamily: 'monospace', color: '#64748b', textTransform: 'uppercase', fontWeight: '700' }}>
+          Plant Units ({units.length})
+        </span>
+        <span style={{ fontSize: '0.55rem', color: '#475569', fontFamily: 'monospace' }}>
+          click to expand map
+        </span>
+      </div>
+      <div style={{ display: 'flex', gap: '0.35rem', flexWrap: 'wrap' }}>
+        {units.map(u => (
+          <div key={u.name} style={{
+            padding: '0.2rem 0.5rem', background: '#1e293b', borderRadius: '0.2rem',
+            fontSize: '0.6rem', fontFamily: 'monospace', color: '#94a3b8',
+            borderLeft: `2px solid ${u.t1 > 0 ? '#ef4444' : u.t2 > 0 ? '#f59e0b' : '#334155'}`
+          }}>
+            {u.name} <span style={{ color: '#475569' }}>{u.total}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+// Expected unit count per plant type (for topological coverage)
+const EXPECTED_UNITS = { 'oil-gas': 14, 'pharma': 10, 'automotive': 8, 'utilities': 10 }
+
+function ThreeQuestions({ result, industry }) {
   const stats = useMemo(() => {
     if (!result) return null
     const assets = buildUnifiedAssets(result)
@@ -516,33 +567,60 @@ function ThreeQuestions({ result }) {
     const matched = result.summary?.matched || 0
     const blindSpots = result.summary?.blindSpots || 0
     const orphans = result.summary?.orphans || 0
-    const coverage = result.summary?.coverage || 0
-    const confidence = coverage >= 80 ? 'HIGH' : coverage >= 60 ? 'MODERATE' : coverage >= 30 ? 'LOW' : 'INSUFFICIENT'
-    const needsMgmt = assets.filter(a => { const t = a.classification?.tier || a.security_tier; return t === 1 || t === 2 })
-    const managed = needsMgmt.filter(a => a.is_managed === true || a.is_managed === 'true')
-    return { total, matched, blindSpots, orphans, coverage, confidence, needsMgmt: needsMgmt.length, managed: managed.length, unmanaged: needsMgmt.length - managed.length }
-  }, [result])
+
+    // Asset breakdown by tier
+    const ot = assets.filter(a => (a.classification?.tier || a.security_tier) === 1).length
+    const networked = assets.filter(a => (a.classification?.tier || a.security_tier) === 2).length
+    const passive = assets.filter(a => (a.classification?.tier || a.security_tier) === 3).length
+
+    // Plant visibility (internal: min of three layers)
+    const unitSet = new Set()
+    assets.forEach(a => { const u = a.unit || a.area || a.location; if (u && u !== 'Unassigned') unitSet.add(u) })
+    const expectedUnits = EXPECTED_UNITS[industry] || 14
+    const topoCoverage = Math.min(100, Math.round(unitSet.size / expectedUnits * 100))
+    const ontoCoverage = result.summary?.coverage || 0
+    const corroborated = assets.filter(a => a._status === 'matched' && a.matchConfidence >= 60).length
+    const episCoverage = matched > 0 ? Math.round(corroborated / matched * 100) : 0
+    const visibility = Math.min(topoCoverage, ontoCoverage, episCoverage)
+
+    // Security coverage
+    const networkedAssets = assets.filter(a => { const t = a.classification?.tier || a.security_tier; return t === 1 || t === 2 })
+    const managed = networkedAssets.filter(a => a.is_managed === true || a.is_managed === 'true')
+    const withCVEs = networkedAssets.filter(a => (a.cve_count || 0) > 0)
+
+    return {
+      total, ot, networked, passive,
+      visibility, topoCoverage, ontoCoverage, episCoverage,
+      networkedTotal: networkedAssets.length,
+      managed: managed.length,
+      unmanaged: networkedAssets.length - managed.length,
+      withCVEs: withCVEs.length
+    }
+  }, [result, industry])
 
   if (!stats) return null
+
+  const visColor = stats.visibility >= 70 ? '#22c55e' : stats.visibility >= 50 ? '#f59e0b' : '#ef4444'
+  const secColor = stats.unmanaged === 0 ? '#22c55e' : stats.unmanaged > 10 ? '#ef4444' : '#f59e0b'
 
   return (
     <div style={{ display: 'flex', gap: '1px', background: '#1e293b', borderBottom: '1px solid #1e293b' }}>
       <QCard
-        label="How many assets?"
+        label="Assets"
         value={stats.total.toLocaleString()}
-        detail={`${stats.matched} matched \u00B7 ${stats.blindSpots} blind spots \u00B7 ${stats.orphans} orphans`}
+        detail={`${stats.ot} OT \u00B7 ${stats.networked} Networked \u00B7 ${stats.passive} Passive`}
       />
       <QCard
-        label="How do we know?"
-        value={`${stats.coverage}%`}
-        detail={stats.confidence}
-        valueColor={stats.coverage >= 80 ? '#22c55e' : stats.coverage >= 60 ? '#f59e0b' : '#ef4444'}
+        label="Plant Visibility"
+        value={`${stats.visibility}%`}
+        detail={`${stats.total - stats.unmanaged} confirmed`}
+        valueColor={visColor}
       />
       <QCard
-        label="Are critical devices managed?"
-        value={`${stats.managed}/${stats.needsMgmt}`}
-        detail={stats.unmanaged > 0 ? `${stats.unmanaged} unmanaged` : 'All managed'}
-        valueColor={stats.unmanaged === 0 ? '#22c55e' : stats.unmanaged > 5 ? '#ef4444' : '#f59e0b'}
+        label="Security Coverage"
+        value={`${stats.managed}/${stats.networkedTotal}`}
+        detail={stats.unmanaged > 0 ? `${stats.unmanaged} unmanaged${stats.withCVEs > 0 ? ` \u00B7 ${stats.withCVEs} with CVEs` : ''}` : 'All networked devices covered'}
+        valueColor={secColor}
       />
     </div>
   )
@@ -619,6 +697,7 @@ export default function AssuranceWorkspace() {
   const [selectedDemo, setSelectedDemo] = useState('oil-gas-medium')
   const [reviewDecisions, setReviewDecisions] = useState({})
   const [showWorldModel, setShowWorldModel] = useState(false)
+  const [mapCollapsed, setMapCollapsed] = useState(false)
 
   // Persist when result changes
   React.useEffect(() => {
@@ -944,7 +1023,7 @@ export default function AssuranceWorkspace() {
     }}>
       <style>{ASSEMBLY_CSS}</style>
       {/* Three Questions bar (visible when results exist) */}
-      {result && <ThreeQuestions result={result} />}
+      {result && <ThreeQuestions result={result} industry={industry || 'oil-gas'} />}
 
       {/* Assembly status + toolbar */}
       {phase !== PHASES.IDLE && (
@@ -954,6 +1033,16 @@ export default function AssuranceWorkspace() {
           </div>
           {result && (
             <div style={{ display: 'flex', gap: '0.5rem', padding: '0 0.75rem', flexShrink: 0 }}>
+              <button
+                onClick={() => setMapCollapsed(!mapCollapsed)}
+                style={{
+                  padding: '0.3rem 0.6rem', background: mapCollapsed ? '#1e293b' : 'transparent',
+                  color: '#94a3b8', border: '1px solid #334155', borderRadius: '0.25rem',
+                  cursor: 'pointer', fontSize: '0.65rem', fontFamily: 'monospace'
+                }}
+              >
+                {mapCollapsed ? 'Show Map' : 'Hide Map'}
+              </button>
               <button
                 onClick={() => setShowWorldModel(!showWorldModel)}
                 style={{
@@ -1130,12 +1219,16 @@ export default function AssuranceWorkspace() {
             </div>
           )}
           {result ? (
-            <PlantMap
-              result={result}
-              industry={industry || 'oil-gas'}
-              gapMatrix={result.contextAnalysis?.gapAnalysis}
-              onUnitSelect={handleUnitSelect}
-            />
+            mapCollapsed ? (
+              <CompactPlantStrip result={result} onExpand={() => setMapCollapsed(false)} />
+            ) : (
+              <PlantMap
+                result={result}
+                industry={industry || 'oil-gas'}
+                gapMatrix={result.contextAnalysis?.gapAnalysis}
+                onUnitSelect={handleUnitSelect}
+              />
+            )
           ) : (
             <div style={{
               flex: 1, display: 'flex', flexDirection: 'column',
