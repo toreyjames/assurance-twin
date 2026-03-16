@@ -612,7 +612,7 @@ function LoadingSpinner() {
 /**
  * Main Refinery Map Component
  */
-export default function RefineryMap({ result, selectedPlant = 'all', industry = 'oil-gas', gapMatrix }) {
+export default function RefineryMap({ result, selectedPlant = 'all', industry = 'oil-gas', gapMatrix, onUnitSelect }) {
   const containerRef = useRef()
   const [selectedUnit, setSelectedUnit] = useState(null)
   const [showFlow, setShowFlow] = useState(true)
@@ -875,7 +875,9 @@ export default function RefineryMap({ result, selectedPlant = 'all', industry = 
                     gapInfo={gapInfo}
                     onClick={(e) => {
                       e.stopPropagation()
-                      setSelectedUnit(unit.name === selectedUnit ? null : unit.name)
+                      const next = unit.name === selectedUnit ? null : unit.name
+                      setSelectedUnit(next)
+                      if (onUnitSelect) onUnitSelect(next ? unit : null)
                     }}
                   />
                 )
@@ -890,7 +892,9 @@ export default function RefineryMap({ result, selectedPlant = 'all', industry = 
                   gapInfo={gapInfo}
                   onClick={(e) => {
                     e.stopPropagation()
-                    setSelectedUnit(unit.name === selectedUnit ? null : unit.name)
+                    const next = unit.name === selectedUnit ? null : unit.name
+                    setSelectedUnit(next)
+                    if (onUnitSelect) onUnitSelect(next ? unit : null)
                   }}
                 />
               )

@@ -13,7 +13,7 @@ const TIER_COLORS = {
   3: '#6366f1',
 }
 
-export default function PlantVisualization2D({ result }) {
+export default function PlantVisualization2D({ result, onUnitSelect }) {
   const containerRef = useRef()
   const [selectedUnit, setSelectedUnit] = useState(null)
   const [selectedPlant, setSelectedPlant] = useState('all')
@@ -208,7 +208,11 @@ export default function PlantVisualization2D({ result }) {
             return (
               <div
                 key={unit.name}
-                onClick={() => setSelectedUnit(isSelected ? null : unit.name)}
+                onClick={() => {
+                  const next = isSelected ? null : unit.name
+                  setSelectedUnit(next)
+                  if (onUnitSelect) onUnitSelect(next ? unit : null)
+                }}
                 style={{
                   padding: '1rem',
                   background: isSelected ? 'rgba(59, 130, 246, 0.2)' : 'rgba(255,255,255,0.05)',

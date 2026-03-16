@@ -199,7 +199,7 @@ function LoadingSpinner() {
 /**
  * Main Plant Visualization Component
  */
-export default function PlantVisualization({ result, onExport }) {
+export default function PlantVisualization({ result, onExport, onUnitSelect }) {
   const containerRef = useRef()
   const [selectedUnit, setSelectedUnit] = useState(null)
   const [viewMode, setViewMode] = useState('physical') // physical, network, security
@@ -602,9 +602,11 @@ export default function PlantVisualization({ result, onExport }) {
                 position={unit.position}
                 selected={selectedUnit === unit.name}
                 viewMode={viewMode}
-                onClick={() => setSelectedUnit(
-                  unit.name === selectedUnit ? null : unit.name
-                )}
+                onClick={() => {
+                  const next = unit.name === selectedUnit ? null : unit.name
+                  setSelectedUnit(next)
+                  if (onUnitSelect) onUnitSelect(next ? unit : null)
+                }}
               />
             ))}
             

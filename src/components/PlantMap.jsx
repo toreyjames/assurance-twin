@@ -110,7 +110,7 @@ function ViewToggle({ viewMode, setViewMode, isAutomotive, hasWebGL }) {
   )
 }
 
-export default function PlantMap({ result, industry = 'oil-gas', gapMatrix, selectedPlant = 'all' }) {
+export default function PlantMap({ result, industry = 'oil-gas', gapMatrix, selectedPlant = 'all', onUnitSelect }) {
   const [viewMode, setViewMode] = useState('schematic')
   const [hasWebGL, setHasWebGL] = useState(true)
   
@@ -169,10 +169,10 @@ export default function PlantMap({ result, industry = 'oil-gas', gapMatrix, sele
         </div>
       )}
       
-      {viewMode === '2d' && <PlantVisualization2D result={result} />}
-      {viewMode === 'simple3d' && <PlantVisualization result={result} />}
+      {viewMode === '2d' && <PlantVisualization2D result={result} onUnitSelect={onUnitSelect} />}
+      {viewMode === 'simple3d' && <PlantVisualization result={result} onUnitSelect={onUnitSelect} />}
       {viewMode === 'refinery' && (
-        <RefineryMap result={result} industry={industry} gapMatrix={gapMatrix} />
+        <RefineryMap result={result} industry={industry} gapMatrix={gapMatrix} onUnitSelect={onUnitSelect} />
       )}
     </div>
   )
