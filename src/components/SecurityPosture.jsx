@@ -17,10 +17,10 @@ import React, { useMemo } from 'react'
 
 function PostureCard({ number, question, status, answer, detail, actionNeeded, breakdown }) {
   const statusColors = {
-    good: { bg: '#f0fdf4', border: '#22c55e', icon: '✅', text: '#166534' },
-    warning: { bg: '#fffbeb', border: '#f59e0b', icon: '⚠️', text: '#92400e' },
-    critical: { bg: '#fef2f2', border: '#ef4444', icon: '🔴', text: '#991b1b' },
-    unknown: { bg: '#f8fafc', border: '#94a3b8', icon: '❓', text: '#475569' }
+    good: { bg: '#f0fdf4', border: '#22c55e', icon: 'OK', text: '#166534' },
+    warning: { bg: '#fffbeb', border: '#f59e0b', icon: 'REVIEW', text: '#92400e' },
+    critical: { bg: '#fef2f2', border: '#ef4444', icon: 'HIGH', text: '#991b1b' },
+    unknown: { bg: '#f8fafc', border: '#94a3b8', icon: 'N/A', text: '#475569' }
   }
   
   const colors = statusColors[status] || statusColors.unknown
@@ -452,7 +452,7 @@ export default function SecurityPosture({ result, gapAnalysis }) {
           alignItems: 'center',
           gap: '0.75rem'
         }}>
-          <span style={{ fontSize: '1.5rem' }}>⚠️</span>
+          <span style={{ fontSize: '0.75rem', fontWeight: '700', color: '#92400e' }}>REVIEW</span>
           <div>
             <div style={{ fontWeight: '700', color: '#92400e', marginBottom: '0.25rem' }}>
               {orphanCount.toLocaleString()} Undocumented Devices Detected

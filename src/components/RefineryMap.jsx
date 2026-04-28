@@ -18,6 +18,7 @@ import {
   Pump,
   Pipe
 } from './PlantEquipment'
+import { buildPlantMapModel } from '../lib/core/plant-map-model.js'
 
 // Industry-specific process layouts
 const INDUSTRY_LAYOUTS = {
@@ -136,6 +137,28 @@ function guessEquipmentType(unitName) {
   return 'reactor' // Default
 }
 
+function normalizeUnitName(name) {
+  return String(name || '').toLowerCase().replace(/[^a-z0-9]/g, '')
+}
+
+function unitNameMatches(unitName, targetName) {
+  const unit = normalizeUnitName(unitName)
+  const target = normalizeUnitName(targetName)
+  return unit === target || unit.includes(target) || target.includes(unit)
+}
+
+function findTemplateLayout(unitName, baseTemplate) {
+  const direct = baseTemplate[unitName]
+  if (direct) return direct
+
+  const unit = normalizeUnitName(unitName)
+  const entry = Object.entries(baseTemplate).find(([name]) => {
+    const templateName = normalizeUnitName(name)
+    return unit.includes(templateName) || templateName.includes(unit)
+  })
+  return entry?.[1] || null
+}
+
 /**
  * Generate a plant-specific layout based on actual units in the data
  * Each plant gets a unique but consistent layout based on its name
@@ -161,7 +184,7 @@ function generatePlantLayout(plantName, units, baseTemplate, industry) {
   let autoIndex = 0
   
   units.forEach((unit) => {
-    const templateLayout = baseTemplate[unit.name]
+    const templateLayout = findTemplateLayout(unit.name, baseTemplate)
     
     if (templateLayout) {
       // Use template position but add plant-specific offset
@@ -289,23 +312,23 @@ const SECTION_COLORS = {
 /**
  * Ground with section markings
  */
-function Ground({ units }) {
+function Ground({ units, layout }) {
   const sections = useMemo(() => {
     const sectionMap = {}
     units.forEach(unit => {
-      const layout = REFINERY_LAYOUT[unit.name]
-      if (layout && layout.section) {
-        if (!sectionMap[layout.section]) {
-          sectionMap[layout.section] = {
+      const unitLayout = layout[unit.name]
+      if (unitLayout && unitLayout.section) {
+        if (!sectionMap[unitLayout.section]) {
+          sectionMap[unitLayout.section] = {
             positions: [],
-            color: SECTION_COLORS[layout.section] || '#1e293b'
+            color: SECTION_COLORS[unitLayout.section] || '#1e293b'
           }
         }
-        sectionMap[layout.section].positions.push(layout.position)
+        sectionMap[unitLayout.section].positions.push(unitLayout.position)
       }
     })
     return sectionMap
-  }, [units])
+  }, [units, layout])
   
   return (
     <group>
@@ -339,12 +362,10 @@ function ProcessPipes({ units, showFlow, layout, flows }) {
     const result = []
     
     flows.forEach((flow, idx) => {
-      const fromLayout = layout[flow.from]
-      const toLayout = layout[flow.to]
-      
-      // Check if both units exist in the data
-      const fromUnit = units.find(u => u.name === flow.from || u.name.includes(flow.from.split(' ')[0]))
-      const toUnit = units.find(u => u.name === flow.to || u.name.includes(flow.to.split(' ')[0]))
+      const fromUnit = units.find(u => unitNameMatches(u.name, flow.from))
+      const toUnit = units.find(u => unitNameMatches(u.name, flow.to))
+      const fromLayout = fromUnit ? layout[fromUnit.name] : null
+      const toLayout = toUnit ? layout[toUnit.name] : null
       
       if (fromLayout && toLayout && fromUnit && toUnit) {
         const start = [...fromLayout.position]
@@ -400,6 +421,99 @@ function ProcessPipes({ units, showFlow, layout, flows }) {
   )
 }
 
+function NetworkConduits({ conduits, layout, showNetwork }) {
+  if (!showNetwork || !conduits?.length) return null
+
+  return (
+    <group>
+      {conduits.slice(0, 40).map((conduit, idx) => {
+        const fromLayout = layout[conduit.from]
+        const toLayout = layout[conduit.to]
+        if (!fromLayout || !toLayout) return null
+
+        const start = [fromLayout.position[0], 4, fromLayout.position[2]]
+        const end = [toLayout.position[0], 4, toLayout.position[2]]
+        const lineWidth = conduit.critical ? 3 : 1.5
+
+        return (
+          <group key={`${conduit.from}-${conduit.to}-${idx}`}>
+            <Line
+              points={[start, end]}
+              color={conduit.critical ? '#f59e0b' : '#38bdf8'}
+              lineWidth={lineWidth}
+              transparent
+              opacity={conduit.critical ? 0.7 : 0.45}
+              dashed
+              dashSize={1.2}
+              gapSize={0.6}
+            />
+          </group>
+        )
+      })}
+    </group>
+  )
+}
+
+function MapEvidenceStrip({ model, showNetwork }) {
+  const items = [
+    { label: 'Asset Denominator', value: model.summary.totalAssets.toLocaleString(), tone: '#f8fafc' },
+    { label: 'Matched', value: model.summary.matched.toLocaleString(), tone: '#22c55e' },
+    { label: 'Blind Spots', value: model.summary.blindSpots.toLocaleString(), tone: '#f59e0b' },
+    { label: 'Orphans', value: model.summary.orphans.toLocaleString(), tone: '#a855f7' },
+    { label: 'Network Conduits', value: model.network.conduits.length.toLocaleString(), tone: '#38bdf8' }
+  ]
+
+  return (
+    <div style={{
+      display: 'grid',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
+      gap: '1px',
+      background: '#334155',
+      borderBottom: '1px solid #334155'
+    }}>
+      {items.map(item => (
+        <div key={item.label} style={{
+          padding: '0.65rem 0.85rem',
+          background: '#0f172a',
+          minHeight: '4rem'
+        }}>
+          <div style={{
+            fontSize: '0.58rem',
+            color: '#64748b',
+            fontFamily: "'JetBrains Mono', monospace",
+            textTransform: 'uppercase',
+            letterSpacing: '0.06em',
+            marginBottom: '0.35rem',
+            fontWeight: 700
+          }}>
+            {item.label}
+          </div>
+          <div style={{
+            fontSize: '1.35rem',
+            lineHeight: 1,
+            color: item.tone,
+            fontFamily: "'JetBrains Mono', monospace",
+            fontWeight: 800
+          }}>
+            {item.value}
+          </div>
+        </div>
+      ))}
+      <div style={{
+        padding: '0.65rem 0.85rem',
+        background: '#0f172a',
+        color: '#94a3b8',
+        fontSize: '0.72rem',
+        lineHeight: 1.45,
+        gridColumn: '1 / -1'
+      }}>
+        Network overlay: {showNetwork ? 'cyan dashed lines show inferred ISA/IEC 62443-style conduits from shared subnet and protocol evidence.' : 'disabled.'}
+        {' '}Coverage is calculated as matched assets over matched plus blind spots, using uploaded engineering and discovery sources.
+      </div>
+    </div>
+  )
+}
+
 /**
  * Gap indicator ring that pulses around equipment with gaps
  */
@@ -432,7 +546,7 @@ function GapIndicator({ position, severity, height = 0 }) {
           fontWeight: 'bold',
           whiteSpace: 'nowrap'
         }}>
-          {severity === 'critical' ? '⚠️ GAP' : '⚡ CHECK'}
+          {severity === 'critical' ? 'GAP' : 'CHECK'}
         </div>
       </Html>
     </group>
@@ -622,6 +736,7 @@ export default function RefineryMap({ result, selectedPlant = 'all', industry = 
   const containerRef = useRef()
   const [selectedUnit, setSelectedUnit] = useState(null)
   const [showFlow, setShowFlow] = useState(true)
+  const [showNetwork, setShowNetwork] = useState(true)
   const [isLoading, setIsLoading] = useState(true)
   
   // Base industry-specific layout (template)
@@ -635,79 +750,40 @@ export default function RefineryMap({ result, selectedPlant = 'all', industry = 
     'utilities': 'Power Generation Map'
   }
   
-  // Extract unique plants
-  const plants = useMemo(() => {
-    const plantSet = new Set()
-    const assets = result?.assets || []
-    assets.forEach(a => {
-      const plantName = a.plant || a.plant_code || a.facility || 'Unknown Site'
-      if (plantName && plantName !== 'Unknown Site') {
-        plantSet.add(plantName)
-      }
-    })
-    return Array.from(plantSet).sort()
-  }, [result])
-  
-  const isMultiSite = plants.length > 1
   const [currentPlant, setCurrentPlant] = useState(selectedPlant)
+  const mapModel = useMemo(() => buildPlantMapModel(result, { selectedPlant: currentPlant }), [result, currentPlant])
+  const allSiteModel = useMemo(() => buildPlantMapModel(result), [result])
+  const plants = allSiteModel.plants
+  const isMultiSite = plants.length > 1
   
-  // Filter assets by selected plant
-  const filteredAssets = useMemo(() => {
-    const assets = result?.assets || []
-    if (currentPlant === 'all') return assets
-    return assets.filter(a => {
-      const plantName = a.plant || a.plant_code || a.facility || 'Unknown Site'
-      return plantName === currentPlant
-    })
-  }, [result, currentPlant])
-  
-  // Extract process units from filtered data
-  const processUnits = useMemo(() => {
-    const units = {}
-    
-    filteredAssets.forEach(a => {
-      const unitName = a.unit || a.area || a.location || 'Unassigned'
-      if (!units[unitName]) {
-        units[unitName] = { 
-          name: unitName, 
-          count: 0, 
-          tier1: 0, 
-          tier2: 0, 
-          tier3: 0,
-          assets: []
-        }
-      }
-      units[unitName].count++
-      units[unitName].assets.push(a)
-      if (a.classification?.tier === 1) units[unitName].tier1++
-      if (a.classification?.tier === 2) units[unitName].tier2++
-      if (a.classification?.tier === 3) units[unitName].tier3++
-    })
-    
-    return Object.values(units)
-      .filter(u => u.name !== 'Unassigned' || u.count > 10)
-      .sort((a, b) => {
-        const aLayout = BASE_LAYOUT[a.name]
-        const bLayout = BASE_LAYOUT[b.name]
-        return (aLayout?.flowOrder || 99) - (bLayout?.flowOrder || 99)
-      })
-  }, [filteredAssets, BASE_LAYOUT])
+  const filteredAssets = mapModel.assets
+  const processUnits = useMemo(() => mapModel.units
+    .filter(u => u.name !== 'Unassigned' || u.count > 10)
+    .sort((a, b) => {
+      const aLayout = findTemplateLayout(a.name, BASE_LAYOUT)
+      const bLayout = findTemplateLayout(b.name, BASE_LAYOUT)
+      return (aLayout?.flowOrder || 99) - (bLayout?.flowOrder || 99)
+    }), [mapModel.units, BASE_LAYOUT])
   
   // Generate plant-specific layout (dynamic based on plant name and actual units)
   const ACTIVE_LAYOUT = useMemo(() => {
-    if (currentPlant === 'all') {
-      // For "all plants" view, use the base template
-      return BASE_LAYOUT
-    }
-    // Generate unique layout for this specific plant
-    return generatePlantLayout(currentPlant, processUnits, BASE_LAYOUT, industry)
+    const layoutSeed = currentPlant === 'all' ? 'all-sites' : currentPlant
+    return generatePlantLayout(layoutSeed, processUnits, BASE_LAYOUT, industry)
   }, [currentPlant, processUnits, BASE_LAYOUT, industry])
   
   // Get gap data for units (for visual highlighting)
   const unitGaps = useMemo(() => {
-    if (!gapMatrix?.gaps) return {}
     const gaps = {}
-    gapMatrix.gaps.forEach(g => {
+    processUnits.forEach(unit => {
+      if (unit.blindSpots > 0 || unit.orphans > 0) {
+        gaps[unit.name] = {
+          critical: unit.tier1 > 0 && unit.blindSpots > 0 ? unit.blindSpots : 0,
+          warning: unit.orphans + (unit.tier1 > 0 ? 0 : unit.blindSpots),
+          total: unit.blindSpots + unit.orphans
+        }
+      }
+    })
+    ;(gapMatrix?.gaps || []).forEach(g => {
       if (!gaps[g.unit]) {
         gaps[g.unit] = { critical: 0, warning: 0, total: 0 }
       }
@@ -716,7 +792,7 @@ export default function RefineryMap({ result, selectedPlant = 'all', industry = 
       if (g.severity === 'warning') gaps[g.unit].warning++
     })
     return gaps
-  }, [gapMatrix])
+  }, [gapMatrix, processUnits])
 
   // Export as PNG
   const handleExport = async () => {
@@ -759,11 +835,11 @@ export default function RefineryMap({ result, selectedPlant = 'all', industry = 
       }}>
         <div>
           <h3 style={{ margin: 0, color: 'white', fontSize: '1.1rem', fontWeight: '600' }}>
-            🏭 {INDUSTRY_TITLES[industry] || 'Plant Map'}
+            {INDUSTRY_TITLES[industry] || 'Plant Map'}
             {isMultiSite && currentPlant !== 'all' && ` — ${currentPlant}`}
           </h3>
           <p style={{ margin: '0.25rem 0 0', color: '#94a3b8', fontSize: '0.8rem' }}>
-            Interactive 3D process flow • Click equipment to explore • Drag to rotate
+            Process layout from uploaded assets; network overlay inferred from subnets and protocols.
           </p>
         </div>
         
@@ -807,7 +883,23 @@ export default function RefineryMap({ result, selectedPlant = 'all', industry = 
               fontWeight: showFlow ? '600' : '400'
             }}
           >
-            {showFlow ? '🔗 Flow On' : '🔗 Flow Off'}
+            {showFlow ? 'Flow On' : 'Flow Off'}
+          </button>
+
+          <button
+            onClick={() => setShowNetwork(!showNetwork)}
+            style={{
+              padding: '0.5rem 1rem',
+              background: showNetwork ? '#0891b2' : 'rgba(255,255,255,0.1)',
+              color: 'white',
+              border: 'none',
+              borderRadius: '0.375rem',
+              cursor: 'pointer',
+              fontSize: '0.75rem',
+              fontWeight: showNetwork ? '600' : '400'
+            }}
+          >
+            {showNetwork ? 'Network On' : 'Network Off'}
           </button>
           
           {/* Export button */}
@@ -824,10 +916,12 @@ export default function RefineryMap({ result, selectedPlant = 'all', industry = 
               fontWeight: '600'
             }}
           >
-            📷 Export
+            Export
           </button>
         </div>
       </div>
+
+      <MapEvidenceStrip model={mapModel} showNetwork={showNetwork} />
       
       {/* 3D Canvas */}
       <div ref={containerRef} style={{ height: '600px', position: 'relative' }}>
@@ -854,10 +948,13 @@ export default function RefineryMap({ result, selectedPlant = 'all', industry = 
             <Sky sunPosition={[100, 20, 100]} />
             
             {/* Ground */}
-            <Ground units={processUnits} />
+            <Ground units={processUnits} layout={ACTIVE_LAYOUT} />
             
             {/* Process pipes */}
             <ProcessPipes units={processUnits} showFlow={showFlow} layout={ACTIVE_LAYOUT} flows={ACTIVE_FLOWS} />
+
+            {/* Network conduits inferred from uploaded subnets/protocols */}
+            <NetworkConduits conduits={mapModel.network.conduits} layout={ACTIVE_LAYOUT} showNetwork={showNetwork} />
             
             {/* Equipment */}
             {processUnits.map((unit) => {
@@ -987,6 +1084,25 @@ export default function RefineryMap({ result, selectedPlant = 'all', industry = 
                 <span style={{ color: '#6366f1' }}>● Tier 3: {selectedUnitData.tier3}</span>
               </div>
             </div>
+
+            <div style={{ borderTop: '1px solid #334155', paddingTop: '0.75rem', marginTop: '0.75rem' }}>
+              <div style={{ fontSize: '0.7rem', color: '#64748b', marginBottom: '0.5rem' }}>EVIDENCE</div>
+              <div style={{ display: 'grid', gap: '0.35rem', fontSize: '0.75rem', color: '#e2e8f0' }}>
+                <div>{selectedUnitData.matched} matched assets</div>
+                <div>{selectedUnitData.blindSpots} blind spots</div>
+                <div>{selectedUnitData.orphans} orphan devices</div>
+                {selectedUnitData.subnets?.length > 0 && (
+                  <div style={{ color: '#38bdf8', fontFamily: 'monospace' }}>
+                    Subnets: {selectedUnitData.subnets.slice(0, 4).join(', ')}{selectedUnitData.subnets.length > 4 ? '...' : ''}
+                  </div>
+                )}
+                {selectedUnitData.protocols?.length > 0 && (
+                  <div style={{ color: '#94a3b8' }}>
+                    Protocols: {selectedUnitData.protocols.slice(0, 4).join(', ')}{selectedUnitData.protocols.length > 4 ? '...' : ''}
+                  </div>
+                )}
+              </div>
+            </div>
             
             {/* Gap information if available */}
             {unitGaps[selectedUnitData.name] && (
@@ -1001,17 +1117,17 @@ export default function RefineryMap({ result, selectedPlant = 'all', industry = 
                   marginBottom: '0.5rem',
                   fontWeight: '600'
                 }}>
-                  ⚠️ GAP ANALYSIS
+                  GAP ANALYSIS
                 </div>
                 <div style={{ fontSize: '0.75rem', color: '#e2e8f0' }}>
                   {unitGaps[selectedUnitData.name].critical > 0 && (
                     <div style={{ color: '#ef4444', marginBottom: '0.25rem' }}>
-                      🔴 {unitGaps[selectedUnitData.name].critical} critical gap(s)
+                      {unitGaps[selectedUnitData.name].critical} critical gap(s)
                     </div>
                   )}
                   {unitGaps[selectedUnitData.name].warning > 0 && (
                     <div style={{ color: '#f59e0b' }}>
-                      🟡 {unitGaps[selectedUnitData.name].warning} warning(s)
+                      {unitGaps[selectedUnitData.name].warning} warning(s)
                     </div>
                   )}
                   <div style={{ marginTop: '0.5rem', fontSize: '0.7rem', color: '#94a3b8' }}>
@@ -1035,22 +1151,23 @@ export default function RefineryMap({ result, selectedPlant = 'all', industry = 
         gap: '0.5rem'
       }}>
         <div style={{ display: 'flex', gap: '1rem', color: '#94a3b8', fontSize: '0.75rem', flexWrap: 'wrap' }}>
-          <span>🗼 Columns</span>
-          <span>⚗️ Reactors</span>
-          <span>🛢️ Tanks</span>
-          <span>🔥 Flare</span>
-          <span>🏢 Control</span>
+          <span>Columns</span>
+          <span>Reactors</span>
+          <span>Tanks</span>
+          <span>Flare</span>
+          <span>Control</span>
           {showFlow && <span style={{ color: '#ef4444' }}>━ Critical Flow</span>}
+          {showNetwork && <span style={{ color: '#38bdf8' }}>- - Network Conduit</span>}
           {Object.keys(unitGaps).length > 0 && (
             <>
-              <span style={{ color: '#ef4444' }}>⚠️ Critical Gap</span>
-              <span style={{ color: '#f59e0b' }}>⚡ Warning</span>
+              <span style={{ color: '#ef4444' }}>Critical Gap</span>
+              <span style={{ color: '#f59e0b' }}>Warning</span>
             </>
           )}
         </div>
         <div style={{ color: '#64748b', fontSize: '0.7rem' }}>
-          {processUnits.length} units • {filteredAssets.length.toLocaleString()} assets
-          {Object.keys(unitGaps).length > 0 && ` • ${Object.keys(unitGaps).length} units with gaps`}
+          {processUnits.length} units • {filteredAssets.length.toLocaleString()} assets • {mapModel.network.conduits.length} network conduits
+          {Object.keys(unitGaps).length > 0 && ` • ${Object.keys(unitGaps).length} units with exceptions`}
         </div>
       </div>
     </div>

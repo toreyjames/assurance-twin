@@ -22,6 +22,7 @@ import { addLifecycleStatus, generateLifecycleSummary } from './lib/context/life
 import { generateDependencyMap } from './lib/context/dependency-mapper.js'
 import { analyzeAllGaps } from './lib/context/gap-analyzer.js'
 import { analyzePortfolioRisk } from './lib/context/risk-engine.js'
+import { buildPlantMapModel } from './lib/core/plant-map-model.js'
 
 import SmartUpload from './components/SmartUpload.jsx'
 import PlantMap from './components/PlantMap.jsx'
@@ -508,89 +509,36 @@ function FieldGroup({ title, fields }) {
 // THREE QUESTIONS SUMMARY BAR
 // =============================================================================
 
-// =============================================================================
-// COMPACT PLANT STRIP (when map is collapsed)
-// =============================================================================
-
-function CompactPlantStrip({ result, onExpand }) {
-  const units = useMemo(() => {
-    const all = buildUnifiedAssets(result)
-    const map = {}
-    all.forEach(a => {
-      const u = a.unit || a.area || a.location || 'Unassigned'
-      if (!map[u]) map[u] = { name: u, total: 0, t1: 0, t2: 0, t3: 0 }
-      map[u].total++
-      const t = a.classification?.tier || a.security_tier || 3
-      if (t === 1) map[u].t1++
-      else if (t === 2) map[u].t2++
-      else map[u].t3++
-    })
-    return Object.values(map).sort((a, b) => b.total - a.total)
-  }, [result])
-
-  return (
-    <div style={{
-      padding: '0.5rem 0.75rem', background: '#0f172a', borderBottom: '1px solid #1e293b',
-      cursor: 'pointer', overflow: 'hidden'
-    }} onClick={onExpand}>
-      <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', marginBottom: '0.35rem' }}>
-        <span style={{ fontSize: '0.6rem', fontFamily: 'monospace', color: '#64748b', textTransform: 'uppercase', fontWeight: '700' }}>
-          Plant Units ({units.length})
-        </span>
-        <span style={{ fontSize: '0.55rem', color: '#475569', fontFamily: 'monospace' }}>
-          click to expand map
-        </span>
-      </div>
-      <div style={{ display: 'flex', gap: '0.35rem', flexWrap: 'wrap' }}>
-        {units.map(u => (
-          <div key={u.name} style={{
-            padding: '0.2rem 0.5rem', background: '#1e293b', borderRadius: '0.2rem',
-            fontSize: '0.6rem', fontFamily: 'monospace', color: '#94a3b8',
-            borderLeft: `2px solid ${u.t1 > 0 ? '#ef4444' : u.t2 > 0 ? '#f59e0b' : '#334155'}`
-          }}>
-            {u.name} <span style={{ color: '#475569' }}>{u.total}</span>
-          </div>
-        ))}
-      </div>
-    </div>
-  )
-}
-
 // Expected unit count per plant type (for topological coverage)
 const EXPECTED_UNITS = { 'oil-gas': 14, 'pharma': 10, 'automotive': 8, 'utilities': 10 }
 
 function ThreeQuestions({ result, industry }) {
   const stats = useMemo(() => {
     if (!result) return null
-    const assets = buildUnifiedAssets(result)
-    const total = assets.length
-    const matched = result.summary?.matched || 0
-    const blindSpots = result.summary?.blindSpots || 0
-    const orphans = result.summary?.orphans || 0
+    const mapModel = buildPlantMapModel(result)
+    const total = mapModel.summary.totalAssets
 
-    // Asset breakdown by tier
-    const ot = assets.filter(a => (a.classification?.tier || a.security_tier) === 1).length
-    const networked = assets.filter(a => (a.classification?.tier || a.security_tier) === 2).length
-    const passive = assets.filter(a => (a.classification?.tier || a.security_tier) === 3).length
-
-    // Plant visibility (internal: min of three layers)
+    // Plant visibility separates plant-layout recognition from discovery coverage.
     const unitSet = new Set()
-    assets.forEach(a => { const u = a.unit || a.area || a.location; if (u && u !== 'Unassigned') unitSet.add(u) })
+    mapModel.assets.forEach(a => { const u = a.unit || a.area || a.location; if (u && u !== 'Unassigned') unitSet.add(u) })
     const expectedUnits = EXPECTED_UNITS[industry] || 14
     const topoCoverage = Math.min(100, Math.round(unitSet.size / expectedUnits * 100))
-    const ontoCoverage = result.summary?.coverage || 0
-    const corroborated = assets.filter(a => a._status === 'matched' && a.matchConfidence >= 60).length
-    const episCoverage = matched > 0 ? Math.round(corroborated / matched * 100) : 0
-    const visibility = Math.min(topoCoverage, ontoCoverage, episCoverage)
+    const discoveryCoverage = mapModel.summary.coveragePercent
 
-    // Security coverage
-    const networkedAssets = assets.filter(a => { const t = a.classification?.tier || a.security_tier; return t === 1 || t === 2 })
+    const networkedAssets = mapModel.assets.filter(a => { const t = a.classification?.tier || a.security_tier; return t === 1 || t === 2 })
     const managed = networkedAssets.filter(a => a.is_managed === true || a.is_managed === 'true')
     const withCVEs = networkedAssets.filter(a => (a.cve_count || 0) > 0)
 
     return {
-      total, ot, networked, passive,
-      visibility, topoCoverage, ontoCoverage, episCoverage,
+      total,
+      tier1: mapModel.summary.tier1,
+      tier2: mapModel.summary.tier2,
+      tier3: mapModel.summary.tier3,
+      discoveryCoverage,
+      topoCoverage,
+      matched: mapModel.summary.matched,
+      blindSpots: mapModel.summary.blindSpots,
+      orphans: mapModel.summary.orphans,
       networkedTotal: networkedAssets.length,
       managed: managed.length,
       unmanaged: networkedAssets.length - managed.length,
@@ -600,7 +548,7 @@ function ThreeQuestions({ result, industry }) {
 
   if (!stats) return null
 
-  const visColor = stats.visibility >= 70 ? '#22c55e' : stats.visibility >= 50 ? '#f59e0b' : '#ef4444'
+  const visColor = stats.discoveryCoverage >= 70 ? '#22c55e' : stats.discoveryCoverage >= 50 ? '#f59e0b' : '#ef4444'
   const secColor = stats.unmanaged === 0 ? '#22c55e' : stats.unmanaged > 10 ? '#ef4444' : '#f59e0b'
 
   return (
@@ -608,12 +556,12 @@ function ThreeQuestions({ result, industry }) {
       <QCard
         label="Assets"
         value={stats.total.toLocaleString()}
-        detail={`${stats.ot} OT \u00B7 ${stats.networked} Networked \u00B7 ${stats.passive} Passive`}
+        detail={`${stats.tier1} critical \u00B7 ${stats.tier2} networkable \u00B7 ${stats.tier3} passive`}
       />
       <QCard
-        label="Plant Visibility"
-        value={`${stats.visibility}%`}
-        detail={`${stats.total - stats.unmanaged} confirmed`}
+        label="Discovery Coverage"
+        value={`${stats.discoveryCoverage}%`}
+        detail={`${stats.matched.toLocaleString()} matched \u00B7 ${stats.blindSpots.toLocaleString()} blind spots \u00B7 ${stats.orphans.toLocaleString()} orphans`}
         valueColor={visColor}
       />
       <QCard
@@ -829,7 +777,28 @@ export default function AssuranceWorkspace() {
       setPhase(PHASES.VERIFYING)
       await tick()
 
-      const reviewItems = identifyReviewItems(canonicalAssets, matchResults.blindSpots, matchResults.orphans)
+      const blindSpots = matchResults.blindSpots.map(asset => {
+        const classification = classifySecurityTier(asset)
+        return {
+          ...asset,
+          classification,
+          security_tier: asset.security_tier || classification?.tier || 3,
+          _status: 'blind_spot',
+          match_type: 'blind_spot'
+        }
+      })
+      const orphans = matchResults.orphans.map(asset => {
+        const classification = classifySecurityTier(asset)
+        return {
+          ...asset,
+          classification,
+          security_tier: asset.security_tier || classification?.tier || 3,
+          _status: 'orphan',
+          match_type: 'orphan'
+        }
+      })
+
+      const reviewItems = identifyReviewItems(canonicalAssets, blindSpots, orphans)
 
       const summary = {
         total: matchResults.stats.engineeringTotal,
@@ -837,9 +806,9 @@ export default function AssuranceWorkspace() {
         blindSpots: matchResults.stats.blindSpotCount,
         orphans: matchResults.stats.orphanCount,
         coverage: matchResults.stats.coveragePercent,
-        tier1: canonicalAssets.filter(a => a.classification?.tier === 1).length,
-        tier2: canonicalAssets.filter(a => a.classification?.tier === 2).length,
-        tier3: canonicalAssets.filter(a => a.classification?.tier === 3).length
+        tier1: [...canonicalAssets, ...blindSpots].filter(a => a.classification?.tier === 1).length,
+        tier2: [...canonicalAssets, ...blindSpots].filter(a => a.classification?.tier === 2).length,
+        tier3: [...canonicalAssets, ...blindSpots].filter(a => a.classification?.tier === 3).length
       }
 
       // Phase 5: Enrich (context analysis)
@@ -892,8 +861,8 @@ export default function AssuranceWorkspace() {
       const data = {
         status: 'COMPLETE',
         assets: contextAnalysis?.assets || canonicalAssets,
-        blindSpots: matchResults.blindSpots.slice(0, 200),
-        orphans: matchResults.orphans.slice(0, 200),
+        blindSpots,
+        orphans,
         summary,
         reviewRequired: reviewItems,
         contextAnalysis,
@@ -1220,7 +1189,9 @@ export default function AssuranceWorkspace() {
           )}
           {result ? (
             mapCollapsed ? (
-              <CompactPlantStrip result={result} onExpand={() => setMapCollapsed(false)} />
+              <div style={{ flex: 1, overflow: 'auto', background: '#0f172a', padding: '0.5rem' }}>
+                <AssetTable unifiedAssets={buildUnifiedAssets(result)} result={result} />
+              </div>
             ) : (
               <PlantMap
                 result={result}

@@ -382,7 +382,7 @@ export default function PlantVisualization({ result, onExport, onUnitSelect }) {
       }}>
         <div>
           <h3 style={{ margin: 0, color: 'white', fontSize: '1.1rem', fontWeight: '600' }}>
-            🏭 The Map {isMultiSite && selectedPlant !== 'all' && `— ${selectedPlant}`}
+            The Map {isMultiSite && selectedPlant !== 'all' && `— ${selectedPlant}`}
           </h3>
           <p style={{ margin: '0.25rem 0 0', color: '#94a3b8', fontSize: '0.8rem' }}>
             {isMultiSite 
@@ -412,9 +412,9 @@ export default function PlantVisualization({ result, onExport, onUnitSelect }) {
                 minWidth: '160px'
               }}
             >
-              <option value="all">📊 All Sites ({plants.length})</option>
+              <option value="all">All Sites ({plants.length})</option>
               {plants.map(plant => (
-                <option key={plant} value={plant}>🏭 {plant}</option>
+                <option key={plant} value={plant}>{plant}</option>
               ))}
             </select>
           )}
@@ -457,7 +457,7 @@ export default function PlantVisualization({ result, onExport, onUnitSelect }) {
               gap: '0.25rem'
             }}
           >
-            📷 Export
+            Export
           </button>
         </div>
       </div>

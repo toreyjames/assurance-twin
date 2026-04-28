@@ -142,7 +142,7 @@ export default function PlantVisualization2D({ result, onUnitSelect }) {
       }}>
         <div>
           <h3 style={{ margin: 0, color: 'white', fontSize: '1.1rem', fontWeight: '600' }}>
-            🏭 Plant Topology {isMultiSite && selectedPlant !== 'all' && `— ${selectedPlant}`}
+            Plant Topology {isMultiSite && selectedPlant !== 'all' && `— ${selectedPlant}`}
           </h3>
           <p style={{ margin: '0.25rem 0 0', color: '#94a3b8', fontSize: '0.8rem' }}>
             2D view • {isMultiSite ? `${plants.length} sites` : 'Click units to explore'}
@@ -187,7 +187,7 @@ export default function PlantVisualization2D({ result, onUnitSelect }) {
               fontWeight: '600'
             }}
           >
-            📷 Export
+            Export
           </button>
         </div>
       </div>
