@@ -90,21 +90,24 @@ function ViewToggle({ viewMode, setViewMode, isAutomotive, hasWebGL }) {
           </>
         )}
 
-        {/* Non-automotive views */}
-        {!isAutomotive && hasWebGL && (
+        {/* Non-automotive views: 2D zone schematic is the assurance default; 3D toggles are optional */}
+        {!isAutomotive && (
           <>
-            <button onClick={() => setViewMode('refinery')} style={btnStyle('refinery', '#3b82f6')}>
-              PROCESS MAP (62443 ZONES)
+            <button onClick={() => setViewMode('2d')} style={btnStyle('2d', '#3b82f6')}>
+              ZONE SCHEMATIC
             </button>
-            <button onClick={() => setViewMode('simple3d')} style={btnStyle('simple3d')}>
-              BLOCK VIEW
-            </button>
+            {hasWebGL && (
+              <>
+                <button onClick={() => setViewMode('refinery')} style={btnStyle('refinery', '#64748b')}>
+                  3D PROCESS
+                </button>
+                <button onClick={() => setViewMode('simple3d')} style={btnStyle('simple3d', '#64748b')}>
+                  BLOCK
+                </button>
+              </>
+            )}
           </>
         )}
-
-        <button onClick={() => setViewMode('2d')} style={btnStyle('2d', '#64748b')}>
-          2D
-        </button>
       </div>
     </div>
   )
@@ -113,21 +116,20 @@ function ViewToggle({ viewMode, setViewMode, isAutomotive, hasWebGL }) {
 export default function PlantMap({ result, industry = 'oil-gas', gapMatrix, selectedPlant = 'all', onUnitSelect }) {
   const [viewMode, setViewMode] = useState('schematic')
   const [hasWebGL, setHasWebGL] = useState(true)
-  
+
   const isAutomotive = industry === 'automotive'
-  
+
   useEffect(() => {
     const webglAvailable = isWebGLAvailable()
-    const mobile = isMobileDevice()
-    
     setHasWebGL(webglAvailable)
-    
-    if (!webglAvailable || mobile) {
-      setViewMode(isAutomotive ? 'schematic' : '2d') // Schematic works without WebGL
-    } else if (isAutomotive) {
-      setViewMode('schematic') // Default to engineer-grade schematic
+
+    // Assurance default: deterministic 2D zone schematic for non-automotive
+    // industries. The 3D process map remains available as a manual toggle for
+    // teams that want the visual; we never default into it.
+    if (isAutomotive) {
+      setViewMode('schematic')
     } else {
-      setViewMode('refinery')
+      setViewMode('2d')
     }
   }, [isAutomotive])
   

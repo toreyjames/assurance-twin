@@ -367,10 +367,11 @@ function TopRecommendations({ recommendations }) {
   
   return (
     <div style={{
-      padding: '1.25rem',
-      background: 'linear-gradient(135deg, #eff6ff 0%, #f0fdf4 100%)',
-      borderRadius: '0.75rem',
-      border: '2px solid #3b82f6',
+      padding: '1rem',
+      background: 'white',
+      borderRadius: '0.5rem',
+      border: '1px solid #e2e8f0',
+      borderLeft: '4px solid #3b82f6',
       marginBottom: '1rem'
     }}>
       <h4 style={{
@@ -481,10 +482,10 @@ export default function GapPanel({ gapAnalysis }) {
   
   return (
     <div style={{
-      background: 'linear-gradient(135deg, #fef9f0 0%, #fff7ed 50%, #fef2f2 100%)',
-      border: '2px solid #f97316',
-      borderRadius: '0.75rem',
-      padding: '1.5rem',
+      background: '#f8fafc',
+      border: '1px solid #e2e8f0',
+      borderRadius: '0.5rem',
+      padding: '1.25rem',
       marginBottom: '2rem'
     }}>
       <div style={{ 

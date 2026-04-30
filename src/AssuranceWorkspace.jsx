@@ -73,31 +73,11 @@ function clearWorkspaceSession() {
 }
 
 // =============================================================================
-// ASSEMBLY ANIMATION STYLES
+// WORKSPACE STYLES (no decorative animation; assurance product)
 // =============================================================================
 
 const ASSEMBLY_CSS = `
-@keyframes ws-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
-}
-@keyframes ws-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-@keyframes ws-build {
-  0% { transform: scaleY(0); opacity: 0; }
-  60% { transform: scaleY(1.05); opacity: 0.8; }
-  100% { transform: scaleY(1); opacity: 1; }
-}
-@keyframes ws-fade-in {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.ws-pulse { animation: ws-pulse 2s ease-in-out infinite; }
-.ws-spin { animation: ws-spin 1.5s linear infinite; }
-.ws-build { animation: ws-build 0.6s ease-out forwards; transform-origin: bottom; }
-.ws-fade-in { animation: ws-fade-in 0.4s ease-out forwards; }
+.ws-pulse, .ws-spin, .ws-build, .ws-fade-in { animation: none; }
 `
 
 // =============================================================================
@@ -186,12 +166,14 @@ function AssemblyStatus({ phase, stats }) {
 // =============================================================================
 
 function DetailPanel({ selected, setSelected, result, onReviewDecision, rightTab, setRightTab }) {
-  const hasInsights = result?.assuranceInsights && Object.keys(result.assuranceInsights).length > 0
+  // Insights tab intentionally hidden from the demo flow. It depended on an
+  // optional sidecar API and added surface without changing the assurance story.
+  // The InsightsPanels component remains in this file for future re-enable.
+  const hasInsights = false
   const tabs = [
     { id: 'detail', label: 'Detail' },
     { id: 'gaps', label: 'Gaps' },
     { id: 'security', label: 'Security' },
-    ...(hasInsights ? [{ id: 'insights', label: 'Insights' }] : []),
     { id: 'table', label: 'Table' }
   ]
 
@@ -1428,26 +1410,22 @@ export default function AssuranceWorkspace() {
               alignItems: 'center', justifyContent: 'center', color: '#334155'
             }}>
               {phase !== PHASES.IDLE ? (
-                <div style={{ textAlign: 'center' }} className="ws-fade-in">
-                  <div style={{ fontSize: '3rem', marginBottom: '1rem' }} className="ws-pulse">
-                    {phase === PHASES.INGESTING ? '\u25A6' : phase === PHASES.RECONCILING ? '\u25A7' : phase === PHASES.MAPPING ? '\u25A8' : '\u25A9'}
-                  </div>
+                <div style={{ textAlign: 'center' }}>
                   <div style={{ fontSize: '0.85rem', fontFamily: 'monospace', color: '#64748b' }}>
-                    {phase === PHASES.INGESTING ? 'Ingesting data sources...' :
-                     phase === PHASES.RECONCILING ? 'Reconciling and matching assets...' :
-                     phase === PHASES.MAPPING ? 'Building plant topology...' :
-                     phase === PHASES.VERIFYING ? 'Verifying against evidence...' :
-                     'Running context analysis...'}
+                    {phase === PHASES.INGESTING ? 'Ingesting data sources' :
+                     phase === PHASES.RECONCILING ? 'Reconciling engineering and discovery' :
+                     phase === PHASES.MAPPING ? 'Classifying and validating' :
+                     phase === PHASES.VERIFYING ? 'Cross-validating evidence' :
+                     'Running context analysis'}
                   </div>
                 </div>
               ) : (
                 <div style={{ textAlign: 'center' }}>
-                  <div style={{ fontSize: '4rem', marginBottom: '1rem', opacity: 0.15 }}>{'\u2B22'}</div>
                   <div style={{ fontSize: '0.85rem', fontFamily: 'monospace', marginBottom: '0.5rem' }}>
                     No data loaded
                   </div>
                   <div style={{ fontSize: '0.75rem', color: '#475569' }}>
-                    Upload files or load a demo dataset to see the plant assemble.
+                    Upload files or load a demo dataset to begin.
                   </div>
                 </div>
               )}

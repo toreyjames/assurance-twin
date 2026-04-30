@@ -32,7 +32,7 @@ const AUTOMOTIVE_PLANTS = [
     name: 'Kentucky Manufacturing',
     code: 'TMMK',
     city: 'Georgetown, KY',
-    icon: '🏭',
+    icon: '',
     type: 'Assembly Plant',
     products: ['Camry', 'RAV4', 'Lexus ES'],
     capacity: 550000,
@@ -48,7 +48,7 @@ const AUTOMOTIVE_PLANTS = [
     name: 'Indiana Manufacturing',
     code: 'TMMI',
     city: 'Princeton, IN',
-    icon: '🏭',
+    icon: '',
     type: 'Assembly Plant',
     products: ['Highlander', 'Grand Highlander', 'Sienna'],
     capacity: 420000,
@@ -64,7 +64,7 @@ const AUTOMOTIVE_PLANTS = [
     name: 'Texas Manufacturing',
     code: 'TMMTX',
     city: 'San Antonio, TX',
-    icon: '🛻',
+    icon: '',
     type: 'Truck Assembly',
     products: ['Tundra', 'Tacoma', 'Sequoia'],
     capacity: 350000,
@@ -80,7 +80,7 @@ const AUTOMOTIVE_PLANTS = [
     name: 'Mississippi Manufacturing',
     code: 'TMMMS',
     city: 'Blue Springs, MS',
-    icon: '🚗',
+    icon: '',
     type: 'Assembly Plant',
     products: ['Corolla', 'Corolla Cross'],
     capacity: 350000,
@@ -96,7 +96,7 @@ const AUTOMOTIVE_PLANTS = [
     name: 'Alabama Engine Plant',
     code: 'TMMAL',
     city: 'Huntsville, AL',
-    icon: '⚙️',
+    icon: '',
     type: 'Powertrain',
     products: ['4-Cyl Engines', 'V6 Engines'],
     capacity: 900000,
@@ -123,10 +123,10 @@ const FALLBACK_SITE_COORDINATES = [
 
 const SITE_METADATA = [
   ...AUTOMOTIVE_PLANTS,
-  { id: 'BTR', code: 'BTR', name: 'Baytown Refinery', city: 'Baytown, TX', icon: '🏭', type: 'Refinery', lat: 29.7355, lng: -94.9774 },
-  { id: 'GCR', code: 'GCR', name: 'Gulf Coast Refinery', city: 'Gulf Coast, TX', icon: '🏭', type: 'Refinery', lat: 29.7604, lng: -95.3698 },
-  { id: 'API', code: 'API', name: 'API Production', city: 'Pharma Campus', icon: '⚗️', type: 'Pharma Production', lat: 40.7128, lng: -74.0060 },
-  { id: 'CGN', code: 'CGN', name: 'Central Generation', city: 'Generation Site', icon: '⚡', type: 'Power Generation', lat: 35.2271, lng: -80.8431 }
+  { id: 'BTR', code: 'BTR', name: 'Baytown Refinery', city: 'Baytown, TX', icon: '', type: 'Refinery', lat: 29.7355, lng: -94.9774 },
+  { id: 'GCR', code: 'GCR', name: 'Gulf Coast Refinery', city: 'Gulf Coast, TX', icon: '', type: 'Refinery', lat: 29.7604, lng: -95.3698 },
+  { id: 'API', code: 'API', name: 'API Production', city: 'Pharma Campus', icon: '', type: 'Pharma Production', lat: 40.7128, lng: -74.0060 },
+  { id: 'CGN', code: 'CGN', name: 'Central Generation', city: 'Generation Site', icon: '', type: 'Power Generation', lat: 35.2271, lng: -80.8431 }
 ]
 
 function normalizeSiteKey(value) {
@@ -184,10 +184,8 @@ function industrySiteType(industry) {
 }
 
 function industrySiteIcon(industry) {
-  if (industry === 'oil-gas') return '🏭'
-  if (industry === 'pharma') return '⚗️'
-  if (industry === 'utilities') return '⚡'
-  return '🏭'
+  // Neutral placeholder; concrete icons left to the metadata table.
+  return ''
 }
 
 function buildDataDrivenPlants(result, industry) {
@@ -350,7 +348,7 @@ function PlantCard({ plant, stats, isSelected, onClick }) {
           marginTop: '0.75rem'
         }}>
           <span style={{ fontSize: '0.75rem', color: '#64748b' }}>
-            📁 Upload data to view
+            No data for this site
           </span>
         </div>
       )}
@@ -385,13 +383,13 @@ function USMapVisualization({ plants, plantStats, selectedPlant, onSelectPlant }
 
   return (
     <div style={{
-      background: 'linear-gradient(180deg, #0c1222 0%, #1a2744 100%)',
-      borderRadius: '0.75rem',
+      background: '#0c1222',
+      borderRadius: '0.5rem',
       position: 'relative',
       height: '400px',
       marginBottom: '1.5rem',
       overflow: 'hidden',
-      border: '1px solid rgba(59, 130, 246, 0.2)'
+      border: '1px solid #1e293b'
     }}>
       <ComposableMap
         projection="geoAlbersUsa"
@@ -459,30 +457,15 @@ function USMapVisualization({ plants, plantStats, selectedPlant, onSelectPlant }
               onClick={() => onSelectPlant(plant.id === selectedPlant ? null : plant.id)}
               style={{ cursor: 'pointer' }}
             >
-              {/* Pulse animation ring */}
+              {/* Static halo - signals "data loaded" without motion. */}
               {hasData && (
                 <circle
-                  r={12}
+                  r={16}
                   fill="none"
                   stroke={plant.color}
-                  strokeWidth={2}
-                  opacity={0.6}
-                >
-                  <animate
-                    attributeName="r"
-                    from="12"
-                    to="30"
-                    dur="2s"
-                    repeatCount="indefinite"
-                  />
-                  <animate
-                    attributeName="opacity"
-                    from="0.6"
-                    to="0"
-                    dur="2s"
-                    repeatCount="indefinite"
-                  />
-                </circle>
+                  strokeWidth={1}
+                  opacity={0.35}
+                />
               )}
 
               {/* Main marker */}
@@ -603,8 +586,7 @@ function USMapVisualization({ plants, plantStats, selectedPlant, onSelectPlant }
         alignItems: 'center',
         gap: '0.5rem'
       }}>
-        <span style={{ fontSize: '1rem' }}>🇺🇸</span>
-        US Manufacturing Footprint
+        Operational Footprint
       </div>
 
       {/* Stats */}
@@ -655,44 +637,39 @@ function EnterpriseSummary({ plantStats, plants, securityStats }) {
       gap: '0.75rem',
       marginBottom: '1.5rem'
     }}>
-      <SummaryBox 
-        icon="🏭" 
-        value={`${totals.sites}/${totals.totalSites}`} 
-        label="Plants Loaded"
-        subtext="Operational sites"
+      <SummaryBox
+        value={`${totals.sites}/${totals.totalSites}`}
+        label="Sites Loaded"
+        subtext="From uploaded data"
       />
-      <SummaryBox 
-        icon="📊" 
-        value={totals.assets.toLocaleString()} 
-        label="Total Assets"
-        subtext={`${totals.matched.toLocaleString()} verified`}
+      <SummaryBox
+        value={totals.assets.toLocaleString()}
+        label="In-scope Assets"
+        subtext={`${totals.matched.toLocaleString()} matched`}
       />
-      <SummaryBox 
-        icon="✅" 
-        value={`${totals.matchRate}%`} 
-        label="Baseline Match"
+      <SummaryBox
+        value={`${totals.matchRate}%`}
+        label="Discovery Coverage"
         valueColor={totals.matchRate >= 80 ? '#22c55e' : totals.matchRate >= 60 ? '#f59e0b' : '#ef4444'}
-        subtext="Eng → Discovery"
+        subtext="matched / documented"
       />
-      <SummaryBox 
-        icon="🛡️" 
-        value={`${securityStats.securePercent}%`} 
-        label="Assets Secure"
+      <SummaryBox
+        value={`${securityStats.securePercent}%`}
+        label="No Recorded CVEs"
         valueColor={securityStats.securePercent >= 70 ? '#22c55e' : securityStats.securePercent >= 50 ? '#f59e0b' : '#ef4444'}
-        subtext={`${securityStats.secure.toLocaleString()} no CVEs`}
+        subtext={`${securityStats.secure.toLocaleString()} clean`}
       />
-      <SummaryBox 
-        icon="⚠️" 
-        value={securityStats.withVulns.toLocaleString()} 
-        label="Need Attention"
+      <SummaryBox
+        value={securityStats.withVulns.toLocaleString()}
+        label="With Vulnerabilities"
         valueColor={securityStats.withVulns === 0 ? '#22c55e' : '#f59e0b'}
-        subtext="Has vulnerabilities"
+        subtext="In discovery export"
       />
     </div>
   )
 }
 
-function SummaryBox({ icon, value, label, valueColor = 'white', subtext }) {
+function SummaryBox({ value, label, valueColor = 'white', subtext }) {
   return (
     <div style={{
       padding: '0.75rem',
@@ -700,7 +677,6 @@ function SummaryBox({ icon, value, label, valueColor = 'white', subtext }) {
       borderRadius: '0.5rem',
       textAlign: 'center'
     }}>
-      <div style={{ fontSize: '1rem', marginBottom: '0.25rem' }}>{icon}</div>
       <div style={{ fontSize: '1.25rem', fontWeight: '700', color: valueColor }}>{value}</div>
       <div style={{ fontSize: '0.65rem', color: '#64748b' }}>{label}</div>
       {subtext && <div style={{ fontSize: '0.6rem', color: '#94a3b8', marginTop: '0.25rem' }}>{subtext}</div>}
@@ -828,33 +804,31 @@ export default function WorldModel({ result, industry = 'automotive' }) {
   
   return (
     <div style={{
-      background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
-      border: '2px solid #334155',
-      borderRadius: '1rem',
+      background: '#0f172a',
+      border: '1px solid #1e293b',
+      borderRadius: '0.75rem',
       padding: '1.5rem',
       marginBottom: '2rem',
       color: 'white'
     }}>
       {/* Header */}
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'space-between', 
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
         alignItems: 'flex-start',
         marginBottom: '1.25rem'
       }}>
         <div>
-          <h3 style={{ 
-            margin: '0 0 0.25rem 0', 
-            fontSize: '1.35rem', 
+          <h3 style={{
+            margin: '0 0 0.25rem 0',
+            fontSize: '1.15rem',
             fontWeight: '700',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.5rem'
+            color: '#f8fafc'
           }}>
-            🌐 Enterprise World Model
+            Enterprise Sites
           </h3>
-          <p style={{ margin: 0, fontSize: '0.875rem', color: '#94a3b8' }}>
-            {industry === 'automotive' ? 'Automotive Manufacturing Network' : 'Enterprise Asset Visibility'}
+          <p style={{ margin: 0, fontSize: '0.8rem', color: '#94a3b8' }}>
+            Site-level asset rollup derived from uploaded data
           </p>
         </div>
         
@@ -865,7 +839,7 @@ export default function WorldModel({ result, industry = 'automotive' }) {
           fontSize: '0.8rem',
           color: hasAnyData ? '#22c55e' : '#94a3b8'
         }}>
-          {Object.keys(plantStats).length} of {plants.length} plants loaded
+          {Object.keys(plantStats).length} of {plants.length} sites loaded
         </div>
       </div>
       
@@ -968,33 +942,25 @@ export default function WorldModel({ result, industry = 'automotive' }) {
         </div>
       )}
       
-      {/* Build your model message */}
+      {/* Empty state */}
       {!hasAnyData && (
         <div style={{
           marginTop: '1rem',
           padding: '1rem',
-          background: 'rgba(59, 130, 246, 0.1)',
-          border: '1px solid rgba(59, 130, 246, 0.3)',
+          background: 'rgba(148, 163, 184, 0.08)',
+          border: '1px solid #1e293b',
           borderRadius: '0.5rem',
           textAlign: 'center'
         }}>
-          <div style={{ fontSize: '0.9rem', color: '#93c5fd', marginBottom: '0.5rem' }}>
-            🎯 <strong>Start Building Your World Model</strong>
+          <div style={{ fontSize: '0.85rem', color: '#cbd5e1', marginBottom: '0.35rem', fontWeight: 600 }}>
+            No site data loaded
           </div>
-          <div style={{ fontSize: '0.8rem', color: '#64748b' }}>
-            Upload engineering baselines and OT discovery data from each plant to build enterprise-wide asset visibility.
+          <div style={{ fontSize: '0.78rem', color: '#94a3b8' }}>
+            Upload engineering baseline and OT discovery exports per site to populate this view.
           </div>
         </div>
       )}
       
-      {/* CSS for pulse animation */}
-      <style>{`
-        @keyframes pulse {
-          0% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; }
-          50% { transform: translate(-50%, -50%) scale(1.5); opacity: 0.1; }
-          100% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; }
-        }
-      `}</style>
     </div>
   )
 }

@@ -17,43 +17,43 @@ import { detectSourceType } from '../lib/context/constructor.js'
 const SOURCE_TYPE_INFO = {
   engineering: {
     label: 'Engineering Baseline',
-    icon: '📋',
+    icon: 'ENG',
     color: '#10b981',
     description: 'Asset registers, equipment lists, P&ID data'
   },
   discovery: {
     label: 'OT Discovery',
-    icon: '🔍',
+    icon: 'DSC',
     color: '#3b82f6',
-    description: 'Network scans, Claroty/Nozomi exports'
+    description: 'Network scans, Claroty / Nozomi / Armis exports'
   },
   maintenance: {
-    label: 'CMMS/Maintenance',
-    icon: '🔧',
+    label: 'CMMS / Maintenance',
+    icon: 'CMM',
     color: '#f59e0b',
     description: 'Work orders, maintenance history'
   },
   vulnerability: {
-    label: 'Security/Vulnerability',
-    icon: '🛡️',
+    label: 'Security / Vulnerability',
+    icon: 'SEC',
     color: '#ef4444',
     description: 'Vulnerability scans, security assessments'
   },
   historian: {
-    label: 'Historian/Process',
-    icon: '📊',
+    label: 'Historian / Process',
+    icon: 'HST',
     color: '#8b5cf6',
     description: 'PI tags, process data exports'
   },
   network: {
     label: 'Network Topology',
-    icon: '🌐',
+    icon: 'NET',
     color: '#06b6d4',
     description: 'Network diagrams, switch configs'
   },
   unknown: {
     label: 'Other Data',
-    icon: '📄',
+    icon: 'OTH',
     color: '#64748b',
     description: 'Unrecognized format'
   }
@@ -313,12 +313,8 @@ export default function SmartUpload({ onFilesChange, disabled = false }) {
           style={{ display: 'none' }}
         />
         
-        <div style={{ fontSize: '3rem', marginBottom: '0.5rem' }}>
-          {isProcessing ? '⏳' : '📁'}
-        </div>
-        
         <div style={{ fontWeight: '600', color: '#0f172a', marginBottom: '0.25rem' }}>
-          {isProcessing ? 'Analyzing files...' : 'Drop your CSV files here'}
+          {isProcessing ? 'Analyzing files...' : 'Drop CSV files here'}
         </div>
         
         <div style={{ fontSize: '0.875rem', color: '#64748b', marginBottom: '1rem' }}>

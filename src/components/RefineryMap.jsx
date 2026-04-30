@@ -552,19 +552,13 @@ function MapEvidenceStrip({ model, showNetwork }) {
 }
 
 /**
- * Gap indicator ring that pulses around equipment with gaps
+ * Static gap indicator ring around equipment with reconciliation gaps.
+ * (No animation - assurance product reads better without motion noise.)
  */
 function GapIndicator({ position, severity, height = 0 }) {
   const meshRef = useRef()
-  
-  useFrame(({ clock }) => {
-    if (meshRef.current) {
-      const pulse = Math.sin(clock.elapsedTime * 2) * 0.1 + 1
-      meshRef.current.scale.set(pulse, 1, pulse)
-    }
-  })
-  
   const color = severity === 'critical' ? '#ef4444' : '#f59e0b'
+
   
   return (
     <group position={[position[0], height + 0.1, position[2]]}>
@@ -572,18 +566,20 @@ function GapIndicator({ position, severity, height = 0 }) {
         <ringGeometry args={[3, 3.3, 32]} />
         <meshBasicMaterial color={color} transparent opacity={0.6} />
       </mesh>
-      {/* Warning icon floating above */}
+      {/* Neutral reconciliation indicator - reads as a tag, not an alert. */}
       <Html position={[0, height + 4, 0]} center>
         <div style={{
-          background: severity === 'critical' ? 'rgba(239, 68, 68, 0.9)' : 'rgba(245, 158, 11, 0.9)',
-          color: 'white',
+          background: 'rgba(15, 23, 42, 0.85)',
+          color: severity === 'critical' ? '#fca5a5' : '#fcd34d',
+          border: `1px solid ${severity === 'critical' ? '#ef4444' : '#f59e0b'}`,
           padding: '2px 6px',
           borderRadius: '4px',
           fontSize: '10px',
-          fontWeight: 'bold',
-          whiteSpace: 'nowrap'
+          fontWeight: 600,
+          whiteSpace: 'nowrap',
+          fontFamily: "'JetBrains Mono', monospace"
         }}>
-          {severity === 'critical' ? 'GAP' : 'CHECK'}
+          Reconcile
         </div>
       </Html>
     </group>
@@ -780,11 +776,11 @@ export default function RefineryMap({ result, selectedPlant = 'all', industry = 
   const BASE_LAYOUT = INDUSTRY_LAYOUTS[industry] || INDUSTRY_LAYOUTS['oil-gas']
   const ACTIVE_FLOWS = INDUSTRY_FLOWS[industry] || INDUSTRY_FLOWS['oil-gas']
   
-  // Industry display names
+  // Industry display names (neutral, assurance-grade)
   const INDUSTRY_TITLES = {
-    'oil-gas': 'Refinery Process Map',
-    'pharma': 'Pharmaceutical Plant Map',
-    'utilities': 'Power Generation Map'
+    'oil-gas': 'Process Map',
+    'pharma': 'Process Map',
+    'utilities': 'Process Map'
   }
   
   const [currentPlant, setCurrentPlant] = useState(selectedPlant)
@@ -854,11 +850,11 @@ export default function RefineryMap({ result, selectedPlant = 'all', industry = 
 
   return (
     <div style={{
-      background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
-      borderRadius: '0.75rem',
+      background: '#0f172a',
+      borderRadius: '0.5rem',
       overflow: 'hidden',
       marginBottom: '2rem',
-      border: '2px solid #334155'
+      border: '1px solid #1e293b'
     }}>
       {/* Header */}
       <div style={{

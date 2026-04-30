@@ -291,10 +291,10 @@ export default function SecurityPosture({ result, gapAnalysis }) {
   
   return (
     <div style={{
-      background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)',
-      border: '2px solid #0f172a',
-      borderRadius: '1rem',
-      padding: '2rem',
+      background: '#f8fafc',
+      border: '1px solid #e2e8f0',
+      borderRadius: '0.5rem',
+      padding: '1.25rem',
       marginBottom: '2rem'
     }}>
       <h3 style={{ 

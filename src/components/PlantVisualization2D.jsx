@@ -124,11 +124,11 @@ export default function PlantVisualization2D({ result, onUnitSelect }) {
 
   return (
     <div style={{
-      background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
-      borderRadius: '0.75rem',
+      background: '#0f172a',
+      borderRadius: '0.5rem',
       overflow: 'hidden',
       marginBottom: '2rem',
-      border: '2px solid #334155'
+      border: '1px solid #1e293b'
     }}>
       {/* Header */}
       <div style={{
@@ -141,11 +141,13 @@ export default function PlantVisualization2D({ result, onUnitSelect }) {
         gap: '0.5rem'
       }}>
         <div>
-          <h3 style={{ margin: 0, color: 'white', fontSize: '1.1rem', fontWeight: '600' }}>
-            Plant Topology {isMultiSite && selectedPlant !== 'all' && `— ${selectedPlant}`}
+          <h3 style={{ margin: 0, color: 'white', fontSize: '1.05rem', fontWeight: '600' }}>
+            {isMultiSite && selectedPlant !== 'all' ? `Zone Schematic \u2014 ${selectedPlant}` : 'Zone Schematic'}
           </h3>
-          <p style={{ margin: '0.25rem 0 0', color: '#94a3b8', fontSize: '0.8rem' }}>
-            2D view • {isMultiSite ? `${plants.length} sites` : 'Click units to explore'}
+          <p style={{ margin: '0.25rem 0 0', color: '#94a3b8', fontSize: '0.78rem' }}>
+            {isMultiSite
+              ? `ISA/IEC 62443-3-2 zone candidates derived from uploaded data \u00B7 ${plants.length} sites`
+              : 'ISA/IEC 62443-3-2 zone candidates derived from uploaded data \u00B7 click a zone for detail'}
           </p>
         </div>
         
