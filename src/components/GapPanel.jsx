@@ -16,35 +16,35 @@ import { GapType, GapSeverity } from '../lib/context/gap-analyzer.js'
 // =============================================================================
 
 const SEVERITY_STYLES = {
-  [GapSeverity.CRITICAL]: { 
-    bg: '#fef2f2', 
-    border: '#ef4444', 
+  [GapSeverity.CRITICAL]: {
+    bg: '#fef2f2',
+    border: '#ef4444',
     text: '#dc2626',
-    icon: '🔴'
+    tag: 'Critical'
   },
-  [GapSeverity.HIGH]: { 
-    bg: '#fff7ed', 
-    border: '#f97316', 
+  [GapSeverity.HIGH]: {
+    bg: '#fff7ed',
+    border: '#f97316',
     text: '#ea580c',
-    icon: '🟠'
+    tag: 'High'
   },
-  [GapSeverity.MEDIUM]: { 
-    bg: '#fefce8', 
-    border: '#eab308', 
+  [GapSeverity.MEDIUM]: {
+    bg: '#fefce8',
+    border: '#eab308',
     text: '#ca8a04',
-    icon: '🟡'
+    tag: 'Medium'
   },
-  [GapSeverity.LOW]: { 
-    bg: '#f0fdf4', 
-    border: '#22c55e', 
+  [GapSeverity.LOW]: {
+    bg: '#f0fdf4',
+    border: '#22c55e',
     text: '#16a34a',
-    icon: '🟢'
+    tag: 'Low'
   },
-  [GapSeverity.INFO]: { 
-    bg: '#f8fafc', 
-    border: '#64748b', 
+  [GapSeverity.INFO]: {
+    bg: '#f8fafc',
+    border: '#64748b',
     text: '#475569',
-    icon: 'ℹ️'
+    tag: 'Info'
   }
 }
 
@@ -53,15 +53,15 @@ const SEVERITY_STYLES = {
 // =============================================================================
 
 const GAP_TYPE_LABELS = {
-  [GapType.BLIND_SPOT]: { icon: '👁️', label: 'Blind Spot', description: 'Documented but not discovered' },
-  [GapType.ORPHAN]: { icon: '👻', label: 'Orphan Device', description: 'Discovered but not documented' },
-  [GapType.STALE_DATA]: { icon: '⏰', label: 'Stale Data', description: 'Not seen recently' },
-  [GapType.MISSING_FUNCTION]: { icon: '❌', label: 'Missing Function', description: 'Expected capability not present' },
-  [GapType.INSUFFICIENT_COVERAGE]: { icon: '📉', label: 'Insufficient Coverage', description: 'Not enough devices for function' },
-  [GapType.NO_REDUNDANCY]: { icon: '⚠️', label: 'No Redundancy', description: 'Single point of failure' },
-  [GapType.NO_VISIBILITY]: { icon: '🚫', label: 'No Visibility', description: 'Unit has no discovery data' },
-  [GapType.LOW_VISIBILITY]: { icon: '🔅', label: 'Low Visibility', description: 'Low discovery coverage' },
-  [GapType.NETWORK_BLIND_SPOT]: { icon: '🌐', label: 'Network Blind Spot', description: 'Subnet without discovery' }
+  [GapType.BLIND_SPOT]: { label: 'Blind Spot', description: 'Documented but not discovered' },
+  [GapType.ORPHAN]: { label: 'Orphan Device', description: 'Discovered but not documented' },
+  [GapType.STALE_DATA]: { label: 'Stale Data', description: 'Not seen recently' },
+  [GapType.MISSING_FUNCTION]: { label: 'Missing Function', description: 'Expected capability not present' },
+  [GapType.INSUFFICIENT_COVERAGE]: { label: 'Insufficient Coverage', description: 'Not enough devices for function' },
+  [GapType.NO_REDUNDANCY]: { label: 'No Redundancy', description: 'Single point of failure' },
+  [GapType.NO_VISIBILITY]: { label: 'No Visibility', description: 'Unit has no discovery data' },
+  [GapType.LOW_VISIBILITY]: { label: 'Low Visibility', description: 'Low discovery coverage' },
+  [GapType.NETWORK_BLIND_SPOT]: { label: 'Network Blind Spot', description: 'Subnet without discovery' }
 }
 
 // =============================================================================
@@ -164,7 +164,6 @@ function GapTypeBreakdown({ byType }) {
             background: '#f8fafc',
             borderRadius: '0.375rem'
           }}>
-            <span style={{ fontSize: '1rem' }}>{t.icon}</span>
             <span style={{ fontSize: '0.8rem', color: '#475569' }}>{t.label}</span>
             <span style={{ 
               fontSize: '0.75rem', 
@@ -189,8 +188,8 @@ function GapTypeBreakdown({ byType }) {
 
 function GapCard({ gap, onExpand, isExpanded }) {
   const style = SEVERITY_STYLES[gap.severity] || SEVERITY_STYLES[GapSeverity.INFO]
-  const typeInfo = GAP_TYPE_LABELS[gap.type] || { icon: '•', label: gap.type }
-  
+  const typeInfo = GAP_TYPE_LABELS[gap.type] || { label: gap.type }
+
   return (
     <div style={{
       padding: '1rem',
@@ -199,23 +198,23 @@ function GapCard({ gap, onExpand, isExpanded }) {
       borderRadius: '0.5rem',
       marginBottom: '0.5rem'
     }}>
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'space-between', 
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
         alignItems: 'flex-start',
         marginBottom: '0.5rem'
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <span style={{ fontSize: '1rem' }}>{typeInfo.icon}</span>
-          <span style={{ 
-            fontSize: '0.7rem', 
-            padding: '0.125rem 0.375rem',
+          <span style={{
+            fontSize: '0.7rem',
+            padding: '0.125rem 0.5rem',
             background: style.border,
             color: 'white',
             borderRadius: '0.25rem',
-            fontWeight: '600'
+            fontWeight: '600',
+            letterSpacing: '0.02em'
           }}>
-            {gap.severity.toUpperCase()}
+            {style.tag || gap.severity}
           </span>
           <span style={{ fontSize: '0.75rem', color: '#64748b' }}>
             {typeInfo.label}
@@ -240,7 +239,7 @@ function GapCard({ gap, onExpand, isExpanded }) {
       
       {gap.unit && (
         <div style={{ fontSize: '0.75rem', color: '#64748b', marginBottom: '0.25rem' }}>
-          📍 Unit: {gap.unit}
+          Unit: {gap.unit}
         </div>
       )}
       
@@ -374,16 +373,16 @@ function TopRecommendations({ recommendations }) {
       border: '2px solid #3b82f6',
       marginBottom: '1rem'
     }}>
-      <h4 style={{ 
-        margin: '0 0 1rem 0', 
-        fontSize: '0.9rem', 
-        fontWeight: '600', 
+      <h4 style={{
+        margin: '0 0 1rem 0',
+        fontSize: '0.9rem',
+        fontWeight: '600',
         color: '#1e40af',
         display: 'flex',
         alignItems: 'center',
         gap: '0.5rem'
       }}>
-        🎯 Priority Actions
+        Priority Actions
       </h4>
       
       {recommendations.map((rec, idx) => (
@@ -473,7 +472,6 @@ export default function GapPanel({ gapAnalysis }) {
         textAlign: 'center',
         color: '#64748b'
       }}>
-        <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>🔍</div>
         <div>No gap analysis available. Process your data to identify gaps.</div>
       </div>
     )
@@ -496,19 +494,19 @@ export default function GapPanel({ gapAnalysis }) {
         marginBottom: '1rem'
       }}>
         <div>
-          <h3 style={{ 
-            margin: '0', 
-            fontSize: '1.25rem', 
-            fontWeight: '700', 
+          <h3 style={{
+            margin: '0',
+            fontSize: '1.25rem',
+            fontWeight: '700',
             color: '#0f172a',
             display: 'flex',
             alignItems: 'center',
             gap: '0.5rem'
           }}>
-            🔍 Gap Analysis
+            Gap Analysis
           </h3>
           <p style={{ margin: '0.25rem 0 0 0', fontSize: '0.875rem', color: '#64748b' }}>
-            Identifying what's missing, undocumented, or unmonitored
+            {'Reconciliation gaps and coverage shortfalls (NIST CSF ID.AM, 800-82r3 \u00A75.1)'}
           </p>
         </div>
         
@@ -576,13 +574,13 @@ export default function GapPanel({ gapAnalysis }) {
       
       {activeTab === 'asset' && (
         <>
-          <GapsList 
-            gaps={assetGaps.filter(g => g.type === GapType.ORPHAN)} 
-            title="👻 Orphan Devices (Undocumented)" 
+          <GapsList
+            gaps={assetGaps.filter(g => g.type === GapType.ORPHAN)}
+            title="Orphan Devices (on network, undocumented)"
           />
-          <GapsList 
-            gaps={assetGaps.filter(g => g.type === GapType.BLIND_SPOT)} 
-            title="👁️ Blind Spots (Not Discovered)" 
+          <GapsList
+            gaps={assetGaps.filter(g => g.type === GapType.BLIND_SPOT)}
+            title="Blind Spots (documented, not discovered)"
           />
         </>
       )}

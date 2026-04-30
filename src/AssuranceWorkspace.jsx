@@ -36,11 +36,25 @@ import WorldModel from './components/WorldModel.jsx'
 // =============================================================================
 
 const WS_SESSION_KEY = 'ot_workspace_session'
+// localStorage budget: skip session save when the serialized payload exceeds this.
+// Large enterprise datasets (>= ~32K assets) can blow past the 5 MB browser quota.
+const WS_SESSION_MAX_BYTES = 4 * 1024 * 1024
 
 function saveWorkspaceSession(data) {
   try {
-    localStorage.setItem(WS_SESSION_KEY, JSON.stringify({ ...data, savedAt: new Date().toISOString() }))
-  } catch (err) { console.warn('[SESSION] Save failed:', err) }
+    const payload = JSON.stringify({ ...data, savedAt: new Date().toISOString() })
+    if (payload.length > WS_SESSION_MAX_BYTES) {
+      console.info('[SESSION] Skipping save - payload exceeds localStorage budget',
+        { bytes: payload.length, budget: WS_SESSION_MAX_BYTES })
+      try { localStorage.removeItem(WS_SESSION_KEY) } catch { /* ignore */ }
+      return
+    }
+    localStorage.setItem(WS_SESSION_KEY, payload)
+  } catch (err) {
+    // QuotaExceededError or any storage failure - silent skip and clear stale entry.
+    console.info('[SESSION] Save skipped:', err && err.name ? err.name : err)
+    try { localStorage.removeItem(WS_SESSION_KEY) } catch { /* ignore */ }
+  }
 }
 
 function loadWorkspaceSession() {
@@ -171,7 +185,7 @@ function AssemblyStatus({ phase, stats }) {
 // RIGHT PANEL: DETAIL VIEW
 // =============================================================================
 
-function DetailPanel({ selected, result, onReviewDecision, rightTab, setRightTab }) {
+function DetailPanel({ selected, setSelected, result, onReviewDecision, rightTab, setRightTab }) {
   const hasInsights = result?.assuranceInsights && Object.keys(result.assuranceInsights).length > 0
   const tabs = [
     { id: 'detail', label: 'Detail' },
@@ -238,7 +252,15 @@ function DetailPanel({ selected, result, onReviewDecision, rightTab, setRightTab
                 Export CSV
               </button>
             </div>
-            <AssetTable unifiedAssets={buildUnifiedAssets(result)} result={result} />
+            <AssetTable
+              unifiedAssets={buildUnifiedAssets(result)}
+              result={result}
+              selectedAsset={selected}
+              onSelectAsset={asset => {
+                if (typeof setSelected === 'function') setSelected(asset)
+                if (asset && typeof setRightTab === 'function') setRightTab('detail')
+              }}
+            />
           </div>
         )}
       </div>
@@ -260,9 +282,39 @@ function AssetDetail({ selected, onReviewDecision }) {
     )
   }
 
-  const isLowConfidence = selected.matchConfidence < 70 || selected.validation?.confidence === 'LOW'
+  if (selected._status === 'unit_summary') {
+    return <UnitSummary unit={selected} />
+  }
+
+  const validationConf = selected.validation?.confidence
   const isOrphan = selected._status === 'orphan'
   const isBlindSpot = selected._status === 'blind_spot'
+  const isLowConfidence = !isOrphan && !isBlindSpot && (
+    validationConf === 'LOW' || (selected.matchConfidence != null && selected.matchConfidence < 70)
+  )
+
+  let badgeLabel = 'Matched'
+  let badgeBg = '#22c55e20'
+  let badgeColor = '#22c55e'
+  if (isBlindSpot) {
+    badgeLabel = 'Blind Spot'
+    badgeBg = '#7c2d1220'
+    badgeColor = '#ef4444'
+  } else if (isOrphan) {
+    badgeLabel = 'Orphan'
+    badgeBg = '#7c3aed20'
+    badgeColor = '#8b5cf6'
+  } else if (validationConf) {
+    const lower = String(validationConf).toLowerCase()
+    badgeLabel = `Matched (${lower})`
+    if (validationConf === 'LOW') {
+      badgeBg = '#f59e0b20'
+      badgeColor = '#f59e0b'
+    } else if (validationConf === 'MEDIUM') {
+      badgeBg = '#fde68a20'
+      badgeColor = '#facc15'
+    }
+  }
 
   return (
     <div style={{ fontSize: '0.8rem' }}>
@@ -270,7 +322,7 @@ function AssetDetail({ selected, onReviewDecision }) {
         {selected.tag_id || selected.asset_id || 'Unknown Asset'}
       </div>
 
-      {/* Status badge */}
+      {/* Reconciliation badge */}
       <div style={{ marginBottom: '1rem' }}>
         <span style={{
           padding: '0.2rem 0.6rem',
@@ -279,11 +331,25 @@ function AssetDetail({ selected, onReviewDecision }) {
           fontWeight: '700',
           fontFamily: 'monospace',
           textTransform: 'uppercase',
-          background: isBlindSpot ? '#7c2d1220' : isOrphan ? '#7c3aed20' : isLowConfidence ? '#f59e0b20' : '#22c55e20',
-          color: isBlindSpot ? '#ef4444' : isOrphan ? '#8b5cf6' : isLowConfidence ? '#f59e0b' : '#22c55e'
+          background: badgeBg,
+          color: badgeColor
         }}>
-          {isBlindSpot ? 'Blind Spot' : isOrphan ? 'Orphan' : isLowConfidence ? 'Needs Review' : 'Verified'}
+          {badgeLabel}
         </span>
+        {isLowConfidence && (
+          <span style={{
+            marginLeft: '0.5rem',
+            padding: '0.2rem 0.6rem',
+            borderRadius: '0.25rem',
+            fontSize: '0.65rem',
+            fontWeight: '700',
+            fontFamily: 'monospace',
+            background: '#f59e0b20',
+            color: '#f59e0b'
+          }}>
+            Needs Review
+          </span>
+        )}
       </div>
 
       {/* Core fields */}
@@ -386,6 +452,108 @@ function AssetDetail({ selected, onReviewDecision }) {
           </div>
         </div>
       )}
+    </div>
+  )
+}
+
+// =============================================================================
+// UNIT SUMMARY (right panel when a unit is clicked on the map)
+// =============================================================================
+
+function UnitSummary({ unit }) {
+  const matched = unit.matched ?? 0
+  const blind = unit.blindSpots ?? 0
+  const orphans = unit.orphans ?? 0
+  const total = unit.count ?? (matched + blind + orphans)
+  const documented = matched + blind
+  const coverage = documented > 0 ? Math.round((matched / documented) * 100) : 0
+  const subnets = Array.isArray(unit.subnets) ? unit.subnets : []
+  const protocols = Array.isArray(unit.protocols) ? unit.protocols : []
+  const sample = Array.isArray(unit.assets) ? unit.assets.slice(0, 5) : []
+
+  const Stat = ({ label, value, tone }) => (
+    <div style={{
+      flex: 1, minWidth: '100px',
+      padding: '0.6rem 0.75rem', background: '#0f172a', border: '1px solid #1e293b', borderRadius: '0.35rem'
+    }}>
+      <div style={{ fontSize: '0.55rem', color: '#64748b', fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.25rem' }}>
+        {label}
+      </div>
+      <div style={{ fontSize: '1.05rem', fontWeight: 800, fontFamily: 'monospace', color: tone || '#f8fafc' }}>
+        {value}
+      </div>
+    </div>
+  )
+
+  return (
+    <div style={{ fontSize: '0.8rem' }}>
+      <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '0.4rem' }}>
+        <div style={{ fontWeight: '700', fontSize: '1rem', color: '#f8fafc', fontFamily: 'monospace' }}>
+          {unit.name || unit.unit || 'Unit'}
+        </div>
+        <span style={{
+          fontSize: '0.6rem', color: '#94a3b8', fontFamily: 'monospace',
+          background: '#1e293b', padding: '0.15rem 0.45rem', borderRadius: '0.25rem',
+          border: '1px solid #334155'
+        }}>
+          Unit summary
+        </span>
+      </div>
+      {unit.site && (
+        <div style={{ fontSize: '0.7rem', color: '#94a3b8', fontFamily: 'monospace', marginBottom: '0.75rem' }}>
+          Site: {unit.site}
+        </div>
+      )}
+
+      <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap', marginBottom: '0.75rem' }}>
+        <Stat label="In-scope" value={total.toLocaleString()} />
+        <Stat label="Documented" value={documented.toLocaleString()} />
+        <Stat label="Coverage" value={`${coverage}%`} tone={coverage >= 70 ? '#22c55e' : coverage >= 50 ? '#f59e0b' : '#ef4444'} />
+      </div>
+
+      <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap', marginBottom: '0.75rem' }}>
+        <Stat label="Matched" value={matched.toLocaleString()} tone="#22c55e" />
+        <Stat label="Blind Spots" value={blind.toLocaleString()} tone={blind > 0 ? '#f59e0b' : '#94a3b8'} />
+        <Stat label="Orphans" value={orphans.toLocaleString()} tone={orphans > 0 ? '#a855f7' : '#94a3b8'} />
+      </div>
+
+      <FieldGroup title="Tier Mix" fields={[
+        { label: 'Tier 1 Critical', value: unit.tier1 || 0 },
+        { label: 'Tier 2 Networkable', value: unit.tier2 || 0 },
+        { label: 'Tier 3 Passive', value: unit.tier3 || 0 }
+      ]} />
+
+      {(subnets.length > 0 || protocols.length > 0) && (
+        <FieldGroup title="Network Evidence" fields={[
+          { label: 'Subnets', value: subnets.length ? subnets.slice(0, 4).join(', ') + (subnets.length > 4 ? ` (+${subnets.length - 4})` : '') : '' },
+          { label: 'Protocols', value: protocols.length ? protocols.slice(0, 4).join(', ') + (protocols.length > 4 ? ` (+${protocols.length - 4})` : '') : '' }
+        ]} />
+      )}
+
+      {sample.length > 0 && (
+        <div style={{ marginTop: '0.5rem' }}>
+          <div style={{
+            fontSize: '0.6rem', color: '#64748b', fontFamily: 'monospace',
+            fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.35rem'
+          }}>
+            Sample Assets
+          </div>
+          {sample.map((a, i) => (
+            <div key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '0.15rem 0', borderBottom: '1px solid #1e293b' }}>
+              <span style={{ color: '#e2e8f0', fontFamily: 'monospace', fontSize: '0.72rem' }}>
+                {a.tag_id || a.ip_address || a.hostname || 'asset'}
+              </span>
+              <span style={{ color: '#64748b', fontFamily: 'monospace', fontSize: '0.7rem' }}>
+                {(a._status || 'matched').replace('_', ' ')}
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
+
+      <div style={{ marginTop: '0.75rem', fontSize: '0.65rem', color: '#64748b', fontFamily: 'monospace', lineHeight: 1.5 }}>
+        Click any asset row in the Asset Table to inspect a single device. Use the Plant/Unit filters in the table to scope to this unit.
+      </div>
     </div>
   )
 }
@@ -509,36 +677,30 @@ function FieldGroup({ title, fields }) {
 // THREE QUESTIONS SUMMARY BAR
 // =============================================================================
 
-// Expected unit count per plant type (for topological coverage)
-const EXPECTED_UNITS = { 'oil-gas': 14, 'pharma': 10, 'automotive': 8, 'utilities': 10 }
-
 function ThreeQuestions({ result, industry }) {
   const stats = useMemo(() => {
     if (!result) return null
     const mapModel = buildPlantMapModel(result)
-    const total = mapModel.summary.totalAssets
+    const s = mapModel.summary
 
-    // Plant visibility separates plant-layout recognition from discovery coverage.
-    const unitSet = new Set()
-    mapModel.assets.forEach(a => { const u = a.unit || a.area || a.location; if (u && u !== 'Unassigned') unitSet.add(u) })
-    const expectedUnits = EXPECTED_UNITS[industry] || 14
-    const topoCoverage = Math.min(100, Math.round(unitSet.size / expectedUnits * 100))
-    const discoveryCoverage = mapModel.summary.coveragePercent
-
-    const networkedAssets = mapModel.assets.filter(a => { const t = a.classification?.tier || a.security_tier; return t === 1 || t === 2 })
+    const networkedAssets = mapModel.assets.filter(a => {
+      const t = a.classification?.tier || a.security_tier
+      return t === 1 || t === 2
+    })
     const managed = networkedAssets.filter(a => a.is_managed === true || a.is_managed === 'true')
     const withCVEs = networkedAssets.filter(a => (a.cve_count || 0) > 0)
 
     return {
-      total,
-      tier1: mapModel.summary.tier1,
-      tier2: mapModel.summary.tier2,
-      tier3: mapModel.summary.tier3,
-      discoveryCoverage,
-      topoCoverage,
-      matched: mapModel.summary.matched,
-      blindSpots: mapModel.summary.blindSpots,
-      orphans: mapModel.summary.orphans,
+      documented: s.documented,
+      discovered: s.discovered,
+      inScope: s.inScope,
+      discoveryCoverage: s.discoveryCoverage,
+      tier1: s.tier1,
+      tier2: s.tier2,
+      tier3: s.tier3,
+      matched: s.matched,
+      blindSpots: s.blindSpots,
+      orphans: s.orphans,
       networkedTotal: networkedAssets.length,
       managed: managed.length,
       unmanaged: networkedAssets.length - managed.length,
@@ -548,37 +710,53 @@ function ThreeQuestions({ result, industry }) {
 
   if (!stats) return null
 
-  const visColor = stats.discoveryCoverage >= 70 ? '#22c55e' : stats.discoveryCoverage >= 50 ? '#f59e0b' : '#ef4444'
+  const covColor = stats.discoveryCoverage >= 70 ? '#22c55e' : stats.discoveryCoverage >= 50 ? '#f59e0b' : '#ef4444'
   const secColor = stats.unmanaged === 0 ? '#22c55e' : stats.unmanaged > 10 ? '#ef4444' : '#f59e0b'
 
   return (
     <div style={{ display: 'flex', gap: '1px', background: '#1e293b', borderBottom: '1px solid #1e293b' }}>
       <QCard
-        label="Assets"
-        value={stats.total.toLocaleString()}
-        detail={`${stats.tier1} critical \u00B7 ${stats.tier2} networkable \u00B7 ${stats.tier3} passive`}
+        label="Documented Assets"
+        value={stats.documented.toLocaleString()}
+        detail={`Engineering baseline \u00B7 ${stats.matched.toLocaleString()} matched \u00B7 ${stats.blindSpots.toLocaleString()} blind`}
+        chip="NIST CSF ID.AM-01"
       />
       <QCard
         label="Discovery Coverage"
         value={`${stats.discoveryCoverage}%`}
-        detail={`${stats.matched.toLocaleString()} matched \u00B7 ${stats.blindSpots.toLocaleString()} blind spots \u00B7 ${stats.orphans.toLocaleString()} orphans`}
-        valueColor={visColor}
+        detail={`matched / documented \u00B7 ${stats.orphans.toLocaleString()} orphans on network`}
+        valueColor={covColor}
+        chip={'800-82r3 \u00A75.1'}
       />
       <QCard
-        label="Security Coverage"
-        value={`${stats.managed}/${stats.networkedTotal}`}
-        detail={stats.unmanaged > 0 ? `${stats.unmanaged} unmanaged${stats.withCVEs > 0 ? ` \u00B7 ${stats.withCVEs} with CVEs` : ''}` : 'All networked devices covered'}
+        label={'Tier 1\u20132 Managed'}
+        value={`${stats.managed.toLocaleString()}/${stats.networkedTotal.toLocaleString()}`}
+        detail={stats.unmanaged > 0
+          ? `${stats.unmanaged.toLocaleString()} unmanaged${stats.withCVEs > 0 ? ` \u00B7 ${stats.withCVEs.toLocaleString()} with CVEs` : ''}`
+          : 'All networkable assets managed'}
         valueColor={secColor}
+        chip="62443-3-2"
       />
     </div>
   )
 }
 
-function QCard({ label, value, detail, valueColor }) {
+function QCard({ label, value, detail, valueColor, chip }) {
   return (
-    <div style={{ flex: 1, padding: '0.75rem 1rem', background: '#0f172a' }}>
-      <div style={{ fontSize: '0.55rem', color: '#64748b', fontFamily: 'monospace', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.35rem' }}>
-        {label}
+    <div style={{ flex: 1, padding: '0.75rem 1rem', background: '#0f172a', position: 'relative' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
+        <span style={{ fontSize: '0.55rem', color: '#64748b', fontFamily: 'monospace', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+          {label}
+        </span>
+        {chip && (
+          <span style={{
+            fontSize: '0.55rem', color: '#94a3b8', fontFamily: 'monospace',
+            background: '#1e293b', padding: '0.125rem 0.4rem', borderRadius: '0.2rem',
+            border: '1px solid #334155', letterSpacing: '0.02em'
+          }}>
+            {chip}
+          </span>
+        )}
       </div>
       <div style={{ fontSize: '1.5rem', fontWeight: '800', fontFamily: 'monospace', lineHeight: 1, color: valueColor || '#f8fafc' }}>
         {value}
@@ -943,11 +1121,44 @@ export default function AssuranceWorkspace() {
       setSelectedAsset(null)
       return
     }
-    const allAssets = buildUnifiedAssets(result)
-    const unitAssets = allAssets.filter(a =>
-      (a.unit || a.area || a.location || 'Unassigned') === unit.name
-    )
-    setSelectedAsset(unitAssets[0] || { tag_id: unit.name, unit: unit.name, _status: 'unit_summary', ...unit })
+
+    // Pull the canonical unit aggregate from the plant model so every number
+    // (matched / blind / orphan / tier mix) lines up with the rest of the UI.
+    const model = buildPlantMapModel(result)
+    const unitName = unit.name || unit.unit
+    const aggregate = model.units.find(u => u.name === unitName) || null
+
+    if (aggregate) {
+      setSelectedAsset({
+        ...aggregate,
+        _status: 'unit_summary',
+        unit: aggregate.name,
+        plant: aggregate.site
+      })
+    } else {
+      // Fallback: synthesize from raw asset list when the model has no entry.
+      const allAssets = buildUnifiedAssets(result)
+      const unitAssets = allAssets.filter(a =>
+        (a.unit || a.area || a.location || 'Unassigned') === unitName
+      )
+      setSelectedAsset({
+        _status: 'unit_summary',
+        name: unitName,
+        unit: unitName,
+        site: unit.site || unit.plant || '',
+        count: unitAssets.length,
+        matched: unitAssets.filter(a => a._status === 'matched').length,
+        blindSpots: unitAssets.filter(a => a._status === 'blind_spot').length,
+        orphans: unitAssets.filter(a => a._status === 'orphan').length,
+        tier1: unitAssets.filter(a => (a.classification?.tier || a.security_tier) === 1).length,
+        tier2: unitAssets.filter(a => (a.classification?.tier || a.security_tier) === 2).length,
+        tier3: unitAssets.filter(a => (a.classification?.tier || a.security_tier) === 3).length,
+        assets: unitAssets,
+        subnets: [],
+        protocols: []
+      })
+    }
+
     setRightTab('detail')
     setRightCollapsed(false)
   }, [result])
@@ -1170,7 +1381,7 @@ export default function AssuranceWorkspace() {
           {/* WorldModel overlay */}
           {showWorldModel && result && (
             <div style={{
-              position: 'absolute', inset: 0, zIndex: 10, background: '#0f172a',
+              position: 'absolute', inset: 0, zIndex: 1000, background: '#0f172a',
               overflow: 'auto', padding: '1rem'
             }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
@@ -1188,9 +1399,20 @@ export default function AssuranceWorkspace() {
             </div>
           )}
           {result ? (
-            mapCollapsed ? (
+            showWorldModel ? null : mapCollapsed ? (
               <div style={{ flex: 1, overflow: 'auto', background: '#0f172a', padding: '0.5rem' }}>
-                <AssetTable unifiedAssets={buildUnifiedAssets(result)} result={result} />
+                <AssetTable
+                  unifiedAssets={buildUnifiedAssets(result)}
+                  result={result}
+                  selectedAsset={selectedAsset}
+                  onSelectAsset={asset => {
+                    setSelectedAsset(asset)
+                    if (asset) {
+                      setRightTab('detail')
+                      setRightCollapsed(false)
+                    }
+                  }}
+                />
               </div>
             ) : (
               <PlantMap
@@ -1255,6 +1477,7 @@ export default function AssuranceWorkspace() {
           }}>
             <DetailPanel
               selected={selectedAsset}
+              setSelected={setSelectedAsset}
               result={result}
               onReviewDecision={handleReviewDecision}
               rightTab={rightTab}

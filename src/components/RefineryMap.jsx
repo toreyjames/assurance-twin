@@ -455,12 +455,38 @@ function NetworkConduits({ conduits, layout, showNetwork }) {
 }
 
 function MapEvidenceStrip({ model, showNetwork }) {
+  const s = model.summary
   const items = [
-    { label: 'Asset Denominator', value: model.summary.totalAssets.toLocaleString(), tone: '#f8fafc' },
-    { label: 'Matched', value: model.summary.matched.toLocaleString(), tone: '#22c55e' },
-    { label: 'Blind Spots', value: model.summary.blindSpots.toLocaleString(), tone: '#f59e0b' },
-    { label: 'Orphans', value: model.summary.orphans.toLocaleString(), tone: '#a855f7' },
-    { label: 'Network Conduits', value: model.network.conduits.length.toLocaleString(), tone: '#38bdf8' }
+    {
+      label: 'In-scope Assets',
+      value: s.inScope.toLocaleString(),
+      hint: `Documented ${s.documented.toLocaleString()} \u00B7 Discovered ${s.discovered.toLocaleString()}`,
+      tone: '#f8fafc'
+    },
+    {
+      label: 'Discovery Coverage',
+      value: `${s.discoveryCoverage}%`,
+      hint: 'matched / documented',
+      tone: s.discoveryCoverage >= 70 ? '#22c55e' : s.discoveryCoverage >= 50 ? '#f59e0b' : '#ef4444'
+    },
+    {
+      label: 'Blind Spots',
+      value: s.blindSpots.toLocaleString(),
+      hint: 'In baseline, not on network',
+      tone: '#f59e0b'
+    },
+    {
+      label: 'Orphans',
+      value: s.orphans.toLocaleString(),
+      hint: 'On network, not in baseline',
+      tone: '#a855f7'
+    },
+    {
+      label: '62443-style Conduits',
+      value: model.network.conduits.length.toLocaleString(),
+      hint: 'Inferred from shared /24',
+      tone: '#38bdf8'
+    }
   ]
 
   return (
@@ -497,6 +523,17 @@ function MapEvidenceStrip({ model, showNetwork }) {
           }}>
             {item.value}
           </div>
+          {item.hint && (
+            <div style={{
+              marginTop: '0.3rem',
+              fontSize: '0.6rem',
+              color: '#64748b',
+              fontFamily: "'JetBrains Mono', monospace",
+              letterSpacing: '0.01em'
+            }}>
+              {item.hint}
+            </div>
+          )}
         </div>
       ))}
       <div style={{
@@ -507,8 +544,8 @@ function MapEvidenceStrip({ model, showNetwork }) {
         lineHeight: 1.45,
         gridColumn: '1 / -1'
       }}>
-        Network overlay: {showNetwork ? 'cyan dashed lines show inferred ISA/IEC 62443-style conduits from shared subnet and protocol evidence.' : 'disabled.'}
-        {' '}Coverage is calculated as matched assets over matched plus blind spots, using uploaded engineering and discovery sources.
+        Network overlay: {showNetwork ? 'cyan dashed lines are inferred ISA/IEC 62443-3-2 conduit candidates from shared /24 subnets and observed protocols.' : 'disabled.'}
+        {' '}Discovery Coverage = matched / documented (engineering baseline). Inferences are evidence-based, not authoritative zoning.
       </div>
     </div>
   )

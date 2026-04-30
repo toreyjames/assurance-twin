@@ -1,16 +1,26 @@
 /**
  * ASSET TABLE
  * The single source of truth. Every asset in one filterable, searchable table.
- * No charts, no decoration — just the data.
+ * Row click bubbles up via onSelectAsset so the workspace AssetDetail panel renders detail.
  */
 
 import React, { useMemo, useState, useCallback } from 'react'
 
-// Status colors
+// Reconciliation status colors
 const STATUS_STYLE = {
   matched:    { bg: '#f0fdf4', color: '#166534', border: '#bbf7d0', label: 'Matched' },
   blind_spot: { bg: '#fffbeb', color: '#92400e', border: '#fde68a', label: 'Blind Spot' },
   orphan:     { bg: '#faf5ff', color: '#6b21a8', border: '#e9d5ff', label: 'Orphan' }
+}
+
+const CONFIDENCE_LABEL = { HIGH: 'high', MEDIUM: 'medium', LOW: 'low' }
+
+function reconciliationLabel(asset) {
+  const status = asset._status
+  if (status === 'blind_spot') return 'Blind Spot'
+  if (status === 'orphan') return 'Orphan'
+  const conf = asset.validation?.confidence
+  return conf ? `Matched (${CONFIDENCE_LABEL[conf] || conf.toLowerCase()})` : 'Matched'
 }
 
 const TIER_STYLE = {
@@ -22,9 +32,11 @@ const TIER_STYLE = {
 const PAGE_SIZE = 50
 
 // =============================================================================
-// DETAIL PANEL — click a row, see everything
+// LEGACY DETAIL PANEL (no longer rendered — kept only for reference / dead code).
+// Row clicks now route to the workspace AssetDetail via onSelectAsset.
 // =============================================================================
 
+// eslint-disable-next-line no-unused-vars
 function DetailPanel({ asset, onClose }) {
   if (!asset) return null
 
@@ -172,15 +184,18 @@ function Field({ label, value }) {
 // MAIN TABLE
 // =============================================================================
 
-export default function AssetTable({ unifiedAssets, result }) {
+export default function AssetTable({ unifiedAssets, result, onSelectAsset, selectedAsset }) {
   const [filter, setFilter] = useState('all')
   const [plantFilter, setPlantFilter] = useState('all')
   const [unitFilter, setUnitFilter] = useState('all')
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(0)
-  const [selectedAsset, setSelectedAsset] = useState(null)
   const [sortCol, setSortCol] = useState(null)
   const [sortDir, setSortDir] = useState('asc')
+
+  const handleSelect = useCallback(asset => {
+    if (typeof onSelectAsset === 'function') onSelectAsset(asset)
+  }, [onSelectAsset])
 
   // Extract unique plants and units for dropdowns
   const { plants, units } = useMemo(() => {
@@ -401,11 +416,11 @@ export default function AssetTable({ unifiedAssets, result }) {
               {colHeader('plant', 'PLANT', '10%')}
               {colHeader('unit', 'UNIT', '12%')}
               {colHeader('device_type', 'TYPE', '12%')}
-              {colHeader('_status', 'STATUS', '10%')}
-              {colHeader('security_tier', 'TIER', '7%')}
+              {colHeader('_status', 'RECONCILIATION', '13%')}
+              {colHeader('security_tier', 'TIER', '6%')}
               {colHeader('is_managed', 'MANAGED', '8%')}
-              {colHeader('ip_address', 'IP', '12%')}
-              {colHeader('last_seen', 'LAST SEEN', '14%')}
+              {colHeader('ip_address', 'IP', '11%')}
+              {colHeader('last_seen', 'LAST SEEN', '13%')}
             </tr>
           </thead>
           <tbody>
@@ -424,11 +439,12 @@ export default function AssetTable({ unifiedAssets, result }) {
               const isManaged = asset.is_managed === true || asset.is_managed === 'true'
               const needsMgmt = tier === 1 || tier === 2
               const isSelected = selectedAsset === asset
+              const reconLabel = reconciliationLabel(asset)
 
               return (
                 <tr
                   key={`${asset.tag_id || asset.ip_address || i}-${i}`}
-                  onClick={() => setSelectedAsset(isSelected ? null : asset)}
+                  onClick={() => handleSelect(isSelected ? null : asset)}
                   style={{
                     cursor: 'pointer',
                     background: isSelected ? '#eff6ff' : i % 2 === 0 ? 'white' : '#fafafa',
@@ -453,7 +469,7 @@ export default function AssetTable({ unifiedAssets, result }) {
                     <span style={{
                       padding: '0.15rem 0.4rem', borderRadius: '0.2rem', fontSize: '0.7rem', fontWeight: '600',
                       background: si.bg, color: si.color, border: `1px solid ${si.border}`
-                    }}>{si.label}</span>
+                    }}>{reconLabel}</span>
                   </td>
                   <td style={{ padding: '0.5rem 0.625rem', fontFamily: 'monospace', color: ti.color || '#64748b', fontWeight: '600' }}>
                     {tier}
@@ -514,17 +530,11 @@ export default function AssetTable({ unifiedAssets, result }) {
           >Next</button>
         </div>
       </div>
-
-      {/* Detail panel */}
-      {selectedAsset && (
-        <>
-          {/* Backdrop */}
-          <div
-            onClick={() => setSelectedAsset(null)}
-            style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.2)', zIndex: 999 }}
-          />
-          <DetailPanel asset={selectedAsset} onClose={() => setSelectedAsset(null)} />
-        </>
+      {/* Detail rendering moved to the workspace AssetDetail panel.
+          Row clicks bubble up via onSelectAsset so there is one source of truth.
+      */}
+      {false && (
+        <></>
       )}
     </div>
   )

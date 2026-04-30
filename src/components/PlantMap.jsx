@@ -94,10 +94,10 @@ function ViewToggle({ viewMode, setViewMode, isAutomotive, hasWebGL }) {
         {!isAutomotive && hasWebGL && (
           <>
             <button onClick={() => setViewMode('refinery')} style={btnStyle('refinery', '#3b82f6')}>
-              PROCESS MAP
+              PROCESS MAP (62443 ZONES)
             </button>
             <button onClick={() => setViewMode('simple3d')} style={btnStyle('simple3d')}>
-              BASIC VIEW
+              BLOCK VIEW
             </button>
           </>
         )}

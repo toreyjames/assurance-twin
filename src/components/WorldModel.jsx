@@ -109,6 +109,137 @@ const AUTOMOTIVE_PLANTS = [
   }
 ]
 
+const SITE_COLORS = ['#ef4444', '#3b82f6', '#f59e0b', '#8b5cf6', '#10b981', '#06b6d4', '#ec4899']
+
+const FALLBACK_SITE_COORDINATES = [
+  { lat: 29.7604, lng: -95.3698, city: 'Houston, TX' },
+  { lat: 30.4515, lng: -91.1871, city: 'Baton Rouge, LA' },
+  { lat: 40.4406, lng: -79.9959, city: 'Pittsburgh, PA' },
+  { lat: 41.8781, lng: -87.6298, city: 'Chicago, IL' },
+  { lat: 34.0522, lng: -118.2437, city: 'Los Angeles, CA' },
+  { lat: 39.7392, lng: -104.9903, city: 'Denver, CO' },
+  { lat: 33.7490, lng: -84.3880, city: 'Atlanta, GA' }
+]
+
+const SITE_METADATA = [
+  ...AUTOMOTIVE_PLANTS,
+  { id: 'BTR', code: 'BTR', name: 'Baytown Refinery', city: 'Baytown, TX', icon: '🏭', type: 'Refinery', lat: 29.7355, lng: -94.9774 },
+  { id: 'GCR', code: 'GCR', name: 'Gulf Coast Refinery', city: 'Gulf Coast, TX', icon: '🏭', type: 'Refinery', lat: 29.7604, lng: -95.3698 },
+  { id: 'API', code: 'API', name: 'API Production', city: 'Pharma Campus', icon: '⚗️', type: 'Pharma Production', lat: 40.7128, lng: -74.0060 },
+  { id: 'CGN', code: 'CGN', name: 'Central Generation', city: 'Generation Site', icon: '⚡', type: 'Power Generation', lat: 35.2271, lng: -80.8431 }
+]
+
+function normalizeSiteKey(value) {
+  return String(value || '').trim().toUpperCase()
+}
+
+function codeFromName(name) {
+  const words = String(name || '')
+    .replace(/[^a-zA-Z0-9\s]/g, ' ')
+    .split(/\s+/)
+    .filter(word => word && !['THE', 'AND', 'OF', 'SITE', 'PLANT'].includes(word.toUpperCase()))
+
+  return words.map(word => word[0]).join('').slice(0, 5).toUpperCase() || 'SITE'
+}
+
+function assetSiteIdentity(asset) {
+  const name = asset?.plant || asset?.site || asset?.facility || asset?.site_name || ''
+  const explicitCode = asset?.plant_code || asset?.plantCode || asset?.site_code || asset?.facility_code || ''
+  const tagPrefix = String(asset?.tag_id || asset?.asset_id || '').split('-')[0]
+  const code = explicitCode || (name ? codeFromName(name) : tagPrefix)
+  const displayName = name || code || 'Unknown Site'
+
+  return {
+    key: normalizeSiteKey(displayName || code),
+    code: String(code || displayName).trim(),
+    name: String(displayName).trim()
+  }
+}
+
+function assetStatus(asset) {
+  return asset?._status || asset?.match_type || (asset?.matchType || asset?.discovered ? 'matched' : 'matched')
+}
+
+function allResultAssets(result) {
+  return [
+    ...(result?.assets || []).map(asset => ({ ...asset, _status: assetStatus(asset) })),
+    ...(result?.blindSpots || []).map(asset => ({ ...asset, _status: 'blind_spot' })),
+    ...(result?.orphans || []).map(asset => ({ ...asset, _status: 'orphan' }))
+  ]
+}
+
+function metadataForSite(identity) {
+  const identityKeys = [identity.code, identity.name].map(normalizeSiteKey)
+  return SITE_METADATA.find(site => {
+    const siteKeys = [site.id, site.code, site.name].map(normalizeSiteKey)
+    return siteKeys.some(key => identityKeys.includes(key))
+  })
+}
+
+function industrySiteType(industry) {
+  if (industry === 'oil-gas') return 'Refinery'
+  if (industry === 'pharma') return 'Pharma Site'
+  if (industry === 'utilities') return 'Utility Site'
+  return 'Manufacturing Site'
+}
+
+function industrySiteIcon(industry) {
+  if (industry === 'oil-gas') return '🏭'
+  if (industry === 'pharma') return '⚗️'
+  if (industry === 'utilities') return '⚡'
+  return '🏭'
+}
+
+function buildDataDrivenPlants(result, industry) {
+  const groupedSites = new Map()
+
+  allResultAssets(result).forEach(asset => {
+    const identity = assetSiteIdentity(asset)
+    if (!identity.key || identity.key === 'UNKNOWN SITE') return
+
+    if (!groupedSites.has(identity.key)) {
+      groupedSites.set(identity.key, {
+        ...identity,
+        units: new Map(),
+        assets: []
+      })
+    }
+
+    const group = groupedSites.get(identity.key)
+    const unit = asset.unit || asset.area || asset.location || 'Unassigned'
+    group.assets.push(asset)
+    group.units.set(unit, (group.units.get(unit) || 0) + 1)
+  })
+
+  const dataPlants = Array.from(groupedSites.values()).map((site, index) => {
+    const metadata = metadataForSite(site)
+    const fallback = FALLBACK_SITE_COORDINATES[index % FALLBACK_SITE_COORDINATES.length]
+    const topUnits = Array.from(site.units.entries())
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 3)
+      .map(([unit]) => unit)
+
+    return {
+      id: site.key,
+      code: metadata?.code || site.code,
+      name: metadata?.name || site.name,
+      city: metadata?.city || fallback.city,
+      icon: metadata?.icon || industrySiteIcon(industry),
+      type: metadata?.type || industrySiteType(industry),
+      products: metadata?.products || topUnits,
+      capacity: metadata?.capacity,
+      employees: metadata?.employees,
+      founded: metadata?.founded,
+      lat: metadata?.lat || fallback.lat,
+      lng: metadata?.lng || fallback.lng,
+      color: metadata?.color || SITE_COLORS[index % SITE_COLORS.length]
+    }
+  })
+
+  if (dataPlants.length > 0) return dataPlants
+  return industry === 'automotive' ? AUTOMOTIVE_PLANTS : []
+}
+
 // =============================================================================
 // PLANT CARD COMPONENT
 // =============================================================================
@@ -528,7 +659,7 @@ function EnterpriseSummary({ plantStats, plants, securityStats }) {
         icon="🏭" 
         value={`${totals.sites}/${totals.totalSites}`} 
         label="Plants Loaded"
-        subtext="Manufacturing sites"
+        subtext="Operational sites"
       />
       <SummaryBox 
         icon="📊" 
@@ -584,8 +715,8 @@ function SummaryBox({ icon, value, label, valueColor = 'white', subtext }) {
 export default function WorldModel({ result, industry = 'automotive' }) {
   const [selectedPlant, setSelectedPlant] = useState(null)
   
-  // Get the appropriate plant database based on industry
-  const plants = industry === 'automotive' ? AUTOMOTIVE_PLANTS : AUTOMOTIVE_PLANTS // Default to automotive for now
+  // Sites are derived from the loaded data; static metadata only enriches known demo sites.
+  const plants = useMemo(() => buildDataDrivenPlants(result, industry), [result, industry])
   
   // Calculate security stats from actual asset data
   const securityStats = useMemo(() => {
@@ -638,62 +769,42 @@ export default function WorldModel({ result, industry = 'automotive' }) {
     }
   }, [result])
   
-  // Parse plant stats from result
+  // Parse plant stats from the same data-derived site identities used by the map.
   const plantStats = useMemo(() => {
-    if (!result?.assets) return {}
-    
-    // Group assets by plant code - check multiple possible field names
+    const allAssets = allResultAssets(result)
+    if (allAssets.length === 0) return {}
+
     const byPlant = {}
-    result.assets.forEach(asset => {
-      // Try various field names for plant code
-      const plantCode = asset.plant_code || 
-                       asset.plantCode || 
-                       asset.tag_id?.split('-')?.[0] ||
-                       asset.plant?.match(/^([A-Z]{4,5})/)?.[1]
-      
-      if (plantCode && plants.some(p => p.code === plantCode)) {
-        if (!byPlant[plantCode]) {
-          byPlant[plantCode] = {
-            assets: [],
-            matched: 0,
-            blindSpots: 0,
-            orphans: 0
-          }
-        }
-        byPlant[plantCode].assets.push(asset)
-        // Count as matched if it has matchType or match_type or discovered data
-        if (asset.match_type === 'matched' || asset.matchType || asset.discovered) {
-          byPlant[plantCode].matched++
+
+    allAssets.forEach(asset => {
+      const { key } = assetSiteIdentity(asset)
+      const isKnownPlant = plants.some(plant => plant.id === key)
+      if (!key || !isKnownPlant) return
+
+      if (!byPlant[key]) {
+        byPlant[key] = {
+          assets: [],
+          matched: 0,
+          blindSpots: 0,
+          orphans: 0
         }
       }
-    })
-    
-    // Also count blind spots by plant
-    result.blindSpots?.forEach(bs => {
-      const plantCode = bs.plant_code || 
-                       bs.plantCode || 
-                       bs.tag_id?.split('-')?.[0] ||
-                       bs.plant?.match(/^([A-Z]{4,5})/)?.[1]
-      if (plantCode && byPlant[plantCode]) {
-        byPlant[plantCode].blindSpots++
-      } else if (plantCode && plants.some(p => p.code === plantCode)) {
-        if (!byPlant[plantCode]) byPlant[plantCode] = { assets: [], matched: 0, blindSpots: 0, orphans: 0 }
-        byPlant[plantCode].blindSpots++
+
+      byPlant[key].assets.push(asset)
+
+      const status = assetStatus(asset)
+      if (status === 'blind_spot') {
+        byPlant[key].blindSpots++
+      } else if (status === 'orphan') {
+        byPlant[key].orphans++
+      } else {
+        byPlant[key].matched++
       }
     })
-    
-    // Distribute orphans proportionally across loaded plants
-    const plantCount = Object.keys(byPlant).length
-    if (plantCount > 0 && result.orphans?.length > 0) {
-      const orphansPerPlant = Math.ceil(result.orphans.length / plantCount)
-      Object.keys(byPlant).forEach(code => {
-        byPlant[code].orphans = orphansPerPlant
-      })
-    }
-    
+
     // Calculate final stats per plant
     const stats = {}
-    Object.entries(byPlant).forEach(([code, data]) => {
+    Object.entries(byPlant).forEach(([key, data]) => {
       // Match Rate: matched assets / (matched + blindSpots)
       // This shows how many engineering assets were actually discovered
       const totalBaseline = data.matched + data.blindSpots
@@ -701,7 +812,7 @@ export default function WorldModel({ result, industry = 'automotive' }) {
         ? Math.round((data.matched / totalBaseline) * 100) 
         : (data.assets.length > 0 ? 100 : 0) // If no blind spots, 100%
       
-      stats[code] = {
+      stats[key] = {
         assetCount: data.assets.length,
         matched: data.matched,
         blindSpots: data.blindSpots,
@@ -813,13 +924,14 @@ export default function WorldModel({ result, industry = 'automotive' }) {
                       {plant.name}
                     </h4>
                     <div style={{ fontSize: '0.8rem', color: '#94a3b8' }}>
-                      {plant.products.join(' • ')}
+                      {(plant.products || []).join(' • ') || plant.type}
                     </div>
                   </div>
                   <div style={{ textAlign: 'right', fontSize: '0.75rem', color: '#64748b' }}>
-                    <div>Capacity: {plant.capacity.toLocaleString()}/year</div>
-                    <div>Employees: {plant.employees.toLocaleString()}</div>
-                    <div>Founded: {plant.founded}</div>
+                    {plant.capacity && <div>Capacity: {plant.capacity.toLocaleString()}/year</div>}
+                    {plant.employees && <div>Employees: {plant.employees.toLocaleString()}</div>}
+                    {plant.founded && <div>Founded: {plant.founded}</div>}
+                    {!plant.capacity && !plant.employees && !plant.founded && <div>{plant.city}</div>}
                   </div>
                 </div>
                 

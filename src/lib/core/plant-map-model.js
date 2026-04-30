@@ -196,14 +196,30 @@ export function buildPlantMapModel(result, { selectedPlant = 'all' } = {}) {
       subnets: Array.from(summary.subnets).sort(),
       protocols: Array.from(summary.protocols).sort()
     },
-    summary: {
-      ...summary,
-      subnets: summary.subnets.size,
-      protocols: summary.protocols.size,
-      coveragePercent: summary.totalAssets > 0
-        ? Math.round((summary.matched / Math.max(1, summary.matched + summary.blindSpots)) * 100)
+    summary: (() => {
+      const documented = summary.matched + summary.blindSpots
+      const discovered = summary.matched + summary.orphans
+      const inScope = summary.matched + summary.blindSpots + summary.orphans
+      const discoveryCoverage = documented > 0
+        ? Math.round((summary.matched / documented) * 100)
         : 0
-    }
+
+      return {
+        ...summary,
+        subnets: summary.subnets.size,
+        protocols: summary.protocols.size,
+        // Canonical denominators (used everywhere in the UI).
+        // documented = engineering baseline (matched + blind spots)
+        // discovered = anything seen on network (matched + orphans)
+        // inScope    = union of both worlds (matched + blind spots + orphans)
+        documented,
+        discovered,
+        inScope,
+        discoveryCoverage,
+        // Legacy aliases - retained so older consumers keep working.
+        coveragePercent: discoveryCoverage
+      }
+    })()
   }
 }
 

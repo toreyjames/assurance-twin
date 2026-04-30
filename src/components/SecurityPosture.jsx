@@ -306,7 +306,7 @@ export default function SecurityPosture({ result, gapAnalysis }) {
         alignItems: 'center',
         gap: '0.75rem'
       }}>
-        🎯 Security Posture Assessment
+        Security Posture Assessment
       </h3>
       <p style={{ 
         margin: '0 0 1.5rem 0', 
@@ -316,66 +316,67 @@ export default function SecurityPosture({ result, gapAnalysis }) {
         Four questions that matter for OT asset assurance
       </p>
       
-      {/* Question 1: What do we have? */}
+      {/* Question 1: What is the documented population? */}
       <PostureCard
         number={1}
-        question="What do we have?"
+        question={'What is the documented asset population? (NIST CSF ID.AM-01)'}
         status={inventoryStatus}
         answer={`${totalEngineering.toLocaleString()} documented assets`}
-        detail={`${criticalCount.toLocaleString()} Tier 1 critical systems • ${securityMetrics.discovered.toLocaleString()} visible on network`}
+        detail={`${criticalCount.toLocaleString()} Tier 1 critical \u00B7 ${securityMetrics.discovered.toLocaleString()} observed on network`}
         breakdown={[
           { label: 'Critical', value: criticalCount.toLocaleString(), warn: true },
           { label: 'Networkable', value: (summary.tier2 || 0).toLocaleString(), good: true },
           { label: 'Passive', value: (summary.tier3 || 0).toLocaleString(), good: true }
         ]}
       />
-      
-      {/* Question 2: Is the baseline comprehensive? */}
+
+      {/* Question 2: Discovery coverage of the documented baseline */}
       <PostureCard
         number={2}
-        question="Is our baseline comprehensive?"
+        question={'What is our discovery coverage? (NIST 800-82r3 \u00A75.1)'}
         status={baselineStatus}
-        answer={`${coveragePercent}% of documented assets discovered on network`}
-        detail={`${matched.toLocaleString()} assets verified between engineering docs and network discovery`}
+        answer={`${coveragePercent}% matched / documented`}
+        detail={`${matched.toLocaleString()} assets reconciled between engineering baseline and OT discovery`}
         breakdown={[
-          { label: 'Verified', value: matched.toLocaleString(), good: true },
-          { label: 'Not seen', value: blindSpotCount.toLocaleString(), warn: blindSpotCount > 0 }
+          { label: 'Matched', value: matched.toLocaleString(), good: true },
+          { label: 'Blind spots', value: blindSpotCount.toLocaleString(), warn: blindSpotCount > 0 }
         ]}
-        actionNeeded={coveragePercent < 80 ? `${blindSpotCount} documented assets not found - may be offline, isolated, or air-gapped` : null}
+        actionNeeded={coveragePercent < 80 ? `${blindSpotCount.toLocaleString()} documented assets not seen on the network - investigate offline, isolated, or air-gapped status.` : null}
       />
-      
-      {/* Question 3: What gaps exist? */}
+
+      {/* Question 3: Reconciliation gaps */}
       <PostureCard
         number={3}
-        question="What gaps do we have?"
+        question={'What reconciliation gaps exist? (NIST CSF ID.AM-04)'}
         status={gapStatus}
-        answer={blindSpotCount === 0 ? 'Complete visibility' : `${blindSpotCount.toLocaleString()} blind spots`}
-        detail={blindSpotCount > 0 
-          ? `Assets in baseline not detected by network discovery tools`
-          : 'All documented assets are visible to discovery tools'
-        }
-        breakdown={blindSpotCount > 0 ? [
-          { label: 'Offline/Isolated', value: Math.round(blindSpotCount * 0.6).toLocaleString(), warn: true },
-          { label: 'Investigate', value: Math.round(blindSpotCount * 0.4).toLocaleString() }
-        ] : [{ label: 'Visibility', value: '100%', good: true }]}
-        actionNeeded={blindSpotCount > 0 ? 'Review undiscovered assets - confirm if offline, isolated, or require updated discovery' : null}
+        answer={blindSpotCount === 0 && orphanCount === 0
+          ? 'No reconciliation gaps detected'
+          : `${blindSpotCount.toLocaleString()} blind spots \u00B7 ${orphanCount.toLocaleString()} orphans`}
+        detail={blindSpotCount + orphanCount > 0
+          ? 'Blind spots = baseline only. Orphans = network only. Each row carries provenance back to its source CSV.'
+          : 'All documented assets observed and all observed devices documented.'}
+        breakdown={blindSpotCount + orphanCount > 0 ? [
+          { label: 'Blind spots', value: blindSpotCount.toLocaleString(), warn: blindSpotCount > 0 },
+          { label: 'Orphans', value: orphanCount.toLocaleString(), warn: orphanCount > 0 }
+        ] : [{ label: 'Reconciled', value: '100%', good: true }]}
+        actionNeeded={blindSpotCount + orphanCount > 0 ? 'Triage in the Asset Table - filter by Blind Spot and Orphan to walk each row.' : null}
       />
-      
-      {/* Question 4: Security Status - THE BIG ONE */}
+
+      {/* Question 4: Security state of observed assets */}
       <PostureCard
         number={4}
-        question="Are our discovered assets secure?"
+        question={'What is the security state of observed assets? (62443-3-3)'}
         status={secureStatus}
-        answer={`${overallSecurePercent}% of discovered assets have no vulnerabilities`}
-        detail={`${securityMetrics.withoutVulns.toLocaleString()} assets clean • ${securityMetrics.withVulns.toLocaleString()} have known vulnerabilities`}
+        answer={`${overallSecurePercent}% of observed assets have no recorded CVEs`}
+        detail={`${securityMetrics.withoutVulns.toLocaleString()} clean \u00B7 ${securityMetrics.withVulns.toLocaleString()} with vulnerabilities recorded in discovery export`}
         breakdown={[
           { label: 'No CVEs', value: securityMetrics.withoutVulns.toLocaleString(), good: true },
           { label: 'Low Risk', value: securityMetrics.lowRisk.toLocaleString(), good: true },
           { label: 'Medium Risk', value: securityMetrics.mediumRisk.toLocaleString(), warn: true },
           { label: 'High Risk', value: securityMetrics.highRisk.toLocaleString(), warn: securityMetrics.highRisk > 0 }
         ]}
-        actionNeeded={securityMetrics.withVulns > 0 
-          ? `${securityMetrics.totalVulns} total vulnerabilities detected - prioritize patching for ${securityMetrics.highRisk} high-risk assets`
+        actionNeeded={securityMetrics.withVulns > 0
+          ? `${securityMetrics.totalVulns.toLocaleString()} vulnerabilities in discovery export - prioritize ${securityMetrics.highRisk.toLocaleString()} high-risk assets.`
           : null
         }
       />
