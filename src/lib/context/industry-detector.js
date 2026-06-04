@@ -85,6 +85,28 @@ const INDUSTRY_PATTERNS = {
     ],
     weight: 0
   },
+
+  'transportation': {
+    name: 'Transportation / DOT',
+    icon: '▦',
+    unitPatterns: [
+      /\b(traffic.?management|tmc|operations.?center|corridor|intersection)\b/i,
+      /\b(roadside.?cabinet|signal|ramp.?meter|dynamic.?message|lane.?control)\b/i,
+      /\b(bridge|tunnel|pump.?station|weigh.?station|inspection.?site)\b/i,
+      /\b(fiber.?ring|field.?network|road.?weather|rwis)\b/i
+    ],
+    equipmentPatterns: [
+      /\b(signal.?controller|traffic.?controller|atms|cctv|camera|dms|vms)\b/i,
+      /\b(vehicle.?detector|loop.?detector|radar|rwIS|weather.?station)\b/i,
+      /\b(cellular.?router|field.?switch|cabinet.?switch|ups|door.?sensor|jump.?host)\b/i
+    ],
+    termPatterns: [
+      /\b(its|dot|department.?of.?transportation|freeway|arterial|roadway)\b/i,
+      /\b(vendor.?remote|cabinet.?access|fiber.?backhaul|lte|microwave)\b/i,
+      /\b(incident.?management|lane.?closure|variable.?speed|adaptive.?signal)\b/i
+    ],
+    weight: 0
+  },
   
   'automotive': {
     name: 'Automotive Manufacturing',
@@ -207,6 +229,7 @@ export function detectIndustryFromFilename(filename) {
   
   if (/refiner|oil|gas|petro|crude/i.test(lower)) return 'oil-gas'
   if (/pharma|drug|gmp|fda|batch/i.test(lower)) return 'pharma'
+  if (/transport|dot|traffic|corridor|road|its/i.test(lower)) return 'transportation'
   if (/power|util|grid|generat|substation/i.test(lower)) return 'utilities'
   if (/auto|vehicle|assembly|robot/i.test(lower)) return 'automotive'
   

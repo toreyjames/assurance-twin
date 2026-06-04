@@ -216,6 +216,10 @@ export function buildPlantMapModel(result, { selectedPlant = 'all' } = {}) {
         discovered,
         inScope,
         discoveryCoverage,
+        // Per-source breakdown for multi-stream demos (e.g. transportation:
+        // engineering baseline / network discovery / field inventory).
+        sources: result?.summary?.sources || [],
+        crossValidated: result?.summary?.crossValidated ?? 0,
         // Legacy aliases - retained so older consumers keep working.
         coveragePercent: discoveryCoverage
       }

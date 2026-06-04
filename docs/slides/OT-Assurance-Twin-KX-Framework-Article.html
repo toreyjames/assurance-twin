@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OT Assurance Twin: A Context-Aware Framework for OT Asset Assurance | Deloitte Knowledge Exchange</title>
+    <style>
+        @page { size: letter; margin: 1in; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Aptos', 'Segoe UI', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: white;
+            max-width: 8.5in;
+            margin: 0 auto;
+            padding: 0.5in;
+        }
+        .header {
+            border-bottom: 3px solid #1B5E20;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        .deloitte-logo { font-size: 28px; font-weight: bold; color: #1B5E20; margin-bottom: 5px; }
+        .deloitte-logo::after { content: "."; color: #66BB6A; }
+        .tagline { font-size: 12px; font-style: italic; color: #666; margin-bottom: 10px; }
+        .document-type { font-size: 11px; color: #666; text-transform: uppercase; letter-spacing: 1px; }
+        h1 { font-size: 32px; color: #1B5E20; margin: 30px 0 15px 0; font-weight: bold; line-height: 1.2; }
+        h2 { font-size: 24px; color: #1B5E20; margin: 25px 0 12px 0; font-weight: 600; border-bottom: 2px solid #66BB6A; padding-bottom: 5px; }
+        h3 { font-size: 18px; color: #2E7D32; margin: 20px 0 10px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: #388E3C; margin: 15px 0 8px 0; font-weight: 600; }
+        p { margin: 10px 0; text-align: justify; }
+        ul, ol { margin: 10px 0 10px 30px; }
+        li { margin: 5px 0; }
+        .executive-summary {
+            background: #E8F5E9;
+            border-left: 4px solid #66BB6A;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 4px;
+        }
+        .executive-summary h2 { margin-top: 0; border: none; color: #1B5E20; }
+        .highlight-box {
+            background: #F1F8E9;
+            border-left: 4px solid #66BB6A;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        .callout-box {
+            background: #E3F2FD;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        .section { margin: 30px 0; }
+        .figure { margin: 20px 0; text-align: center; }
+        .figure-caption { font-size: 12px; color: #666; font-style: italic; margin-top: 5px; }
+        code { background: #F5F5F5; padding: 2px 6px; border-radius: 3px; font-family: 'Courier New', monospace; font-size: 0.9em; }
+        .footer { margin-top: 50px; padding-top: 20px; border-top: 1px solid #ddd; font-size: 11px; color: #666; text-align: center; }
+        @media print { body { padding: 0.5in; } .no-print { display: none; } }
+        .feature-list { list-style: none; margin-left: 0; }
+        .feature-list li::before { content: "✓ "; color: #66BB6A; font-weight: bold; margin-right: 8px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="deloitte-logo">Deloitte</div>
+        <div class="tagline">Together makes progress</div>
+        <div class="document-type">Knowledge Exchange | Performance Assurance</div>
+    </div>
+
+    <h1>OT Assurance Twin: A Context-Aware Framework for OT Asset Assurance</h1>
+    <p style="color: #666; font-size: 14px; margin-bottom: 20px;">
+        <strong>Subtitle:</strong> A client-customizable framework—not a fixed tool—for building verified, context-aware OT asset canons with engineering-backed intelligence.<br>
+        <strong>Industry Focus:</strong> Oil &amp; Gas, Pharmaceuticals, Automotive, Utilities
+    </p>
+
+    <div class="executive-summary">
+        <h2>Executive Summary</h2>
+        <p>
+            Operational Technology (OT) environments face a critical visibility gap: organizations typically have only 50–80% visibility into their OT assets, creating blind spots that compromise security, compliance, and operational efficiency. Traditional approaches—OT security platforms, CMDB systems, and engineering documentation—operate in silos, providing fragmented views that lack context and verification.
+        </p>
+        <p>
+            The <strong>OT Assurance Twin</strong> is presented here as a <strong>framework</strong>—a set of principles and building blocks that are customized per client—rather than as a single tool. Implementation is tailored to client data sources, industry, unit taxonomy, and assurance depth (inventory, context, or full assurance); the principles remain consistent. The framework fuses multiple data sources (engineering baseline, OT discovery, CMMS, and related feeds) into a single, verified, context-aware asset canon with process-aware intelligence, grounded in the AIGNE academic framework and semantic mapping functions for context awareness.
+        </p>
+        <p>
+            This article describes the framework’s foundation (AIGNE), its semantic and mapping functions, its context-aware analysis capabilities, and the careful role it plays in risk: providing <strong>engineering-backed context</strong> that is often the missing piece to risk assessment and prioritization—enabling CISOs to see risk through an OT lens and to explain and justify prioritization and timing with evidence.
+        </p>
+    </div>
+
+    <div class="section">
+        <h2>What This Is—and What This Is Not</h2>
+        <div class="highlight-box" style="background: #FFF3E0; border-left-color: #FF9800;">
+            <h4 style="color: #E65100;">This Is:</h4>
+            <ul>
+                <li><strong>A Framework</strong>—reusable design and building blocks, configurable to client data sources, industry, unit taxonomy, and assurance depth</li>
+                <li><strong>A Reference Model</strong> for context-aware OT asset assurance—design principles that guide implementation</li>
+                <li><strong>A Design Pattern</strong> that prioritizes process intent and engineering context over raw lists</li>
+                <li><strong>Client-Customizable</strong>—implementation is customized per engagement; the principles are consistent</li>
+                <li><strong>Aligned with Risk Relationships</strong>—prioritizing client protection and auditability over feature proliferation</li>
+            </ul>
+        </div>
+        <div class="callout-box" style="background: #FFEBEE; border-left-color: #F44336;">
+            <h4 style="color: #C62828;">This Is Not:</h4>
+            <ul>
+                <li><strong>Not a Fixed Tool</strong>—we describe a framework and approach, not a single shrink-wrapped product</li>
+                <li><strong>Not a Platform Pitch</strong>—no vendor lock-in; the framework can be applied with client-chosen data and systems</li>
+                <li><strong>Not One-Size-Fits-All</strong>—every plant and client is different; the framework adapts to context</li>
+                <li><strong>Not a Replacement for Risk Judgment</strong>—we provide context that enables risk-informed decisions; we do not “calculate” or “determine” risk in a definitive way</li>
+            </ul>
+        </div>
+        <p>
+            The distinction matters. The framework starts from the problem: <strong>how do we build a verified, context-aware view of OT assets so that security, operations, and compliance can make informed decisions?</strong> The answer is not “deploy our product”—it’s “apply this framework and customize it to the client.”
+        </p>
+    </div>
+
+    <div class="section">
+        <h2>Foundation: AIGNE</h2>
+        <p>
+            The framework is grounded in the <strong>AIGNE</strong> academic framework (arXiv:2512.05470), which provides principles for context-aware engineering, traceability, and accountability. Three AIGNE-aligned ideas are central:
+        </p>
+        <ul>
+            <li><strong>Context Constructor</strong>—context is “assembled under explicit architectural design constraints.” In practice: multi-source ingestion (engineering, discovery, and other feeds), normalization to a canonical schema, and multi-strategy matching (e.g. tag ID, IP, hostname, MAC) with confidence tiers. The result is a single asset canon with clear lineage.</li>
+            <li><strong>Provenance and accountability</strong>—“context artefacts must be traceable and accountable.” Every source ingestion, match, and pipeline step is recorded. Match strategy and confidence are stored so that auditors and regulators can answer “how do we know?” with evidence.</li>
+            <li><strong>Agentic File System (AFS)</strong>—all context sources are treated as “files” in a governed, persistent, hierarchical file system. Sources, canonical outputs, and derived artefacts have identity and lineage; derivation relationships (e.g. “this canon was derived from these source files”) support full traceability.</li>
+        </ul>
+        <p>
+            Together, these ensure that the framework does not just produce another list: it produces a <em>verified</em> list with a clear audit trail and the ability to trace any assertion back to source data and matching logic.
+        </p>
+        <div class="figure">
+            <p><em>Conceptual flow:</em> Client data sources (engineering baseline, OT discovery, CMMS, etc.) → Agentic File System &amp; Context Constructor → Provenance-tracked canonical context → Semantic mapping &amp; context-aware analysis → Canon, reports, and visual outputs.</p>
+            <p class="figure-caption">Framework layers: ingestion and construction (AIGNE-aligned), then semantic mapping, then analysis.</p>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Semantic and Mapping Functions for Context Awareness</h2>
+        <p>
+            Context-aware assurance requires understanding not only <em>what</em> assets exist but <em>what they do</em>, <em>where they sit</em> in the process, and <em>what is expected</em> for each unit. The framework uses semantic and mapping functions to provide that context.
+        </p>
+        <h3>Device semantics</h3>
+        <p>
+            Device semantics are derived from tag naming conventions and device types. Industry-standard patterns (e.g. ISA-5.1) are used: the first letter of a tag often indicates the measured variable (e.g. F = flow, L = level, T = temperature), and modifier letters indicate function (e.g. transmitter, controller, valve). From tag and model information, the framework infers device type (PLC, SIS, transmitter, HMI, etc.) and criticality. This enables “what this device is and what it does” rather than a bare identifier.
+        </p>
+        <h3>Unit knowledge</h3>
+        <p>
+            Industry-specific templates define what each process unit is expected to contain: expected functions (e.g. feed flow control, column pressure, safety systems) and expected device types (e.g. minimum PLCs, SIS, HMIs per unit). This enables <strong>functional gap analysis</strong>—not just “we have or don’t have this asset” but “this unit is missing an expected function or device type.” Templates can be customized per client and industry (oil &amp; gas, pharma, automotive, utilities).
+        </p>
+        <h3>Dependency mapping</h3>
+        <p>
+            Dependencies between units and assets are modeled (process flow, control, safety, utility, network). Industry-specific patterns describe typical process flow (e.g. crude distillation → hydrotreater) and utility consumption (e.g. steam, instrument air). This answers “what else fails when this fails?” and supports prioritization and impact analysis.
+        </p>
+        <h3>Industry auto-detection</h3>
+        <p>
+            In line with AIGNE’s principle to “detect and adapt to data patterns rather than requiring upfront configuration,” the framework can infer likely industry from ingested data—unit names, equipment types, and terminology—so that semantic and mapping functions can be applied with minimal manual configuration.
+        </p>
+    </div>
+
+    <div class="section">
+        <h2>Context-Aware Analysis (Beyond a Simple List)</h2>
+        <p>
+            With semantic and mapping functions in place, the framework supports analysis that goes beyond a flat inventory.
+        </p>
+        <ul class="feature-list">
+            <li><strong>Gap analysis</strong>—Asset gaps (blind spots: in engineering but not discovered; orphans: discovered but not in engineering), functional gaps (missing expected functions or device types per unit), and coverage gaps (units or segments with insufficient discovery visibility). All use device context and unit knowledge.</li>
+            <li><strong>Lifecycle context</strong>—EOL/EOS data, firmware age, and support status answer “how long do we have?” and inform prioritization.</li>
+            <li><strong>Layout and ISA-95</strong>—Deterministic, engineer-grade layout and ISA-95/Purdue zone awareness support both data semantics and visual representation (e.g. plant maps with zone boundaries and process flow), so the same context appears in reports and in visualizations.</li>
+        </ul>
+        <p>
+            The emphasis throughout is <strong>context over lists</strong>: the framework produces a canon that is not only matched and verified but also interpreted—what it does, where it sits, what’s missing, and how it fits the process.
+        </p>
+    </div>
+
+    <div class="section">
+        <h2>Risk: Context as the Missing Piece</h2>
+        <p>
+            In OT, risk cannot be properly qualified without engineering context. A list of devices with IP addresses and CVEs does not tell the CISO <em>which</em> devices sit in safety-critical loops, which units cannot be taken offline without process impact, or why an engineer might say “patch later, not now.” The framework is designed to supply that missing piece: <strong>engineering-backed context that enables risk-informed decisions</strong>, without replacing risk judgment.
+        </p>
+        <div class="highlight-box">
+            <h4>CISO lens, engineering data primary</h4>
+            <p>
+                The primary audience for risk-related outcomes is the CISO (and board/audit). In OT, however, <strong>engineering data is primary to qualify risk</strong>. The framework delivers a CISO-relevant view—what needs attention, where gaps are, what is managed—grounded in engineering baseline and discovery, so the CISO can speak with evidence rather than assumptions.
+            </p>
+        </div>
+        <p>
+            A familiar tension: for a CISO, “everything needs to be patched”; an engineer may say “yes, but not now.” The framework helps <strong>explain and understand why</strong> “not now”—process criticality, unit role, safety function, outage windows, and dependencies. It gives the CISO the language and evidence to align with operations and to justify prioritization and timing to auditors and leadership. We do not claim to “calculate” or “determine” risk in a definitive way; we provide <strong>context that enables risk-informed decisions</strong> and <strong>qualifying risk with engineering data</strong>.
+        </p>
+    </div>
+
+    <div class="section">
+        <h2>From Framework to Application</h2>
+        <p>
+            The framework is applied in engagements by configuring it to the client: data sources (engineering spreadsheets, discovery exports, CMMS, vulnerability data), industry (and thus unit and dependency templates), and assurance tier (inventory-only, context-rich, or full assurance with gap and compliance-oriented outputs). Visual and report outputs—plant maps, gap matrices, executive summaries, evidence packages—are outcomes of the same semantics and provenance, so that what appears in a dashboard or report is traceable to the same canon and rules.
+        </p>
+        <p>
+            Because it is a framework and not a fixed product, deliverables can be tailored: some clients need a verified asset list with provenance; others need functional gap analysis by unit; others need engineering-backed context for risk prioritization and “why not now” discussions. The building blocks (Context Constructor, provenance, AFS, semantic and mapping functions, context-aware analysis) remain the same; the implementation is customized.
+        </p>
+    </div>
+
+    <div class="section">
+        <h2>Why the Framework Matters for Deloitte</h2>
+        <p>
+            Positioning this work as a <strong>framework</strong> supports Deloitte’s engagement model: we deliver principles and building blocks that are customized to client needs, not a one-size-fits-all tool. Clients get auditability (provenance, evidence packages), alignment with risk and compliance expectations, and a reusable approach that can be extended across plants and engagements. The same framework can underpin inventory reconciliation, gap analysis, and engineering-backed context for CISO and board discussions—with implementation details that fit the client’s data, industry, and assurance requirements.
+        </p>
+    </div>
+
+    <div class="section">
+        <h2>References</h2>
+        <ul>
+            <li>AIGNE Framework (Context Constructor, provenance, Agentic File System)—arXiv:2512.05470</li>
+            <li>ISA-95 (Enterprise–Control System Integration) / Purdue model for levels and zones</li>
+            <li>ISA-5.1 (Instrumentation symbols and identification) for tag and function semantics</li>
+            <li>IEC 62443, NIST CSF—referenced where compliance posture or control mapping is in scope</li>
+        </ul>
+    </div>
+
+    <div class="footer">
+        Deloitte Knowledge Exchange | OT Assurance Twin Framework | Context-Aware Asset Assurance<br>
+        For internal use. Framework implementation is customized per client engagement.
+    </div>
+</body>
+</html>

@@ -23,6 +23,11 @@ import { generateDependencyMap } from './lib/context/dependency-mapper.js'
 import { analyzeAllGaps } from './lib/context/gap-analyzer.js'
 import { analyzePortfolioRisk } from './lib/context/risk-engine.js'
 import { buildPlantMapModel } from './lib/core/plant-map-model.js'
+import { buildEvidenceBundle } from './lib/core/evidence-builder.js'
+import { ComplianceMapper } from './lib/core/compliance-mapper.js'
+import { ReportGenerator } from './lib/core/report-generator.js'
+import { evaluateClientDataContract } from './lib/core/client-data-contract.js'
+import { canonicalCveCount } from './lib/core/cve-count.js'
 
 import SmartUpload from './components/SmartUpload.jsx'
 import PlantMap from './components/PlantMap.jsx'
@@ -30,6 +35,16 @@ import GapPanel from './components/GapPanel.jsx'
 import SecurityPosture from './components/SecurityPosture.jsx'
 import AssetTable from './components/AssetTable.jsx'
 import WorldModel from './components/WorldModel.jsx'
+import InventoryHeader from './components/InventoryHeader.jsx'
+import LayeredTopology from './components/LayeredTopology.jsx'
+import MethodologyView from './components/MethodologyView.jsx'
+import DoctrineCrosswalk from './components/DoctrineCrosswalk.jsx'
+import EvidenceDrawer from './components/EvidenceDrawer.jsx'
+import DevicePassport from './components/DevicePassport.jsx'
+import RFIReadinessView from './components/RFIReadinessView.jsx'
+import RiskView from './components/RiskView.jsx'
+import AgentBreakRoom from './components/AgentBreakRoom.jsx'
+import { useAgenticLayer, useAgentsFromResults } from './lib/agents/useAgenticLayer.js'
 
 // =============================================================================
 // SESSION PERSISTENCE
@@ -86,6 +101,18 @@ const ASSEMBLY_CSS = `
 
 const DEMO_DATASETS = [
   { id: 'automotive-large', label: 'Automotive (~12K, 5 plants)', industry: 'automotive', scale: 'large', path: '/samples/aigne/automotive/large' },
+  {
+    id: 'transportation-dot-large',
+    label: 'Transportation / DOT (statewide demo)',
+    industry: 'transportation',
+    scale: 'large',
+    path: '/samples/aigne/transportation/large',
+    files: [
+      { name: 'engineering_baseline_large.csv', detectedType: 'engineering', sourceLabel: 'Engineering baseline' },
+      { name: 'ot_network_discovery_large.csv', detectedType: 'discovery', sourceLabel: 'Network discovery' },
+      { name: 'ot_field_inventory_large.csv',   detectedType: 'discovery', sourceLabel: 'Field inventory' }
+    ]
+  },
   { id: 'oil-gas-medium', label: 'Oil & Gas - Medium (~12K)', industry: 'oil-gas', scale: 'medium', path: '/samples/demo/oil-gas' },
   { id: 'oil-gas-large', label: 'Oil & Gas - Large (~11K, 3 plants)', industry: 'oil-gas', scale: 'large', path: '/samples/aigne/oil-gas/large' },
   { id: 'oil-gas-enterprise', label: 'Oil & Gas - Enterprise (~32K, 5 plants)', industry: 'oil-gas', scale: 'enterprise', path: '/samples/aigne/oil-gas/enterprise' },
@@ -107,11 +134,24 @@ const PHASES = {
   COMPLETE: 'complete'
 }
 
+const CENTER_VIEWS = {
+  RFI: 'rfi',
+  SECURITY: 'security',
+  INVENTORY: 'inventory',
+  TOPOLOGY: 'topology',
+  RISK: 'risk',
+  SITES: 'sites',
+  METHODOLOGY: 'methodology',
+  DOCTRINE: 'doctrine',
+  AGENTS: 'agents'
+}
+
 // =============================================================================
 // ASSEMBLY STATUS BAR
 // =============================================================================
 
 function AssemblyStatus({ phase, stats }) {
+  const SYS_FONT = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
   const phases = [
     { key: PHASES.INGESTING, label: 'Ingesting' },
     { key: PHASES.RECONCILING, label: 'Reconciling' },
@@ -122,40 +162,72 @@ function AssemblyStatus({ phase, stats }) {
   ]
 
   const currentIdx = phases.findIndex(p => p.key === phase)
+  const isComplete = phase === PHASES.COMPLETE
+  const totalRows = stats?.totalRows || 0
+  const sourceCount = stats?.sourceCount || 0
+  const inScope = (stats?.matched || 0) + (stats?.blindSpots || 0) + (stats?.orphans || 0)
 
-  return (
-    <div style={{ padding: '0.5rem 0', borderBottom: '1px solid #1e293b' }}>
-      <div style={{ display: 'flex', gap: '0.25rem', alignItems: 'center', marginBottom: '0.5rem' }}>
-        {phases.map((p, i) => (
-          <React.Fragment key={p.key}>
-            <div style={{
-              fontSize: '0.65rem',
-              fontFamily: 'monospace',
-              fontWeight: i === currentIdx ? '700' : '400',
-              color: i < currentIdx ? '#22c55e' : i === currentIdx ? '#fbbf24' : '#475569',
-              textTransform: 'uppercase',
-              letterSpacing: '0.05em'
-            }}>
-              {i < currentIdx ? '\u2713' : i === currentIdx && phase !== PHASES.COMPLETE ? '\u25CF' : ''} {p.label}
-            </div>
-            {i < phases.length - 1 && (
-              <div style={{
-                flex: 1,
-                height: '1px',
-                background: i < currentIdx ? '#22c55e' : '#334155'
-              }} />
-            )}
-          </React.Fragment>
-        ))}
+  // Once complete the hero already restates matched / blind / orphan / coverage — collapse to one quiet line.
+  // We tie the raw input rows to the reconciled in-scope count so neither number
+  // looks orphaned: e.g. "428 source rows across 3 streams · 88 in-scope assets".
+  if (isComplete) {
+    return (
+      <div style={{
+        padding: '0.5rem 0.85rem',
+        fontFamily: SYS_FONT,
+        fontSize: '0.75rem',
+        color: '#64748b',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '0.5rem',
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis'
+      }}>
+        <span style={{ color: '#22c55e', flexShrink: 0 }}>●</span>
+        <span style={{ color: '#cbd5e1', flexShrink: 0 }}>Pipeline complete</span>
+        {totalRows > 0 && (
+          <>
+            <span style={{ color: '#1e293b', flexShrink: 0 }}>·</span>
+            <span style={{ flexShrink: 0 }}>
+              {totalRows.toLocaleString()} source rows{sourceCount > 0 ? ` across ${sourceCount} stream${sourceCount === 1 ? '' : 's'}` : ''}
+            </span>
+          </>
+        )}
+        {inScope > 0 && (
+          <>
+            <span style={{ color: '#1e293b', flexShrink: 0 }}>·</span>
+            <span style={{ flexShrink: 0 }}>{inScope.toLocaleString()} in-scope assets</span>
+          </>
+        )}
       </div>
-      {stats && (
-        <div style={{ display: 'flex', gap: '1.5rem', fontSize: '0.7rem', fontFamily: 'monospace', color: '#94a3b8' }}>
-          {stats.totalRows > 0 && <span>{stats.totalRows.toLocaleString()} rows ingested</span>}
-          {stats.matched > 0 && <span>{stats.matched} matched</span>}
-          {stats.blindSpots > 0 && <span>{stats.blindSpots} blind spots</span>}
-          {stats.orphans > 0 && <span>{stats.orphans} orphans</span>}
-          {stats.coverage > 0 && <span>{stats.coverage}% coverage</span>}
-        </div>
+    )
+  }
+
+  // During processing keep a single progress line with step + live count.
+  const currentLabel = phases[currentIdx]?.label || 'Working'
+  return (
+    <div style={{
+      padding: '0.5rem 0.85rem',
+      fontFamily: SYS_FONT,
+      fontSize: '0.75rem',
+      color: '#94a3b8',
+      display: 'flex',
+      alignItems: 'center',
+      gap: '0.5rem',
+      whiteSpace: 'nowrap'
+    }}>
+      <span style={{
+        width: 8, height: 8, borderRadius: '50%', background: '#f59e0b',
+        display: 'inline-block', flexShrink: 0
+      }} />
+      <span style={{ color: '#f8fafc' }}>{currentLabel}</span>
+      <span style={{ color: '#64748b' }}>· step {Math.max(0, currentIdx) + 1} of {phases.length}</span>
+      {totalRows > 0 && (
+        <>
+          <span style={{ color: '#1e293b' }}>·</span>
+          <span>{totalRows.toLocaleString()} rows</span>
+        </>
       )}
     </div>
   )
@@ -165,20 +237,22 @@ function AssemblyStatus({ phase, stats }) {
 // RIGHT PANEL: DETAIL VIEW
 // =============================================================================
 
-function DetailPanel({ selected, setSelected, result, onReviewDecision, rightTab, setRightTab }) {
-  // Insights tab intentionally hidden from the demo flow. It depended on an
-  // optional sidecar API and added surface without changing the assurance story.
-  // The InsightsPanels component remains in this file for future re-enable.
-  const hasInsights = false
+function DetailPanel({ selected, result, onReviewDecision, rightTab, setRightTab }) {
+  const hasInsights = Boolean(result?.assuranceInsights)
   const tabs = [
     { id: 'detail', label: 'Detail' },
     { id: 'gaps', label: 'Gaps' },
-    { id: 'security', label: 'Security' },
-    { id: 'table', label: 'Table' }
+    { id: 'security', label: 'Security' }
   ]
+  if (hasInsights) tabs.push({ id: 'insights', label: 'Insights' })
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      height: '100%',
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+    }}>
       <div style={{ display: 'flex', borderBottom: '1px solid #1e293b', flexShrink: 0 }}>
         {tabs.map(tab => (
           <button
@@ -186,16 +260,13 @@ function DetailPanel({ selected, setSelected, result, onReviewDecision, rightTab
             onClick={() => setRightTab(tab.id)}
             style={{
               flex: 1,
-              padding: '0.5rem',
-              background: rightTab === tab.id ? '#1e293b' : 'transparent',
+              padding: '0.55rem 0.5rem',
+              background: rightTab === tab.id ? '#0f172a' : 'transparent',
               color: rightTab === tab.id ? '#f8fafc' : '#64748b',
               border: 'none',
               cursor: 'pointer',
-              fontSize: '0.7rem',
-              fontFamily: 'monospace',
-              fontWeight: rightTab === tab.id ? '700' : '400',
-              textTransform: 'uppercase',
-              letterSpacing: '0.05em'
+              fontSize: '0.78rem',
+              fontWeight: rightTab === tab.id ? '600' : '400'
             }}
           >
             {tab.label}
@@ -213,37 +284,11 @@ function DetailPanel({ selected, setSelected, result, onReviewDecision, rightTab
         )}
 
         {rightTab === 'security' && result && (
-          <SecurityPosture result={result} gapAnalysis={result.contextAnalysis?.gapAnalysis} />
+          <SecurityPosture result={result} />
         )}
 
         {rightTab === 'insights' && hasInsights && (
           <InsightsPanels insights={result.assuranceInsights} />
-        )}
-
-        {rightTab === 'table' && result && (
-          <div>
-            <div style={{ marginBottom: '0.5rem', textAlign: 'right' }}>
-              <button
-                onClick={() => exportCSV(result)}
-                style={{
-                  padding: '0.3rem 0.75rem', background: '#1e293b', color: '#94a3b8',
-                  border: '1px solid #334155', borderRadius: '0.25rem', cursor: 'pointer',
-                  fontSize: '0.65rem', fontFamily: 'monospace'
-                }}
-              >
-                Export CSV
-              </button>
-            </div>
-            <AssetTable
-              unifiedAssets={buildUnifiedAssets(result)}
-              result={result}
-              selectedAsset={selected}
-              onSelectAsset={asset => {
-                if (typeof setSelected === 'function') setSelected(asset)
-                if (asset && typeof setRightTab === 'function') setRightTab('detail')
-              }}
-            />
-          </div>
         )}
       </div>
     </div>
@@ -257,9 +302,13 @@ function DetailPanel({ selected, setSelected, result, onReviewDecision, rightTab
 function AssetDetail({ selected, onReviewDecision }) {
   if (!selected) {
     return (
-      <div style={{ color: '#475569', fontSize: '0.85rem', padding: '2rem 1rem', textAlign: 'center' }}>
-        <div style={{ fontSize: '2rem', marginBottom: '0.5rem', opacity: 0.3 }}>&#8592;</div>
-        Select an asset or unit on the canvas to see detail and evidence trail.
+      <div style={{
+        color: '#64748b',
+        fontSize: '0.78rem',
+        padding: '0.75rem 0.5rem',
+        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+      }}>
+        Select an asset to view its evidence trail.
       </div>
     )
   }
@@ -274,6 +323,8 @@ function AssetDetail({ selected, onReviewDecision }) {
   const isLowConfidence = !isOrphan && !isBlindSpot && (
     validationConf === 'LOW' || (selected.matchConfidence != null && selected.matchConfidence < 70)
   )
+
+  const cveCountForDisplay = canonicalCveCount(selected)
 
   let badgeLabel = 'Matched'
   let badgeBg = '#22c55e20'
@@ -396,15 +447,20 @@ function AssetDetail({ selected, onReviewDecision }) {
         </div>
       )}
 
-      {/* Security details */}
+      <EvidenceDrawer asset={selected} />
+
+      {/* Security details. cve_count is the canonical max of the
+          vulnerabilities / cve_count / cve_ids fields, so we surface a single
+          "Known CVEs" row rather than two near-duplicate counts. */}
       <FieldGroup title="Security" fields={[
-        { label: 'Vulnerabilities', value: selected.vulnerabilities > 0 ? `${selected.vulnerabilities}` : '' },
-        { label: 'CVEs', value: selected.cve_count > 0 ? `${selected.cve_count}` : '' },
+        { label: 'Known CVEs', value: cveCountForDisplay > 0 ? `${cveCountForDisplay}` : '' },
         { label: 'Risk Score', value: selected.risk_score > 0 ? `${selected.risk_score}` : '' },
         { label: 'Managed', value: selected.is_managed === true ? 'Yes' : selected.is_managed === false ? 'No' : '' },
         { label: 'Last Patch', value: selected.last_patch_date },
         { label: 'Firmware', value: selected.firmware_version }
       ]} />
+
+      <DevicePassport asset={selected} />
 
       {/* Inline review for uncertain items */}
       {(isLowConfidence || isOrphan) && onReviewDecision && (
@@ -500,9 +556,9 @@ function UnitSummary({ unit }) {
       </div>
 
       <FieldGroup title="Tier Mix" fields={[
-        { label: 'Tier 1 Critical', value: unit.tier1 || 0 },
-        { label: 'Tier 2 Networkable', value: unit.tier2 || 0 },
-        { label: 'Tier 3 Passive', value: unit.tier3 || 0 }
+        { label: 'Inferred Tier 1 Critical', value: unit.tier1 || 0 },
+        { label: 'Inferred Tier 2 Networkable', value: unit.tier2 || 0 },
+        { label: 'Inferred Tier 3 Passive', value: unit.tier3 || 0 }
       ]} />
 
       {(subnets.length > 0 || protocols.length > 0) && (
@@ -711,7 +767,7 @@ function ThreeQuestions({ result, industry }) {
         chip={'800-82r3 \u00A75.1'}
       />
       <QCard
-        label={'Tier 1\u20132 Managed'}
+        label={'Inferred Tier 1\u20132 Managed'}
         value={`${stats.managed.toLocaleString()}/${stats.networkedTotal.toLocaleString()}`}
         detail={stats.unmanaged > 0
           ? `${stats.unmanaged.toLocaleString()} unmanaged${stats.withCVEs > 0 ? ` \u00B7 ${stats.withCVEs.toLocaleString()} with CVEs` : ''}`
@@ -750,9 +806,199 @@ function QCard({ label, value, detail, valueColor, chip }) {
   )
 }
 
+function ViewButton({ active, label, onClick }) {
+  return (
+    <button
+      onClick={onClick}
+      style={{
+        padding: '0.3rem 0.7rem',
+        background: active ? '#0f172a' : 'transparent',
+        color: active ? '#f8fafc' : '#94a3b8',
+        border: `1px solid ${active ? '#334155' : 'transparent'}`,
+        borderRadius: '0.3rem',
+        cursor: 'pointer',
+        fontSize: '0.78rem',
+        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+        fontWeight: active ? 600 : 500
+      }}
+    >
+      {label}
+    </button>
+  )
+}
+
+function MethodologyPrimer({ phase, stats }) {
+  const currentPhaseLabel =
+    phase === PHASES.INGESTING ? 'Ingesting source files' :
+    phase === PHASES.RECONCILING ? 'Reconciling engineering baseline vs network discovery vs field inventory' :
+    phase === PHASES.MAPPING ? 'Classifying and validating assets' :
+    phase === PHASES.VERIFYING ? 'Cross-validating evidence claims' :
+    phase === PHASES.ENRICHING ? 'Enriching with context and risk' :
+    phase === PHASES.COMPLETE ? 'Ready' :
+    'Awaiting input'
+
+  const stepStyle = {
+    border: '1px solid #1e293b',
+    borderRadius: '0.4rem',
+    background: '#0b1220',
+    padding: '0.45rem 0.55rem'
+  }
+
+  const ingestedRows = stats?.totalRows || 0
+  const matched = stats?.matched || 0
+  const blindSpots = stats?.blindSpots || 0
+  const orphans = stats?.orphans || 0
+  const coverage = stats?.coverage || 0
+
+  return (
+    <div style={{
+      width: 'min(980px, 96%)',
+      border: '1px solid #1e293b',
+      borderRadius: '0.6rem',
+      background: '#020617',
+      padding: '0.75rem',
+      color: '#cbd5e1'
+    }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.5rem', marginBottom: '0.55rem' }}>
+        <div>
+          <div style={{ fontSize: '0.8rem', color: '#f8fafc', fontWeight: 700, fontFamily: 'monospace' }}>
+            Assurance Methodology
+          </div>
+          <div style={{ fontSize: '0.68rem', color: '#94a3b8' }}>
+            Canonical pipeline for converging engineering and network evidence.
+          </div>
+        </div>
+        <span style={{
+          border: '1px solid #334155',
+          background: '#111827',
+          color: '#94a3b8',
+          borderRadius: '999px',
+          padding: '0.15rem 0.5rem',
+          fontFamily: 'monospace',
+          fontSize: '0.62rem'
+        }}>
+          {currentPhaseLabel}
+        </span>
+      </div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '0.45rem', marginBottom: '0.55rem' }}>
+        <div style={stepStyle}>
+          <div style={{ fontSize: '0.62rem', color: '#64748b', fontFamily: 'monospace', textTransform: 'uppercase' }}>1. Ingest + normalize</div>
+          <div style={{ fontSize: '0.7rem', marginTop: '0.15rem' }}>Load CSV sources and standardize IDs/fields for matching.</div>
+        </div>
+        <div style={stepStyle}>
+          <div style={{ fontSize: '0.62rem', color: '#64748b', fontFamily: 'monospace', textTransform: 'uppercase' }}>2. Reconcile + classify</div>
+          <div style={{ fontSize: '0.7rem', marginTop: '0.15rem' }}>Deterministic matching and rule-based tier/device class assignment.</div>
+        </div>
+        <div style={stepStyle}>
+          <div style={{ fontSize: '0.62rem', color: '#64748b', fontFamily: 'monospace', textTransform: 'uppercase' }}>3. Validate + enrich</div>
+          <div style={{ fontSize: '0.7rem', marginTop: '0.15rem' }}>Attach evidence status, risk context, and topology-level insights.</div>
+        </div>
+        <div style={stepStyle}>
+          <div style={{ fontSize: '0.62rem', color: '#64748b', fontFamily: 'monospace', textTransform: 'uppercase' }}>4. Visualize + drill down</div>
+          <div style={{ fontSize: '0.7rem', marginTop: '0.15rem' }}>RFI, Security, Inventory, Topology, and Methodology views from one denominator.</div>
+        </div>
+      </div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr', gap: '0.45rem' }}>
+        <div style={stepStyle}>
+          <div style={{ fontSize: '0.62rem', color: '#64748b', fontFamily: 'monospace', textTransform: 'uppercase', marginBottom: '0.2rem' }}>
+            Core routines (commands used)
+          </div>
+          <div style={{ fontFamily: 'monospace', fontSize: '0.67rem', color: '#94a3b8', lineHeight: 1.6, wordBreak: 'break-word' }}>
+            {'normalizeDataset -> performMatching -> classifySecurityTier -> crossValidate -> addDeviceContext -> addLifecycleStatus -> analyzeAllGaps -> analyzePortfolioRisk -> buildEvidenceBundle'}
+          </div>
+        </div>
+        <div style={stepStyle}>
+          <div style={{ fontSize: '0.62rem', color: '#64748b', fontFamily: 'monospace', textTransform: 'uppercase', marginBottom: '0.2rem' }}>
+            AI usage
+          </div>
+          <div style={{ fontSize: '0.69rem', color: '#94a3b8', lineHeight: 1.55 }}>
+            Core reconciliation and denominator metrics are deterministic (no AI required). Optional AI enrichment runs only when extra source types are present and the flexible API route is available.
+          </div>
+        </div>
+      </div>
+
+      <div style={{ marginTop: '0.5rem', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '0.45rem' }}>
+        <div style={stepStyle}>
+          <div style={{ fontSize: '0.62rem', color: '#64748b', fontFamily: 'monospace', textTransform: 'uppercase', marginBottom: '0.2rem' }}>
+            What we have so far
+          </div>
+          <div style={{ fontSize: '0.69rem', color: '#94a3b8', lineHeight: 1.55 }}>
+            {ingestedRows > 0
+              ? `${ingestedRows.toLocaleString()} rows ingested, ${matched.toLocaleString()} matched, ${blindSpots.toLocaleString()} blind spots, ${orphans.toLocaleString()} orphans, ${coverage}% discovery coverage.`
+              : 'No dataset loaded yet. Start with engineering baseline + OT discovery to establish the in-scope denominator.'}
+          </div>
+        </div>
+        <div style={stepStyle}>
+          <div style={{ fontSize: '0.62rem', color: '#64748b', fontFamily: 'monospace', textTransform: 'uppercase', marginBottom: '0.2rem' }}>
+            Security follow-up
+          </div>
+          <div style={{ fontSize: '0.69rem', color: '#94a3b8', lineHeight: 1.55 }}>
+            After reconciliation: verify unmanaged inferred Tier 1-2 assets, CVE exposure, and boundary weak points for risk-ranked remediation.
+          </div>
+        </div>
+        <div style={stepStyle}>
+          <div style={{ fontSize: '0.62rem', color: '#64748b', fontFamily: 'monospace', textTransform: 'uppercase', marginBottom: '0.2rem' }}>
+            Performance follow-up
+          </div>
+          <div style={{ fontSize: '0.69rem', color: '#94a3b8', lineHeight: 1.55 }}>
+            After enrichment: check telemetry freshness (`last_seen`), lifecycle risk (`eol/eos/obsolete`), and operational drift by site/unit.
+          </div>
+        </div>
+      </div>
+      <div style={{ marginTop: '0.45rem', fontSize: '0.66rem', color: '#64748b', fontFamily: 'monospace' }}>
+        Tier calls are provisional heuristics from available data. Final criticality and zone decisions require control/cyber SME validation.
+      </div>
+    </div>
+  )
+}
+
 // =============================================================================
 // HELPERS
 // =============================================================================
+
+/**
+ * Merge multiple discovery streams (e.g. network discovery + field walkdown)
+ * into a single record per tag_id. Field-level merge: each column is filled
+ * from whichever source has a non-empty value. Source provenance is tracked
+ * in `_sourceLabels` so downstream UI can show cross-validation.
+ */
+function mergeDiscoveryDuplicates(rows) {
+  if (!Array.isArray(rows) || rows.length === 0) return []
+  const byTag = new Map()
+  const noTag = []
+
+  for (const row of rows) {
+    if (!row?.tag_id) {
+      noTag.push({ ...row, _sourceLabels: row._sourceLabel ? [row._sourceLabel] : [] })
+      continue
+    }
+    const existing = byTag.get(row.tag_id)
+    if (!existing) {
+      byTag.set(row.tag_id, {
+        ...row,
+        _sourceLabels: row._sourceLabel ? [row._sourceLabel] : []
+      })
+      continue
+    }
+    const merged = { ...existing }
+    for (const key of Object.keys(row)) {
+      if (key === '_sourceLabel' || key === '_sourceLabels') continue
+      const incoming = row[key]
+      const current = merged[key]
+      const incomingEmpty = incoming === undefined || incoming === null || incoming === '' || incoming === 0
+      const currentEmpty = current === undefined || current === null || current === '' || current === 0
+      if (!incomingEmpty && currentEmpty) merged[key] = incoming
+    }
+    const labels = new Set(existing._sourceLabels || [])
+    if (row._sourceLabel) labels.add(row._sourceLabel)
+    merged._sourceLabels = Array.from(labels)
+    byTag.set(row.tag_id, merged)
+  }
+
+  return [...byTag.values(), ...noTag]
+}
 
 function buildUnifiedAssets(result) {
   if (!result) return []
@@ -782,6 +1028,47 @@ function exportCSV(result) {
   URL.revokeObjectURL(url)
 }
 
+function downloadTextFile(content, filename, mimeType = 'text/plain') {
+  const blob = new Blob([content], { type: mimeType })
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = url
+  link.download = filename
+  link.click()
+  URL.revokeObjectURL(url)
+}
+
+function exportEngagementReport(result, industry) {
+  if (!result) return
+
+  let report = result.report
+  let generator = new ReportGenerator({
+    industry: industry || 'oil-gas',
+    clientName: 'Client',
+    plantName: 'All Sites',
+    assessor: 'OT Assurance Twin'
+  })
+
+  if (!report) {
+    const contextAnalysis = {
+      gaps: result.contextAnalysis?.gapAnalysis?.gaps || [],
+      risks: result.contextAnalysis?.riskAnalysis || {},
+      dependencies: result.contextAnalysis?.dependencyMap || {},
+      lifecycle: result.contextAnalysis?.lifecycleSummary || {}
+    }
+    report = generator.generateReport(result, contextAnalysis)
+  }
+
+  const md = generator.toExecutiveMarkdown(report)
+  const gapMatrixCsv = generator.toGapMatrixCSV(report)
+  const riskHeatCsv = generator.toRiskHeatMapCSV(report)
+
+  const date = new Date().toISOString().split('T')[0]
+  downloadTextFile(md, `assurance-rfi-brief-${date}.md`, 'text/markdown')
+  downloadTextFile(gapMatrixCsv, `assurance-gap-matrix-${date}.csv`, 'text/csv')
+  downloadTextFile(riskHeatCsv, `assurance-risk-heatmap-${date}.csv`, 'text/csv')
+}
+
 // =============================================================================
 // MAIN WORKSPACE
 // =============================================================================
@@ -802,26 +1089,80 @@ export default function AssuranceWorkspace() {
   const [rightTab, setRightTab] = useState('detail')
   const [leftCollapsed, setLeftCollapsed] = useState(!!savedSession?.result)
   const [rightCollapsed, setRightCollapsed] = useState(!savedSession?.result)
-  const [selectedDemo, setSelectedDemo] = useState('oil-gas-medium')
+  const [selectedDemo, setSelectedDemo] = useState('transportation-dot-large')
   const [reviewDecisions, setReviewDecisions] = useState({})
-  const [showWorldModel, setShowWorldModel] = useState(false)
-  const [mapCollapsed, setMapCollapsed] = useState(false)
+  const [activeView, setActiveView] = useState(CENTER_VIEWS.INVENTORY)
+  const [tableSearchPreset, setTableSearchPreset] = useState('')
+  const [tableFilterPreset, setTableFilterPreset] = useState('all')
+  const [tablePlantPreset, setTablePlantPreset] = useState('all')
+  const [mapCollapsed, setMapCollapsed] = useState(true)
+
+  const unifiedAssets = useMemo(() => buildUnifiedAssets(result), [result])
+  const mapModel = useMemo(() => {
+    if (!result) return null
+    return buildPlantMapModel(result)
+  }, [result])
+
+  // Multi-agent reasoning layer. Rule-based (llmClient stays null) so the
+  // cross-agent findings are deterministic and every claim traces to evidence.
+  // useAgentsFromResults builds one PlantAgent (with security/risk/gap/
+  // dependency/lifecycle sub-agents) per plant from the canonical contextAnalysis
+  // and runs an initial observation round.
+  const agentLayer = useAgenticLayer({ enabled: Boolean(result), llmClient: null })
+  useAgentsFromResults(agentLayer, result, industry)
+
+  const compliancePack = useMemo(() => {
+    const gapAnalysis = result?.contextAnalysis?.gapAnalysis
+    const gaps = gapAnalysis?.gaps || []
+    if (gaps.length === 0) return { findings: [], summary: null, unitCompliance: [] }
+
+    try {
+      const mapper = new ComplianceMapper(industry || result?.contextAnalysis?.industry || 'oil-gas')
+      const findings = mapper.mapGaps(gaps)
+      return {
+        findings,
+        summary: mapper.generateComplianceSummary(findings),
+        unitCompliance: mapper.generateUnitCompliance(findings)
+      }
+    } catch (err) {
+      console.warn('[WORKSPACE] Compliance mapping error:', err)
+      return { findings: [], summary: null, unitCompliance: [] }
+    }
+  }, [industry, result])
 
   // Persist when result changes
   React.useEffect(() => {
     if (result) saveWorkspaceSession({ result, stats, industry })
   }, [result, stats, industry])
 
-  const readFileText = (file) => new Promise((resolve, reject) => {
-    const reader = new FileReader()
-    reader.onload = () => resolve(reader.result)
-    reader.onerror = reject
-    reader.readAsText(file)
-  })
+  const handleInventoryDrillDown = useCallback((query) => {
+    if (!query) return
+    if (typeof query === 'string' && query.startsWith('status:')) {
+      const raw = query.slice(7)
+      const allowed = ['matched', 'blind_spot', 'orphan', 'all']
+      setTableFilterPreset(allowed.includes(raw) ? raw : 'all')
+      setTableSearchPreset('')
+    } else if (typeof query === 'string' && query.startsWith('plant:')) {
+      const raw = query.slice(6)
+      setTablePlantPreset(raw || 'all')
+    } else {
+      setTableSearchPreset(query)
+      setTableFilterPreset('all')
+    }
+    setActiveView(CENTER_VIEWS.INVENTORY)
+    setMapCollapsed(true)
+  }, [])
+
+  const handleRiskDrillDown = useCallback((asset) => {
+    if (!asset) return
+    setSelectedAsset(asset)
+    setRightTab('detail')
+    setRightCollapsed(false)
+  }, [])
 
   // ---- PROCESSING PIPELINE ----
 
-  const processData = useCallback(async (smartFiles) => {
+  const processData = useCallback(async (smartFiles, industryOverride) => {
     if (!smartFiles || smartFiles.length === 0) return
 
     setError(null)
@@ -829,17 +1170,35 @@ export default function AssuranceWorkspace() {
     setSelectedAsset(null)
     setRightCollapsed(true)
 
+    // loadDemo calls setIndustry then processData in the same tick, so the
+    // closure's `industry` is still stale. Accept an explicit override.
+    const effectiveIndustry = industryOverride ?? industry
+
     try {
+      // Match the contract profile to the active industry so the RFI view
+      // defaults to the right doctrine (e.g. transportation-dot for DOT).
+      const profileForIndustry = effectiveIndustry === 'transportation' ? 'transportation-dot' : undefined
+      const clientAlignment = evaluateClientDataContract(smartFiles, profileForIndustry)
+
       // Phase 1: Ingest
       setPhase(PHASES.INGESTING)
       const provenance = new ProvenanceTracker()
       const afs = getAFS()
       provenance.record({ type: 'PIPELINE_START' })
+      provenance.record({
+        type: 'CLIENT_CONTRACT_EVALUATED',
+        profile: clientAlignment.profileId,
+        contractReady: clientAlignment.contractReady,
+        missingRequiredTypes: clientAlignment.missingRequiredTypes
+      })
 
       let allEngineering = []
       let allDiscovery = []
       let totalRows = 0
       const sourceFileIds = []
+      // Per-source row counts (e.g. "Engineering baseline" / "Network discovery"
+      // / "Field inventory") so the UI can render the three-stream breakdown.
+      const sourceBreakdown = []
 
       for (const sf of smartFiles) {
         const content = sf.content
@@ -857,16 +1216,38 @@ export default function AssuranceWorkspace() {
         const rows = normalizeDataset(parsed.data || [], fileId)
         totalRows += rows.length
 
+        // Stamp each row with its source label so the merge step downstream
+        // can attribute matches to the right stream.
+        const sourceLabel = sf.sourceLabel
+          || (sf.detectedType === 'engineering' ? 'Engineering baseline'
+            : sf.name?.toLowerCase().includes('field') ? 'Field inventory'
+              : 'Network discovery')
+        for (const r of rows) r._sourceLabel = sourceLabel
+
         if (sf.detectedType === 'engineering') {
           allEngineering.push(...rows)
         } else {
           allDiscovery.push(...rows)
         }
 
+        sourceBreakdown.push({
+          label: sourceLabel,
+          detectedType: sf.detectedType,
+          name: sf.name,
+          rowCount: rows.length
+        })
+
         provenance.recordSourceIngestion(fileId, sf.name, null, rows.length, sf.detectedType)
       }
 
-      setStats({ totalRows })
+      // When the same tag_id appears in multiple discovery streams (e.g. a
+      // signal controller seen by both network discovery and the field
+      // walkdown), merge them into one record with combined evidence. The
+      // matcher is one-to-one, so without this dedupe the second source's row
+      // would become a phantom orphan.
+      allDiscovery = mergeDiscoveryDuplicates(allDiscovery)
+
+      setStats({ totalRows, sourceCount: sourceBreakdown.length })
 
       // Detect industry silently
       const sampleRows = [...allEngineering.slice(0, 200), ...allDiscovery.slice(0, 200)]
@@ -918,6 +1299,7 @@ export default function AssuranceWorkspace() {
           discovered_ip: match.discovered?.ip_address || '',
           vulnerabilities: match.discovered?.vulnerabilities ?? 0,
           cve_count: match.discovered?.cve_count ?? 0,
+          cve_ids: match.discovered?.cve_ids || '',
           risk_score: match.discovered?.risk_score ?? 0,
           is_managed: match.discovered?.is_managed ?? false,
           last_patch_date: match.discovered?.last_patch_date || '',
@@ -960,12 +1342,21 @@ export default function AssuranceWorkspace() {
 
       const reviewItems = identifyReviewItems(canonicalAssets, blindSpots, orphans)
 
+      // Per-source row counts for the UI breakdown (e.g. "Engineering baseline
+      // 80 · Network discovery 55 · Field inventory 64"). Also compute
+      // cross-validation counts based on which sources observed each tag.
+      const crossValidated = canonicalAssets.filter(a =>
+        Array.isArray(a.discovered?._sourceLabels) && a.discovered._sourceLabels.length >= 2
+      ).length
+
       const summary = {
         total: matchResults.stats.engineeringTotal,
         matched: matchResults.stats.matchedCount,
         blindSpots: matchResults.stats.blindSpotCount,
         orphans: matchResults.stats.orphanCount,
         coverage: matchResults.stats.coveragePercent,
+        sources: sourceBreakdown,
+        crossValidated,
         tier1: [...canonicalAssets, ...blindSpots].filter(a => a.classification?.tier === 1).length,
         tier2: [...canonicalAssets, ...blindSpots].filter(a => a.classification?.tier === 2).length,
         tier3: [...canonicalAssets, ...blindSpots].filter(a => a.classification?.tier === 3).length
@@ -977,7 +1368,7 @@ export default function AssuranceWorkspace() {
 
       let contextAnalysis = null
       try {
-        const ind = industry || 'oil-gas'
+        const ind = effectiveIndustry || 'oil-gas'
         const assetsWithDeviceContext = addDeviceContext(canonicalAssets)
         const assetsWithLifecycle = addLifecycleStatus(assetsWithDeviceContext)
         const lifecycleSummary = generateLifecycleSummary(assetsWithLifecycle)
@@ -992,7 +1383,41 @@ export default function AssuranceWorkspace() {
         console.warn('[WORKSPACE] Context analysis error:', ctxErr)
       }
 
-      const audit = await provenance.generateAuditPackage(canonicalAssets, summary)
+      const baseAssets = contextAnalysis?.assets || canonicalAssets
+      const evidenceBundle = buildEvidenceBundle({
+        assets: baseAssets,
+        blindSpots,
+        orphans
+      })
+
+      const audit = await provenance.generateAuditPackage(evidenceBundle.assets, summary)
+
+      let report = null
+      try {
+        const generator = new ReportGenerator({
+          industry: effectiveIndustry || contextAnalysis?.industry || 'oil-gas',
+          clientName: 'Client',
+          plantName: 'All Sites',
+          assessor: 'OT Assurance Twin'
+        })
+        report = generator.generateReport(
+          {
+            status: 'COMPLETE',
+            assets: evidenceBundle.assets,
+            blindSpots: evidenceBundle.blindSpots,
+            orphans: evidenceBundle.orphans,
+            summary
+          },
+          {
+            gaps: contextAnalysis?.gapAnalysis?.gaps || [],
+            risks: contextAnalysis?.riskAnalysis || {},
+            dependencies: contextAnalysis?.dependencyMap || {},
+            lifecycle: contextAnalysis?.lifecycleSummary || {}
+          }
+        )
+      } catch (reportErr) {
+        console.warn('[WORKSPACE] Report generation failed:', reportErr)
+      }
 
       // Try flexible API for enrichment if additional source types detected
       let assuranceInsights = null
@@ -1007,7 +1432,7 @@ export default function AssuranceWorkspace() {
           const flexRes = await fetch('/api/analyze-oil-gas-flexible', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ sources, industry: industry || 'oil-gas' })
+            body: JSON.stringify({ sources, industry: effectiveIndustry || 'oil-gas' })
           })
           if (flexRes.ok) {
             const flexData = await flexRes.json()
@@ -1018,16 +1443,27 @@ export default function AssuranceWorkspace() {
         }
       }
 
+      const sourceFiles = smartFiles.map(sf => ({
+        name: sf.name,
+        detectedType: sf.detectedType,
+        headers: sf.headers || [],
+        rowCount: sf.rowCount || 0
+      }))
+
       const data = {
         status: 'COMPLETE',
-        assets: contextAnalysis?.assets || canonicalAssets,
-        blindSpots,
-        orphans,
+        assets: evidenceBundle.assets,
+        blindSpots: evidenceBundle.blindSpots,
+        orphans: evidenceBundle.orphans,
         summary,
         reviewRequired: reviewItems,
         contextAnalysis,
+        evidenceSummary: evidenceBundle.summary,
         assuranceInsights,
         audit,
+        report,
+        clientAlignment,
+        sourceFiles,
         fileCatalog: afs.getCatalog()
       }
 
@@ -1035,6 +1471,11 @@ export default function AssuranceWorkspace() {
       setPhase(PHASES.COMPLETE)
       setRightCollapsed(false)
       setRightTab('detail')
+      setActiveView(CENTER_VIEWS.INVENTORY)
+      setTableSearchPreset('')
+      setTableFilterPreset('all')
+      setTablePlantPreset('all')
+      setMapCollapsed(true)
       if (files.length > 3) setLeftCollapsed(true)
 
       console.log('[WORKSPACE] Processing complete:', summary)
@@ -1052,9 +1493,20 @@ export default function AssuranceWorkspace() {
     const dataset = DEMO_DATASETS.find(d => d.id === selectedDemo) || DEMO_DATASETS[0]
     const basePath = dataset.path
     const isAigne = basePath.includes('/aigne/')
-    const fileNames = isAigne
-      ? [`engineering_baseline_${dataset.scale}.csv`, `ot_discovery_${dataset.scale}.csv`]
-      : ['engineering_baseline_medium.csv', 'ot_discovery_medium.csv']
+
+    // Datasets can declare an explicit file list with source labels (used by
+    // the transportation demo so we can show Engineering / Network discovery /
+    // Field inventory as three distinct source streams). Otherwise fall back
+    // to the legacy 2-file convention.
+    const fileSpecs = dataset.files || (isAigne
+      ? [
+          { name: `engineering_baseline_${dataset.scale}.csv`, detectedType: 'engineering', sourceLabel: 'Engineering baseline' },
+          { name: `ot_discovery_${dataset.scale}.csv`, detectedType: 'discovery', sourceLabel: 'Network discovery' }
+        ]
+      : [
+          { name: 'engineering_baseline_medium.csv', detectedType: 'engineering', sourceLabel: 'Engineering baseline' },
+          { name: 'ot_discovery_medium.csv', detectedType: 'discovery', sourceLabel: 'Network discovery' }
+        ])
 
     setPhase(PHASES.INGESTING)
     setError(null)
@@ -1062,24 +1514,25 @@ export default function AssuranceWorkspace() {
 
     try {
       const smartFiles = []
-      for (const fname of fileNames) {
-        const res = await fetch(`${basePath}/${fname}`)
-        if (!res.ok) { console.warn(`[DEMO] Failed: ${fname}`); continue }
+      for (const spec of fileSpecs) {
+        const res = await fetch(`${basePath}/${spec.name}`)
+        if (!res.ok) { console.warn(`[DEMO] Failed: ${spec.name}`); continue }
         const content = await res.text()
         const parsed = Papa.parse(content, { header: true, skipEmptyLines: true, preview: 100 })
         const headers = parsed.meta.fields || []
-        const { type } = detectSourceType(headers, fname)
+        const { type } = detectSourceType(headers, spec.name)
         smartFiles.push({
-          id: `demo-${fname}-${Date.now()}`,
-          name: fname,
+          id: `demo-${spec.name}-${Date.now()}`,
+          name: spec.name,
           content,
-          detectedType: type || (fname.includes('engineering') ? 'engineering' : 'discovery'),
+          detectedType: spec.detectedType || type || (spec.name.includes('engineering') ? 'engineering' : 'discovery'),
+          sourceLabel: spec.sourceLabel || null,
           rowCount: content.split('\n').length - 1,
           headers
         })
       }
       setFiles(smartFiles)
-      await processData(smartFiles)
+      await processData(smartFiles, dataset.industry)
     } catch (err) {
       setError('Failed to load demo: ' + err.message)
       setPhase(PHASES.IDLE)
@@ -1165,7 +1618,12 @@ export default function AssuranceWorkspace() {
     setReviewDecisions({})
     setLeftCollapsed(false)
     setRightCollapsed(true)
-    setShowWorldModel(false)
+    setRightTab('detail')
+    setActiveView(CENTER_VIEWS.INVENTORY)
+    setTableSearchPreset('')
+    setTableFilterPreset('all')
+    setTablePlantPreset('all')
+    setMapCollapsed(true)
   }, [])
 
   // ---- LAYOUT ----
@@ -1177,15 +1635,22 @@ export default function AssuranceWorkspace() {
     <div style={{
       display: 'flex',
       flexDirection: 'column',
-      height: 'calc(100vh - 80px)',
+      minHeight: 'calc(100vh - 80px)',
       background: '#0f172a',
       color: '#e2e8f0',
-      overflow: 'hidden',
+      overflow: 'visible',
       borderRadius: '0.5rem'
     }}>
       <style>{ASSEMBLY_CSS}</style>
-      {/* Three Questions bar (visible when results exist) */}
-      {result && <ThreeQuestions result={result} industry={industry || 'oil-gas'} />}
+      {result && (
+        <InventoryHeader
+          model={mapModel}
+          assets={unifiedAssets}
+          onDrillDown={handleInventoryDrillDown}
+          activePlant={tablePlantPreset}
+          industry={industry}
+        />
+      )}
 
       {/* Assembly status + toolbar */}
       {phase !== PHASES.IDLE && (
@@ -1195,32 +1660,29 @@ export default function AssuranceWorkspace() {
           </div>
           {result && (
             <div style={{ display: 'flex', gap: '0.5rem', padding: '0 0.75rem', flexShrink: 0 }}>
-              <button
-                onClick={() => setMapCollapsed(!mapCollapsed)}
-                style={{
-                  padding: '0.3rem 0.6rem', background: mapCollapsed ? '#1e293b' : 'transparent',
-                  color: '#94a3b8', border: '1px solid #334155', borderRadius: '0.25rem',
-                  cursor: 'pointer', fontSize: '0.65rem', fontFamily: 'monospace'
-                }}
-              >
-                {mapCollapsed ? 'Show Map' : 'Hide Map'}
-              </button>
-              <button
-                onClick={() => setShowWorldModel(!showWorldModel)}
-                style={{
-                  padding: '0.3rem 0.6rem', background: showWorldModel ? '#1e293b' : 'transparent',
-                  color: '#94a3b8', border: '1px solid #334155', borderRadius: '0.25rem',
-                  cursor: 'pointer', fontSize: '0.65rem', fontFamily: 'monospace'
-                }}
-              >
-                Sites
-              </button>
+              {/* Demo narrative order:
+                 denominator → reality → promise vs delivery → what to chase →
+                 specific exposures → what we'd hand back → how we got here.
+                 See pre-demo review (docs/demo/) for the rationale. */}
+              <ViewButton active={activeView === CENTER_VIEWS.INVENTORY} label="Inventory" onClick={() => setActiveView(CENTER_VIEWS.INVENTORY)} />
+              <ViewButton active={activeView === CENTER_VIEWS.TOPOLOGY} label="Topology" onClick={() => setActiveView(CENTER_VIEWS.TOPOLOGY)} />
+              <ViewButton active={activeView === CENTER_VIEWS.SITES} label="Sites" onClick={() => setActiveView(CENTER_VIEWS.SITES)} />
+              {industry === 'transportation' && (
+                <ViewButton active={activeView === CENTER_VIEWS.DOCTRINE} label="Doctrine" onClick={() => setActiveView(CENTER_VIEWS.DOCTRINE)} />
+              )}
+              <ViewButton active={activeView === CENTER_VIEWS.RISK} label="Risk" onClick={() => setActiveView(CENTER_VIEWS.RISK)} />
+              <ViewButton active={activeView === CENTER_VIEWS.SECURITY} label="Security" onClick={() => setActiveView(CENTER_VIEWS.SECURITY)} />
+              <ViewButton active={activeView === CENTER_VIEWS.RFI} label="RFI" onClick={() => setActiveView(CENTER_VIEWS.RFI)} />
+              <ViewButton active={activeView === CENTER_VIEWS.AGENTS} label="Agents" onClick={() => setActiveView(CENTER_VIEWS.AGENTS)} />
+              <ViewButton active={activeView === CENTER_VIEWS.METHODOLOGY} label="Methodology" onClick={() => setActiveView(CENTER_VIEWS.METHODOLOGY)} />
               <button
                 onClick={() => exportCSV(result)}
                 style={{
-                  padding: '0.3rem 0.6rem', background: 'transparent',
-                  color: '#94a3b8', border: '1px solid #334155', borderRadius: '0.25rem',
-                  cursor: 'pointer', fontSize: '0.65rem', fontFamily: 'monospace'
+                  padding: '0.3rem 0.7rem', background: 'transparent',
+                  color: '#94a3b8', border: '1px solid #334155', borderRadius: '0.3rem',
+                  cursor: 'pointer', fontSize: '0.78rem',
+                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                  fontWeight: 500
                 }}
               >
                 Export CSV
@@ -1360,33 +1822,52 @@ export default function AssuranceWorkspace() {
 
         {/* CENTER: Plant Canvas */}
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', position: 'relative' }}>
-          {/* WorldModel overlay */}
-          {showWorldModel && result && (
-            <div style={{
-              position: 'absolute', inset: 0, zIndex: 1000, background: '#0f172a',
-              overflow: 'auto', padding: '1rem'
-            }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-                <span style={{ fontSize: '0.7rem', fontFamily: 'monospace', fontWeight: '700', color: '#94a3b8', textTransform: 'uppercase' }}>
-                  Enterprise Sites
-                </span>
-                <button
-                  onClick={() => setShowWorldModel(false)}
-                  style={{ background: 'none', border: 'none', color: '#64748b', cursor: 'pointer', fontSize: '1rem' }}
-                >
-                  {'\u2715'}
-                </button>
-              </div>
-              <WorldModel result={result} industry={industry || 'oil-gas'} />
-            </div>
-          )}
           {result ? (
-            showWorldModel ? null : mapCollapsed ? (
+            activeView === CENTER_VIEWS.SITES ? (
+              <div style={{ flex: 1, overflow: 'auto', padding: '0.75rem' }}>
+                <WorldModel result={result} industry={industry || 'oil-gas'} />
+              </div>
+            ) : activeView === CENTER_VIEWS.RFI ? (
+              <RFIReadinessView
+                result={result}
+                industry={industry}
+                complianceSummary={compliancePack.summary}
+                onDrillDown={handleInventoryDrillDown}
+                onOpenSecurity={() => setActiveView(CENTER_VIEWS.SECURITY)}
+                onExportBrief={() => exportEngagementReport(result, industry)}
+              />
+            ) : activeView === CENTER_VIEWS.SECURITY ? (
+              <div style={{ flex: 1, overflow: 'auto', padding: '0.75rem' }}>
+                <SecurityPosture result={result} />
+              </div>
+            ) : activeView === CENTER_VIEWS.TOPOLOGY ? (
+              <LayeredTopology result={result} industry={industry} onDrillDown={handleInventoryDrillDown} />
+            ) : activeView === CENTER_VIEWS.RISK ? (
+              <div style={{ flex: 1, overflow: 'auto', padding: '0.75rem' }}>
+                <RiskView riskAnalysis={result.contextAnalysis?.riskAnalysis} onAssetClick={handleRiskDrillDown} />
+              </div>
+            ) : activeView === CENTER_VIEWS.METHODOLOGY ? (
+              <MethodologyView result={result} />
+            ) : activeView === CENTER_VIEWS.DOCTRINE ? (
+              <DoctrineCrosswalk result={result} industry={industry} onDrillDown={handleInventoryDrillDown} />
+            ) : activeView === CENTER_VIEWS.AGENTS ? (
+              <AgentBreakRoom
+                breakRoom={agentLayer.breakRoom}
+                agents={agentLayer.plantAgents}
+                isObserving={agentLayer.isObserving}
+                lastObservation={agentLayer.lastObservation}
+                onObserve={agentLayer.observe}
+              />
+            ) : mapCollapsed ? (
               <div style={{ flex: 1, overflow: 'auto', background: '#0f172a', padding: '0.5rem' }}>
                 <AssetTable
-                  unifiedAssets={buildUnifiedAssets(result)}
+                  unifiedAssets={unifiedAssets}
                   result={result}
                   selectedAsset={selectedAsset}
+                  searchPreset={tableSearchPreset}
+                  filterPreset={tableFilterPreset}
+                  plantPreset={tablePlantPreset}
+                  onPlantChange={setTablePlantPreset}
                   onSelectAsset={asset => {
                     setSelectedAsset(asset)
                     if (asset) {
@@ -1409,26 +1890,24 @@ export default function AssuranceWorkspace() {
               flex: 1, display: 'flex', flexDirection: 'column',
               alignItems: 'center', justifyContent: 'center', color: '#334155'
             }}>
-              {phase !== PHASES.IDLE ? (
-                <div style={{ textAlign: 'center' }}>
-                  <div style={{ fontSize: '0.85rem', fontFamily: 'monospace', color: '#64748b' }}>
-                    {phase === PHASES.INGESTING ? 'Ingesting data sources' :
-                     phase === PHASES.RECONCILING ? 'Reconciling engineering and discovery' :
-                     phase === PHASES.MAPPING ? 'Classifying and validating' :
-                     phase === PHASES.VERIFYING ? 'Cross-validating evidence' :
-                     'Running context analysis'}
-                  </div>
+              <div style={{ textAlign: 'center', marginBottom: '0.75rem' }}>
+                <div style={{ fontSize: '0.9rem', fontFamily: 'monospace', marginBottom: '0.35rem', color: '#cbd5e1' }}>
+                  {phase !== PHASES.IDLE
+                    ? (phase === PHASES.INGESTING ? 'Ingesting data sources' :
+                      phase === PHASES.RECONCILING ? 'Reconciling engineering and discovery' :
+                      phase === PHASES.MAPPING ? 'Classifying and validating' :
+                      phase === PHASES.VERIFYING ? 'Cross-validating evidence' :
+                      'Running context analysis')
+                    : 'No data loaded'}
                 </div>
-              ) : (
-                <div style={{ textAlign: 'center' }}>
-                  <div style={{ fontSize: '0.85rem', fontFamily: 'monospace', marginBottom: '0.5rem' }}>
-                    No data loaded
-                  </div>
-                  <div style={{ fontSize: '0.75rem', color: '#475569' }}>
-                    Upload files or load a demo dataset to begin.
-                  </div>
+                <div style={{ fontSize: '0.75rem', color: '#64748b' }}>
+                  {phase !== PHASES.IDLE
+                    ? 'Building canonical inventory and evidence-backed topology.'
+                    : 'Upload files or load a demo dataset to begin.'}
                 </div>
-              )}
+              </div>
+
+              <MethodologyPrimer phase={phase} stats={stats} />
 
               {error && (
                 <div style={{
@@ -1455,7 +1934,6 @@ export default function AssuranceWorkspace() {
           }}>
             <DetailPanel
               selected={selectedAsset}
-              setSelected={setSelectedAsset}
               result={result}
               onReviewDecision={handleReviewDecision}
               rightTab={rightTab}

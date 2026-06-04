@@ -1,0 +1,57 @@
+{
+  "id": "transportation",
+  "name": "Transportation / DOT",
+  "icon": "▦",
+  "description": "Traffic operations, roadside ITS assets, corridors, field communications, and cyber-physical resilience",
+  "standards": ["NIST CSF", "NIST SP 800-82r3", "IEC 62443", "NTCIP", "IEEE 802.1X"],
+  "governance": ["State DOT operations", "Traffic Management Center", "ITS maintenance", "Public safety coordination"],
+  "processUnits": {
+    "Traffic Management Center": {
+      "displayName": "Traffic Management Center",
+      "criticality": "Critical",
+      "function": "Central monitoring, control, incident coordination, and remote access governance",
+      "expectedDevices": {
+        "ATMS_Server": { "min": 2, "typical": 6, "max": 12 },
+        "Historian": { "min": 1, "typical": 2, "max": 4 },
+        "Firewall": { "min": 2, "typical": 4, "max": 8 }
+      }
+    },
+    "Corridor": {
+      "displayName": "Roadway Corridor",
+      "criticality": "High",
+      "function": "Roadside operational technology across freeway and arterial corridors",
+      "expectedDevices": {
+        "Signal_Controller": { "min": 20, "typical": 60, "max": 200 },
+        "CCTV": { "min": 10, "typical": 40, "max": 120 },
+        "Dynamic_Message_Sign": { "min": 4, "typical": 20, "max": 60 }
+      }
+    },
+    "Roadside Cabinets": {
+      "displayName": "Roadside Cabinets",
+      "criticality": "High",
+      "function": "Field enclosure for controllers, network switches, cellular routers, UPS, and physical access sensors",
+      "expectedDevices": {
+        "Field_Switch": { "min": 20, "typical": 80, "max": 250 },
+        "Cellular_Router": { "min": 10, "typical": 40, "max": 150 },
+        "UPS": { "min": 20, "typical": 80, "max": 250 }
+      }
+    }
+  },
+  "controlHierarchy": {
+    "Field_Level": {
+      "devices": ["Signal_Controller", "CCTV", "DMS", "RWIS", "Vehicle_Detector", "Pump_PLC"],
+      "standards": ["NTCIP", "DNP3", "Modbus TCP"],
+      "criticality": "High"
+    },
+    "Communications_Level": {
+      "devices": ["Field_Switch", "Cellular_Router", "Firewall", "Serial_Gateway"],
+      "standards": ["IEEE 802.1X", "IPsec", "SNMPv3"],
+      "criticality": "High"
+    },
+    "Operations_Level": {
+      "devices": ["ATMS_Server", "SCADA_Server", "Historian", "Jump_Host"],
+      "standards": ["NIST CSF", "IEC 62443"],
+      "criticality": "Critical"
+    }
+  }
+}

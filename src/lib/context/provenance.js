@@ -12,6 +12,8 @@ export class ProvenanceTracker {
     this.events = []
     this.startTime = new Date().toISOString()
     this.sources = new Map() // Track all ingested sources
+    this.pipelineVersion = 'assurance-twin-v1'
+    this.hashAlgorithm = 'SHA-256'
   }
 
   /**
@@ -31,12 +33,13 @@ export class ProvenanceTracker {
    * Record source ingestion with checksum
    */
   recordSourceIngestion(sourceId, filename, checksum, rowCount, detectedType) {
-    this.sources.set(sourceId, { filename, checksum, rowCount, detectedType })
+    const sourceChecksum = checksum || simpleHash(`${filename}|${rowCount}|${detectedType}|${sourceId}`)
+    this.sources.set(sourceId, { filename, checksum: sourceChecksum, rowCount, detectedType })
     return this.record({
       type: 'SOURCE_INGESTED',
       sourceId,
       filename,
-      checksum,
+      checksum: sourceChecksum,
       rowCount,
       detectedType
     })
@@ -95,31 +98,63 @@ export class ProvenanceTracker {
    * Generate full audit package
    */
   async generateAuditPackage(canonicalAssets, kpis) {
+    const sourceProfiles = Array.from(this.sources.entries()).map(([sourceId, source]) => ({
+      sourceId,
+      filename: source.filename,
+      checksum: source.checksum,
+      rowCount: source.rowCount,
+      detectedType: source.detectedType
+    }))
+
+    const eventChain = []
+    let prevHash = 'ROOT'
+    for (const event of this.events) {
+      const eventHash = await this.generateEvidenceHash({ prevHash, event })
+      eventChain.push({ ...event, prevHash, eventHash })
+      prevHash = eventHash
+    }
+
     const evidenceData = {
       sessionId: this.sessionId,
       timestamp: this.startTime,
       sourceCount: this.sources.size,
-      sourceChecksums: Array.from(this.sources.values()).map(s => s.checksum),
+      sourceChecksums: sourceProfiles.map(s => s.checksum),
       assetCount: canonicalAssets.length,
-      kpis
+      kpis,
+      pipelineVersion: this.pipelineVersion,
+      finalEventHash: prevHash
     }
 
-    const evidenceHash = await this.generateEvidenceHash(evidenceData)
+    const evidenceHash = await this.generateEvidenceHash({
+      evidenceData,
+      eventChainHash: prevHash
+    })
+    const pipelinePhases = [...new Set(this.events.map(e => e.type).filter(Boolean))]
 
     return {
       sessionId: this.sessionId,
       startTime: this.startTime,
       endTime: new Date().toISOString(),
+      auditVersion: '2026-05',
+      hashAlgorithm: this.hashAlgorithm,
+      pipelineVersion: this.pipelineVersion,
       evidenceHash,
+      finalEventHash: prevHash,
       summary: {
         sourcesIngested: this.sources.size,
         totalEvents: this.events.length,
         matchEvents: this.events.filter(e => e.type === 'ASSET_MATCHED').length,
         classificationEvents: this.events.filter(e => e.type === 'CLASSIFICATION').length,
-        humanReviewEvents: this.events.filter(e => e.type === 'HUMAN_REVIEW').length
+        humanReviewEvents: this.events.filter(e => e.type === 'HUMAN_REVIEW').length,
+        pipelinePhases
       },
-      sources: Object.fromEntries(this.sources),
-      events: this.events
+      sources: sourceProfiles,
+      events: eventChain,
+      traceability: {
+        chainOfCustody: 'Client-side processing. No external data egress by default pipeline.',
+        generatedBy: 'ProvenanceTracker',
+        generatedAt: new Date().toISOString()
+      }
     }
   }
 

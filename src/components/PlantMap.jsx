@@ -50,7 +50,7 @@ function isMobileDevice() {
 /**
  * View toggle component
  */
-function ViewToggle({ viewMode, setViewMode, isAutomotive, hasWebGL }) {
+function ViewToggle({ viewMode, setViewMode, isAutomotive, isTransportation, hasWebGL }) {
   const btnStyle = (mode, color = '#3b82f6') => ({
     padding: '0.375rem 0.75rem',
     background: viewMode === mode ? color : 'transparent',
@@ -94,12 +94,12 @@ function ViewToggle({ viewMode, setViewMode, isAutomotive, hasWebGL }) {
         {!isAutomotive && (
           <>
             <button onClick={() => setViewMode('2d')} style={btnStyle('2d', '#3b82f6')}>
-              ZONE SCHEMATIC
+              {isTransportation ? 'OPERATING MODEL' : 'ZONE SCHEMATIC'}
             </button>
             {hasWebGL && (
               <>
                 <button onClick={() => setViewMode('refinery')} style={btnStyle('refinery', '#64748b')}>
-                  3D PROCESS
+                  {isTransportation ? 'FIELD MAP' : '3D PROCESS'}
                 </button>
                 <button onClick={() => setViewMode('simple3d')} style={btnStyle('simple3d', '#64748b')}>
                   BLOCK
@@ -118,6 +118,7 @@ export default function PlantMap({ result, industry = 'oil-gas', gapMatrix, sele
   const [hasWebGL, setHasWebGL] = useState(true)
 
   const isAutomotive = industry === 'automotive'
+  const isTransportation = industry === 'transportation'
 
   useEffect(() => {
     const webglAvailable = isWebGLAvailable()
@@ -138,6 +139,7 @@ export default function PlantMap({ result, industry = 'oil-gas', gapMatrix, sele
       viewMode={viewMode} 
       setViewMode={setViewMode} 
       isAutomotive={isAutomotive}
+      isTransportation={isTransportation}
       hasWebGL={hasWebGL}
     />
   )

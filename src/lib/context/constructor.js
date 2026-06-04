@@ -49,9 +49,26 @@ export function normalizeDataset(rows, sourceId = 'unknown') {
       has_security_patches: parseBoolean(norm.has_security_patches ?? norm.patched ?? norm.patch_status),
       
       // Vulnerability data
-      vulnerabilities: parseInt(norm.vulnerabilities ?? norm.vuln_count ?? 0) || 0,
-      cve_count: parseInt(norm.cve_count ?? norm.cves ?? 0) || 0,
-      cve_ids: String(norm.cve_ids ?? norm.cves_list ?? '').trim(),
+      //
+      // Real client exports rarely give a clean `cve_count` column. The MDOT
+      // demo (and most discovery exports) carry CVE evidence as `vulnerabilities`
+      // (a count) and `cve_ids` (a semicolon-separated list). We take the max
+      // of all three sources so downstream "with CVEs" metrics fire correctly
+      // regardless of which field the source system happens to use.
+      ...(function () {
+        const vulnRaw = parseInt(norm.vulnerabilities ?? norm.vuln_count ?? 0) || 0
+        const cveCountRaw = parseInt(norm.cve_count ?? norm.cves ?? 0) || 0
+        const cveIdsRaw = String(norm.cve_ids ?? norm.cves_list ?? '').trim()
+        const cveIdsParsed = cveIdsRaw
+          ? cveIdsRaw.split(/[;,|]/).map(s => s.trim()).filter(Boolean).length
+          : 0
+        const canonicalCveCount = Math.max(cveCountRaw, vulnRaw, cveIdsParsed)
+        return {
+          vulnerabilities: vulnRaw,
+          cve_count: canonicalCveCount,
+          cve_ids: cveIdsRaw
+        }
+      })(),
       
       // Risk scoring
       risk_score: parseInt(norm.risk_score ?? norm.riskScore ?? norm.risk ?? 0) || 0,
@@ -92,43 +109,82 @@ function parseBoolean(val) {
 }
 
 /**
- * Detect data source type from headers
+ * Detect data source type from headers and filename.
+ *
+ * Priority order:
+ *   1. Filename hints (most explicit signal of intent)
+ *   2. Distinctive header signatures (discovery > vulnerability > maintenance > network > historian > engineering)
+ *
+ * Note on engineering vs discovery: both share `tag_id` as the join key, so
+ * engineering is matched LAST and only when distinctive engineering-only
+ * fields exist (criticality, expected_ip, p&id loop, design_doc, etc).
+ * tag_id alone is not enough.
  */
 export function detectSourceType(headers, filename = '') {
   const lowerHeaders = headers.map(h => h.toLowerCase())
+  const headerSet = new Set(lowerHeaders)
   const lowerFilename = filename.toLowerCase()
-  
-  // Engineering baseline indicators
-  const engineeringIndicators = ['tag_id', 'tag', 'asset_tag', 'p&id', 'pid', 'loop', 'instrument']
-  if (lowerHeaders.some(h => engineeringIndicators.some(i => h.includes(i)))) {
-    return 'engineering'
+
+  const headerHas = (...keys) => keys.some(key => headerSet.has(key) || lowerHeaders.some(h => h.includes(key)))
+
+  // 1. Filename hints win when explicit
+  if (lowerFilename.includes('discovery') || lowerFilename.includes('claroty') || lowerFilename.includes('nozomi') || lowerFilename.includes('armis')) {
+    return { type: 'discovery', confidence: 90 }
   }
-  
-  // OT Discovery indicators
-  const discoveryIndicators = ['last_seen', 'discovered', 'scan', 'mac_address', 'ot_protocol']
-  if (lowerHeaders.some(h => discoveryIndicators.some(i => h.includes(i)))) {
-    return 'discovery'
+  // Field-side observation streams (walkdowns, ITS field surveys, bridge
+  // inspections, cabinet inventories) are also discovery evidence — they
+  // confirm physical presence even when the network doesn't see the asset.
+  if (lowerFilename.includes('walkdown') || lowerFilename.includes('field_inventory') || lowerFilename.includes('field_survey')) {
+    return { type: 'discovery', confidence: 90 }
   }
-  
-  // Maintenance indicators
-  const maintenanceIndicators = ['work_order', 'wo_', 'maintenance', 'pm_', 'due_date']
-  if (lowerHeaders.some(h => maintenanceIndicators.some(i => h.includes(i)))) {
-    return 'maintenance'
+  if (lowerFilename.includes('vuln') || lowerFilename.includes('cve')) {
+    return { type: 'vulnerability', confidence: 90 }
   }
-  
-  // Vulnerability indicators
-  const vulnIndicators = ['vulnerability', 'cve', 'patch', 'cvss', 'exploit']
-  if (lowerHeaders.some(h => vulnIndicators.some(i => h.includes(i)))) {
-    return 'vulnerability'
+  if (lowerFilename.includes('cmms') || lowerFilename.includes('maintenance') || lowerFilename.includes('work_order')) {
+    return { type: 'maintenance', confidence: 90 }
   }
-  
-  // Filename hints
-  if (lowerFilename.includes('engineering') || lowerFilename.includes('baseline')) return 'engineering'
-  if (lowerFilename.includes('discovery') || lowerFilename.includes('claroty') || lowerFilename.includes('nozomi')) return 'discovery'
-  if (lowerFilename.includes('cmms') || lowerFilename.includes('maintenance')) return 'maintenance'
-  if (lowerFilename.includes('vuln') || lowerFilename.includes('security')) return 'vulnerability'
-  
-  return 'other'
+  if (lowerFilename.includes('network') || lowerFilename.includes('topology') || lowerFilename.includes('switch')) {
+    return { type: 'network', confidence: 85 }
+  }
+  if (lowerFilename.includes('historian') || lowerFilename.includes('process_value') || lowerFilename.includes('pi_tag')) {
+    return { type: 'historian', confidence: 85 }
+  }
+  if (lowerFilename.includes('engineering') || lowerFilename.includes('baseline') || lowerFilename.includes('p&id') || lowerFilename.includes('asset_register')) {
+    return { type: 'engineering', confidence: 90 }
+  }
+
+  // 2. Distinctive headers (discovery checked before engineering because both share tag_id)
+  if (headerHas('discovered_ip', 'mac_address', 'last_seen', 'discovery_method', 'open_ports', 'first_seen')) {
+    return { type: 'discovery', confidence: 85 }
+  }
+
+  if (headerHas('cvss', 'epss', 'cwe', 'exploit', 'vulnerability_id') || (headerHas('cve_id') && !headerHas('plant'))) {
+    return { type: 'vulnerability', confidence: 85 }
+  }
+
+  if (headerHas('work_order', 'wo_id', 'pm_due_date', 'maintenance_provider', 'service_provider')) {
+    return { type: 'maintenance', confidence: 80 }
+  }
+
+  if (headerHas('tag_value', 'process_value', 'historian_tag', 'pi_tag', 'sample_time')) {
+    return { type: 'historian', confidence: 75 }
+  }
+
+  if (headerHas('switch_port', 'gateway', 'subnet', 'vlan_id') && !headerHas('discovered_ip', 'mac_address')) {
+    return { type: 'network', confidence: 75 }
+  }
+
+  // Engineering: needs an engineering-only signal beyond the join key
+  if (headerHas('expected_ip', 'criticality', 'safety_system', 'p&id', 'pid_tag', 'loop_id', 'design_doc', 'installation_date')) {
+    return { type: 'engineering', confidence: 85 }
+  }
+
+  // Fallback: tag_id + plant/unit but no other strong signals = engineering baseline
+  if (headerHas('tag_id', 'tag') && headerHas('plant', 'site', 'unit', 'area')) {
+    return { type: 'engineering', confidence: 60 }
+  }
+
+  return { type: 'unknown', confidence: 30 }
 }
 
 /**
@@ -137,13 +193,14 @@ export function detectSourceType(headers, filename = '') {
 export function parseAndNormalize(csvText, sourceId, filename = '') {
   const parsed = Papa.parse(csvText, { header: true, skipEmptyLines: true })
   const headers = parsed.meta.fields || []
-  const detectedType = detectSourceType(headers, filename)
+  const detection = detectSourceType(headers, filename)
   const rows = normalizeDataset(parsed.data, sourceId)
   
   return {
     rows,
     headers,
-    detectedType,
+    detectedType: detection.type,
+    detectionConfidence: detection.confidence,
     rowCount: rows.length
   }
 }

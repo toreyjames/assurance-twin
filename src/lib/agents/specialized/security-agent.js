@@ -14,6 +14,7 @@ import {
   ObservationSeverity
 } from '../types.js'
 import { RiskFactor, calculateAssetRisk } from '../../context/risk-engine.js'
+import { assetHasCves, canonicalCveCount } from '../../core/cve-count.js'
 
 export class SecurityAgent extends BaseAgent {
   constructor(config) {
@@ -77,9 +78,7 @@ export class SecurityAgent extends BaseAgent {
    * Analyze assets for vulnerabilities
    */
   analyzeVulnerabilities(assets) {
-    const vulnerableAssets = assets.filter(a => 
-      a.cve_count > 0 || a.vulnerabilities?.length > 0
-    )
+    const vulnerableAssets = assets.filter(assetHasCves)
     
     // Critical vulnerabilities
     const criticalVuln = vulnerableAssets.filter(a => 
@@ -97,7 +96,7 @@ export class SecurityAgent extends BaseAgent {
             asset: asset.tag_id || asset.asset_id,
             assetId: asset.tag_id
           },
-          description: `Critical vulnerability on ${asset.device_type || 'device'} ${asset.tag_id || asset.ip_address}: ${asset.cve_count || asset.vulnerabilities?.length || 'multiple'} CVEs including critical severity`,
+          description: `Critical vulnerability on ${asset.device_type || 'device'} ${asset.tag_id || asset.ip_address}: ${canonicalCveCount(asset) || 'multiple'} CVEs including critical severity`,
           evidence: [this.assetEvidence(asset)],
           recommendations: [
             'Apply security patches immediately if available',
@@ -110,7 +109,7 @@ export class SecurityAgent extends BaseAgent {
     }
     
     // High vulnerability count
-    const highVulnCount = vulnerableAssets.filter(a => (a.cve_count || 0) > 10)
+    const highVulnCount = vulnerableAssets.filter(a => canonicalCveCount(a) > 10)
     if (highVulnCount.length > 0) {
       this.recordObservation({
         type: ObservationType.WEAKNESS,
@@ -310,7 +309,7 @@ export class SecurityAgent extends BaseAgent {
     }
     
     // Low vulnerability count
-    const vulnAssets = assets.filter(a => a.cve_count > 0)
+    const vulnAssets = assets.filter(assetHasCves)
     const vulnPercent = Math.round((vulnAssets.length / assets.length) * 100)
     
     if (vulnPercent < 10 && assets.length > 10) {

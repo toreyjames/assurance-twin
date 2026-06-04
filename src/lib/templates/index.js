@@ -6,17 +6,20 @@
 import oilGas from './oil-gas.json'
 import pharma from './pharma.json'
 import utilities from './utilities.json'
+import transportation from './transportation.json'
 
 export const templates = {
   'oil-gas': oilGas,
   'pharma': pharma,
-  'utilities': utilities
+  'utilities': utilities,
+  'transportation': transportation
 }
 
 export const industries = [
   { id: 'oil-gas', name: 'Oil & Gas Refineries', icon: '⛽' },
   { id: 'pharma', name: 'Pharmaceutical Plants', icon: '💊' },
-  { id: 'utilities', name: 'Power & Utilities', icon: '⚡' }
+  { id: 'utilities', name: 'Power & Utilities', icon: '⚡' },
+  { id: 'transportation', name: 'Transportation / DOT', icon: '▦' }
 ]
 
 export function getTemplate(industryId) {

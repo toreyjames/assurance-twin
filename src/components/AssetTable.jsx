@@ -4,7 +4,7 @@
  * Row click bubbles up via onSelectAsset so the workspace AssetDetail panel renders detail.
  */
 
-import React, { useMemo, useState, useCallback } from 'react'
+import React, { useMemo, useState, useCallback, useEffect } from 'react'
 
 // Reconciliation status colors
 const STATUS_STYLE = {
@@ -14,6 +14,14 @@ const STATUS_STYLE = {
 }
 
 const CONFIDENCE_LABEL = { HIGH: 'high', MEDIUM: 'medium', LOW: 'low' }
+const EPISTEMIC_LABEL = {
+  cross_validated: 'Cross-validated',
+  supported: 'Single-source',
+  inferred: 'Inferred',
+  expected_missing: 'Expected missing',
+  observed_unexpected: 'Observed undocumented',
+  unknown: 'Unknown'
+}
 
 function reconciliationLabel(asset) {
   const status = asset._status
@@ -184,7 +192,9 @@ function Field({ label, value }) {
 // MAIN TABLE
 // =============================================================================
 
-export default function AssetTable({ unifiedAssets, result, onSelectAsset, selectedAsset }) {
+const FILTER_IDS = ['all', 'matched', 'blind_spot', 'orphan', 'unmanaged', 'blocker']
+
+export default function AssetTable({ unifiedAssets, result, onSelectAsset, selectedAsset, searchPreset = '', filterPreset = 'all', plantPreset = 'all', onPlantChange }) {
   const [filter, setFilter] = useState('all')
   const [plantFilter, setPlantFilter] = useState('all')
   const [unitFilter, setUnitFilter] = useState('all')
@@ -196,6 +206,25 @@ export default function AssetTable({ unifiedAssets, result, onSelectAsset, selec
   const handleSelect = useCallback(asset => {
     if (typeof onSelectAsset === 'function') onSelectAsset(asset)
   }, [onSelectAsset])
+
+  useEffect(() => {
+    if (typeof searchPreset === 'string') {
+      setSearch(searchPreset)
+      setPage(0)
+    }
+  }, [searchPreset])
+
+  useEffect(() => {
+    const next = FILTER_IDS.includes(filterPreset) ? filterPreset : 'all'
+    setFilter(next)
+    setPage(0)
+  }, [filterPreset])
+
+  useEffect(() => {
+    setPlantFilter(plantPreset || 'all')
+    setUnitFilter('all')
+    setPage(0)
+  }, [plantPreset])
 
   // Extract unique plants and units for dropdowns
   const { plants, units } = useMemo(() => {
@@ -246,6 +275,11 @@ export default function AssetTable({ unifiedAssets, result, onSelectAsset, selec
       (a.classification?.tier === 1 || a.classification?.tier === 2 || a.security_tier === 1 || a.security_tier === 2) &&
       a.is_managed !== true && a.is_managed !== 'true'
     )
+    else if (filter === 'blocker') list = list.filter(a => {
+      const tier = a.classification?.tier || a.security_tier
+      const unmanagedCritical = (tier === 1 || tier === 2) && a.is_managed !== true && a.is_managed !== 'true'
+      return a._status === 'blind_spot' || a._status === 'orphan' || unmanagedCritical || (a.cve_count || 0) > 0
+    })
 
     // Search
     if (search.trim()) {
@@ -257,15 +291,21 @@ export default function AssetTable({ unifiedAssets, result, onSelectAsset, selec
         (a.ip_address || '').toLowerCase().includes(q) ||
         (a.hostname || '').toLowerCase().includes(q) ||
         (a.manufacturer || '').toLowerCase().includes(q) ||
-        (a.plant || '').toLowerCase().includes(q)
+        (a.plant || '').toLowerCase().includes(q) ||
+        (a.owner || a.asset_owner || '').toLowerCase().includes(q) ||
+        (a.firmware_version || '').toLowerCase().includes(q) ||
+        (a.cve_ids || '').toLowerCase().includes(q) ||
+        (a.ontology?.deviceClass?.id || '').toLowerCase().includes(q) ||
+        (a.ontology?.deviceClass?.label || '').toLowerCase().includes(q) ||
+        (a.evidence?.epistemic_status || '').toLowerCase().includes(q)
       )
     }
 
     // Sort
     if (sortCol) {
       list = [...list].sort((a, b) => {
-        const va = a[sortCol] ?? ''
-        const vb = b[sortCol] ?? ''
+        const va = sortCol === 'evidence_status' ? (a.evidence?.epistemic_status ?? '') : (a[sortCol] ?? '')
+        const vb = sortCol === 'evidence_status' ? (b.evidence?.epistemic_status ?? '') : (b[sortCol] ?? '')
         const cmp = String(va).localeCompare(String(vb), undefined, { numeric: true })
         return sortDir === 'asc' ? cmp : -cmp
       })
@@ -281,7 +321,12 @@ export default function AssetTable({ unifiedAssets, result, onSelectAsset, selec
   // Reset page on filter/search change
   const handleFilter = useCallback(f => { setFilter(f); setPage(0) }, [])
   const handleSearch = useCallback(e => { setSearch(e.target.value); setPage(0) }, [])
-  const handlePlant = useCallback(p => { setPlantFilter(p); setUnitFilter('all'); setPage(0) }, [])
+  const handlePlant = useCallback(p => {
+    setPlantFilter(p)
+    setUnitFilter('all')
+    setPage(0)
+    onPlantChange?.(p)
+  }, [onPlantChange])
   const handleUnit = useCallback(u => { setUnitFilter(u); setPage(0) }, [])
 
   const handleSort = useCallback(col => {
@@ -302,9 +347,14 @@ export default function AssetTable({ unifiedAssets, result, onSelectAsset, selec
       unmanaged: all.filter(a =>
         (a.classification?.tier === 1 || a.classification?.tier === 2 || a.security_tier === 1 || a.security_tier === 2) &&
         a.is_managed !== true && a.is_managed !== 'true'
-      ).length
+      ).length,
+      blocker: all.filter(a => {
+        const tier = a.classification?.tier || a.security_tier
+        const unmanagedCritical = (tier === 1 || tier === 2) && a.is_managed !== true && a.is_managed !== 'true'
+        return a._status === 'blind_spot' || a._status === 'orphan' || unmanagedCritical || (a.cve_count || 0) > 0
+      }).length
     }
-  }, [unifiedAssets])
+  }, [unifiedAssets, plantFilter, unitFilter])
 
   const filterBtn = (id, label, count, color) => (
     <button
@@ -382,21 +432,36 @@ export default function AssetTable({ unifiedAssets, result, onSelectAsset, selec
         </div>
       )}
 
-      {/* Status Filters + Search */}
+      {/* Status Filters + Search
+          Matched / Blind Spots / Orphans live in the header denominator hero (canonical drill-down).
+          Table toolbar keeps only the additive filters that the header does not expose. */}
       <div style={{
         display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '0.75rem',
         alignItems: 'center'
       }}>
         {filterBtn('all', 'All', counts.all, '#0f172a')}
-        {filterBtn('matched', 'Matched', counts.matched, '#16a34a')}
-        {filterBtn('blind_spot', 'Blind Spots', counts.blind_spot, '#d97706')}
-        {filterBtn('orphan', 'Orphans', counts.orphan, '#7c3aed')}
         {filterBtn('unmanaged', 'Unmanaged', counts.unmanaged, '#dc2626')}
+        {filterBtn('blocker', 'Closure Blockers', counts.blocker, '#be123c')}
+        {(filter === 'matched' || filter === 'blind_spot' || filter === 'orphan') && (
+          <button
+            onClick={() => handleFilter('all')}
+            style={{
+              padding: '0.375rem 0.75rem', borderRadius: '0.25rem', cursor: 'pointer',
+              fontSize: '0.8rem', fontWeight: '600',
+              background: '#f1f5f9', color: '#0f172a',
+              border: '1.5px solid #94a3b8', display: 'flex', alignItems: 'center', gap: '0.375rem'
+            }}
+            title="Clear status filter applied from header"
+          >
+            Status: {filter === 'matched' ? 'Matched' : filter === 'blind_spot' ? 'Blind spots' : 'Orphans'}
+            <span style={{ color: '#64748b', fontWeight: '400' }}>×</span>
+          </button>
+        )}
 
         <div style={{ marginLeft: 'auto' }}>
           <input
             type="text"
-            placeholder="Search tag, unit, type, IP..."
+            placeholder="Search tag, unit, type, class, status..."
             value={search}
             onChange={handleSearch}
             style={{
@@ -419,14 +484,16 @@ export default function AssetTable({ unifiedAssets, result, onSelectAsset, selec
               {colHeader('_status', 'RECONCILIATION', '13%')}
               {colHeader('security_tier', 'TIER', '6%')}
               {colHeader('is_managed', 'MANAGED', '8%')}
+              {colHeader('risk_score', 'RISK', '7%')}
+              {colHeader('evidence_status', 'EVIDENCE', '11%')}
               {colHeader('ip_address', 'IP', '11%')}
-              {colHeader('last_seen', 'LAST SEEN', '13%')}
+              {colHeader('last_seen', 'LAST SEEN', '10%')}
             </tr>
           </thead>
           <tbody>
             {pageData.length === 0 && (
               <tr>
-                <td colSpan={9} style={{ padding: '2rem', textAlign: 'center', color: '#94a3b8' }}>
+                <td colSpan={11} style={{ padding: '2rem', textAlign: 'center', color: '#94a3b8' }}>
                   {search ? 'No assets match your search.' : 'No assets to display.'}
                 </td>
               </tr>
@@ -483,6 +550,23 @@ export default function AssetTable({ unifiedAssets, result, onSelectAsset, selec
                     ) : (
                       <span style={{ color: '#cbd5e1', fontSize: '0.75rem' }}>-</span>
                     )}
+                  </td>
+                  <td style={{ padding: '0.5rem 0.625rem', fontFamily: 'monospace', color: Number(asset.risk_score || 0) >= 75 ? '#dc2626' : '#475569', fontSize: '0.75rem', fontWeight: 600 }}>
+                    {asset.risk_score != null && asset.risk_score !== '' ? String(asset.risk_score) : '-'}
+                  </td>
+                  <td style={{ padding: '0.5rem 0.625rem' }}>
+                    <span style={{
+                      padding: '0.12rem 0.35rem',
+                      borderRadius: '0.2rem',
+                      fontSize: '0.66rem',
+                      fontWeight: 600,
+                      fontFamily: 'monospace',
+                      border: '1px solid #334155',
+                      background: '#111827',
+                      color: '#cbd5e1'
+                    }}>
+                      {EPISTEMIC_LABEL[asset.evidence?.epistemic_status] || 'Unknown'}
+                    </span>
                   </td>
                   <td style={{ padding: '0.5rem 0.625rem', fontFamily: 'monospace', color: '#475569', fontSize: '0.75rem' }}>
                     {asset.ip_address || asset.discovered_ip || '-'}

@@ -614,22 +614,41 @@ function USMapVisualization({ plants, plantStats, selectedPlant, onSelectPlant }
 // ENTERPRISE SUMMARY BAR
 // =============================================================================
 
-function EnterpriseSummary({ plantStats, plants, securityStats }) {
-  const totals = useMemo(() => {
-    const loadedPlants = plants.filter(p => plantStats[p.id])
+function EnterpriseSummary({ plantStats, plants }) {
+  // This strip lives under the header, which already shows portfolio totals
+  // (in-scope, matched, coverage, CVEs). So we deliberately show only the
+  // GEOGRAPHIC distribution the header's flat site chip row can't convey:
+  // where the assets concentrate and where the reconciliation gaps cluster.
+  const dist = useMemo(() => {
+    const loaded = plants.filter(p => plantStats[p.id])
+    let busiest = null
+    let mostGaps = null
+    let sitesWithBlind = 0
+    let sitesWithOrphans = 0
+
+    for (const p of loaded) {
+      const s = plantStats[p.id]
+      const gaps = (s.blindSpots || 0) + (s.orphans || 0)
+      if (!busiest || (s.assetCount || 0) > busiest.count) {
+        busiest = { name: p.name || p.label || p.id, count: s.assetCount || 0 }
+      }
+      if (gaps > 0 && (!mostGaps || gaps > mostGaps.count)) {
+        mostGaps = { name: p.name || p.label || p.id, count: gaps }
+      }
+      if ((s.blindSpots || 0) > 0) sitesWithBlind += 1
+      if ((s.orphans || 0) > 0) sitesWithOrphans += 1
+    }
+
     return {
-      sites: loadedPlants.length,
+      sites: loaded.length,
       totalSites: plants.length,
-      assets: loadedPlants.reduce((sum, p) => sum + (plantStats[p.id]?.assetCount || 0), 0),
-      matched: loadedPlants.reduce((sum, p) => sum + (plantStats[p.id]?.matched || 0), 0),
-      blindSpots: loadedPlants.reduce((sum, p) => sum + (plantStats[p.id]?.blindSpots || 0), 0),
-      orphans: loadedPlants.reduce((sum, p) => sum + (plantStats[p.id]?.orphans || 0), 0),
-      matchRate: loadedPlants.length > 0 
-        ? Math.round(loadedPlants.reduce((sum, p) => sum + (plantStats[p.id]?.matchRate || 0), 0) / loadedPlants.length)
-        : 0
+      busiest,
+      mostGaps,
+      sitesWithBlind,
+      sitesWithOrphans
     }
   }, [plantStats, plants])
-  
+
   return (
     <div style={{
       display: 'grid',
@@ -638,32 +657,32 @@ function EnterpriseSummary({ plantStats, plants, securityStats }) {
       marginBottom: '1.5rem'
     }}>
       <SummaryBox
-        value={`${totals.sites}/${totals.totalSites}`}
+        value={`${dist.sites}/${dist.totalSites}`}
         label="Sites Loaded"
         subtext="From uploaded data"
       />
       <SummaryBox
-        value={totals.assets.toLocaleString()}
-        label="In-scope Assets"
-        subtext={`${totals.matched.toLocaleString()} matched`}
+        value={dist.busiest ? dist.busiest.count.toLocaleString() : '0'}
+        label="Largest Site"
+        subtext={dist.busiest ? dist.busiest.name : 'No site data'}
       />
       <SummaryBox
-        value={`${totals.matchRate}%`}
-        label="Discovery Coverage"
-        valueColor={totals.matchRate >= 80 ? '#22c55e' : totals.matchRate >= 60 ? '#f59e0b' : '#ef4444'}
-        subtext="matched / documented"
+        value={dist.sitesWithBlind.toLocaleString()}
+        label="Sites With Blind Spots"
+        valueColor={dist.sitesWithBlind === 0 ? '#22c55e' : '#f59e0b'}
+        subtext={`of ${dist.sites} loaded`}
       />
       <SummaryBox
-        value={`${securityStats.securePercent}%`}
-        label="No Recorded CVEs"
-        valueColor={securityStats.securePercent >= 70 ? '#22c55e' : securityStats.securePercent >= 50 ? '#f59e0b' : '#ef4444'}
-        subtext={`${securityStats.secure.toLocaleString()} clean`}
+        value={dist.sitesWithOrphans.toLocaleString()}
+        label="Sites With Orphans"
+        valueColor={dist.sitesWithOrphans === 0 ? '#22c55e' : '#a855f7'}
+        subtext={`of ${dist.sites} loaded`}
       />
       <SummaryBox
-        value={securityStats.withVulns.toLocaleString()}
-        label="With Vulnerabilities"
-        valueColor={securityStats.withVulns === 0 ? '#22c55e' : '#f59e0b'}
-        subtext="In discovery export"
+        value={dist.mostGaps ? dist.mostGaps.count.toLocaleString() : '0'}
+        label="Most Gaps At One Site"
+        valueColor={dist.mostGaps ? '#f59e0b' : '#22c55e'}
+        subtext={dist.mostGaps ? dist.mostGaps.name : 'No gaps'}
       />
     </div>
   )
@@ -693,57 +712,6 @@ export default function WorldModel({ result, industry = 'automotive' }) {
   
   // Sites are derived from the loaded data; static metadata only enriches known demo sites.
   const plants = useMemo(() => buildDataDrivenPlants(result, industry), [result, industry])
-  
-  // Calculate security stats from actual asset data
-  const securityStats = useMemo(() => {
-    if (!result?.assets) return { secure: 0, withVulns: 0, securePercent: 0, managed: 0, unmanaged: 0, patchedRecently: 0 }
-    
-    // All matched assets have discovery data
-    const discoveredAssets = result.assets.filter(a => 
-      a.match_type === 'matched' || a.matchType || a.discovered_ip || a.discovered
-    )
-    
-    let secure = 0
-    let withVulns = 0
-    let managed = 0
-    let unmanaged = 0
-    let patchedRecently = 0
-    
-    const ninetyDaysAgo = new Date()
-    ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90)
-    
-    discoveredAssets.forEach(asset => {
-      // Vulnerabilities - check top level first, then discovered object
-      const vulnCount = parseInt(asset.vulnerabilities) || parseInt(asset.discovered?.vulnerabilities) || 0
-      if (vulnCount === 0) secure++
-      else withVulns++
-      
-      // Management status
-      const isManaged = asset.is_managed || asset.discovered?.is_managed || false
-      if (isManaged) managed++
-      else unmanaged++
-      
-      // Patch status - check if patched within 90 days
-      const patchDate = asset.last_patch_date || asset.discovered?.last_patch_date
-      if (patchDate) {
-        const patchDateObj = new Date(patchDate)
-        if (patchDateObj >= ninetyDaysAgo) patchedRecently++
-      }
-    })
-    
-    const total = discoveredAssets.length
-    return {
-      secure,
-      withVulns,
-      managed,
-      unmanaged,
-      patchedRecently,
-      total,
-      securePercent: total > 0 ? Math.round((secure / total) * 100) : 0,
-      managedPercent: total > 0 ? Math.round((managed / total) * 100) : 0,
-      patchedPercent: total > 0 ? Math.round((patchedRecently / total) * 100) : 0
-    }
-  }, [result])
   
   // Parse plant stats from the same data-derived site identities used by the map.
   const plantStats = useMemo(() => {
@@ -844,7 +812,7 @@ export default function WorldModel({ result, industry = 'automotive' }) {
       </div>
       
       {/* Enterprise Summary */}
-      {hasAnyData && <EnterpriseSummary plantStats={plantStats} plants={plants} securityStats={securityStats} />}
+      {hasAnyData && <EnterpriseSummary plantStats={plantStats} plants={plants} />}
       
       {/* Map Visualization */}
       <USMapVisualization 

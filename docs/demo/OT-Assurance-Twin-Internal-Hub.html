@@ -1,0 +1,816 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OT Assurance Twin | Internal Enablement Hub</title>
+  <style>
+    :root {
+      --ink: #071225;
+      --muted: #5d6b80;
+      --soft: #eef3f7;
+      --line: #d9e2ea;
+      --green: #86bc25;
+      --teal: #00a3a1;
+      --blue: #24527a;
+      --navy: #06152b;
+      --paper: #ffffff;
+      --wash: #f7fafc;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: #e9eef3;
+      color: var(--ink);
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.42;
+    }
+
+    a { color: var(--blue); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .page {
+      max-width: 1440px;
+      margin: 0 auto;
+      background: var(--paper);
+      min-height: 100vh;
+      box-shadow: 0 24px 70px rgba(7, 18, 37, 0.16);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      min-height: 430px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brand-rail {
+      background:
+        radial-gradient(circle at 20% 18%, rgba(134, 188, 37, 0.28), transparent 26%),
+        linear-gradient(150deg, #030a16 0%, #07182d 55%, #0b2542 100%);
+      color: white;
+      padding: 34px 34px 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--green);
+      font-weight: 700;
+    }
+
+    h1 {
+      font-size: 42px;
+      line-height: 0.98;
+      margin: 28px 0 16px;
+      font-weight: 500;
+      letter-spacing: -0.035em;
+    }
+
+    .brand-rail p {
+      color: #c8d3df;
+      font-size: 14px;
+      margin: 0;
+    }
+
+    .rail-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      border-top: 1px solid rgba(255, 255, 255, 0.18);
+      padding-top: 18px;
+      margin-top: 28px;
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 22px;
+      color: #ffffff;
+      font-weight: 600;
+    }
+
+    .metric span {
+      display: block;
+      color: #9fb0c3;
+      font-size: 11px;
+      margin-top: 4px;
+    }
+
+    .hero-main {
+      padding: 34px 42px 28px;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      gap: 24px;
+    }
+
+    .top-grid {
+      display: grid;
+      grid-template-columns: 1.25fr 0.75fr;
+      gap: 28px;
+    }
+
+    .section-title {
+      font-size: 16px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--navy);
+      border-bottom: 2px solid var(--blue);
+      padding-bottom: 7px;
+      margin: 0 0 12px;
+      font-weight: 700;
+    }
+
+    .lead {
+      font-size: 17px;
+      color: #2e3a4a;
+      margin: 0 0 18px;
+      max-width: 760px;
+    }
+
+    .benefits {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 20px;
+    }
+
+    .benefit {
+      border-top: 3px solid var(--teal);
+      padding-top: 10px;
+    }
+
+    .benefit h3 {
+      margin: 0 0 6px;
+      font-size: 14px;
+      color: var(--ink);
+    }
+
+    .benefit p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .who-card {
+      background: var(--wash);
+      border: 1px solid var(--line);
+      padding: 18px;
+    }
+
+    .who-card h3 {
+      margin: 0 0 8px;
+      font-size: 17px;
+    }
+
+    .who-card p {
+      margin: 0 0 12px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .chip {
+      border: 1px solid var(--line);
+      background: white;
+      color: #435166;
+      border-radius: 999px;
+      padding: 5px 9px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    .content {
+      padding: 32px 42px 46px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-bottom: 34px;
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      background: white;
+      padding: 18px;
+    }
+
+    .panel h2 {
+      margin: 0 0 10px;
+      font-size: 18px;
+      color: var(--navy);
+    }
+
+    .panel p, .panel li {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    ul {
+      margin: 8px 0 0;
+      padding-left: 18px;
+    }
+
+    .tracker {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-bottom: 34px;
+    }
+
+    .track-row {
+      display: grid;
+      grid-template-columns: 28px 1fr auto;
+      gap: 10px;
+      align-items: start;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .track-row:last-child { border-bottom: 0; }
+
+    .num {
+      width: 24px;
+      height: 24px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: var(--navy);
+      color: white;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .status {
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--green);
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .slide-wrap {
+      background: #f1f5f8;
+      border: 1px solid var(--line);
+      padding: 22px;
+      margin-bottom: 34px;
+    }
+
+    .slide-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 14px;
+    }
+
+    .slide-header p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .demo-note {
+      margin: 12px 0 0;
+      padding: 12px 14px;
+      background: #e8f4fc;
+      border: 1px solid #c5dce8;
+      border-left: 4px solid var(--teal);
+      font-size: 12px;
+      color: #2e3a4a;
+      line-height: 1.45;
+    }
+
+    .demo-note strong {
+      color: var(--navy);
+    }
+
+    .ppt-slide {
+      aspect-ratio: 16 / 9;
+      background: white;
+      display: grid;
+      grid-template-columns: 24% 1fr 27%;
+      border: 1px solid #cfd9e4;
+      overflow: hidden;
+      min-height: min(72vh, 680px);
+      max-height: 780px;
+    }
+
+    .ppt-left {
+      background:
+        linear-gradient(165deg, rgba(3, 9, 20, 0.93) 0%, rgba(7, 24, 45, 0.9) 55%, rgba(11, 37, 66, 0.88) 100%),
+        url('https://images.unsplash.com/photo-1519817914152-22d216bb9179?auto=format&fit=crop&w=900&q=80') center 36% / cover no-repeat;
+      color: white;
+      padding: 22px 20px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .ppt-left h2 {
+      margin: 12px 0 10px;
+      font-size: clamp(26px, 2.6vw, 34px);
+      line-height: 1.02;
+      font-weight: 500;
+      letter-spacing: -0.03em;
+    }
+
+    .ppt-left p {
+      color: #d5dee9;
+      font-size: 13px;
+      margin: 0;
+      line-height: 1.45;
+    }
+
+    .ppt-left .rail-metrics {
+      margin-top: 18px;
+      padding-top: 14px;
+    }
+
+    .ppt-left .metric strong {
+      font-size: 13px;
+      letter-spacing: 0.02em;
+    }
+
+    .ppt-main {
+      padding: 0;
+      border-right: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
+      background: linear-gradient(180deg, #f8fafc 0%, #ffffff 38%);
+    }
+
+    .ppt-main-banner {
+      flex: 0 0 clamp(104px, 14vh, 132px);
+      background:
+        linear-gradient(105deg, rgba(36, 82, 122, 0.88) 0%, rgba(0, 163, 161, 0.45) 55%, rgba(134, 188, 37, 0.2) 100%),
+        url('https://images.unsplash.com/photo-1494783367193-149034c05e8f?auto=format&fit=crop&w=1600&q=80') center 48% / cover no-repeat;
+    }
+
+    .ppt-main-inner {
+      padding: 14px 22px 18px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      gap: 4px;
+    }
+
+    .ppt-main h3,
+    .ppt-right h3 {
+      margin: 0 0 8px;
+      font-size: 13px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--navy);
+      border-bottom: 2px solid var(--teal);
+      padding-bottom: 6px;
+    }
+
+    .ppt-main .ppt-lead {
+      font-size: 13px;
+      color: #3d4b5c;
+      margin: 0 0 10px;
+      line-height: 1.42;
+      max-width: none;
+    }
+
+    .framework {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 8px 0 14px;
+    }
+
+    .state {
+      background: linear-gradient(135deg, #f0f6fb 0%, #ffffff 100%);
+      border-left: 3px solid var(--green);
+      padding: 11px 11px 11px 12px;
+      border: 1px solid #e2ecf4;
+      border-left-width: 3px;
+    }
+
+    .state strong {
+      display: block;
+      font-size: 12px;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+
+    .state span {
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.35;
+    }
+
+    .capabilities {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .capability {
+      border-top: 3px solid var(--blue);
+      padding: 9px 8px 2px;
+      font-size: 11px;
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.65);
+      min-height: 76px;
+    }
+
+    .capability strong {
+      display: block;
+      color: var(--ink);
+      font-size: 12px;
+      margin-bottom: 5px;
+    }
+
+    .ppt-right {
+      padding: 0;
+      background: #f5f8fb;
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
+    }
+
+    .ppt-right-banner {
+      flex: 0 0 clamp(120px, 16vh, 168px);
+      background:
+        linear-gradient(180deg, rgba(6, 21, 43, 0.15) 0%, rgba(245, 248, 251, 0.95) 100%),
+        url('https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80') center 22% / cover no-repeat;
+    }
+
+    .ppt-right-inner {
+      padding: 14px 18px 18px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .ppt-footnote {
+      margin-top: auto;
+      padding-top: 10px;
+      font-size: 10px;
+      color: var(--muted);
+      line-height: 1.35;
+      border-top: 1px dashed var(--line);
+    }
+
+    .lens {
+      margin: 0 0 10px;
+      padding: 11px 12px;
+      border: 1px solid var(--line);
+      background: white;
+      box-shadow: 0 1px 0 rgba(7, 18, 37, 0.04);
+    }
+
+    .lens:last-of-type {
+      margin-bottom: 0;
+    }
+
+    .lens strong {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--ink);
+      font-size: 13px;
+    }
+
+    .lens span {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.38;
+    }
+
+    .artifact-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .artifact {
+      border: 1px solid var(--line);
+      padding: 14px;
+      background: white;
+      min-height: 132px;
+    }
+
+    .artifact strong {
+      display: block;
+      color: var(--ink);
+      font-size: 14px;
+      margin-bottom: 7px;
+    }
+
+    .artifact span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+
+    .footer {
+      border-top: 1px solid var(--line);
+      padding-top: 22px;
+      margin-top: 34px;
+      color: var(--muted);
+      font-size: 12px;
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 980px) {
+      .hero, .top-grid, .tracker, .grid-3, .artifact-grid { grid-template-columns: 1fr; }
+      .ppt-slide {
+        aspect-ratio: auto;
+        grid-template-columns: 1fr;
+        max-height: none;
+      }
+      .ppt-main-banner,
+      .ppt-right-banner {
+        flex-basis: 140px;
+      }
+      .brand-rail { min-height: 360px; }
+    }
+
+    @media print {
+      body { background: white; }
+      .page { box-shadow: none; }
+      .hero, .content > *:not(.slide-wrap) { display: none; }
+      .slide-wrap { border: 0; padding: 0; margin: 0; }
+      .slide-header { display: none; }
+      .demo-note { display: none; }
+      .ppt-slide { border: 0; min-height: 100vh; max-height: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <aside class="brand-rail">
+        <div>
+          <div class="eyebrow">Internal enablement</div>
+          <h1>OT Assurance Twin</h1>
+          <p>
+            Evidence-grounded cyber-physical asset assurance for OT environments where
+            engineering records, network discovery, operational context, and risk data do not naturally agree.
+          </p>
+        </div>
+        <div>
+          <div class="rail-metrics">
+            <div class="metric"><strong>4</strong><span>knowledge states</span></div>
+            <div class="metric"><strong>1</strong><span>reconciled denominator</span></div>
+            <div class="metric"><strong>N</strong><span>industry lenses</span></div>
+          </div>
+        </div>
+      </aside>
+
+      <section class="hero-main">
+        <div class="top-grid">
+          <div>
+            <h2 class="section-title">Value & Benefits</h2>
+            <p class="lead">
+              Deloitte helps clients move from incomplete OT asset lists to defensible assurance evidence.
+              The Twin reconciles as-designed, as-built, and as-operated sources into asset-level claims that
+              can support security, topology, risk, and client requirement discussions.
+            </p>
+            <div class="benefits">
+              <div class="benefit">
+                <h3>Defensible denominator</h3>
+                <p>Documented, discovered, blind, and orphaned assets in one evidence model.</p>
+              </div>
+              <div class="benefit">
+                <h3>Evidence per claim</h3>
+                <p>Each asset carries match confidence, source basis, and epistemic status.</p>
+              </div>
+              <div class="benefit">
+                <h3>Reusable client lenses</h3>
+                <p>Industry profiles translate the same engine into DOT, utilities, oil and gas, and more.</p>
+              </div>
+            </div>
+          </div>
+
+          <aside class="who-card">
+            <h3>Who is this for internally?</h3>
+            <p>
+              Partners, account teams, CPS/OT practitioners, and AI/data teams who need a crisp way to explain
+              why asset visibility is an evidence and engineering problem, not only a tooling problem.
+            </p>
+            <div class="chips">
+              <span class="chip">CPS Security</span>
+              <span class="chip">OT Cyber</span>
+              <span class="chip">AI + Data</span>
+              <span class="chip">Transportation</span>
+              <span class="chip">Utilities</span>
+            </div>
+          </aside>
+        </div>
+
+        <div class="grid-3">
+          <div class="panel">
+            <h2>Core frame</h2>
+            <p>Engineering epistemology: how we know what we know about cyber-physical assets, with what evidence, and where uncertainty remains.</p>
+          </div>
+          <div class="panel">
+            <h2>Client pull</h2>
+            <p>Asset inventory, vulnerability context, topology, access paths, reports, and RFI/control crosswalks.</p>
+          </div>
+          <div class="panel">
+            <h2>Deloitte push</h2>
+            <p>The stronger answer is evidence-grounded reconciliation: what is corroborated, missing, inferred, and observed unexpectedly.</p>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <section class="content">
+      <div class="tracker">
+        <div class="panel">
+          <h2>Main Content Tracker</h2>
+          <div class="track-row">
+            <span class="num">1</span>
+            <div><strong>Explainer script</strong><br /><span>10-12 minute internal walkthrough, mixed audience.</span></div>
+            <span class="status">ready</span>
+          </div>
+          <div class="track-row">
+            <span class="num">2</span>
+            <div><strong>One-page capability slide</strong><br /><span>Reusable PPT-style page with substitutable industry lens.</span></div>
+            <span class="status">draft</span>
+          </div>
+          <div class="track-row">
+            <span class="num">3</span>
+            <div><strong>Transportation / DOT profile</strong><br /><span>Demo is ~26 reconciled rows (25+25 CSV with one blind + one orphan)—not a full corridor count.</span></div>
+            <span class="status">added</span>
+          </div>
+          <div class="track-row">
+            <span class="num">4</span>
+            <div><strong>Utilities pressure test</strong><br /><span>Utilities is electric utility/generation/transmission, not DOT.</span></div>
+            <span class="status">captured</span>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2>Pressure-Test Questions</h2>
+          <ul>
+            <li>Does the industry map match the client’s operating model?</li>
+            <li>Does the asset taxonomy include the devices the client expects?</li>
+            <li>Can a leader understand the first screen without a walkthrough?</li>
+            <li>Does the RFI lens translate the product rather than take over the product?</li>
+            <li>Does the UI do more with less: fewer panels, clearer evidence?</li>
+          </ul>
+        </div>
+      </div>
+
+      <section class="slide-wrap">
+        <div class="slide-header">
+          <div>
+            <h2 class="section-title" style="margin-bottom: 6px;">One-Page PPT Draft</h2>
+            <p>This is the editable one-pager. Print this page and choose "current page" or screenshot the slide area for PowerPoint.</p>
+          </div>
+          <div class="chips">
+            <span class="chip">Reusable</span>
+            <span class="chip">Industry lens swaps</span>
+            <span class="chip">MDOT ready</span>
+          </div>
+        </div>
+        <p class="demo-note">
+          <strong>About the Transportation demo row count (~26).</strong>
+          Each CSV has 25 baseline/discovered devices, but they are not identical lists.
+          The cabinet door sensor (<code>CAB-DOOR-0023</code>) appears only in engineering (expected blind spot), and one CCTV appears only in discovery (<code>OBS-UNK-0026</code>, orphan).
+          The UI “in-scope” total is the reconciled denominator: matches + blind + orphan = <strong>26</strong> rows—by design to show reconciliation, not fleet scale.
+          Swap in client extracts for volume tests; the sidebar label now says “demo · ~26 reconciled rows.”
+        </p>
+
+        <article class="ppt-slide">
+          <aside class="ppt-left">
+            <div>
+              <div class="eyebrow">Deloitte OT perspective</div>
+              <h2>OT Assurance Twin</h2>
+              <p>
+                A framework and MVP for reconciling engineering, network, and operational evidence into a defensible cyber-physical asset denominator—so leaders can see what is corroborated, missing, or observed without documentation.
+              </p>
+            </div>
+            <div class="rail-metrics">
+              <div class="metric"><strong>As-designed</strong><span>baseline</span></div>
+              <div class="metric"><strong>As-built</strong><span>discovery</span></div>
+              <div class="metric"><strong>As-assured</strong><span>claim</span></div>
+            </div>
+          </aside>
+
+          <section class="ppt-main">
+            <div class="ppt-main-banner" role="img" aria-label="Freeway mobility backdrop"></div>
+            <div class="ppt-main-inner">
+              <h3>Framework / Solution</h3>
+              <p class="ppt-lead">
+                The Twin makes explicit how we know what we know about OT assets: where sources agree, where engineering expects a device discovery never saw, and where the network shows endpoints engineering did not document.
+              </p>
+              <div class="framework">
+                <div class="state"><strong>As-designed</strong><span>Engineering baseline, expected devices, criticality intent, locations.</span></div>
+                <div class="state"><strong>As-built</strong><span>Discovery endpoints, identity (IP/MAC/hostname), observed protocols.</span></div>
+                <div class="state"><strong>As-operated</strong><span>Maintenance windows, lifecycle, telemetry freshness, vulnerability context.</span></div>
+                <div class="state"><strong>As-assured</strong><span>One reconciled asset claim with evidence objects, confidence, and provenance.</span></div>
+              </div>
+              <h3>Solution Capabilities</h3>
+              <div class="capabilities">
+                <div class="capability"><strong>Reconciled inventory</strong>Matched, blind (documented not seen), orphaned (seen not documented), inferred classification, unknown.</div>
+                <div class="capability"><strong>Evidence trail</strong>Claim basis, match logic, source excerpts, checksums and pipeline version where configured.</div>
+                <div class="capability"><strong>Risk translation</strong>Topology and segmentation lens, CVE exposure posture, RFI or control-family crosswalk without replacing SME judgment.</div>
+              </div>
+            </div>
+          </section>
+
+          <aside class="ppt-right">
+            <div class="ppt-right-banner" role="img" aria-label="Operations technology server room backdrop"></div>
+            <div class="ppt-right-inner">
+              <h3>Industry Lens</h3>
+              <div class="lens">
+                <strong>MDOT / Transportation</strong>
+                <span>TMC, corridors, roadside cabinets, signal controllers, CCTV, DMS, RWIS, weigh stations, bridge controllers, pump PLCs, field switches, cellular routers, UPS, jump hosts, VPN / remote access concentrators—swap bullets per pursuit.</span>
+              </div>
+              <div class="lens">
+                <strong>Client question</strong>
+                <span>What do we have, is it secure, and where are the operational blind spots we cannot explain from evidence?</span>
+              </div>
+              <div class="lens">
+                <strong>Deloitte push</strong>
+                <span>Evidence-grounded reconciliation beats another passive inventory export: one denominator with explicit unknowns and conflict.</span>
+              </div>
+              <p class="ppt-footnote">
+                Hero photos: Unsplash (bridge, freeway, data hall)—replace with approved client-safe imagery before external use.
+              </p>
+            </div>
+          </aside>
+        </article>
+      </section>
+
+      <section>
+        <h2 class="section-title">Artifacts & Links</h2>
+        <div class="artifact-grid">
+          <div class="artifact">
+            <strong>Internal video script</strong>
+            <span>Full 10-12 minute voiceover and click path.</span>
+            <a href="./Internal-Explainer-Video-Script.md">Open script</a>
+          </div>
+          <div class="artifact">
+            <strong>Positioning brief</strong>
+            <span>Engineering epistemology, NIST/CISA/SANS/Dragos framing.</span>
+            <a href="./Assurance-Twin-Physics-First-Positioning.md">Open brief</a>
+          </div>
+          <div class="artifact">
+            <strong>Methodology brief</strong>
+            <span>NIST / OT asset management method reference.</span>
+            <a href="./Assurance-Twin-Methodology-NIST.md">Open methodology</a>
+          </div>
+          <div class="artifact">
+            <strong>Current preview</strong>
+            <span>Use Reset, then load Transportation / DOT demo.</span>
+            <a href="https://assurance-twin-8zid8mdep-torey-halls-projects.vercel.app">Open preview</a>
+          </div>
+        </div>
+      </section>
+
+      <section style="margin-top: 34px;">
+        <h2 class="section-title">Industry Substitution Blocks</h2>
+        <div class="grid-3">
+          <div class="panel">
+            <h2>Transportation / DOT</h2>
+            <p>TMC, corridors, roadside cabinets, signal controllers, CCTV, DMS, RWIS, pump PLCs, field switches, cellular routers, UPS, remote access.</p>
+          </div>
+          <div class="panel">
+            <h2>Power & Utilities</h2>
+            <p>Generation, transformer yard, switchyard, protective relays, IEDs, RTUs, metering, EMS/SCADA, battery/UPS, NERC CIP context.</p>
+          </div>
+          <div class="panel">
+            <h2>Oil & Gas / Process</h2>
+            <p>Units, control rooms, tank farms, analyzers, PLCs, safety systems, field instruments, historian, zones/conduits, 62443 context.</p>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <span>Internal working artifact. Use approved Deloitte templates/logos before external distribution.</span>
+        <span>Design principle: fewer panels, stronger evidence, one client lens at a time.</span>
+      </footer>
+    </section>
+  </main>
+</body>
+</html>

@@ -16,24 +16,22 @@ import './styles.css'
 
 export default function App() {
   return (
-    <div style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <header style={{
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         padding: '0.5rem 1.5rem', background: '#020617', borderBottom: '1px solid #1e293b',
-        flexShrink: 0
+        flexShrink: 0,
+        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-          <img src="/logo.svg" alt="Deloitte" style={{ height: '24px' }} />
-          <span style={{ fontWeight: '700', color: '#f8fafc', fontSize: '0.9rem', fontFamily: 'monospace' }}>
+          <img src="/logo.svg" alt="Deloitte" style={{ height: '22px' }} />
+          <span style={{ fontWeight: '500', color: '#f8fafc', fontSize: '0.95rem', letterSpacing: '-0.01em' }}>
             OT Assurance Twin
           </span>
         </div>
-        <span style={{ color: '#475569', fontSize: '0.7rem', fontFamily: 'monospace' }}>
-          Context-Aware Asset Canonization
-        </span>
       </header>
 
-      <div style={{ flex: 1, overflow: 'hidden' }}>
+      <div style={{ flex: 1, overflowY: 'auto' }}>
         <AssuranceWorkspace />
       </div>
     </div>

@@ -9,10 +9,44 @@
 /**
  * Classify asset by security tier (industry-agnostic)
  * 
- * Tier 1: Critical Network Assets - MUST secure (PLCs, DCS, HMI, SCADA)
- * Tier 2: Smart/Networkable Devices - SHOULD secure (has IP/MAC)
- * Tier 3: Passive/Analog Devices - Inventory only (no network)
+ * IMPORTANT: This is a heuristic inference from available fields.
+ * It is NOT a definitive ISA/IEC 62443 zone/conduit determination.
+ *
+ * Tier 1: Inferred Critical Network Assets (keyword-driven)
+ * Tier 2: Inferred Networkable Devices (network identity or keyword-driven)
+ * Tier 3: Inferred Passive/Analog Devices (no network indicators)
  */
+const DEFAULT_EVALUATOR_POLICY = {
+  policyVersion: '2026-05',
+  tier1Keywords: [
+    'plc', 'dcs', 'hmi', 'scada', 'rtu', 'controller',
+    'server', 'workstation', 'historian', 'safety',
+    'switch', 'router', 'firewall', 'gateway'
+  ],
+  tier2Keywords: [
+    'smart', 'ip', 'ethernet', 'profinet', 'modbus/tcp',
+    'camera', 'analyzer', 'vfd', 'drive', 'inverter'
+  ],
+  managedIndicators: ['is_managed'],
+  governanceNote: 'Tier assignments are heuristic and must be validated by OT/cyber SMEs.'
+}
+
+let evaluatorPolicy = { ...DEFAULT_EVALUATOR_POLICY }
+
+export function getEvaluatorPolicy() {
+  return { ...evaluatorPolicy }
+}
+
+export function setEvaluatorPolicy(overrides = {}) {
+  evaluatorPolicy = {
+    ...evaluatorPolicy,
+    ...overrides,
+    tier1Keywords: Array.isArray(overrides.tier1Keywords) ? overrides.tier1Keywords : evaluatorPolicy.tier1Keywords,
+    tier2Keywords: Array.isArray(overrides.tier2Keywords) ? overrides.tier2Keywords : evaluatorPolicy.tier2Keywords
+  }
+  return getEvaluatorPolicy()
+}
+
 export function classifySecurityTier(asset) {
   const deviceType = String(asset.device_type || '').toLowerCase()
   const hasIP = Boolean(asset.ip_address)
@@ -20,36 +54,37 @@ export function classifySecurityTier(asset) {
   const isNetworkable = hasIP || hasMAC
   
   // Tier 1: Critical control systems
-  const tier1Keywords = [
-    'plc', 'dcs', 'hmi', 'scada', 'rtu', 'controller', 
-    'server', 'workstation', 'historian', 'safety',
-    'switch', 'router', 'firewall', 'gateway'
-  ]
+  const tier1Keywords = evaluatorPolicy.tier1Keywords
   
   if (tier1Keywords.some(kw => deviceType.includes(kw))) {
     return {
       tier: 1,
-      label: 'Critical Network Asset',
+      label: 'Inferred Critical Network Asset',
       securityRequired: 'MUST',
       reason: `Device type "${asset.device_type}" is a critical control system`,
+      isInferred: true,
+      classificationConfidence: hasIP || hasMAC ? 'MEDIUM' : 'LOW',
+      basis: 'heuristic_keyword_match',
+      policyVersion: evaluatorPolicy.policyVersion,
       color: '#ef4444' // red
     }
   }
   
   // Tier 2: Smart/Networkable devices
-  const tier2Keywords = [
-    'smart', 'ip', 'ethernet', 'profinet', 'modbus/tcp',
-    'camera', 'analyzer', 'vfd', 'drive', 'inverter'
-  ]
+  const tier2Keywords = evaluatorPolicy.tier2Keywords
   
   if (isNetworkable || tier2Keywords.some(kw => deviceType.includes(kw))) {
     return {
       tier: 2,
-      label: 'Networkable Device',
+      label: 'Inferred Networkable Device',
       securityRequired: 'SHOULD',
       reason: isNetworkable 
         ? 'Has IP/MAC address - network attack surface' 
         : `Device type "${asset.device_type}" typically has network connectivity`,
+      isInferred: true,
+      classificationConfidence: isNetworkable ? 'MEDIUM' : 'LOW',
+      basis: isNetworkable ? 'network_identity' : 'heuristic_keyword_match',
+      policyVersion: evaluatorPolicy.policyVersion,
       color: '#f59e0b' // amber
     }
   }
@@ -57,9 +92,13 @@ export function classifySecurityTier(asset) {
   // Tier 3: Passive/Analog devices
   return {
     tier: 3,
-    label: 'Passive/Analog Device',
+    label: 'Inferred Passive/Analog Device',
     securityRequired: 'NONE',
     reason: 'No network connectivity - inventory only',
+    isInferred: true,
+    classificationConfidence: 'LOW',
+    basis: 'default_non_network',
+    policyVersion: evaluatorPolicy.policyVersion,
     color: '#6366f1' // indigo
   }
 }
@@ -220,6 +259,8 @@ export function generateSummary(results, matchStats) {
 
 export default {
   classifySecurityTier,
+  getEvaluatorPolicy,
+  setEvaluatorPolicy,
   crossValidate,
   identifyReviewItems,
   checkDataFreshness,

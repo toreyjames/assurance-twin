@@ -1078,7 +1078,8 @@ export default function UnifiedCanonizer() {
       // Parse and normalize
       const parsed = Papa.parse(source.content, { header: true, skipEmptyLines: true })
       const schema = parsed.meta.fields || []
-      const detectedType = detectSourceType(schema, source.filename)
+      const detected = detectSourceType(schema, source.filename)
+      const detectedType = detected.type
       
       // Update AFS with ingestion details
       afs.markIngested(fileId, {
@@ -1107,7 +1108,8 @@ export default function UnifiedCanonizer() {
       // Parse and normalize
       const parsed = Papa.parse(source.content, { header: true, skipEmptyLines: true })
       const schema = parsed.meta.fields || []
-      const detectedType = detectSourceType(schema, source.filename)
+      const detected = detectSourceType(schema, source.filename)
+      const detectedType = detected.type
       
       // Update AFS with ingestion details
       afs.markIngested(fileId, {

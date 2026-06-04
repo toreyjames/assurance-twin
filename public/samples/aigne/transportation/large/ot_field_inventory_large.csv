@@ -1,0 +1,65 @@
+tag_id,plant,unit,area,device_type,manufacturer,model,physical_condition,last_inspection_date,inspector_id,cabinet_number,gps_lat,gps_lon,physical_tag_verified,damage_notes,security_seal_intact,environment,discovery_method
+TMC-OPS-0001,Statewide Traffic Operations,Traffic Management Center,TMC Core,ATMS Server,TransCore,ATMS-EDGE-9000,Good,2026-04-12,INS-001,TMC-RACK-01,42.7325,-84.5555,true,,true,Indoor,Field Walkdown
+TMC-OPS-0002,Statewide Traffic Operations,Traffic Management Center,TMC Core,ATMS Server,TransCore,ATMS-EDGE-9000,Good,2026-04-12,INS-001,TMC-RACK-01,42.7325,-84.5555,true,Cold standby; powered but idle,true,Indoor,Field Walkdown
+TMC-OPS-0003,Statewide Traffic Operations,Traffic Management Center,TMC Core,SCADA Historian,OSIsoft,PI-Server,Good,2026-04-12,INS-001,TMC-RACK-02,42.7325,-84.5555,true,,true,Indoor,Field Walkdown
+TMC-OPS-0004,Statewide Traffic Operations,Traffic Management Center,TMC Core,Network Management Server,SolarWinds,NPM,Good,2026-04-12,INS-001,TMC-RACK-03,42.7325,-84.5555,true,,true,Indoor,Field Walkdown
+TMC-OPS-0005,Statewide Traffic Operations,Traffic Management Center,TMC Core,Domain Controller,Microsoft,Windows Server,Good,2026-04-12,INS-001,TMC-RACK-03,42.7325,-84.5555,true,,true,Indoor,Field Walkdown
+TMC-OPS-0006,Statewide Traffic Operations,DMZ / Remote Access,Outer Perimeter,Firewall,Palo Alto,PA-3220,Good,2026-04-12,INS-001,TMC-DMZ-01,42.7325,-84.5555,true,,true,Indoor,Field Walkdown
+TMC-OPS-0010,Statewide Traffic Operations,Fiber Backhaul,Backhaul Core,Core Router,Cisco,ASR-1001,Good,2026-04-12,INS-001,TMC-NET-01,42.7325,-84.5555,true,,true,Indoor,Field Walkdown
+TMC-OPS-0011,Statewide Traffic Operations,Fiber Backhaul,Backhaul Core,Core Router,Cisco,ASR-1001,Good,2026-04-12,INS-001,TMC-NET-01,42.7325,-84.5555,true,,true,Indoor,Field Walkdown
+TMC-OPS-0012,Statewide Traffic Operations,Fiber Backhaul,Backhaul Core,Distribution Switch,Cisco,Catalyst-9300,Good,2026-04-12,INS-001,TMC-NET-01,42.7325,-84.5555,true,,true,Indoor,Field Walkdown
+I96-SIG-0013,Southeast District,I-96 Corridor,Intersection 14,Traffic Signal Controller,Econolite,Cobalt,Good,2026-03-22,INS-014,I96-CAB-014,42.4775,-83.2680,true,,true,Cabinet,Field Walkdown
+I96-SIG-0014,Southeast District,I-96 Corridor,Intersection 16,Traffic Signal Controller,Econolite,Cobalt,Failed,2026-03-22,INS-014,I96-CAB-016,42.4790,-83.2950,true,Controller failed - awaiting replacement (work order WO-2026-0412),true,Cabinet,Field Walkdown
+I96-SIG-0015,Southeast District,I-96 Corridor,Intersection 17,Traffic Signal Controller,Siemens,M60,Good,2026-03-22,INS-014,I96-CAB-017,42.4810,-83.3120,true,,true,Cabinet,Field Walkdown
+I96-CAB-0016,Southeast District,Roadside Cabinets,Intersection 14,Field Ethernet Switch,Cisco,IE-3300,Good,2026-03-22,INS-014,I96-CAB-014,42.4775,-83.2680,true,,true,Cabinet,Field Walkdown
+I96-CAB-0017,Southeast District,Roadside Cabinets,Intersection 16,Field Ethernet Switch,Cisco,IE-3300,Poor,2026-03-22,INS-014,I96-CAB-016,42.4790,-83.2950,true,Power supply failed - intermittent operation,false,Cabinet,Field Walkdown
+I96-CAB-0018,Southeast District,Roadside Cabinets,Intersection 17,Field Ethernet Switch,Cisco,IE-3300,Good,2026-03-22,INS-014,I96-CAB-017,42.4810,-83.3120,true,,true,Cabinet,Field Walkdown
+I96-CAB-0020,Southeast District,Roadside Cabinets,Intersection 16,Cellular Router,Cradlepoint,IBR900,Good,2026-03-22,INS-014,I96-CAB-016,42.4790,-83.2950,true,,true,Cabinet,Field Walkdown
+I96-CCTV-0021,Southeast District,I-96 Corridor,MM 142,CCTV Camera,Bosch,Autodome IP,Good,2026-03-22,INS-014,I96-POLE-142,42.4750,-83.2400,true,,true,Outdoor,Field Walkdown
+I96-CCTV-0022,Southeast District,I-96 Corridor,MM 145,CCTV Camera,Bosch,Autodome IP,Good,2026-03-22,INS-014,I96-POLE-145,42.4775,-83.2680,true,,true,Outdoor,Field Walkdown
+I96-CCTV-0023,Southeast District,I-96 Corridor,MM 148,CCTV Camera,Bosch,Autodome IP,Good,2026-03-22,INS-014,I96-POLE-148,42.4790,-83.2950,true,,true,Outdoor,Field Walkdown
+I96-CCTV-0024,Southeast District,I-96 Corridor,MM 150,CCTV Camera,Axis,Q6075-E,Good,2026-03-22,INS-014,I96-POLE-150,42.4800,-83.3050,true,,true,Outdoor,Field Walkdown
+I96-DMS-0026,Southeast District,I-96 Corridor,MM 144,Dynamic Message Sign,Daktronics,Vanguard,Good,2026-03-22,INS-014,I96-GANT-144,42.4760,-83.2540,true,,true,Outdoor,Field Walkdown
+I96-DMS-0027,Southeast District,I-96 Corridor,MM 154,Dynamic Message Sign,Daktronics,Vanguard,Good,2026-03-22,INS-014,I96-GANT-154,42.4830,-83.3340,true,,true,Outdoor,Field Walkdown
+I96-RMP-0028,Southeast District,I-96 Corridor,Ramp Meter 12,Ramp Meter Controller,Siemens,Sitraffic,Good,2026-03-22,INS-014,I96-RAMP-012,42.4730,-83.2100,true,,true,Cabinet,Field Walkdown
+I96-DET-0030,Southeast District,I-96 Corridor,MM 148,Vehicle Detector Radar,Wavetronix,SmartSensor,Good,2026-03-22,INS-014,I96-POLE-148,42.4790,-83.2950,true,,true,Outdoor,Field Walkdown
+I96-UPS-0032,Southeast District,Roadside Cabinets,Intersection 14,UPS,APC,Smart-UPS,Good,2026-03-22,INS-014,I96-CAB-014,42.4775,-83.2680,true,,true,Cabinet,Field Walkdown
+I96-UPS-0033,Southeast District,Roadside Cabinets,Intersection 16,UPS,APC,Back-UPS Pro,Fair,2026-03-22,INS-014,I96-CAB-016,42.4790,-83.2950,true,Battery aging - replacement scheduled Q3 2026,true,Cabinet,Field Walkdown
+I96-UPS-0034,Southeast District,Roadside Cabinets,Intersection 17,UPS,APC,Back-UPS Pro,Fair,2026-03-22,INS-014,I96-CAB-017,42.4810,-83.3120,true,Battery aging,true,Cabinet,Field Walkdown
+I96-DOOR-0035,Southeast District,Roadside Cabinets,Intersection 14,Cabinet Door Sensor,Honeywell,947-75T,Good,2026-03-22,INS-014,I96-CAB-014,42.4775,-83.2680,true,,true,Cabinet,Field Walkdown
+I96-DOOR-0036,Southeast District,Roadside Cabinets,Intersection 16,Cabinet Door Sensor,Honeywell,947-75T,Good,2026-03-22,INS-014,I96-CAB-016,42.4790,-83.2950,true,,true,Cabinet,Field Walkdown
+I96-RWIS-0037,Southeast District,Weather / RWIS,I-96 Weather Site,RWIS Weather Station,Vaisala,RWS200,Good,2026-03-22,INS-014,I96-RWIS-03,42.4820,-83.3200,true,,true,Outdoor,Field Walkdown
+US23-SIG-0038,North District,US-23 Corridor,Intersection 08,Traffic Signal Controller,Siemens,M60,Good,2026-02-28,INS-023,US23-CAB-08,42.9750,-83.7440,true,,true,Cabinet,Field Walkdown
+US23-SIG-0039,North District,US-23 Corridor,Intersection 10,Traffic Signal Controller,Econolite,Cobalt,Fair,2026-02-28,INS-023,US23-CAB-10,42.9820,-83.7510,true,Intermittent network connectivity reported,true,Cabinet,Field Walkdown
+US23-CAB-0040,North District,Roadside Cabinets,Intersection 08,Field Ethernet Switch,Cisco,IE-3300,Good,2026-02-28,INS-023,US23-CAB-08,42.9750,-83.7440,true,,true,Cabinet,Field Walkdown
+US23-CAB-0041,North District,Roadside Cabinets,Intersection 10,Field Ethernet Switch,Cisco,IE-3300,Poor,2026-02-28,INS-023,US23-CAB-10,42.9820,-83.7510,true,Power supply intermittent,false,Cabinet,Field Walkdown
+US23-CAB-0042,North District,Roadside Cabinets,Intersection 08,Cellular Router,Cradlepoint,IBR1700,Good,2026-02-28,INS-023,US23-CAB-08,42.9750,-83.7440,true,,true,Cabinet,Field Walkdown
+US23-CCTV-0045,North District,US-23 Corridor,MM 70,CCTV Camera,Axis,Q6075-E,Good,2026-02-28,INS-023,US23-POLE-70,42.9920,-83.7650,true,,true,Outdoor,Field Walkdown
+US23-DMS-0046,North District,US-23 Corridor,MM 64,Dynamic Message Sign,Daktronics,Vanguard,Good,2026-02-28,INS-023,US23-GANT-64,42.9700,-83.7400,true,,true,Outdoor,Field Walkdown
+US23-DMS-0047,North District,US-23 Corridor,MM 68,Dynamic Message Sign,Daktronics,Vanguard,Good,2026-02-28,INS-023,US23-GANT-68,42.9800,-83.7500,true,,true,Outdoor,Field Walkdown
+US23-UPS-0049,North District,Roadside Cabinets,Intersection 08,UPS,APC,Smart-UPS,Good,2026-02-28,INS-023,US23-CAB-08,42.9750,-83.7440,true,,true,Cabinet,Field Walkdown
+US23-UPS-0050,North District,Roadside Cabinets,Intersection 10,UPS,APC,Back-UPS Pro,Fair,2026-02-28,INS-023,US23-CAB-10,42.9820,-83.7510,true,Battery aging,true,Cabinet,Field Walkdown
+US23-WGH-0051,North District,Weigh Stations,US-23 Weigh Station,Weigh Station Controller,Mettler Toledo,IND780,Good,2026-02-28,INS-023,US23-WGH-01,43.0050,-83.8100,true,,true,Cabinet,Field Walkdown
+BRG-STR-0052,Central District,Bridge Systems,River Bridge,Bridge Controller,Schneider,M580,Good,2026-01-15,INS-055,BRG-CTRL-01,42.3320,-83.0480,true,,true,Indoor,Field Walkdown
+BRG-STR-0053,Central District,Bridge Systems,River Bridge,Bridge Controller,Schneider,M580,Good,2026-01-15,INS-055,BRG-CTRL-01,42.3320,-83.0480,true,Cold standby - last failover test 2025-09,true,Indoor,Field Walkdown
+BRG-POS-0054,Central District,Bridge Systems,River Bridge,Bridge Position Sensor,Pepperl+Fuchs,NBN30-30GM,Good,2026-01-15,INS-055,BRG-SPAN-02,42.3325,-83.0485,true,,true,Outdoor,Field Walkdown
+BRG-HMI-0055,Central District,Bridge Systems,River Bridge,HMI Panel,Schneider,Magelis,Good,2026-01-15,INS-055,BRG-CTRL-01,42.3320,-83.0480,true,,true,Indoor,Field Walkdown
+BRG-UPS-0057,Central District,Bridge Systems,River Bridge,UPS,Eaton,9PX,Good,2026-01-15,INS-055,BRG-CTRL-01,42.3320,-83.0480,true,,true,Indoor,Field Walkdown
+PMP-PLC-0058,Central District,Pump Stations,Underpass Pump Station,Pump Station PLC,Rockwell,CompactLogix,Good,2026-01-15,INS-058,PMP-PANEL-01,42.3400,-83.0550,true,,true,Vault,Field Walkdown
+PMP-HMI-0059,Central District,Pump Stations,Underpass Pump Station,HMI Panel,Rockwell,PanelView,Good,2026-01-15,INS-058,PMP-PANEL-01,42.3400,-83.0550,true,,true,Vault,Field Walkdown
+PMP-LVL-0060,Central District,Pump Stations,Underpass Pump Station,Level Sensor,Endress+Hauser,Liquiphant,Good,2026-01-15,INS-058,PMP-WETWELL-01,42.3400,-83.0550,true,,true,Vault,Field Walkdown
+TUN-VNT-0061,Central District,Tunnel Systems,Riverfront Tunnel,Tunnel Ventilation PLC,Siemens,S7-1500,Good,2026-01-15,INS-061,TUN-NVENT-01,42.3450,-83.0600,true,,true,Indoor,Field Walkdown
+TUN-VNT-0062,Central District,Tunnel Systems,Riverfront Tunnel,Tunnel Ventilation PLC,Siemens,S7-1500,Good,2026-01-15,INS-061,TUN-SVENT-01,42.3460,-83.0610,true,Cold standby,true,Indoor,Field Walkdown
+TUN-HMI-0064,Central District,Tunnel Systems,Riverfront Tunnel,HMI Panel,Siemens,SIMATIC HMI,Good,2026-01-15,INS-061,TUN-CTRL-01,42.3455,-83.0605,true,,true,Indoor,Field Walkdown
+M39-SIG-0065,West District,M-39 Corridor,Intersection 22,Traffic Signal Controller,Econolite,Cobalt,Good,2026-04-05,INS-039,M39-CAB-22,42.3850,-83.2150,true,,true,Cabinet,Field Walkdown
+M39-SIG-0066,West District,M-39 Corridor,Intersection 24,Traffic Signal Controller,Econolite,Cobalt,Good,2026-04-05,INS-039,M39-CAB-24,42.3880,-83.2220,true,,true,Cabinet,Field Walkdown
+M39-CAB-0067,West District,Roadside Cabinets,Intersection 22,Field Ethernet Switch,Cisco,IE-3300,Good,2026-04-05,INS-039,M39-CAB-22,42.3850,-83.2150,true,Installed but not yet network commissioned,true,Cabinet,Field Walkdown
+M39-CCTV-0068,West District,M-39 Corridor,MM 18,CCTV Camera,Axis,Q6075-E,Good,2026-04-05,INS-039,M39-POLE-18,42.3820,-83.2090,true,,true,Outdoor,Field Walkdown
+M39-DMS-0070,West District,M-39 Corridor,MM 20,Dynamic Message Sign,Daktronics,Vanguard,Fair,2026-04-05,INS-039,M39-GANT-20,42.3835,-83.2120,true,Commissioning incomplete - display flickers,true,Outdoor,Field Walkdown
+M39-UPS-0071,West District,Roadside Cabinets,Intersection 22,UPS,APC,Smart-UPS,Good,2026-04-05,INS-039,M39-CAB-22,42.3850,-83.2150,true,,true,Cabinet,Field Walkdown
+M39-DET-0072,West District,M-39 Corridor,MM 22,Vehicle Detector Radar,Wavetronix,SmartSensor,Good,2026-04-05,INS-039,M39-POLE-22,42.3850,-83.2150,true,,true,Outdoor,Field Walkdown
+I96-DET-0074,Southeast District,I-96 Corridor,MM 142,Vehicle Detector Radar,Wavetronix,SmartSensor,Good,2026-03-22,INS-014,I96-POLE-142,42.4750,-83.2400,true,,true,Outdoor,Field Walkdown
+ORPHAN-PLC-001,Southeast District,Roadside Cabinets,Intersection 14,Pump Station PLC,Allen-Bradley,MicroLogix,Fair,2026-03-22,INS-014,I96-CAB-014,42.4775,-83.2680,false,Spare PLC left in cabinet after 2024 upgrade - no asset tag,true,Cabinet,Field Walkdown
+ORPHAN-PUMP-001,Central District,Pump Stations,Underpass Pump Station,Pump Station PLC,Siemens,S7-1200,Good,2026-01-15,INS-058,PMP-PANEL-02,42.3400,-83.0550,false,Backup pump controller installed during 2025 flooding event - never added to baseline,true,Vault,Field Walkdown
+ORPHAN-DMS-001,West District,Roadside Cabinets,Intersection 24,Dynamic Message Sign,Daktronics,VMS-LX,Poor,2026-04-05,INS-039,M39-CAB-24,42.3880,-83.2220,false,Decommissioned DMS controller still in cabinet - power disconnected,true,Cabinet,Field Walkdown
+ORPHAN-CAM-001,Statewide Traffic Operations,Traffic Management Center,TMC Core,CCTV Camera,Bosch,Autodome IP,Good,2026-04-12,INS-001,TMC-CLOSET-01,42.7325,-84.5555,false,Spare camera stored in TMC equipment closet for swap-outs,true,Indoor,Field Walkdown

@@ -87,6 +87,19 @@ const INDUSTRY_LAYOUTS = {
     'Emissions Control': { position: [25, 0, 0], equipment: 'column', height: 7, section: 'environmental', flowOrder: 4 },
     'Battery Storage': { position: [20, 0, -10], equipment: 'tanks', section: 'storage', flowOrder: 4 },
     'Protection': { position: [15, 0, -15], equipment: 'controlroom', section: 'control', flowOrder: 0 }
+  },
+
+  'transportation': {
+    'Traffic Management Center': { position: [-28, 0, 0], equipment: 'controlroom', section: 'operations', flowOrder: 1 },
+    'DMZ / Remote Access': { position: [-16, 0, -12], equipment: 'controlroom', section: 'access', flowOrder: 0 },
+    'Fiber Backhaul': { position: [-8, 0, 0], equipment: 'tanks', section: 'communications', flowOrder: 2 },
+    'I-96 Corridor': { position: [6, 0, -10], equipment: 'reactor', section: 'corridor', flowOrder: 3 },
+    'US-23 Corridor': { position: [6, 0, 10], equipment: 'reactor', section: 'corridor', flowOrder: 3 },
+    'Roadside Cabinets': { position: [18, 0, 0], equipment: 'tanks', section: 'field', flowOrder: 4 },
+    'Pump Stations': { position: [26, 0, -14], equipment: 'pump', section: 'resilience', flowOrder: 5 },
+    'Bridge Systems': { position: [28, 0, 8], equipment: 'exchanger', section: 'structures', flowOrder: 5 },
+    'Weather / RWIS': { position: [18, 0, 16], equipment: 'column', height: 4, section: 'environmental', flowOrder: 4 },
+    'Weigh Stations': { position: [32, 0, 0], equipment: 'tank', section: 'inspection', flowOrder: 6 }
   }
 }
 
@@ -278,6 +291,17 @@ const INDUSTRY_FLOWS = {
     { from: 'Cooling Tower', to: 'Turbine Hall', material: 'cooling', critical: false },
     { from: 'Water Treatment', to: 'Cooling Tower', material: 'water', critical: false },
     { from: 'Emissions Control', to: 'Turbine Hall', material: 'exhaust', critical: false },
+  ],
+  'transportation': [
+    { from: 'Traffic Management Center', to: 'DMZ / Remote Access', material: 'control', critical: true },
+    { from: 'Traffic Management Center', to: 'Fiber Backhaul', material: 'network', critical: true },
+    { from: 'Fiber Backhaul', to: 'I-96 Corridor', material: 'fiber', critical: true },
+    { from: 'Fiber Backhaul', to: 'US-23 Corridor', material: 'fiber', critical: true },
+    { from: 'I-96 Corridor', to: 'Roadside Cabinets', material: 'field', critical: true },
+    { from: 'US-23 Corridor', to: 'Roadside Cabinets', material: 'field', critical: true },
+    { from: 'Roadside Cabinets', to: 'Weather / RWIS', material: 'telemetry', critical: false },
+    { from: 'Roadside Cabinets', to: 'Pump Stations', material: 'control', critical: true },
+    { from: 'Roadside Cabinets', to: 'Bridge Systems', material: 'control', critical: true },
   ]
 }
 
@@ -293,6 +317,11 @@ const MATERIAL_COLORS = {
   diesel: '#4169e1',
   product: '#32cd32',
   steam: '#e0e0e0',
+  control: '#38bdf8',
+  network: '#60a5fa',
+  fiber: '#22c55e',
+  field: '#f59e0b',
+  telemetry: '#a78bfa',
   default: '#708090'
 }
 
@@ -780,7 +809,8 @@ export default function RefineryMap({ result, selectedPlant = 'all', industry = 
   const INDUSTRY_TITLES = {
     'oil-gas': 'Process Map',
     'pharma': 'Process Map',
-    'utilities': 'Process Map'
+    'utilities': 'Process Map',
+    'transportation': 'Operating Model'
   }
   
   const [currentPlant, setCurrentPlant] = useState(selectedPlant)

@@ -107,6 +107,27 @@ const DEPENDENCY_PATTERNS = {
       { safetySystem: 'turbine_protection', protects: ['generation'] }
     ]
   },
+
+  'transportation': {
+    processFlow: [
+      { from: 'traffic_management_center', to: 'fiber_backhaul', type: 'process_flow', direction: 'downstream' },
+      { from: 'fiber_backhaul', to: 'corridor', type: 'process_flow', direction: 'downstream' },
+      { from: 'corridor', to: 'roadside_cabinets', type: 'process_flow', direction: 'downstream' },
+      { from: 'roadside_cabinets', to: 'field_devices', type: 'process_flow', direction: 'downstream' }
+    ],
+
+    utilityDependencies: [
+      { utility: 'fiber_backhaul', consumers: ['corridor', 'roadside_cabinets'] },
+      { utility: 'cellular_backup', consumers: ['roadside_cabinets', 'pump_stations'] },
+      { utility: 'ups_power', consumers: ['signal_controllers', 'field_switches', 'cctv'] }
+    ],
+
+    safetyDependencies: [
+      { safetySystem: 'cabinet_access_monitoring', protects: ['roadside_cabinets'] },
+      { safetySystem: 'pump_station_alarm', protects: ['pump_stations'] },
+      { safetySystem: 'remote_access_gateway', protects: ['traffic_management_center', 'field_devices'] }
+    ]
+  },
   
   'automotive': {
     processFlow: [

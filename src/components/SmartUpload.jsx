@@ -6,9 +6,10 @@
  * The system figures it out from content patterns
  */
 
-import React, { useState, useCallback, useRef } from 'react'
+import React, { useState, useCallback, useRef, useMemo } from 'react'
 import Papa from 'papaparse'
 import { detectSourceType } from '../lib/context/constructor.js'
+import { evaluateClientDataContract, CLIENT_REQUIREMENT_GUIDE } from '../lib/core/client-data-contract.js'
 
 // =============================================================================
 // SOURCE TYPE DEFINITIONS
@@ -284,6 +285,11 @@ export default function SmartUpload({ onFilesChange, disabled = false }) {
     acc[f.detectedType].push(f)
     return acc
   }, {})
+  const contractAssessment = useMemo(
+    () => evaluateClientDataContract(files),
+    [files]
+  )
+  const missingRequired = CLIENT_REQUIREMENT_GUIDE.filter(item => contractAssessment.missingRequiredTypes.includes(item.type))
   
   return (
     <div style={{ marginBottom: '2rem' }}>
@@ -411,6 +417,27 @@ export default function SmartUpload({ onFilesChange, disabled = false }) {
           }}>
             Total: {files.reduce((sum, f) => sum + (f.rowCount || 0), 0).toLocaleString()} rows
           </div>
+        </div>
+      )}
+
+      {files.length > 0 && (missingRequired.length > 0 || contractAssessment.requiredFieldIssues.length > 0) && (
+        <div style={{
+          marginTop: '0.6rem',
+          border: '1px solid #fbbf24',
+          background: '#fef3c7',
+          color: '#78350f',
+          borderRadius: '0.4rem',
+          padding: '0.4rem 0.55rem',
+          fontSize: '0.7rem'
+        }}>
+          {missingRequired.length > 0 && (
+            <div>Missing source: <strong>{missingRequired.map(item => SOURCE_TYPE_INFO[item.type]?.label || item.type).join(', ')}</strong></div>
+          )}
+          {contractAssessment.requiredFieldIssues.length > 0 && (
+            <div style={{ marginTop: missingRequired.length > 0 ? '0.2rem' : 0 }}>
+              Missing fields: {contractAssessment.requiredFieldIssues.map(issue => `${issue.type} (${issue.missingLabels.join(', ')})`).join(' · ')}
+            </div>
+          )}
         </div>
       )}
     </div>
