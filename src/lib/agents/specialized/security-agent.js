@@ -80,10 +80,13 @@ export class SecurityAgent extends BaseAgent {
   analyzeVulnerabilities(assets) {
     const vulnerableAssets = assets.filter(assetHasCves)
     
-    // Critical vulnerabilities
-    const criticalVuln = vulnerableAssets.filter(a => 
-      a.cve_severity === 'critical' || 
-      a.vulnerabilities?.some(v => v.severity === 'critical')
+    // Critical vulnerabilities. `vulnerabilities` is a numeric count in the
+    // canonical model, so guard against treating it as an array; fall back to
+    // asset criticality so high-consequence assets with CVEs still surface.
+    const criticalVuln = vulnerableAssets.filter(a =>
+      a.cve_severity === 'critical' ||
+      String(a.criticality || '').toLowerCase() === 'critical' ||
+      (Array.isArray(a.vulnerabilities) && a.vulnerabilities.some(v => v?.severity === 'critical'))
     )
     
     if (criticalVuln.length > 0) {

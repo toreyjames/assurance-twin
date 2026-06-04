@@ -10,7 +10,7 @@
  */
 
 import { useState, useEffect, useCallback, useRef } from 'react'
-import { createPlantAgent, createAgenticLayer } from './index.js'
+import { createPlantAgent, createAgenticLayer } from './factory.js'
 import { BreakRoom } from './break-room.js'
 import { CoordinatorAgent } from './coordinator.js'
 import { AgentMcpServer } from './mcp-server.js'
