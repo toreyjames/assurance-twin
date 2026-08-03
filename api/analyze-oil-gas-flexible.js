@@ -359,20 +359,6 @@ function performFlexibleMatching(engineering, discovered, options = {}) {
         usedDiscoveryAssets.add(fuzzyMatch.tag_id + fuzzyMatch.ip_address)
       }
     })
-    
-    // Build lookup tables for matched assets (by tag, IP, hostname)
-    const canonicalLookup = new Map()
-    const matchedLookup = new Map()
-    
-    const registerLookupKey = (prefix, value, index) => {
-      if (!value && value !== 0) return
-      let normalized = String(value)
-      if (prefix === 'TAG') normalized = normalized.toUpperCase()
-      if (prefix === 'HOST') normalized = normalized.toLowerCase()
-      const key = `${prefix}:${normalized}`
-      if (!matchedLookup.has(key)) matchedLookup.set(key, index)
-      if (!canonicalLookup.has(key)) canonicalLookup.set(key, canonicalAssets[index])
-    }
   }
 
   // Strategy 6: Last resort intelligent pairing
