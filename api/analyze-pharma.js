@@ -20,7 +20,7 @@ const parseCsv = (csv) => {
 export default async function handler(req, res) {
   try {
     if (req.method !== 'POST') return res.status(405).json({ error: 'POST only' })
-    const body = JSON.parse(req.body || '{}')
+    const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {})
     const threshold = Number(body.thresholdMonths ?? 18)
 
     const MAX_FILE_SIZE = 1024 * 1024 // 1 MB per file, matches client-side limit
