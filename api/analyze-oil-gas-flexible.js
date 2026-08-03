@@ -177,9 +177,7 @@ const isTruthy = (val) => {
 function detectDataSourceType(csvText, filename) {
   const sample = Papa.parse(csvText, { header: true, preview: 1 }).data[0] || {}
   const headers = Object.keys(sample).map(h => h.toLowerCase())
-  
-  console.log(`[AUTO-DETECT] Analyzing ${filename}:`, headers.slice(0, 5))
-  
+
   // Engineering baseline indicators
   const engineeringIndicators = ['tag_id', 'tag', 'asset_tag', 'p&id', 'pid', 'loop', 'instrument']
   if (headers.some(h => engineeringIndicators.some(i => h.includes(i)))) {
@@ -224,15 +222,11 @@ function detectDataSourceType(csvText, filename) {
 function mergeDataSources(dataSources, sourceType) {
   const allRows = []
   const seenIds = new Set()
-  
-  console.log(`[MERGE] Processing ${dataSources.length} ${sourceType} files`)
-  
+
   dataSources.forEach(({ filename, content }) => {
     const parsed = parseCsv(content)
     const normalized = normalizeDataset(parsed, `${sourceType}:${filename}`)
-    
-    console.log(`[MERGE] ${filename}: ${normalized.length} rows`)
-    
+
     // Deduplicate by tag_id or IP
     normalized.forEach(row => {
       const id = row.tag_id || row.ip_address || row.hostname || Math.random().toString()
@@ -242,8 +236,7 @@ function mergeDataSources(dataSources, sourceType) {
       }
     })
   })
-  
-  console.log(`[MERGE] ${sourceType}: ${allRows.length} unique assets after deduplication`)
+
   return allRows
 }
 
@@ -258,10 +251,7 @@ function performFlexibleMatching(engineering, discovered, options = {}) {
   
   const matchedAssets = []
   const usedDiscoveryAssets = new Set()
-  
-  console.log(`[MATCHING] Starting with ${engineeringAssets} eng assets, ${discoveredAssets} discovered assets`)
-  console.log(`[MATCHING] Strategies: ${matchStrategies.join(', ')}`)
-  
+
   // Strategy 1: Exact tag_id match
   if (matchStrategies.includes('tag_id')) {
     engineering.forEach(engAsset => {
@@ -281,9 +271,8 @@ function performFlexibleMatching(engineering, discovered, options = {}) {
         usedDiscoveryAssets.add(match.tag_id + match.ip_address)
       }
     })
-    console.log(`[MATCHING] After tag_id: ${matchedAssets.length} matches`)
   }
-  
+
   // Strategy 2: IP address match
   if (matchStrategies.includes('ip_address')) {
     engineering.forEach(engAsset => {
@@ -303,9 +292,8 @@ function performFlexibleMatching(engineering, discovered, options = {}) {
         usedDiscoveryAssets.add(match.tag_id + match.ip_address)
       }
     })
-    console.log(`[MATCHING] After IP: ${matchedAssets.length} matches`)
   }
-  
+
   // Strategy 3: Hostname match
   if (matchStrategies.includes('hostname')) {
     engineering.forEach(engAsset => {
@@ -325,9 +313,8 @@ function performFlexibleMatching(engineering, discovered, options = {}) {
         usedDiscoveryAssets.add(match.tag_id + match.ip_address)
       }
     })
-    console.log(`[MATCHING] After hostname: ${matchedAssets.length} matches`)
   }
-  
+
   // Strategy 4: MAC address match
   if (matchStrategies.includes('mac_address')) {
     engineering.forEach(engAsset => {
@@ -347,13 +334,10 @@ function performFlexibleMatching(engineering, discovered, options = {}) {
         usedDiscoveryAssets.add(match.tag_id + match.ip_address)
       }
     })
-    console.log(`[MATCHING] After MAC: ${matchedAssets.length} matches`)
   }
-  
+
   // Strategy 5: Fuzzy matching by device type + manufacturer
   if (matchedAssets.length === 0 && engineering.length > 0 && discovered.length > 0) {
-    console.log('[FALLBACK] No matches found. Attempting fuzzy matching...')
-    
     engineering.forEach(engAsset => {
       if (matchedAssets.find(m => m.engineering.tag_id === engAsset.tag_id)) return
       
@@ -389,15 +373,11 @@ function performFlexibleMatching(engineering, discovered, options = {}) {
       if (!matchedLookup.has(key)) matchedLookup.set(key, index)
       if (!canonicalLookup.has(key)) canonicalLookup.set(key, canonicalAssets[index])
     }
-    
-    console.log(`[FALLBACK] After fuzzy matching: ${matchedAssets.length} matches`)
   }
-  
+
   // Strategy 6: Last resort intelligent pairing
   if (matchedAssets.length === 0 && engineering.length > 0 && discovered.length > 0) {
-    console.log('[LAST RESORT] Using intelligent pairing')
-    
-    const remainingEng = engineering.filter(e => 
+    const remainingEng = engineering.filter(e =>
       !matchedAssets.find(m => m.engineering.tag_id === e.tag_id)
     )
     const remainingDisc = discovered.filter(d => 
@@ -409,9 +389,7 @@ function performFlexibleMatching(engineering, discovered, options = {}) {
       remainingEng.length,
       remainingDisc.length
     )
-    
-    console.log(`[LAST RESORT] Creating ${minMatches} intelligent matches`)
-    
+
     for (let i = 0; i < minMatches; i++) {
       matchedAssets.push({
         engineering: remainingEng[i],
@@ -1138,13 +1116,6 @@ export default async function handler(req, res) {
       return res.status(413).json({ error: 'Total upload size exceeds maximum of 10MB' })
     }
 
-    console.log('[FLEXIBLE API] Received request with data sources:', {
-      engineering: dataSources.engineering?.length || 0,
-      otDiscovery: dataSources.otDiscovery?.length || 0,
-      security: dataSources.security?.length || 0,
-      other: dataSources.other?.length || 0
-    })
-    
     // AUTO-DETECT and MERGE data sources
     let allEngineering = []
     let allOtDiscovery = []
@@ -1209,8 +1180,7 @@ export default async function handler(req, res) {
     if (dataSources.other?.length > 0) {
       dataSources.other.forEach(({ filename, content }) => {
         const detectedType = detectDataSourceType(content, filename)
-        console.log(`[AUTO-DETECT] ${filename} → ${detectedType}`)
-        
+
         const parsed = parseCsv(content)
         const normalized = normalizeDataset(parsed, `${detectedType}:${filename}`)
         
@@ -1247,16 +1217,6 @@ export default async function handler(req, res) {
         }
       })
     }
-    
-    console.log('[MERGED TOTALS]', {
-      engineering: allEngineering.length,
-      otDiscovery: allOtDiscovery.length,
-      vulnerability: allVulnerability.length,
-      maintenance: allMaintenance.length,
-      network: allNetwork.length,
-      incident: allIncidents.length,
-      other: allOther.length
-    })
     
     // Perform flexible matching
     const matchResults = performFlexibleMatching(allEngineering, allOtDiscovery)
@@ -1951,9 +1911,7 @@ export default async function handler(req, res) {
       else if (m.matchType.includes('fuzzy')) matchStrategyBreakdown.fuzzy++
       else matchStrategyBreakdown.intelligent_pairing++
     })
-    
-    console.log('[FLEXIBLE API] Returning results:', kpis)
-    
+
     return res.status(200).json({
       status: 'success',
       assets: canonicalAssets,
