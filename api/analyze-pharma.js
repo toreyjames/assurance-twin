@@ -17,7 +17,7 @@ const parseCsv = (csv) => {
 }
 
 // Pharmaceutical Industry-Specific Canonizer with FDA 21 CFR Part 11, GAMP 5 Compliance
-export default async function handler(req, res) => {
+export default async function handler(req, res) {
   try {
     if (req.method !== 'POST') return res.status(405).json({ error: 'POST only' })
     const body = JSON.parse(req.body || '{}')
@@ -337,15 +337,6 @@ function calculateRiskScore(unitInfo, controlInfo) {
   if (controlInfo.dataIntegrity) score += 15
   return Math.min(score, 100)
 }
-
-const resp = (code, body) => ({
-  statusCode: code,
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify(body)
-})
-
-
-
 
 
 

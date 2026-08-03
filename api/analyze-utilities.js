@@ -17,7 +17,7 @@ const parseCsv = (csv) => {
 }
 
 // Utilities Industry-Specific Canonizer with NERC CIP, FERC Compliance
-export default async function handler(req, res) => {
+export default async function handler(req, res) {
   try {
     if (req.method !== 'POST') return res.status(405).json({ error: 'POST only' })
     const body = JSON.parse(req.body || '{}')
@@ -339,15 +339,6 @@ function calculateRiskScore(unitInfo, controlInfo) {
   if (controlInfo.gridStability) score += 15
   return Math.min(score, 100)
 }
-
-const resp = (code, body) => ({
-  statusCode: code,
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify(body)
-})
-
-
-
 
 
 
