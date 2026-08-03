@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import FlexibleOilGasCanonizer from './FlexibleOilGasCanonizer.jsx'
-// import AutomotiveCanonizer from './AutomotiveCanonizer.jsx'
 import PharmaCanonizer from './PharmaCanonizer.jsx'
 import UtilitiesCanonizer from './UtilitiesCanonizer.jsx'
 import './styles.css'
@@ -16,13 +15,6 @@ export default function App() {
       standards: ['ISA/IEC 62443', 'IEC 61511', 'API 1164', 'NIST CSF'],
       governance: ['SOX 404', 'NERC CIP', 'TSA Pipeline Security']
     },
-    // 'automotive': {
-    //   name: 'Automotive Plants',
-    //   icon: '🚗',
-    //   description: 'Production lines, robots, quality systems, JIT',
-    //   standards: ['ISO 26262', 'IEC 61508', 'ISO 13849', 'ISO 21434'],
-    //   governance: ['IATF 16949', 'ISO 14001', 'ISO 27001']
-    // },
     'pharma': {
       name: 'Pharmaceutical Plants',
       icon: '💊',
@@ -42,7 +34,6 @@ export default function App() {
   const renderCanonizer = () => {
     switch(industry) {
       case 'oil-gas': return <FlexibleOilGasCanonizer />
-      // case 'automotive': return <AutomotiveCanonizer />
       case 'pharma': return <PharmaCanonizer />
       case 'utilities': return <UtilitiesCanonizer />
       default: return <FlexibleOilGasCanonizer />

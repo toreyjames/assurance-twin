@@ -9,6 +9,22 @@ const readFileText = (file) => new Promise((resolve, reject) => {
   r.readAsText(file)
 })
 
+const MAX_FILE_SIZE = 1024 * 1024 // 1 MB per file, matches server-side limit
+
+const formatFileSize = (bytes) => {
+  if (bytes < 1024) return bytes + ' B'
+  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB'
+  return (bytes / (1024 * 1024)).toFixed(1) + ' MB'
+}
+
+const validateFile = (file) => {
+  if (file && file.size > MAX_FILE_SIZE) {
+    alert(`⚠️ ${file.name} (${formatFileSize(file.size)}) exceeds the maximum file size of ${formatFileSize(MAX_FILE_SIZE)}.`)
+    return null
+  }
+  return file
+}
+
 // Utilities Industry-Specific Canonizer UI
 export default function UtilitiesCanonizer() {
   const [engineeringFile, setEngineeringFile] = useState(null)
@@ -127,7 +143,7 @@ export default function UtilitiesCanonizer() {
             <input 
               type="file" 
               accept=".csv" 
-              onChange={e => setEngineeringFile(e.target.files[0] || null)}
+              onChange={e => setEngineeringFile(validateFile(e.target.files[0] || null))}
             />
             <small>Generation, transmission, distribution assets</small>
           </div>
@@ -137,7 +153,7 @@ export default function UtilitiesCanonizer() {
             <input 
               type="file" 
               accept=".csv" 
-              onChange={e => setCmmsFile(e.target.files[0] || null)}
+              onChange={e => setCmmsFile(validateFile(e.target.files[0] || null))}
             />
             <small>Relays, IEDs, protection equipment</small>
           </div>
@@ -147,7 +163,7 @@ export default function UtilitiesCanonizer() {
             <input 
               type="file" 
               accept=".csv" 
-              onChange={e => setNetworkFile(e.target.files[0] || null)}
+              onChange={e => setNetworkFile(validateFile(e.target.files[0] || null))}
             />
             <small>Emission controls, environmental monitoring</small>
           </div>
@@ -157,7 +173,7 @@ export default function UtilitiesCanonizer() {
             <input 
               type="file" 
               accept=".csv" 
-              onChange={e => setHistorianFile(e.target.files[0] || null)}
+              onChange={e => setHistorianFile(validateFile(e.target.files[0] || null))}
             />
             <small>SCADA, EMS, grid stability metrics</small>
           </div>
