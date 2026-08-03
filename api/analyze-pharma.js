@@ -23,6 +23,14 @@ export default async function handler(req, res) {
     const body = JSON.parse(req.body || '{}')
     const threshold = Number(body.thresholdMonths ?? 18)
 
+    const MAX_FILE_SIZE = 1024 * 1024 // 1 MB per file, matches client-side limit
+    for (const field of ['engineeringCsv', 'cmmsCsv', 'networkCsv', 'historianCsv']) {
+      const csv = body[field]
+      if (csv && Buffer.byteLength(csv, 'utf8') > MAX_FILE_SIZE) {
+        return res.status(413).json({ error: `${field} exceeds maximum size of 1MB` })
+      }
+    }
+
     // Parse input data
     const eng = body.engineeringCsv ? parseCsv(body.engineeringCsv) : []
     const cmms = body.cmmsCsv ? parseCsv(body.cmmsCsv) : []

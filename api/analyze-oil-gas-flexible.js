@@ -1116,8 +1116,28 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { dataSources, thresholdMonths = 18 } = req.body
-    
+    const { dataSources = {}, thresholdMonths = 18 } = req.body
+
+    const MAX_FILE_SIZE = 1024 * 1024 // 1 MB per file, matches client-side limit
+    const MAX_TOTAL_SIZE = 10 * 1024 * 1024 // 10 MB per request
+    const allFiles = [
+      ...(dataSources.engineering || []),
+      ...(dataSources.otDiscovery || []),
+      ...(dataSources.security || []),
+      ...(dataSources.other || [])
+    ]
+    let totalSize = 0
+    for (const f of allFiles) {
+      const size = Buffer.byteLength(f.content || '', 'utf8')
+      if (size > MAX_FILE_SIZE) {
+        return res.status(413).json({ error: `File "${f.filename}" exceeds maximum size of 1MB` })
+      }
+      totalSize += size
+    }
+    if (totalSize > MAX_TOTAL_SIZE) {
+      return res.status(413).json({ error: 'Total upload size exceeds maximum of 10MB' })
+    }
+
     console.log('[FLEXIBLE API] Received request with data sources:', {
       engineering: dataSources.engineering?.length || 0,
       otDiscovery: dataSources.otDiscovery?.length || 0,
