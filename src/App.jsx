@@ -1,6 +1,39 @@
 import { useState, useEffect } from 'react'
 import './App.css'
 
+// Minimal CSV parser for the bundled sample files in public/data
+const parseCSV = (text) => {
+  const lines = text.trim().split(/\r?\n/)
+  const headers = lines[0].split(',').map(h => h.trim())
+  return lines.slice(1).map(line => {
+    const cells = line.split(',')
+    const row = {}
+    headers.forEach((h, i) => { row[h] = (cells[i] ?? '').trim() })
+    return row
+  })
+}
+
+// Like parseCSV, but flags rows whose column count doesn't match the header
+// instead of silently misaligning fields (the LIMS sample file has these).
+const parseCSVWithIntegrityCheck = (text) => {
+  const lines = text.trim().split(/\r?\n/)
+  const headers = lines[0].split(',').map(h => h.trim())
+  const rows = lines.slice(1).map(line => {
+    const cells = line.split(',').map(c => c.trim())
+    const malformed = cells.length !== headers.length
+    const fields = {}
+    headers.forEach((h, i) => { fields[h] = cells[i] ?? '' })
+    return {
+      malformed,
+      columnCount: cells.length,
+      expectedColumns: headers.length,
+      rawLastField: cells[cells.length - 1],
+      fields
+    }
+  })
+  return { headers, rows }
+}
+
 // Simulated real-time data from different systems
 const generateRealTimeData = () => ({
   // DCS/SCADA Data
@@ -68,6 +101,8 @@ const generateRealTimeData = () => ({
 function App() {
   const [data, setData] = useState(generateRealTimeData())
   const [selectedUnit, setSelectedUnit] = useState('overview')
+  const [crossRef, setCrossRef] = useState({ loading: true, rows: [], error: null })
+  const [limsCheck, setLimsCheck] = useState({ loading: true, rows: [], trend: [], error: null })
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -77,11 +112,120 @@ function App() {
     return () => clearInterval(interval)
   }, [])
 
-  const getStatusColor = (value, thresholds) => {
-    if (value > thresholds.critical) return '#ff4444'
-    if (value > thresholds.warning) return '#ffaa00'
-    return '#00aa44'
-  }
+  // Real cross-reference: joins the bundled CMMS + vibration CSVs on Equipment_Tag
+  // and computes actual averages/trends from the file data (no simulation here).
+  useEffect(() => {
+    let cancelled = false
+
+    const load = async () => {
+      try {
+        const [woText, vibText] = await Promise.all([
+          fetch('/data/cmms_work_orders.csv').then(r => r.text()),
+          fetch('/data/vibration_monitoring.csv').then(r => r.text())
+        ])
+
+        const workOrders = parseCSV(woText)
+        const vibrationReadings = parseCSV(vibText)
+
+        const woByTag = new Map()
+        workOrders.forEach(w => woByTag.set(w.Equipment_Tag, w))
+
+        const readingsByTag = new Map()
+        vibrationReadings.forEach(v => {
+          const arr = readingsByTag.get(v.Equipment_Tag) || []
+          arr.push(v)
+          readingsByTag.set(v.Equipment_Tag, arr)
+        })
+
+        const rows = Array.from(readingsByTag.entries()).map(([tag, readings]) => {
+          const byTime = [...readings].sort((a, b) => new Date(a.Timestamp) - new Date(b.Timestamp))
+          const latest = byTime[byTime.length - 1]
+          const values = byTime.map(r => parseFloat(r.Overall_Vibration_mm_s))
+          const avg = values.reduce((s, v) => s + v, 0) / values.length
+          const trendDelta = values[values.length - 1] - values[0]
+
+          const wo = woByTag.get(tag)
+          const elevated = latest.Alert_Level !== 'Green'
+
+          let insight = 'Normal — no action needed'
+          if (elevated && wo) {
+            insight = `Predictive maintenance validated: vibration alert (${latest.Alert_Level}) matches open work order ${wo.WorkOrder} — ${wo.Description} (${wo.Priority} priority, due ${wo.Due_Date})`
+          } else if (elevated && !wo) {
+            insight = `Gap: vibration alert (${latest.Alert_Level}) has no corresponding work order — recommend creating one`
+          } else if (!elevated && wo && (wo.Priority === 'Critical' || wo.Priority === 'High')) {
+            insight = `Work order ${wo.WorkOrder} (${wo.Priority}) is open but current vibration reads normal — verify scope/status`
+          }
+
+          return { tag, latest, avg, trendDelta, sampleCount: byTime.length, wo, insight }
+        })
+
+        if (!cancelled) setCrossRef({ loading: false, rows, error: null })
+      } catch (e) {
+        if (!cancelled) setCrossRef({ loading: false, rows: [], error: e.message })
+      }
+    }
+
+    load()
+    return () => { cancelled = true }
+  }, [])
+
+  // Real LIMS check: the bundled sample file has malformed rows (extra columns
+  // that shift Status/Flash_Point out of alignment with the header) — flag those
+  // rather than silently trusting them, and compute real trends from the clean rows.
+  useEffect(() => {
+    let cancelled = false
+
+    const load = async () => {
+      try {
+        const limsText = await fetch('/data/lims_quality_data.csv').then(r => r.text())
+        const { rows } = parseCSVWithIntegrityCheck(limsText)
+
+        const clean = rows.filter(r => !r.malformed)
+        const byProduct = new Map()
+        clean.forEach(r => {
+          const arr = byProduct.get(r.fields.Product_Type) || []
+          arr.push(r)
+          byProduct.set(r.fields.Product_Type, arr)
+        })
+
+        const trend = Array.from(byProduct.entries()).map(([product, samples]) => {
+          const byTime = [...samples].sort((a, b) => new Date(a.fields.Test_Date) - new Date(b.fields.Test_Date))
+          const series = (key) => byTime
+            .map(s => parseFloat(s.fields[key]))
+            .filter(v => !Number.isNaN(v))
+
+          const summarize = (key, unit) => {
+            const values = series(key)
+            if (values.length < 2) return null
+            return {
+              key,
+              unit,
+              values,
+              delta: values[values.length - 1] - values[0]
+            }
+          }
+
+          return {
+            product,
+            sampleCount: byTime.length,
+            dateRange: [byTime[0].fields.Test_Date, byTime[byTime.length - 1].fields.Test_Date],
+            metrics: [
+              summarize('Octane_RON', 'RON'),
+              summarize('Reid_Vapor_Pressure', 'psi'),
+              summarize('Sulfur_Content_ppm', 'ppm')
+            ].filter(Boolean)
+          }
+        })
+
+        if (!cancelled) setLimsCheck({ loading: false, rows, trend, error: null })
+      } catch (e) {
+        if (!cancelled) setLimsCheck({ loading: false, rows: [], trend: [], error: e.message })
+      }
+    }
+
+    load()
+    return () => { cancelled = true }
+  }, [])
 
   const AssetCard = ({ title, children, status = 'normal' }) => (
     <div className={`asset-card ${status}`}>
@@ -146,7 +290,13 @@ function App() {
         >
           Quality & Lab Data
         </button>
-        <button 
+        <button
+          className={selectedUnit === 'crossref' ? 'active' : ''}
+          onClick={() => setSelectedUnit('crossref')}
+        >
+          Cross-Reference (Real Data)
+        </button>
+        <button
           className={selectedUnit === 'canonical' ? 'active' : ''}
           onClick={() => setSelectedUnit('canonical')}
         >
@@ -394,6 +544,101 @@ function App() {
                   </div>
                 </div>
               </AssetCard>
+            </div>
+          </div>
+        )}
+
+        {selectedUnit === 'crossref' && (
+          <div className="unit-detail">
+            <h2>Work Order ↔ Vibration Cross-Reference</h2>
+            <p><small>Computed from the bundled sample CSVs in <code>public/data/</code> — real joins, averages and trends read from the files, not simulated.</small></p>
+            {crossRef.loading && <p>Loading source data…</p>}
+            {crossRef.error && <p className="notice">Failed to load source data: {crossRef.error}</p>}
+            <div className="detail-grid">
+              {crossRef.rows.map(r => (
+                <AssetCard
+                  key={r.tag}
+                  title={r.tag}
+                  status={r.latest.Alert_Level === 'Red' ? 'critical' : r.latest.Alert_Level === 'Yellow' ? 'warning' : 'normal'}
+                >
+                  <MetricDisplay label="Latest Vibration" value={parseFloat(r.latest.Overall_Vibration_mm_s)} unit="mm/s RMS" />
+                  <MetricDisplay label={`Avg (${r.sampleCount} samples)`} value={r.avg} unit="mm/s RMS" />
+                  <MetricDisplay
+                    label="Trend (oldest → newest)"
+                    value={r.trendDelta}
+                    unit="mm/s"
+                    status={r.trendDelta > 0.2 ? 'warning' : 'normal'}
+                  />
+                  <MetricDisplay label="Alert Level" value={r.latest.Alert_Level} unit="" />
+                  <p style={{ marginTop: '0.5rem' }}>
+                    <strong>Work Order:</strong>{' '}
+                    {r.wo ? `${r.wo.WorkOrder} — ${r.wo.Description} (${r.wo.Priority}, due ${r.wo.Due_Date})` : 'None open'}
+                  </p>
+                  <p><strong>Insight:</strong> {r.insight}</p>
+                </AssetCard>
+              ))}
+            </div>
+
+            <h2 style={{ marginTop: '2rem' }}>LIMS Sample Data — Integrity Check</h2>
+            <p>
+              <small>
+                The bundled <code>lims_quality_data.csv</code> has malformed rows (extra columns that shift
+                Status out of alignment with the header). Flagged here instead of silently trusting them.
+              </small>
+            </p>
+            {limsCheck.loading && <p>Loading source data…</p>}
+            {limsCheck.error && <p className="notice">Failed to load source data: {limsCheck.error}</p>}
+            {!limsCheck.loading && !limsCheck.error && (
+              <div className="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Sample_ID</th>
+                      <th>Product_Type</th>
+                      <th>Columns (actual/expected)</th>
+                      <th>Parsed Status</th>
+                      <th>Flag</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {limsCheck.rows.map((r, i) => (
+                      <tr key={i} className={r.malformed ? 'critical' : ''}>
+                        <td>{r.fields.Sample_ID}</td>
+                        <td>{r.fields.Product_Type}</td>
+                        <td>{r.columnCount}/{r.expectedColumns}</td>
+                        <td>{r.fields.Status}</td>
+                        <td>
+                          {r.malformed
+                            ? `⚠️ Malformed — row has ${r.columnCount - r.expectedColumns} extra column(s); raw last field in file was "${r.rawLastField}"`
+                            : '✅ Clean'}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+
+            <h2 style={{ marginTop: '2rem' }}>Product Quality Trend (clean samples only)</h2>
+            <div className="detail-grid">
+              {limsCheck.trend.map(t => (
+                <AssetCard key={t.product} title={t.product}>
+                  <p><small>{t.sampleCount} clean sample(s), {t.dateRange[0]} → {t.dateRange[1]}</small></p>
+                  {t.metrics.length === 0 && <p><small>Not enough clean samples to compute a trend.</small></p>}
+                  {t.metrics.map(m => (
+                    <MetricDisplay
+                      key={m.key}
+                      label={`${m.key.replace(/_/g, ' ')} (${m.values.join(' → ')})`}
+                      value={m.delta}
+                      unit={`${m.unit} Δ`}
+                      status={Math.abs(m.delta) > 0.5 ? 'warning' : 'normal'}
+                    />
+                  ))}
+                </AssetCard>
+              ))}
+              {limsCheck.trend.length === 0 && !limsCheck.loading && (
+                <p><small>No product had enough clean samples for a trend.</small></p>
+              )}
             </div>
           </div>
         )}

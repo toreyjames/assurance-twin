@@ -832,3 +832,40 @@ body {
     gap: 0.25rem;
   }
 }
+
+/* Data tables (LIMS integrity check) */
+.table-wrap {
+  overflow-x: auto;
+  border-radius: 12px;
+  border: 1px solid #4a5568;
+  margin-top: 1rem;
+}
+
+.table-wrap table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.table-wrap th,
+.table-wrap td {
+  padding: 0.6rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #2d3748;
+  white-space: nowrap;
+}
+
+.table-wrap thead th {
+  background: #1a202c;
+  color: #63b3ed;
+  font-weight: 600;
+}
+
+.table-wrap tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.table-wrap tr.critical td {
+  background: rgba(229, 62, 62, 0.12);
+  color: #feb2b2;
+}
