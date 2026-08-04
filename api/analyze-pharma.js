@@ -17,11 +17,19 @@ const parseCsv = (csv) => {
 }
 
 // Pharmaceutical Industry-Specific Canonizer with FDA 21 CFR Part 11, GAMP 5 Compliance
-export default async function handler(req, res) => {
+export default async function handler(req, res) {
   try {
     if (req.method !== 'POST') return res.status(405).json({ error: 'POST only' })
-    const body = JSON.parse(req.body || '{}')
+    const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {})
     const threshold = Number(body.thresholdMonths ?? 18)
+
+    const MAX_FILE_SIZE = 1024 * 1024 // 1 MB per file, matches client-side limit
+    for (const field of ['engineeringCsv', 'cmmsCsv', 'networkCsv', 'historianCsv']) {
+      const csv = body[field]
+      if (csv && Buffer.byteLength(csv, 'utf8') > MAX_FILE_SIZE) {
+        return res.status(413).json({ error: `${field} exceeds maximum size of 1MB` })
+      }
+    }
 
     // Parse input data
     const eng = body.engineeringCsv ? parseCsv(body.engineeringCsv) : []
@@ -337,15 +345,6 @@ function calculateRiskScore(unitInfo, controlInfo) {
   if (controlInfo.dataIntegrity) score += 15
   return Math.min(score, 100)
 }
-
-const resp = (code, body) => ({
-  statusCode: code,
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify(body)
-})
-
-
-
 
 
 

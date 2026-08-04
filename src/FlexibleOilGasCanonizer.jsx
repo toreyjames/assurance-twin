@@ -822,8 +822,8 @@ export default function FlexibleOilGasCanonizer() {
                             </div>
                             <div style={{ fontSize: '0.75rem', color: '#64748b', display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
                               <span>Secured:</span>
-                              <strong style={{ 
-                                color: securityPercent >= 80 ? '#10b981' : securityPercent >= 50 ? '#f59e0b' : '#ef4444' 
+                              <strong style={{
+                                color: securityPercent >= 70 ? '#10b981' : securityPercent >= 40 ? '#f59e0b' : '#ef4444'
                               }}>
                                 {securityStats.securedAssets.toLocaleString()} ({securityPercent}%)
                               </strong>
