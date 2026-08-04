@@ -1,6 +1,7 @@
 import Papa from 'papaparse'
 import dayjs from 'dayjs'
 import crypto from 'node:crypto'
+import { reconcile } from '../lib/reconciliation.js'
 
 const parseCsv = (text) => Papa.parse(text || '', { header: true, skipEmptyLines: true }).data
 const sha256 = (s) => crypto.createHash('sha256').update(s).digest('hex')
@@ -241,173 +242,52 @@ function mergeDataSources(dataSources, sourceType) {
 }
 
 // FLEXIBLE MATCHING (same as v2 but more robust)
+// Reconciliation between Engineering and OT Discovery, on the generic
+// epistemic-grounding core (lib/reconciliation.js). Every engineering
+// record lands in one of four states: VERIFIED (matched, facts agree),
+// DISPUTED (matched, facts disagree - e.g. same tag_id, different
+// manufacturer), UNCORROBORATED (blind spot - claimed, never seen on the
+// network), or UNCLAIMED (orphan - seen on the network, no engineering
+// record). No fallback strategy fabricates matches when there's
+// genuinely no corroboration; zero real matches is a real, honest result.
 function performFlexibleMatching(engineering, discovered, options = {}) {
   const {
     matchStrategies = ['tag_id', 'ip_address', 'hostname', 'mac_address'],
   } = options
-  
-  const engineeringAssets = engineering.length
-  const discoveredAssets = discovered.length
-  
-  const matchedAssets = []
-  const usedDiscoveryAssets = new Set()
 
-  // Strategy 1: Exact tag_id match
-  if (matchStrategies.includes('tag_id')) {
-    engineering.forEach(engAsset => {
-      if (!engAsset.tag_id) return
-      
-      const match = discovered.find(d => 
-        d.tag_id === engAsset.tag_id && !usedDiscoveryAssets.has(d.tag_id + d.ip_address)
-      )
-      
-      if (match) {
-        matchedAssets.push({
-          engineering: engAsset,
-          discovered: match,
-          matchType: 'exact_tag_id',
-          matchConfidence: 100
-        })
-        usedDiscoveryAssets.add(match.tag_id + match.ip_address)
-      }
-    })
+  const result = reconcile(engineering, discovered, {
+    identityKeys: matchStrategies,
+    fuzzyFields: [['device_type', 'manufacturer']],
+    compareFields: ['manufacturer'],
+    ownerA: 'Engineering',
+    ownerB: 'OT Discovery'
+  })
+
+  const matchTypeAliases = {
+    exact_tag_id: 'exact_tag_id',
+    exact_ip_address: 'ip_match',
+    exact_hostname: 'hostname_match',
+    exact_mac_address: 'mac_match',
+    fuzzy_device_type_manufacturer: 'fuzzy_type_manufacturer'
   }
 
-  // Strategy 2: IP address match
-  if (matchStrategies.includes('ip_address')) {
-    engineering.forEach(engAsset => {
-      if (!engAsset.ip_address || matchedAssets.find(m => m.engineering.tag_id === engAsset.tag_id)) return
-      
-      const match = discovered.find(d => 
-        d.ip_address && d.ip_address === engAsset.ip_address && !usedDiscoveryAssets.has(d.tag_id + d.ip_address)
-      )
-      
-      if (match) {
-        matchedAssets.push({
-          engineering: engAsset,
-          discovered: match,
-          matchType: 'ip_match',
-          matchConfidence: 95
-        })
-        usedDiscoveryAssets.add(match.tag_id + match.ip_address)
-      }
-    })
-  }
+  const matched = result.matched.map(m => ({
+    engineering: m.a,
+    discovered: m.b,
+    matchType: matchTypeAliases[m.matchType] || m.matchType,
+    matchConfidence: m.matchConfidence,
+    status: m.status,
+    disputes: m.disputes
+  }))
 
-  // Strategy 3: Hostname match
-  if (matchStrategies.includes('hostname')) {
-    engineering.forEach(engAsset => {
-      if (!engAsset.hostname || matchedAssets.find(m => m.engineering.tag_id === engAsset.tag_id)) return
-      
-      const match = discovered.find(d => 
-        d.hostname && d.hostname.toLowerCase() === engAsset.hostname.toLowerCase() && !usedDiscoveryAssets.has(d.tag_id + d.ip_address)
-      )
-      
-      if (match) {
-        matchedAssets.push({
-          engineering: engAsset,
-          discovered: match,
-          matchType: 'hostname_match',
-          matchConfidence: 90
-        })
-        usedDiscoveryAssets.add(match.tag_id + match.ip_address)
-      }
-    })
-  }
-
-  // Strategy 4: MAC address match
-  if (matchStrategies.includes('mac_address')) {
-    engineering.forEach(engAsset => {
-      if (!engAsset.mac_address || matchedAssets.find(m => m.engineering.tag_id === engAsset.tag_id)) return
-      
-      const match = discovered.find(d => 
-        d.mac_address && d.mac_address === engAsset.mac_address && !usedDiscoveryAssets.has(d.tag_id + d.ip_address)
-      )
-      
-      if (match) {
-        matchedAssets.push({
-          engineering: engAsset,
-          discovered: match,
-          matchType: 'mac_match',
-          matchConfidence: 85
-        })
-        usedDiscoveryAssets.add(match.tag_id + match.ip_address)
-      }
-    })
-  }
-
-  // Strategy 5: Fuzzy matching by device type + manufacturer
-  if (matchedAssets.length === 0 && engineering.length > 0 && discovered.length > 0) {
-    engineering.forEach(engAsset => {
-      if (matchedAssets.find(m => m.engineering.tag_id === engAsset.tag_id)) return
-      
-      const fuzzyMatch = discovered.find(d => 
-        !usedDiscoveryAssets.has(d.tag_id + d.ip_address) &&
-        d.device_type && engAsset.device_type &&
-        d.device_type.toLowerCase().includes(engAsset.device_type.toLowerCase()) &&
-        d.manufacturer && engAsset.manufacturer &&
-        d.manufacturer.toLowerCase() === engAsset.manufacturer.toLowerCase()
-      )
-      
-      if (fuzzyMatch) {
-        matchedAssets.push({
-          engineering: engAsset,
-          discovered: fuzzyMatch,
-          matchType: 'fuzzy_type_manufacturer',
-          matchConfidence: 60
-        })
-        usedDiscoveryAssets.add(fuzzyMatch.tag_id + fuzzyMatch.ip_address)
-      }
-    })
-  }
-
-  // Strategy 6: Last resort intelligent pairing
-  if (matchedAssets.length === 0 && engineering.length > 0 && discovered.length > 0) {
-    const remainingEng = engineering.filter(e =>
-      !matchedAssets.find(m => m.engineering.tag_id === e.tag_id)
-    )
-    const remainingDisc = discovered.filter(d => 
-      !usedDiscoveryAssets.has(d.tag_id + d.ip_address)
-    )
-    
-    const minMatches = Math.min(
-      Math.floor(engineeringAssets * 0.4),
-      remainingEng.length,
-      remainingDisc.length
-    )
-
-    for (let i = 0; i < minMatches; i++) {
-      matchedAssets.push({
-        engineering: remainingEng[i],
-        discovered: remainingDisc[i],
-        matchType: 'intelligent_pairing',
-        matchConfidence: 50
-      })
-      usedDiscoveryAssets.add(remainingDisc[i].tag_id + remainingDisc[i].ip_address)
-    }
-  }
-  
-  // Calculate results
-  const blindSpots = engineering.filter(e => 
-    !matchedAssets.find(m => m.engineering.tag_id === e.tag_id)
-  )
-  
-  const orphans = discovered.filter(d => 
-    !usedDiscoveryAssets.has(d.tag_id + d.ip_address)
-  )
-  
-  const coveragePercentage = engineeringAssets > 0 
-    ? Math.round((matchedAssets.length / engineeringAssets) * 100) 
-    : 0
-  
   return {
-    matched: matchedAssets,
-    blindSpots,
-    orphans,
-    coveragePercentage,
-    matchedCount: matchedAssets.length,
-    blindSpotCount: blindSpots.length,
-    orphanCount: orphans.length
+    matched,
+    blindSpots: result.blindSpots,
+    orphans: result.orphans,
+    coveragePercentage: result.stats.agreementPercent,
+    matchedCount: result.stats.matchedCount,
+    blindSpotCount: result.blindSpots.length,
+    orphanCount: result.orphans.length
   }
 }
 
@@ -787,9 +667,9 @@ function generateLearningInsights(engineering, discovered, matchResults, dataSou
   // 3. Pattern Detection - What's working well?
   const patterns = {
     bestMatchStrategy: Object.entries(columnSuccess).sort((a, b) => b[1] - a[1])[0],
-    avgMatchConfidence: Math.round(
+    avgMatchConfidence: matchResults.matchedCount > 0 ? Math.round(
       matchResults.matched.reduce((sum, m) => sum + m.matchConfidence, 0) / matchResults.matchedCount
-    ),
+    ) : 0,
     manufacturerVariety: new Set(engineering.map(e => e.manufacturer).filter(Boolean)).size,
     deviceTypeVariety: new Set(engineering.map(e => e.device_type).filter(Boolean)).size,
     plantVariety: new Set(engineering.map(e => e.plant).filter(Boolean)).size
@@ -1208,7 +1088,7 @@ export default async function handler(req, res) {
     const matchResults = performFlexibleMatching(allEngineering, allOtDiscovery)
     
     // Build canonical assets WITH CROSS-VALIDATION
-    const canonicalAssets = matchResults.matched.map(({ engineering, discovered, matchType, matchConfidence }) => {
+    const canonicalAssets = matchResults.matched.map(({ engineering, discovered, matchType, matchConfidence, status, disputes }) => {
       // Cross-validation: Check how many fields agree between sources
       const validationChecks = {
         tag_id: Boolean(engineering.tag_id && discovered.tag_id && engineering.tag_id === discovered.tag_id),
@@ -1243,6 +1123,8 @@ export default async function handler(req, res) {
         match_type: matchType,
         match_confidence: matchConfidence,
         last_seen: discovered.last_seen || '',
+        epistemic_status: status,
+        disputes: disputes || [],
         validation: {
           level: validationLevel,
           score: validationScore,
