@@ -786,18 +786,15 @@ function generateLearningInsights(engineering, discovered, matchResults, dataSou
     .sort((a, b) => (b.networkable - b.discovered) - (a.networkable - a.discovered))
     .slice(0, 3)
   
-  // Priority 1: Deploy OT collectors in blind spot areas
+  // Finding 1: Largest discovery coverage gap by unit
   if (unitsNeedingCollectors.length > 0) {
     const topUnit = unitsNeedingCollectors[0]
     const blindSpotCount = topUnit.networkable - topUnit.discovered
     allRecommendations.push({
       priority: 1,
       type: 'deploy_collector',
-      severity: 'critical',
-      message: `Deploy OT collector in ${topUnit.unit}`,
-      detail: `${topUnit.unit} has ${topUnit.networkable} networkable devices but only ${topUnit.discovered} discovered (${topUnit.coverage}% coverage). ${blindSpotCount} devices are completely invisible to your security tools.`,
-      action: `Deploy passive OT collector (Claroty, Nozomi, Armis) in ${topUnit.unit} network segment to gain visibility`,
-      impact: `High - Discovers ${blindSpotCount} devices, ~${Math.round(blindSpotCount * 0.7)} likely need security management`
+      message: `${topUnit.unit}: ${topUnit.discovered} of ${topUnit.networkable} networkable devices discovered (${topUnit.coverage}%)`,
+      detail: `${blindSpotCount} networkable devices in ${topUnit.unit} are in the engineering baseline with no corresponding OT discovery record.`
     })
   }
   
@@ -834,17 +831,14 @@ function generateLearningInsights(engineering, discovered, matchResults, dataSou
     .filter(v => v.managedPercent < 50)
     .sort((a, b) => b.unmanaged - a.unmanaged)
   
-  // Priority 2: Focus on specific vendor gaps
+  // Finding 2: Manufacturer with the largest unmanaged critical-device count
   if (vendorGaps.length > 0 && vendorGaps[0].unmanaged > 10) {
     const topVendor = vendorGaps[0]
     allRecommendations.push({
       priority: 2,
       type: 'vendor_focus',
-      severity: 'high',
-      message: `Prioritize ${topVendor.manufacturer} device security`,
-      detail: `You have ${topVendor.critical} critical ${topVendor.manufacturer} controllers (PLCs/DCS), but only ${topVendor.managed} (${topVendor.managedPercent}%) are managed. ${topVendor.manufacturer} devices require vendor-specific security tools and patches.`,
-      action: `Deploy ${topVendor.manufacturer}-compatible security agents or configure passive monitoring for ${topVendor.unmanaged} unmanaged devices`,
-      impact: `Critical - ${topVendor.manufacturer} PLCs are common ransomware targets (see: Industroyer, TRITON attacks)`
+      message: `${topVendor.manufacturer}: ${topVendor.managed} of ${topVendor.critical} critical controllers have a recorded managed status (${topVendor.managedPercent}%)`,
+      detail: `${topVendor.unmanaged} ${topVendor.manufacturer} controllers (PLC/DCS) have no recorded security management status.`
     })
   }
   
@@ -885,17 +879,14 @@ function generateLearningInsights(engineering, discovered, matchResults, dataSou
     }))
     .sort((a, b) => b.unmanaged - a.unmanaged)
   
-  // Priority 3: Specific device type + location gaps
+  // Finding 3: Specific device type + location with the largest unmanaged count
   if (deviceTypeGaps.length > 0) {
     const topGap = deviceTypeGaps[0]
     allRecommendations.push({
       priority: 3,
       type: 'device_location_gap',
-      severity: 'high',
-      message: `Secure ${topGap.unmanaged} ${topGap.type}s in ${topGap.unit}`,
-      detail: `${topGap.unit} has ${topGap.smart} ${topGap.type} devices, but only ${topGap.managed} (${topGap.managedPercent}%) have security management. These smart devices have network connectivity and are potential attack vectors.`,
-      action: `Deploy network segmentation and monitoring for ${topGap.type}s in ${topGap.unit}. Consider VLAN isolation if they use industrial protocols (Modbus, Profinet).`,
-      impact: `Medium - Reduces lateral movement risk in ${topGap.unit}, protects ${topGap.smart} smart devices`
+      message: `${topGap.unit}: ${topGap.managed} of ${topGap.smart} ${topGap.type}s have a recorded managed status (${topGap.managedPercent}%)`,
+      detail: `${topGap.unmanaged} ${topGap.type} devices in ${topGap.unit} are networkable with no recorded security management status.`
     })
   }
   
@@ -910,24 +901,18 @@ function generateLearningInsights(engineering, discovered, matchResults, dataSou
     allRecommendations.push({
       priority: 4,
       type: 'unknown_manufacturers',
-      severity: 'high',
-      message: `Identify ${unknownMfrCount} assets with "Unknown" manufacturer`,
-      detail: `You have ${unknownMfrCount} assets (${Math.round((unknownMfrCount / engineering.length) * 100)}% of inventory) with no manufacturer data, including ${unknownNetworkable} network-connected devices. Without manufacturer information, you cannot: apply vendor-specific patches, assess CVE risk, plan end-of-life replacements, or calculate spare parts inventory.`,
-      action: `Conduct physical asset audit for "Unknown" devices. Check asset nameplates, review P&ID drawings, interview maintenance technicians. Update CMMS/engineering records with manufacturer details.`,
-      impact: `High - Enables vulnerability management, patch planning, and vendor lifecycle tracking for ${unknownMfrCount} assets`
+      message: `${unknownMfrCount} assets (${Math.round((unknownMfrCount / engineering.length) * 100)}% of inventory) have no manufacturer recorded`,
+      detail: `${unknownNetworkable} of these are networkable devices.`
     })
   }
   
-  // Priority 5: Orphan devices (always important for security)
+  // Finding 5: Orphan devices - present on the network, unclaimed by any engineering record
   if (matchResults.orphanCount > 10) {
     allRecommendations.push({
       priority: 5,
       type: 'orphan_investigation',
-      severity: 'medium',
-      message: `Investigate ${matchResults.orphanCount} orphan devices on network`,
-      detail: `${matchResults.orphanCount} devices are actively communicating on your OT network but have no engineering baseline match. These could be: contractor laptops, shadow IT, rogue devices, or missing documentation.`,
-      action: `Export orphan device list, cross-reference MAC addresses with DHCP logs, investigate unknown IPs. Consider quarantine until validated.`,
-      impact: `Medium - Identifies unauthorized access, prevents shadow IT risks`
+      message: `${matchResults.orphanCount} devices observed on the network have no engineering baseline record`,
+      detail: `Unclaimed in reconciliation terms: present in OT discovery data with no corresponding entry in the engineering baseline.`
     })
   }
   
@@ -1353,20 +1338,9 @@ export default async function handler(req, res) {
         ? Math.round(((classificationVerification.verified.length + classificationVerification.verifiedPassive.length) / allEngineering.length) * 100)
         : 0,
       
-      suspiciousCount: classificationVerification.suspiciousPassive.length + classificationVerification.orphanAnalysis.filter(o => o.severity === 'HIGH').length,
-      
-      confidenceLevel: null // Will calculate below
+      suspiciousCount: classificationVerification.suspiciousPassive.length + classificationVerification.orphanAnalysis.filter(o => o.severity === 'HIGH').length
     }
-    
-    // Determine overall confidence level
-    if (verificationSummary.verificationRate >= 70 && verificationSummary.suspiciousCount < 10) {
-      verificationSummary.confidenceLevel = 'HIGH'
-    } else if (verificationSummary.verificationRate >= 40 && verificationSummary.suspiciousCount < 50) {
-      verificationSummary.confidenceLevel = 'MEDIUM'
-    } else {
-      verificationSummary.confidenceLevel = 'LOW'
-    }
-    
+
     const today = dayjs()
     const assuranceInsights = {}
     

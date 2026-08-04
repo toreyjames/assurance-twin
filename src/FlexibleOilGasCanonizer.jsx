@@ -453,7 +453,7 @@ export default function FlexibleOilGasCanonizer() {
                     {result.learningInsights.deviceClassification.networkableAssets.toLocaleString()}
                   </div>
                   <div style={{ fontSize: '0.875rem', color: '#92400e', marginTop: '0.5rem' }}>
-                    ⚠️ Require security management
+                    Have network connectivity
                   </div>
                 </div>
 
@@ -511,7 +511,7 @@ export default function FlexibleOilGasCanonizer() {
                         🔴 Tier 1: {result.learningInsights.deviceClassification.tier1.label}
                       </div>
                       <div style={{ fontSize: '0.875rem', color: '#64748b', marginTop: '0.25rem' }}>
-                        PLCs, DCS, HMIs, SCADA, RTUs • <strong style={{ color: '#991b1b' }}>MUST secure</strong>
+                        PLCs, DCS, HMIs, SCADA, RTUs • network-facing
                       </div>
                     </div>
                     <div style={{ textAlign: 'right' }}>
@@ -559,7 +559,7 @@ export default function FlexibleOilGasCanonizer() {
                         🟡 Tier 2: {result.learningInsights.deviceClassification.tier2.label}
                       </div>
                       <div style={{ fontSize: '0.875rem', color: '#64748b', marginTop: '0.25rem' }}>
-                        Smart transmitters, IP devices, analyzers • <strong style={{ color: '#92400e' }}>MUST secure</strong> (network-facing)
+                        Smart transmitters, IP devices, analyzers • network-facing
                       </div>
                     </div>
                     <div style={{ textAlign: 'right' }}>
@@ -865,30 +865,23 @@ export default function FlexibleOilGasCanonizer() {
                 Cross-verification of networkable vs passive classification. Verifies that devices classified as "networkable" are actually found on the network, and vice versa.
               </p>
 
-              {/* Overall Confidence Badge */}
-              <div style={{ 
-                padding: '1rem', 
-                background: result.verificationSummary.confidenceLevel === 'HIGH' ? '#f0fdf4' :
-                           result.verificationSummary.confidenceLevel === 'MEDIUM' ? '#fffbeb' : '#fef2f2',
-                border: `2px solid ${result.verificationSummary.confidenceLevel === 'HIGH' ? '#10b981' :
-                                      result.verificationSummary.confidenceLevel === 'MEDIUM' ? '#f59e0b' : '#ef4444'}`,
+              {/* Verification Rate - raw numbers, no verdict */}
+              <div style={{
+                padding: '1rem',
+                background: 'white',
+                border: '2px solid #cbd5e1',
                 borderRadius: '0.5rem',
                 marginBottom: '1.5rem',
                 textAlign: 'center'
               }}>
                 <div style={{ fontSize: '0.875rem', color: '#64748b', marginBottom: '0.5rem' }}>
-                  Overall Classification Confidence
+                  Networkable Assets Independently Verified by OT Discovery
                 </div>
-                <div style={{ 
-                  fontSize: '2rem', 
-                  fontWeight: '700',
-                  color: result.verificationSummary.confidenceLevel === 'HIGH' ? '#10b981' :
-                         result.verificationSummary.confidenceLevel === 'MEDIUM' ? '#f59e0b' : '#ef4444'
-                }}>
-                  {result.verificationSummary.confidenceLevel}
+                <div style={{ fontSize: '2rem', fontWeight: '700', color: '#0f172a' }}>
+                  {result.verificationSummary.verificationRate}%
                 </div>
                 <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '0.5rem' }}>
-                  {result.verificationSummary.verificationRate}% of networkable assets verified by OT discovery
+                  {result.verificationSummary.verified} of {result.verificationSummary.totalEngineeredNetworkable} networkable assets independently corroborated
                 </div>
               </div>
 
@@ -1530,66 +1523,38 @@ export default function FlexibleOilGasCanonizer() {
             </div>
           )}
 
-          {/* 3️⃣ TOP 3 ACTIONS (AT THE BOTTOM!) */}
+          {/* Largest observed gaps - findings only, no prescribed severity or action */}
           {result.learningInsights?.recommendations?.length > 0 && (
             <div style={{
               padding: '2rem',
               background: 'white',
-              border: '3px solid #fbbf24',
+              border: '3px solid #cbd5e1',
               borderRadius: '0.75rem',
               marginBottom: '2rem'
             }}>
               <h3 style={{ margin: '0 0 0.75rem 0', fontSize: '1.25rem', fontWeight: '700', color: '#0f172a' }}>
-                🎯 Top 3 Recommended Actions
+                🔍 Largest Observed Gaps
               </h3>
               <p style={{ margin: '0 0 1.5rem 0', fontSize: '0.875rem', color: '#64748b' }}>
-                Prioritized based on risk, impact, and feasibility
+                Ranked by size, from this dataset
               </p>
-              
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                {result.learningInsights.recommendations.map((rec, idx) => {
-                  const severityColors = {
-                    critical: { bg: '#fef2f2', border: '#ef4444', icon: '🔴' },
-                    high: { bg: '#fffbeb', border: '#f59e0b', icon: '🟡' },
-                    medium: { bg: '#eff6ff', border: '#3b82f6', icon: '🔵' }
-                  }
-                  const colors = severityColors[rec.severity] || severityColors.medium
 
-                  return (
-                    <div key={idx} style={{
-                      padding: '1.5rem',
-                      background: colors.bg,
-                      border: `2px solid ${colors.border}`,
-                      borderRadius: '0.5rem'
-                    }}>
-                      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
-                        <span style={{ fontSize: '2rem' }}>{colors.icon}</span>
-                        <div style={{ flex: 1 }}>
-                          <div style={{ fontSize: '1.125rem', fontWeight: '700', color: '#0f172a', marginBottom: '0.5rem' }}>
-                            {rec.message}
-                          </div>
-                          <div style={{ fontSize: '0.875rem', color: '#64748b', marginBottom: '0.75rem' }}>
-                            <strong>Impact:</strong> {rec.impact}
-                          </div>
-                          <div style={{ fontSize: '0.875rem', color: '#475569', marginBottom: '0.75rem' }}>
-                            {rec.detail}
-                          </div>
-                          <div style={{ 
-                            fontSize: '0.875rem', 
-                            color: '#0f172a',
-                            fontWeight: '600',
-                            padding: '0.75rem',
-                            background: 'white',
-                            borderRadius: '0.375rem',
-                            border: '1px solid #e2e8f0'
-                          }}>
-                            → <strong>Action:</strong> {rec.action}
-                          </div>
-                        </div>
-                      </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                {result.learningInsights.recommendations.map((rec, idx) => (
+                  <div key={idx} style={{
+                    padding: '1.5rem',
+                    background: '#f8fafc',
+                    border: '2px solid #e2e8f0',
+                    borderRadius: '0.5rem'
+                  }}>
+                    <div style={{ fontSize: '1.125rem', fontWeight: '700', color: '#0f172a', marginBottom: '0.5rem' }}>
+                      {rec.message}
                     </div>
-                  )
-                })}
+                    <div style={{ fontSize: '0.875rem', color: '#475569' }}>
+                      {rec.detail}
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           )}
